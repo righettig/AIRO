@@ -46,12 +46,16 @@ These are the tasks for today:
 		ng add @cypress/schematic // https://testing-angular.com/end-to-end-testing/
 			Would you like to add Cypress component testing?  This will add all files needed for Cypress component testing. A: Yes
 	
+	WIP import auth microservice
+		DONE find a way to activate/deactivate user. This has been dealt yesterday. I need to find which API to add the code to.
+		TODO depends on common project: AddFirebaseAndFirestore extension method
+	
+	
 	- import front-end project from ANYbotics (login, layout, home page)
 		- add registration form
 		- create home page (stub)
 	
-	- import auth microservice
-	DONE find a way to activate/deactivate user. This has been dealt yesterday. I need to find which API to add the code to.
+	
 	
 	- unit tests
 		dto validation for signup gateway
