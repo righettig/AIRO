@@ -43,6 +43,8 @@ These are the tasks for today:
 	DONE create users front-end, expose it via docker compose
 	
 	WIP cypress e2e tests
+		ng add @cypress/schematic // https://testing-angular.com/end-to-end-testing/
+		Would you like to add Cypress component testing?  This will add all files needed for Cypress component testing. yes
 	
 	- import front-end project from ANYbotics (login, layout, home page)
 		- add registration form
