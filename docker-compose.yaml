@@ -1,0 +1,4 @@
+services:
+  airo-users-gateway-api:
+    build:
+      context: ./back-end/gateways/airo-users-gateway-api

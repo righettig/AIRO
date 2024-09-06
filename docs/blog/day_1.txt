@@ -35,7 +35,8 @@ These are the tasks for today:
 	DONE download firebase project settings. Project settings -> Service accounts -> Generate new private key
 		Gitignored this file :)
 	
-	WIP gateway API, expose /signup endpoint
+	DONE gateway API, expose /signup endpoint
+		Created docker file and added service to docker compose
 	
 	DONE find a way to activate/deactivate user. This has been dealt yesterday. I need to find which API to add the code to.
 
@@ -51,5 +52,5 @@ These are the tasks for today:
 	
 	- docker compose should start rabbitmq, auth, notifications, gateway, consumer front-end
 	
-Once finished let's refactor what I got so far	
+Once finished let's refactor what I got so far!	
 
