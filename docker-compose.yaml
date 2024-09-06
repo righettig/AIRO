@@ -6,6 +6,8 @@ services:
       context: ./front-end/users/airo-users-frontend
     ports:
       - "5000:4200"
+    networks:
+      - cypress-network
     develop:
       context: ./front-end/users/airo-users-frontend
       watch:
@@ -32,3 +34,19 @@ services:
             - node_modules/
         - action: rebuild
           path: ./back-end/gateways/airo-users-gateway-api/package.json
+
+  cypress:
+    image: cypress/included:13.14.2
+    depends_on:
+      - users-app
+    environment:
+      - CYPRESS_BASE_URL=http://users-app:5000
+    working_dir: /e2e
+    volumes:
+      - ./front-end/users/airo-users-frontend:/e2e # Mount Cypress test folder
+    networks:
+      - cypress-network
+
+networks:
+  cypress-network:
+    driver: bridge
