@@ -38,21 +38,24 @@ These are the tasks for today:
 	DONE gateway API, expose /signup endpoint
 		Created docker file and added service to docker compose
 	
-	WIP create Postman collection "AIRO"
+	DONE create Postman collection "AIRO"
 	
-	DONE find a way to activate/deactivate user. This has been dealt yesterday. I need to find which API to add the code to.
-
+	DONE create users front-end, expose it via docker compose
+	
+	WIP cypress e2e tests
+	
 	- import front-end project from ANYbotics (login, layout, home page)
-	- add registration form
-	- create home page (stub)
+		- add registration form
+		- create home page (stub)
 	
 	- import auth microservice
+	DONE find a way to activate/deactivate user. This has been dealt yesterday. I need to find which API to add the code to.
 	
-	- cypress e2e tests
 	- unit tests
+		dto validation for signup gateway
+	
 	- notifications microservice + setup sendgrid
 	
 	- docker compose should start rabbitmq, auth, notifications, gateway, consumer front-end
 	
 Once finished let's refactor what I got so far!	
-

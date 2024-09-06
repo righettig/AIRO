@@ -6,6 +6,7 @@
 		airo-users-gateway-api, where "users" is the project name and "gateway-api" is the type
 		airo-enterprise-gateway-api
 		airo-events-microservice
+		airo-users-frontend
 		
 2) All gateway-api(s) projects should be exposed in the 3000 range
 

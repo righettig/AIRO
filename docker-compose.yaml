@@ -1,4 +1,22 @@
 services:
+  users-app:
+    depends_on:
+      - airo-users-gateway-api
+    build:
+      context: ./front-end/users/airo-users-frontend
+    ports:
+      - "5000:4200"
+    develop:
+      context: ./front-end/users/airo-users-frontend
+      watch:
+        - action: sync
+          path: ./front-end/users/airo-users-frontend
+          target: /app
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: ./front-end/users/airo-users-frontend/package.json
+
   airo-users-gateway-api:
     build:
       context: ./back-end/gateways/airo-users-gateway-api
