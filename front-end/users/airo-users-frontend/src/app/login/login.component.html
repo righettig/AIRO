@@ -1,0 +1,52 @@
+<div class="container">
+
+  <form (ngSubmit)="login()">
+    <mat-form-field appearance="outline">
+      <mat-label>Select predefined user</mat-label>
+      <mat-select (valueChange)="onUserSelect($event)">
+        @for (user of users; track user.email) {
+          <mat-option [value]="user">{{user.email}}</mat-option>
+        }
+      </mat-select>
+      <mat-icon matSuffix>account_circle</mat-icon> 
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input
+        matInput
+        placeholder="Enter your email"
+        name="email"
+        required
+        [(ngModel)]="email"
+      />
+      <mat-icon matSuffix>alternate_email</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Password</mat-label>
+      <input
+        matInput
+        [type]="showOrHidePassword() ? 'password' : 'text'"
+        placeholder="Enter your password"
+        name="password"
+        required
+        [(ngModel)]="password"
+      />
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="clickEvent($event)"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="showOrHidePassword()"
+      >
+        <mat-icon>{{ showOrHidePassword() ? "visibility_off" : "visibility" }}</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <button mat-fab extended type="submit">
+      Login
+    </button>
+  </form>
+
+</div>

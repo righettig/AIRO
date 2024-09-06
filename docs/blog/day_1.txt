@@ -65,17 +65,18 @@ These are the tasks for today:
 		FIXED files that should be ignored according to .dockerignore are NOT being ignored		
 			moved .dockerignore where docker-compose.yaml is
 	
-	WIP connect gateway to microservice
+	DONE import front-end project from ANYbotics (login, layout, home page)	
+		Re. Angular Material 
+			Set up global Angular Material typography styles? no
+			Include the Angular animations module? Include and enable animations
 	
-	- import front-end project from ANYbotics (login, layout, home page)
+	TODO
 		- add registration form
 		- create home page (stub)
+
+	WIP connect gateway to microservice	
 	
 	- unit tests
-		dto validation for signup gateway
-	
 	- notifications microservice + setup sendgrid
-	
-	- docker compose should start rabbitmq, auth, notifications, gateway, consumer front-end
 	
 Once finished let's refactor what I got so far!	
