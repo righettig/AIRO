@@ -20,6 +20,8 @@ services:
           path: ./front-end/users/airo-users-frontend/package.json
 
   airo-users-gateway-api:
+    depends_on:
+      - auth-service
     build:
       context: ./back-end/gateways/airo-users-gateway-api
     ports:
@@ -35,18 +37,37 @@ services:
         - action: rebuild
           path: ./back-end/gateways/airo-users-gateway-api/package.json
 
-  cypress:
-    image: cypress/included:13.14.2
-    depends_on:
-      - users-app
+  auth-service:
+    build:
+      context: .
+      dockerfile: ./back-end/microservices/airo-auth-microservice/Dockerfile
     environment:
-      # IMPORTANT: the internal post MUST be used here, otherwise cypress cannot find the app. Obviously this should be fixed!
-      - CYPRESS_BASE_URL=http://users-app:4200
-    working_dir: /e2e
+      - FIREBASE_PROJECT_NAME=${FIREBASE_PROJECT_NAME}
+      - FIREBASE_API_KEY=${FIREBASE_API_KEY}
+      - FIREBASE_CONFIG_FILE=${FIREBASE_CONFIG_FILE}
+      - JWT_AUTHORITY=${JWT_AUTHORITY}
+      - CORS_ALLOWED_ORIGINS=${USERS_FRONT_END_URL}
+    ports:
+      - "4000:8080" # https not working so far!
     volumes:
-      - ./front-end/users/airo-users-frontend:/e2e # Mount Cypress test folder
-    networks:
-      - cypress-network
+      - airo-config-volume:/app/config
+
+  # cypress:
+  #   image: cypress/included:13.14.2
+  #   depends_on:
+  #     - users-app
+  #   environment:
+  #     # IMPORTANT: the internal post MUST be used here, otherwise cypress cannot find the app. Obviously this should be fixed!
+  #     - CYPRESS_BASE_URL=http://users-app:4200
+  #   working_dir: /e2e
+  #   volumes:
+  #     - ./front-end/users/airo-users-frontend:/e2e # Mount Cypress test folder
+  #   networks:
+  #     - cypress-network
+
+volumes:
+  airo-config-volume:
+    external: true
 
 networks:
   cypress-network:

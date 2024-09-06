@@ -1,30 +1,30 @@
-# See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
-# This stage is used when running from VS in fast mode (Default for Debug configuration)
+# Base stage for runtime
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-USER app
 WORKDIR /app
 EXPOSE 8080
-EXPOSE 8081
 
-
-# This stage is used to build the service project
+# Build stage
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
+ARG PROJECT_PATH=back-end/microservices/airo-auth-microservice
+ARG PROJECT_NAME=airo-auth-microservice
 WORKDIR /src
-COPY ["airo-auth-microservice.csproj", "."]
-RUN dotnet restore "./airo-auth-microservice.csproj"
-COPY . .
-WORKDIR "/src/."
-RUN dotnet build "./airo-auth-microservice.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
-# This stage is used to publish the service project to be copied to the final stage
-FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./airo-auth-microservice.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+# Copy csproj and restore dependencies
+COPY ["${PROJECT_PATH}/${PROJECT_NAME}.csproj", "./"]
+RUN dotnet restore "./${PROJECT_NAME}.csproj"
 
-# This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
+# Copy the rest of the service source code and build
+COPY ["${PROJECT_PATH}/", "./"]
+RUN dotnet publish "./${PROJECT_NAME}.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+
+# Final stage for runtime
 FROM base AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "airo-auth-microservice.dll"]
+COPY --from=build /app/publish .
+
+# Set environment variable for project name
+ENV PROJECT_NAME=airo-auth-microservice
+
+# Use the environment variable in the ENTRYPOINT
+ENTRYPOINT dotnet $PROJECT_NAME.dll

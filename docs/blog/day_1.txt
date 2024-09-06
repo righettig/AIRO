@@ -46,16 +46,30 @@ These are the tasks for today:
 		ng add @cypress/schematic // https://testing-angular.com/end-to-end-testing/
 			Would you like to add Cypress component testing?  This will add all files needed for Cypress component testing. A: Yes
 	
-	WIP import auth microservice
-		DONE find a way to activate/deactivate user. This has been dealt yesterday. I need to find which API to add the code to.
-		TODO depends on common project: AddFirebaseAndFirestore extension method
+	DONE import auth microservice
 	
+	DONE find a way to activate/deactivate user. This has been dealt yesterday. I need to find which API to add the code to.
+		this feature is currently not available in C#
+
+	DONE generate AIRO-config-volume
+		docker run --rm -v airo-config-volume:/config -v "/c/Users/Giacomo Righetti/source/repos/AIRO/config:/source" alpine cp /source/airo-44ca7-firebase-adminsdk-etd4u-7107dcb929.json /config/airo-44ca7-firebase-adminsdk-etd4u-7107dcb929.json	
+	
+	DONE triyng to start auth microservice 
+		issue with docker I suspect there is an issue with paths
+		tried placing Program class with static Main still failing -> probably cannot find file
+		tried moving project inside ANYbotics, fixed paths and it worked!
+		
+		trying to inspect the image content I noticed that /src contains lots of unnecessary stuff
+			docker run -it image_name sh
+			
+		FIXED files that should be ignored according to .dockerignore are NOT being ignored		
+			moved .dockerignore where docker-compose.yaml is
+	
+	WIP connect gateway to microservice
 	
 	- import front-end project from ANYbotics (login, layout, home page)
 		- add registration form
 		- create home page (stub)
-	
-	
 	
 	- unit tests
 		dto validation for signup gateway

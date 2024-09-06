@@ -2,3 +2,4 @@ config/airo-44ca7-firebase-adminsdk-etd4u-7107dcb929.json
 /back-end/microservices/airo-auth-microservice/.vs
 /back-end/microservices/airo-auth-microservice/bin
 /back-end/microservices/airo-auth-microservice/obj
+.env
