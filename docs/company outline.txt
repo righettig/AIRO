@@ -1,0 +1,33 @@
+Welcome to AIRO, where the future of AI and robotics is not just envisioned, but actively created and refined. Our platform is designed to cater to diverse needs within the robotics ecosystem, and we’ve tailored our features to maximize the impact and effectiveness for both individual enthusiasts and enterprise innovators. Here’s why we’ve chosen to differentiate between coding AI bots for free/pro users and programming real robots for enterprise users:
+
+**1. Innovation Meets Application
+At AIRO, we believe that innovation starts with imagination and experimentation. For our free and pro users, our platform offers a rich environment to code and develop AI bots. This space is designed to foster creativity and learning, providing the tools and challenges necessary to experiment with virtual bots, refine AI algorithms, and engage in competitive scenarios. By focusing on coding AI bots, our free and pro users can push the boundaries of virtual intelligence and prepare for real-world applications without the complexities and costs associated with physical hardware.
+
+Key Points:
+
+Creative Freedom: Experiment with advanced AI models and bot behaviors in a cost-effective, virtual environment.
+Skill Development: Build and refine coding skills with challenges and competitions that mirror real-world scenarios.
+Scalability: Transfer your innovative ideas and refined algorithms to real-world applications in the future.
+**2. Real-World Integration and Complexity
+For our enterprise users, the stakes are higher, and the requirements are more complex. Enterprise clients are at the forefront of implementing robotics solutions within real-world environments, whether in manufacturing, healthcare, or logistics. Their needs extend beyond virtual simulations to actual physical robots that must perform reliably and integrate seamlessly with existing systems.
+
+Why Enterprise Users Program Real Robots:
+
+Precision and Reliability: Enterprise solutions demand high precision and reliability in physical robots, requiring robust programming and extensive testing.
+Integration with Systems: Enterprise users often need to integrate AI with sophisticated robotic systems and infrastructure, necessitating specialized support and features.
+Support and Scalability: Enterprises benefit from dedicated support and custom solutions tailored to their specific industrial applications and scalability requirements.
+Key Points:
+
+Advanced Capabilities: Access to sophisticated tools and support for integrating AI with real robotic hardware.
+Customized Solutions: Tailored AI algorithms and systems to meet specific industrial needs and ensure seamless operation.
+Comprehensive Testing: Real-world testing and implementation for high-stakes applications.
+**3. Fostering a Collaborative Ecosystem
+Our approach ensures that each user tier—free/pro and enterprise—can focus on their unique needs while contributing to a larger ecosystem of innovation. Free and pro users provide valuable insights and advancements in AI algorithms, which can inspire and enhance the capabilities of real-world robotics through our enterprise clients. Conversely, the practical applications and challenges faced by enterprise users can drive new feature developments and improvements in our virtual bot coding environment.
+
+Key Points:
+
+Mutual Growth: Innovations in virtual bot coding contribute to advancements in real-world robotics.
+Community Collaboration: A diverse user base fosters a rich environment for sharing knowledge and pushing the boundaries of AI and robotics.
+By distinguishing between virtual and real-world applications, AIRO maximizes the potential of both individual and enterprise contributions, driving progress in AI and robotics across different domains. We are committed to supporting each user with the tools and features they need to succeed, whether they are coding virtual bots or programming advanced robots.
+
+Welcome to the future of robotics—where every innovation matters, and every application contributes to a better, more connected world.

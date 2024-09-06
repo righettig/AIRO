@@ -1,0 +1,244 @@
+CONSUMER PLATFORM
+==================
+
+Free User registration
+----------------------
+	As a user I should be able to create a new free account on the AIRO consumer website
+	I need to enter email and password
+	I choose the free account
+	I click "Sign Up"
+		- IF no errors I should receive a confirmation email with a link to sign-in
+		- IF errors I should see an error message
+	I should be redirected to the home page	
+	I should be able to see that I have a free account
+	
+	AC1: e2e tests 
+		on successful signup 
+		on failed signup
+		
+	AC2: unit tests for front-end/back-end code
+
+
+Pro User registration
+----------------------	
+	As a user I should be able to create a new pro account on the AIRO consumer website
+	I need to enter email and password
+	I choose the pro account
+	I enter my credit card details
+	I click "Sign Up"
+		- A payment is processed (recurring monthly)
+		- IF payment is OK and there are no other errors I should receive a confirmation email with a link to sign-in
+			I should have also received a billing email with my initial payment
+			I should see from Profile -> Membership -> Billing -> my first bill 
+		- IF payment is NOT OK I should see an error message
+	I should be redirected to the home page	
+	I should be able to see that I have a pro account
+	
+	AC1: e2e tests 
+		on successful signup 
+		on failed signup (including failed payment)
+
+
+User login
+----------
+	As a user who has already a consumer account on the AIRO consumer website I should be able to login
+	I need to enter email and password
+	When password is OK I should be redirected to the home page
+	When password is NOT OK I should see error message
+	When account is NOT FOUND -> see error message
+	
+
+Profile management
+------------------
+	As a user I should be able to enter my user name, first name and last name
+	Upon saving my profile those details should be saved so that when I refresh the page they are shown again
+	
+	AC1: e2e tests 
+		on success -> details saved
+		on failure -> details not saved
+	
+
+Bot selection for free users
+----------------------------	
+	As a free user I should be able to select a single bot.
+	I enter the store
+	I see a list of available bots. 
+	I select a bot and after a confirmation the bot is now in "my bots" list.
+	I should be able to see a "Add bot" button. 
+	When clicked I should be redirected to the upgrade account page.
+
+
+Bot selection for pro users
+----------------------------
+	As a pro user I should be able to select up to 3 bots.
+	As a free user I should be able to select a single bot.
+	I enter the store
+	I see a list of available bots. 
+	I select a bot and after a confirmation the bot is now in "my bots" list.
+	I should be able to see a "Add bot" button (if <= 3 bots). 
+	
+
+Upgrade account for free users
+------------------------------
+	Profile -> Membership section
+	Upgrade account to Pro
+	Enter payment details
+	If OK email confirmation received (& billing starts)
+	If NOT OK show error 
+	
+
+Billing (monthly) for pro users
+-------------------------------
+	As a pro user I should be payment my fee every month (starting from the day I signed up my pro account)
+	If OK email confirmation
+	If NOT OK payment failed email confirmation 
+		retry once every day for 3 days
+			if unsuccessful profile downgrade (send email confirmation)	
+
+
+Download invoices
+-----------------
+	As a user from the profile page -> Membership & billing I should be able to download past invoices
+
+
+Pricing page
+-------------
+	TODO
+	
+
+Delete account
+--------------
+	UI: delete account
+	Upon confirmation, deactivate account
+	I should no longer be able to log-in
+	Data is preserved
+
+	
+Update payment details
+----------------------
+	As a [pro] user I should be able to update the payment details
+	Save. Changes persisted.
+
+
+Subscribe to an event
+----------------------
+	See list of events
+	I should be able to subscribe selecting the desired bot (if I have more than 1 bot) and behaiour
+	I should be listed as a participant for the event. 
+	I should be receiving an email 
+	
+	
+Unsubscribe from event
+----------------------
+	As a user who has successfully subscribed to an event
+	I should be able to unsubscribe from an event. 
+	I should be no longer listed as a participant for the event. 
+	I should be receiving an email 
+
+
+Event live feed
+---------------
+	As a user who has successfully subscribed to an event
+	I should be able to see the event in real-time with info/stats being displayed
+	TODO: design how the event takes place
+
+
+Define bot behaviour
+--------------------
+	Design bot behaiour (code, visual?)
+	
+
+[Email] Notifications for upcoming events
+-----------------------------------------
+	As a user I should be receiving email about upcoming events.
+	Info like event name, description and subscribe link should be in the email
+
+
+Leaderboards
+------------
+
+
+Companion App
+-------------
+	Login
+	
+	Dashboard
+		I should be able to see "notifications"
+		I should be able to see the "events" section
+		I should be able to see the "news" section
+
+
+AIRO ADMIN PLATFORM
+===================
+
+Login
+-----
+	As an ADMIN I should be able to login with my @airo.com account (SSO?)
+
+
+Events mgmt
+-----------
+	Create event
+		push email etc.
+	
+	Delete event
+	Update event 
+	Start event
+	List events
+	
+	Enter news
+	
+Bots mgmt
+---------	
+	Add bot -> send news (email + UI notification)
+		Bot should now be available for users
+	
+	Update bot -> send news (email + UI notification)
+		User who already have selected the bot should see the changes
+	
+	List bots 
+		As an ADMIN user I should be able to see the full list of available bots
+
+
+	
+ENTERPRISE PLATFORM
+====================
+
+Company registration
+--------------------
+	As a company manager I should be able to onboard my company 
+	All my company users should be able to login with their email accounts.
+	
+
+Connect ANYmal agent(s)
+-----------------------
+	Run simulator
+
+
+List ANYmail agents
+-------------------
+
+
+Show ANYmal agent details
+-------------------------
+	General info, status
+	
+
+Execute command
+---------------
+
+
+Create mission
+--------------
+
+
+Delete mission
+--------------
+
+
+Audit History
+-------------
+
+
+Live feed
+---------
