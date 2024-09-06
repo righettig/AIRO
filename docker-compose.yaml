@@ -2,3 +2,15 @@ services:
   airo-users-gateway-api:
     build:
       context: ./back-end/gateways/airo-users-gateway-api
+    ports:
+      - "3000:3000"
+    develop:
+      context: ./back-end/gateways/airo-users-gateway-api
+      watch:
+        - action: sync
+          path: ./back-end/gateways/airo-users-gateway-api
+          target: /app
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: ./back-end/gateways/airo-users-gateway-api/package.json

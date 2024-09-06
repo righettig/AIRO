@@ -1,4 +1,4 @@
-1) All projects should follow this nameing convention:
+1) All projects should follow this naming convention:
 	
 	airo-<<PROJECT_NAME>>-<<TYPE>>
 	
@@ -6,3 +6,9 @@
 		airo-users-gateway-api, where "users" is the project name and "gateway-api" is the type
 		airo-enterprise-gateway-api
 		airo-events-microservice
+		
+2) All gateway-api(s) projects should be exposed in the 3000 range
+
+3) All microservice(s) projects should be exposed in the 4000 range
+
+4) All front-end(s) projects should be exposed in the 5000 range

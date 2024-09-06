@@ -38,6 +38,8 @@ These are the tasks for today:
 	DONE gateway API, expose /signup endpoint
 		Created docker file and added service to docker compose
 	
+	WIP create Postman collection "AIRO"
+	
 	DONE find a way to activate/deactivate user. This has been dealt yesterday. I need to find which API to add the code to.
 
 	- import front-end project from ANYbotics (login, layout, home page)
