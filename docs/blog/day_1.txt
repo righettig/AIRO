@@ -1,0 +1,55 @@
+Blog post 1 - 06/09/24
+======================
+
+Brief introduction on why I am doing this and what AIRO is. AIRO is my current project. It's supposed to include ideas from ANYbotics and Ev.
+
+Today I'm going to work on the first user story for the AIRO consumer platform.
+
+Free User registration
+----------------------
+	As a user I should be able to create a new free account on the AIRO consumer website
+	I need to enter email and password
+	I choose the free account
+	I click "Sign Up"
+		- IF no errors I should receive a confirmation email with a link to sign-in
+		- IF errors I should see an error message
+	I should be redirected to the home page	
+	I should be able to see that I have a free account
+	
+	AC1: e2e tests 
+		on successful signup 
+		on failed signup
+		
+	AC2: unit tests for front-end/back-end code
+	
+Yesterday I did a step of initial analysis and identified some knowledge gap that I then fixed: 
+
+	1) Setup microservices NestJs PoC with Docker/Docker compose and rabbitmq with gateway
+	2) Firebase: activate/deactivate user(s)
+	3) Cypress e2e in angular (docker)	
+
+These are the tasks for today:
+
+	DONE create firebase project "AIRO". Enabled email authentication. 
+	DONE create 3 mock users
+	DONE download firebase project settings. Project settings -> Service accounts -> Generate new private key
+		Gitignored this file :)
+	
+	WIP gateway API, expose /signup endpoint
+	
+	DONE find a way to activate/deactivate user. This has been dealt yesterday. I need to find which API to add the code to.
+
+	- import front-end project from ANYbotics (login, layout, home page)
+	- add registration form
+	- create home page (stub)
+	
+	- import auth microservice
+	
+	- cypress e2e tests
+	- unit tests
+	- notifications microservice + setup sendgrid
+	
+	- docker compose should start rabbitmq, auth, notifications, gateway, consumer front-end
+	
+Once finished let's refactor what I got so far	
+

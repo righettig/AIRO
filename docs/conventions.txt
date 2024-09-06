@@ -1,0 +1,8 @@
+1) All projects should follow this nameing convention:
+	
+	airo-<<PROJECT_NAME>>-<<TYPE>>
+	
+	For instance: 
+		airo-users-gateway-api, where "users" is the project name and "gateway-api" is the type
+		airo-enterprise-gateway-api
+		airo-events-microservice
