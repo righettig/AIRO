@@ -1,5 +1,5 @@
-using airo_auth_microservice.Extensions;
 using airo_auth_microservice.Services;
+using airo_common_lib.Extensions;
 using Firebase.Auth;
 using Firebase.Auth.Providers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

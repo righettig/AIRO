@@ -6,17 +6,22 @@ EXPOSE 8080
 # Build stage
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
-ARG PROJECT_PATH=back-end/microservices/airo-auth-microservice
+ARG BASE_PATH=back-end/microservices
 ARG PROJECT_NAME=airo-auth-microservice
+ARG PROJECT_PATH=$BASE_PATH/$PROJECT_NAME
 WORKDIR /src
 
-# Copy csproj and restore dependencies
-COPY ["${PROJECT_PATH}/${PROJECT_NAME}.csproj", "./"]
-RUN dotnet restore "./${PROJECT_NAME}.csproj"
+# Copy and restore dependencies in one step to leverage Docker layer caching
+COPY ${PROJECT_PATH}/${PROJECT_NAME}.csproj ${PROJECT_NAME}/
+COPY ${BASE_PATH}/airo-common-lib/airo-common-lib.csproj airo-common-lib/
+RUN dotnet restore ${PROJECT_NAME}/${PROJECT_NAME}.csproj
 
-# Copy the rest of the service source code and build
-COPY ["${PROJECT_PATH}/", "./"]
-RUN dotnet publish "./${PROJECT_NAME}.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+# Copy the rest of the source code
+COPY ${PROJECT_PATH}/ ${PROJECT_NAME}/
+COPY ${BASE_PATH}/airo-common-lib/ airo-common-lib/
+
+# Build and publish the service
+RUN dotnet publish ${PROJECT_NAME}/${PROJECT_NAME}.csproj -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # Final stage for runtime
 FROM base AS final

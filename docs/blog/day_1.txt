@@ -96,22 +96,25 @@ These are the tasks for today:
 	DONE add entry in "userRoles"
 	
 	DONE TESTING (postman)
+	
+	WIP refactoring: common project for FirebaseExtensions
+		AddFirebaseAndFirestore
+		DONE refactor Dockerfile(s)
+		TODO also other stuff
 		
-	WIP testing UI (signup, login, refresh token)
-		
+	- DONE testing UI (signup, login, refresh token)
+		TODO when refreshing page I do not have profile info
+	
 	- I should be able to see that I have a free account
 		DONE need to store this info somewhere in the db
 		add UI component
-	
-	- refactoring: common project for FirebaseExtensions
 		
 	- UI validations (SignUp should be disabled by default)
 		email + password
 	
-	- notifications microservice + setup sendgrid
-	
 	- unit tests + e2e tests
 	
+	- notifications microservice + setup sendgrid
 	- reduce mem footprint of front-end docker image (1.2 GB) https://levioconsulting.com/insights/how-to-dockerize-an-angular-application-with-nginx/
 	
 Once finished let's refactor what I got so far!	

@@ -11,3 +11,6 @@ back-end/microservices/airo-auth-microservice/airo-auth-microservice.csproj.user
 /back-end/microservices/airo-profile-microservice/bin
 /back-end/microservices/airo-profile-microservice/obj
 back-end/microservices/airo-profile-microservice/airo-profile-microservice.csproj.user
+/back-end/microservices/.vs
+/back-end/microservices/airo-common-lib/obj
+/back-end/microservices/airo-common-lib/bin

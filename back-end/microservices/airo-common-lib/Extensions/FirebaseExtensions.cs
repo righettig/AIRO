@@ -1,7 +1,8 @@
 ﻿using FirebaseAdmin;
 using Google.Cloud.Firestore;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace airo_auth_microservice.Extensions;
+namespace airo_common_lib.Extensions;
 
 public static class FirebaseExtensions
 {

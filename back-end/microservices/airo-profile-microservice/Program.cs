@@ -1,4 +1,4 @@
-using airo_profile_microservice.Extensions;
+using airo_common_lib.Extensions;
 using airo_profile_microservice.Services;
 using Firebase.Auth;
 using Firebase.Auth.Providers;
