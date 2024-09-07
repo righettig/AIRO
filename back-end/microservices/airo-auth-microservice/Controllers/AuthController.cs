@@ -1,23 +1,23 @@
+using airo_auth_microservice.Models;
 using airo_auth_microservice.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace airo_auth_microservice.Controllers;
 
-public record LoginRequest(string Email, string Password);
-
 [ApiController]
 [Route("api/[controller]")]
-public class AuthController(IFirebaseAuthService firebaseAuthService,
-                            ILogger<AuthController> logger) : ControllerBase
-{
+public class AuthController(IAuthService authService, ILogger<AuthController> logger) : ControllerBase
+{   
     [HttpPost("signup")]
-    public async Task<IActionResult> Signup(string email, string password)
+    public async Task<IActionResult> Signup([FromBody] SignupRequest request)
     {
-        var token = await firebaseAuthService.SignUp(email, password);
+        var response = await authService.SignUp(request.Email, request.Password);
 
-        if (token is not null)
+        if (response is not null)
         {
-            return Ok(token);
+            // Post a message "account.created" to a RMQ queue
+            // Notifications microservice -> send confirmation email
+            return Ok(response);
         }
 
         return Unauthorized();
@@ -26,11 +26,11 @@ public class AuthController(IFirebaseAuthService firebaseAuthService,
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
-        var token = await firebaseAuthService.Login(request.Email, request.Password);
+        var response = await authService.Login(request.Email, request.Password);
 
-        if (token is not null)
+        if (response is not null)
         {
-            return Ok(new { token });
+            return Ok(response);
         }
 
         return Unauthorized();
@@ -39,7 +39,7 @@ public class AuthController(IFirebaseAuthService firebaseAuthService,
     [HttpPost("logout")]
     public IActionResult Logout()
     {
-        firebaseAuthService.SignOut();
+        authService.SignOut();
 
         return Ok();
     }
@@ -47,7 +47,7 @@ public class AuthController(IFirebaseAuthService firebaseAuthService,
     [HttpPost("refresh-token")]
     public async Task<IActionResult> RefreshToken()
     {
-        var newToken = await firebaseAuthService.RefreshToken();
+        var newToken = await authService.RefreshToken();
 
         return Ok(new { token = newToken });
     }
@@ -55,7 +55,7 @@ public class AuthController(IFirebaseAuthService firebaseAuthService,
     [HttpGet("user-role")]
     public async Task<IActionResult> GetUserRole([FromQuery] string email)
     {
-        var role = await firebaseAuthService.GetUserRole(email);
+        var role = await authService.GetUserRole(email);
 
         if (role != null)
         {

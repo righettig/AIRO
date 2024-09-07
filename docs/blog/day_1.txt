@@ -30,7 +30,22 @@ Yesterday I did a step of initial analysis and identified some knowledge gap tha
 
 These are the tasks for today:
 
+	DONE find a way to activate/deactivate user. This has been dealt yesterday. I need to find which API to add the code to.
+		this feature is currently not available in C#
+		I can do it by adding the "enabled" flag into a "profile" collection.
+			The user story does not mention anything about enable/disable profile so I'll pass on this one for now
+
 	DONE create firebase project "AIRO". Enabled email authentication. 
+	
+	DONE created firestore collection "userRoles", database region eur3
+		service cloud.firestore {
+		  match /databases/{database}/documents {
+			match /userRoles/{userId} {
+			  allow read: if request.auth != null;
+			}
+		  }
+		}
+		
 	DONE create 3 mock users
 	DONE download firebase project settings. Project settings -> Service accounts -> Generate new private key
 		Gitignored this file :)
@@ -48,9 +63,6 @@ These are the tasks for today:
 	
 	DONE import auth microservice
 	
-	DONE find a way to activate/deactivate user. This has been dealt yesterday. I need to find which API to add the code to.
-		this feature is currently not available in C#
-
 	DONE generate AIRO-config-volume
 		docker run --rm -v airo-config-volume:/config -v "/c/Users/Giacomo Righetti/source/repos/AIRO/config:/source" alpine cp /source/airo-44ca7-firebase-adminsdk-etd4u-7107dcb929.json /config/airo-44ca7-firebase-adminsdk-etd4u-7107dcb929.json	
 	
@@ -70,13 +82,36 @@ These are the tasks for today:
 			Set up global Angular Material typography styles? no
 			Include the Angular animations module? Include and enable animations
 	
-	TODO
-		- add registration form
-		- create home page (stub)
-
-	WIP connect gateway to microservice	
+		DONE Need to expose the gateway api url
 	
-	- unit tests
+	DONE Remove hardcoded url in gateway: 'http://auth-service:8080'
+	
+	DONE connect gateway to auth microservice (I can hit the gateway once the full solution is running user docker compose)
+		added other postman calls
+			
+	DONE At this point I should be able to login
+		
+	DONE: add registration form
+	
+	DONE add entry in "userRoles"
+	
+	DONE TESTING (postman)
+		
+	WIP testing UI (signup, login, refresh token)
+		
+	- I should be able to see that I have a free account
+		DONE need to store this info somewhere in the db
+		add UI component
+	
+	- refactoring: common project for FirebaseExtensions
+		
+	- UI validations (SignUp should be disabled by default)
+		email + password
+	
 	- notifications microservice + setup sendgrid
+	
+	- unit tests + e2e tests
+	
+	- reduce mem footprint of front-end docker image (1.2 GB) https://levioconsulting.com/insights/how-to-dockerize-an-angular-application-with-nginx/
 	
 Once finished let's refactor what I got so far!	

@@ -1,0 +1,14 @@
+.container {
+    width: 400px;
+    margin: 0 auto;
+    padding-top: 40px;
+
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .signup-btn {
+        font-size: 1.1em;
+    }
+}

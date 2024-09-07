@@ -1,11 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>airo_auth_microservice</RootNamespace>
-    <UserSecretsId>d0f38ad6-8615-42fd-a61c-f52ece313334</UserSecretsId>
+    <RootNamespace>airo_profile_microservice</RootNamespace>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 

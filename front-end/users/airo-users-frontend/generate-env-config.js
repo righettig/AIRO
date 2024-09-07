@@ -2,11 +2,11 @@ const fs = require('fs');
 const path = require('path');
 
 // Environment variables
-const authApiUrl = process.env.AUTH_API_URL;
+const gatewayApiUrl = process.env.USERS_GATEWAY_API_URL;
 
 // JSON content
 const config = {
-  authApiUrl,
+  gatewayApiUrl,
 };
 
 // Path to write the JSON file

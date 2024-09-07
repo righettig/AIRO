@@ -1,9 +1,10 @@
-﻿using Firebase.Auth;
+﻿using airo_auth_microservice.Models;
+using Firebase.Auth;
 using Google.Cloud.Firestore;
 
 namespace airo_auth_microservice.Services;
 
-public class FirebaseAuthService : IFirebaseAuthService
+public class FirebaseAuthService : IAuthService
 {
     private readonly FirebaseAuthClient _firebaseAuth;
     private readonly FirestoreDb _firestoreDb;
@@ -14,16 +15,40 @@ public class FirebaseAuthService : IFirebaseAuthService
         _firestoreDb = firestoreDb;
     }
 
-    public async Task<string?> SignUp(string email, string password)
+    public async Task<SignupResponse?> SignUp(string email, string password)
     {
         var userCredentials = await _firebaseAuth.CreateUserWithEmailAndPasswordAsync(email, password);
-        return userCredentials is null ? null : await userCredentials.User.GetIdTokenAsync();
+
+        var docRef = _firestoreDb.Collection("userRoles").Document(email);
+
+        var data = new Dictionary<string, object>
+        {
+            { "role", "standard" }
+        };
+
+        await docRef.SetAsync(data);
+
+        if (userCredentials is null) {
+            return null;
+        }
+
+        var result = new SignupResponse(userCredentials.User.Uid, await userCredentials.User.GetIdTokenAsync());     
+        
+        return result;
     }
 
-    public async Task<string?> Login(string email, string password)
+    public async Task<LoginResponse?> Login(string email, string password)
     {
         var userCredentials = await _firebaseAuth.SignInWithEmailAndPasswordAsync(email, password);
-        return userCredentials is null ? null : await userCredentials.User.GetIdTokenAsync();
+
+        if (userCredentials is null)
+        {
+            return null;
+        }
+
+        var result = new LoginResponse(userCredentials.User.Uid, await userCredentials.User.GetIdTokenAsync());
+
+        return result;
     }
 
     public async Task<string?> RefreshToken()

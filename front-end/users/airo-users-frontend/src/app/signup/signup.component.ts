@@ -1,18 +1,17 @@
 import { Component, inject, signal } from '@angular/core';
 import { AuthService } from '../services/auth.service';
-import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-signup',
   standalone: true,
   imports: [
-    RouterModule,
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
@@ -20,37 +19,26 @@ import { MatIconModule } from '@angular/material/icon';
     MatSelectModule,
     MatIconModule,
   ],
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
+  templateUrl: './signup.component.html',
+  styleUrl: './signup.component.scss'
 })
-export class LoginComponent {
+export class SignupComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
-
-  // Predefined users for quick selection
-  users = [
-    { email: 'giacomo@airo.com', password: 'q1w2e3' },
-    { email: 'test1@airo.com', password: 'q1w2e3' },
-    { email: 'test2@airo.com', password: 'q1w2e3' },
-  ];
-
+  
   email = '';
   password = '';
+  accountType = 'free';
 
   showOrHidePassword = signal(true);
-
-  async login() {
-    await this.authService.login(this.email, this.password);
-    this.router.navigate(['/home']);
-  }
-
-  onUserSelect(user: { email: string; password: string }) {
-    this.email = user.email;
-    this.password = user.password;
-  }
 
   clickEvent(event: MouseEvent) {
     this.showOrHidePassword.set(!this.showOrHidePassword());
     event.stopPropagation();
+  }
+
+  async signup() {
+    await this.authService.signup(this.email, this.password, this.accountType);
+    this.router.navigate(['/home']);
   }
 }

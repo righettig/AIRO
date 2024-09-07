@@ -7,4 +7,7 @@ export class SignupDto {
 
     @IsNotEmpty({ message: 'Password is required' })
     password: string;
+
+    @IsNotEmpty({ message: 'AccountType is required' })
+    accountType: string;
 }

@@ -13,7 +13,7 @@ export class AuthService {
   private initialized$ = new BehaviorSubject<boolean>(false);
 
   get apiUrl(): string {
-    return this.configService.config.authApiUrl;
+    return `${this.configService.config.gatewayApiUrl}/gateway`;
   }
 
   private storageKey = 'authToken';
@@ -35,6 +35,22 @@ export class AuthService {
 
   get accessToken() {
     return this.authToken;
+  }
+
+  async signup(email: string, password: string, accountType: string): Promise<void> {
+    try {
+      const response = await firstValueFrom(
+        this.http.post<{ token: string }>(`${this.apiUrl}/signup`, { email, password, accountType })
+      );
+
+      this.authToken = response.token;
+      localStorage.setItem(this.storageKey, this.authToken);
+      await this.updateUserState(email);
+
+    } catch (error) {
+      console.error('Signup error', error);
+      this.clearUserState();
+    }
   }
 
   async login(email: string, password: string): Promise<void> {
@@ -158,7 +174,7 @@ export class AuthService {
 
     } catch (error) {
       console.error('Token refresh error:', error);
-      
+
       this.clearUserState();
       localStorage.removeItem(this.storageKey);
       window.location.reload();

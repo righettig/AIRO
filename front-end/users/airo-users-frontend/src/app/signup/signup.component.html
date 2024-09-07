@@ -1,0 +1,34 @@
+<div class="container">
+
+    <form (ngSubmit)="signup()">
+        <mat-form-field appearance="outline">
+            <mat-label>Select account type</mat-label>
+            <mat-select [(ngModel)]="accountType" name="accountType">
+                <mat-option value="free">Free</mat-option>
+                <mat-option value="pro">Pro</mat-option>
+            </mat-select>
+            <mat-icon matSuffix>account_circle</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="Enter your email" name="email" required [(ngModel)]="email" />
+            <mat-icon matSuffix>alternate_email</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Password</mat-label>
+            <input matInput [type]="showOrHidePassword() ? 'password' : 'text'" placeholder="Enter your password"
+                name="password" required [(ngModel)]="password" />
+            <button type="button" mat-icon-button matSuffix (click)="clickEvent($event)" [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="showOrHidePassword()">
+                <mat-icon>{{ showOrHidePassword() ? "visibility_off" : "visibility" }}</mat-icon>
+            </button>
+        </mat-form-field>
+
+        <button mat-fab extended type="submit" class="signup-btn">
+            Sign Up
+        </button>
+    </form>
+
+</div>
