@@ -132,9 +132,8 @@ export class AuthService {
       });
 
       const response = await firstValueFrom(
-        this.http.get<{ role: string }>(`${this.apiUrl}/user-role`, {
-          headers: httpHeaders,
-          params: { email },
+        this.http.get<{ role: string }>(`${this.apiUrl}/user`, {
+          headers: httpHeaders
         })
       );
 

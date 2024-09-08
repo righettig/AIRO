@@ -16,6 +16,7 @@ public class ProfileController(IProfileService profileService, ILogger<ProfileCo
         return Ok();
     }
 
+    // TODO: uid should be extracted from token
     [HttpGet]
     public async Task<IActionResult> Get(string uid)
     {

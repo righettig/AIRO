@@ -105,14 +105,12 @@ These are the tasks for today:
 	
 	DONE progress bar when authenticating
 	
-	- I should be able to see that I have a free account
-		DONE need to store this info somewhere in the db
-		WIP add UI component
-			store current user in app 
-			
-	TODO when refreshing page I do not have profile info
-	
-	- UI validations (SignUp should be disabled by default)
+	DONE I should be able to see that I have a free account
+		need to store this info somewhere in the db
+		add UI component, store current user in app 
+		replace user-role with "user" endpoint. Add user role too
+				
+	WIP UI validations (SignUp should be disabled by default)
 		email + password
 	
 	- unit tests + e2e tests

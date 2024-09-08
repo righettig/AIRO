@@ -52,6 +52,7 @@ public class AuthController(IAuthService authService, ILogger<AuthController> lo
         return Ok(new { token = newToken });
     }
 
+    // TODO: email should be extracted from token
     [HttpGet("user-role")]
     public async Task<IActionResult> GetUserRole([FromQuery] string email)
     {

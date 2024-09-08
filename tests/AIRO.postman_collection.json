@@ -108,32 +108,6 @@
 					"response": []
 				},
 				{
-					"name": "gateway - user-role",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:3000/gateway/user-role?email=giacomo@airo.com",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"gateway",
-								"user-role"
-							],
-							"query": [
-								{
-									"key": "email",
-									"value": "giacomo@airo.com"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "gateway - user",
 					"request": {
 						"method": "GET",

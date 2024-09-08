@@ -65,31 +65,29 @@ export class GatewayController {
     return response;
   }
 
-  // TODO: extract email from token
-  @Get('user-role')
-  async getUserRole(@Query('email') email: string) {
-    const response = await this.authService.getUserRole(email);
-    return response;
-  }
-
   @Get('user')
   async getUser(@Req() request: Request) {
-    const authorizationHeader = request.headers['authorization'];
-    if (!authorizationHeader) {
-      throw new Error('Authorization header is missing');
+    const token = request.headers['authorization'];
+    if (!token) {
+      throw new Error('Token is missing');
     }
   
-    const uid = this.decodeUidFromToken(authorizationHeader);
-  
-    const response = await this.profileService.getProfileByUid(uid);
-    return response;
+    const uid = this.decodeFromToken<{ user_id?: string }>(token, 'user_id');
+    const userResponse = await this.profileService.getProfileByUid(uid);
+
+    const email = this.decodeFromToken<{ email?: string }>(token, 'email');
+    const userRoleResponse = await this.authService.getUserRole(email);
+
+    return {
+      ...userResponse,
+      ...userRoleResponse
+    };
   }
 
-  private decodeUidFromToken(token: string): string | null {
+  private decodeFromToken<T>(token: string, property: keyof T): T[keyof T] | null {
     try {
-      const decodedToken = jwtDecode<{ user_id?: string }>(token);
-      return decodedToken.user_id || null;
-
+      const decodedToken = jwtDecode<T>(token);
+      return decodedToken[property] || null;
     } catch (error) {
       console.error('Error decoding token:', error);
       return null;
