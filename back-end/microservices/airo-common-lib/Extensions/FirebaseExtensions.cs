@@ -1,4 +1,6 @@
-﻿using FirebaseAdmin;
+﻿using Firebase.Auth;
+using Firebase.Auth.Providers;
+using FirebaseAdmin;
 using Google.Cloud.Firestore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,5 +20,15 @@ public static class FirebaseExtensions
         // Initialize Firestore using the service account credentials
         var firestoreDb = FirestoreDb.Create(firebaseProjectName);
         services.AddSingleton(firestoreDb);
+    }
+
+    public static void AddFirebaseAuthClient(this IServiceCollection services, string firebaseApiKey, string firebaseProjectName)
+    {
+        services.AddSingleton(new FirebaseAuthClient(new FirebaseAuthConfig
+        {
+            ApiKey = firebaseApiKey,
+            AuthDomain = $"{firebaseProjectName}.firebaseapp.com",
+            Providers = [new EmailProvider()]
+        }));
     }
 }

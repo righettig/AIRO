@@ -97,13 +97,12 @@ These are the tasks for today:
 	
 	DONE TESTING (postman)
 	
-	WIP refactoring: common project for FirebaseExtensions
+	DONE refactoring: common project for FirebaseExtensions
 		AddFirebaseAndFirestore
-		DONE refactor Dockerfile(s)
-		TODO also other stuff
+		DONE refactor Dockerfile(s)& also other stuff
 		
-	- DONE testing UI (signup, login, refresh token)
-		TODO when refreshing page I do not have profile info
+	DONE testing UI (signup, login, refresh token)
+	TODO when refreshing page I do not have profile info
 	
 	- I should be able to see that I have a free account
 		DONE need to store this info somewhere in the db
