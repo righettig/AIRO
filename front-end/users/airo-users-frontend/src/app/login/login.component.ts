@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { Router, RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -43,12 +43,13 @@ export class LoginComponent {
 
   loggingIn = false;
   
-  async login() {
-    this.loggingIn = true;
-    await this.authService.login(this.email, this.password);
-    this.loggingIn = false;
-
-    this.router.navigate(['/home']);
+  async login(form: NgForm) {
+    if (form.valid) {
+      this.loggingIn = true;
+      await this.authService.login(this.email, this.password);
+      this.loggingIn = false;
+      this.router.navigate(['/home']);
+    }
   }
 
   onUserSelect(user: { email: string; password: string }) {

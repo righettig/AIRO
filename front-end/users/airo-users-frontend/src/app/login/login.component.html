@@ -1,6 +1,6 @@
 <div class="container">
-
-  <form (ngSubmit)="login()">
+  <form #loginForm="ngForm" (ngSubmit)="login(loginForm)">
+    <!-- Predefined user selection -->
     <mat-form-field appearance="outline">
       <mat-label>Select predefined user</mat-label>
       <mat-select (valueChange)="onUserSelect($event)">
@@ -8,9 +8,10 @@
           <mat-option [value]="user">{{user.email}}</mat-option>
         }
       </mat-select>
-      <mat-icon matSuffix>account_circle</mat-icon> 
+      <mat-icon matSuffix>account_circle</mat-icon>
     </mat-form-field>
 
+    <!-- Email input field with validation -->
     <mat-form-field appearance="outline">
       <mat-label>Email</mat-label>
       <input
@@ -18,11 +19,21 @@
         placeholder="Enter your email"
         name="email"
         required
+        email
         [(ngModel)]="email"
+        #emailCtrl="ngModel"
       />
       <mat-icon matSuffix>alternate_email</mat-icon>
+      <!-- Validation messages for email -->
+      @if (emailCtrl.invalid && emailCtrl.touched) {
+        <mat-error>
+          @if (emailCtrl.errors?.['required']) { <span>Email is required</span> }
+          @if (emailCtrl.errors?.['email']) { <span>Please enter a valid email address</span> }
+        </mat-error>
+      }
     </mat-form-field>
 
+    <!-- Password input field with validation -->
     <mat-form-field appearance="outline">
       <mat-label>Password</mat-label>
       <input
@@ -31,7 +42,9 @@
         placeholder="Enter your password"
         name="password"
         required
+        minlength="6"
         [(ngModel)]="password"
+        #passwordCtrl="ngModel"
       />
       <button type="button" 
         mat-icon-button
@@ -40,11 +53,24 @@
         [attr.aria-label]="'Hide password'"
         [attr.aria-pressed]="showOrHidePassword()"
       >
-        <mat-icon>{{ showOrHidePassword() ? "visibility_off" : "visibility" }}</mat-icon>
+        <mat-icon>{{ showOrHidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
       </button>
+      <!-- Validation messages for password -->
+      @if (passwordCtrl.invalid && passwordCtrl.touched) {
+        <mat-error>
+          @if (passwordCtrl.errors?.['required']) { <span>Password is required</span> }
+          @if (passwordCtrl.errors?.['minlength']) { <span>Password must be at least 6 characters long</span> }
+        </mat-error>
+      }
     </mat-form-field>
 
-    <button mat-fab extended type="submit" class="login-btn">
+    <button
+      mat-fab
+      extended
+      type="submit"
+      class="login-btn"
+      [disabled]="loginForm.invalid || loggingIn"
+    >
       Login
     </button>
   </form>
@@ -56,5 +82,4 @@
   <div class="progress-bar-container">
     <app-progress-bar [loading]="loggingIn"></app-progress-bar>
   </div>
-
 </div>
