@@ -1,4 +1,4 @@
-import { SignupComponent } from './signup.component'
+import { SignupComponent } from '../../src/app/auth/components/signup/signup.component'
 
 describe('SignupComponent', () => {
   it('should mount', () => {
