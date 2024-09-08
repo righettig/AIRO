@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
+import { ProgressBarComponent } from '../common/components/progress-bar/progress-bar.component';
 
 @Component({
   selector: 'app-login',
@@ -19,6 +20,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatButtonModule,
     MatSelectModule,
     MatIconModule,
+    ProgressBarComponent
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
@@ -39,8 +41,13 @@ export class LoginComponent {
 
   showOrHidePassword = signal(true);
 
+  loggingIn = false;
+  
   async login() {
+    this.loggingIn = true;
     await this.authService.login(this.email, this.password);
+    this.loggingIn = false;
+
     this.router.navigate(['/home']);
   }
 

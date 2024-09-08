@@ -102,12 +102,15 @@ These are the tasks for today:
 		DONE refactor Dockerfile(s)& also other stuff
 		
 	DONE testing UI (signup, login, refresh token)
-	TODO when refreshing page I do not have profile info
+	
+	DONE progress bar when authenticating
 	
 	- I should be able to see that I have a free account
 		DONE need to store this info somewhere in the db
-		add UI component
-		
+		WIP add UI component
+	
+	TODO when refreshing page I do not have profile info
+	
 	- UI validations (SignUp should be disabled by default)
 		email + password
 	
