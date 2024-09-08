@@ -1,13 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, firstValueFrom, Observable } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, Observable, Subject } from 'rxjs';
 import { jwtDecode } from "jwt-decode";
 import { ConfigService } from './config.service';
+import { User } from '../models/user';
+import { LoginResponse } from '../models/login-response';
+import { SignUpResponse } from '../models/signup-response';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+  private _user$ = new Subject<User | null>();
   private loggedIn$ = new BehaviorSubject<boolean>(false);
   private userRole$ = new BehaviorSubject<string | null>(null);
   private initialized$ = new BehaviorSubject<boolean>(false);
@@ -20,6 +24,10 @@ export class AuthService {
   private authToken?: string;
 
   constructor(private configService: ConfigService, private http: HttpClient) { }
+
+  get user$(): Observable<User | null> {
+    return this._user$.asObservable();
+  }
 
   get isLoggedIn$(): Observable<boolean> {
     return this.loggedIn$.asObservable();
@@ -40,8 +48,10 @@ export class AuthService {
   async signup(email: string, password: string, accountType: string): Promise<void> {
     try {
       const response = await firstValueFrom(
-        this.http.post<{ token: string }>(`${this.apiUrl}/signup`, { email, password, accountType })
+        this.http.post<SignUpResponse>(`${this.apiUrl}/signup`, { email, password, accountType })
       );
+
+      this._user$.next(response);
 
       this.authToken = response.token;
       localStorage.setItem(this.storageKey, this.authToken);
@@ -56,8 +66,10 @@ export class AuthService {
   async login(email: string, password: string): Promise<void> {
     try {
       const response = await firstValueFrom(
-        this.http.post<{ token: string }>(`${this.apiUrl}/login`, { email, password })
+        this.http.post<LoginResponse>(`${this.apiUrl}/login`, { email, password })
       );
+
+      this._user$.next(response);
 
       this.authToken = response.token;
       localStorage.setItem(this.storageKey, this.authToken);
@@ -133,6 +145,7 @@ export class AuthService {
   private clearUserState(): void {
     this.authToken = undefined;
 
+    this._user$.next(null);
     this.loggedIn$.next(false);
     this.userRole$.next(null);
   }

@@ -11,18 +11,30 @@ import { AuthService } from '../services/auth.service';
     MatToolbar,
     UserProfileComponent,
     LogoComponent,
-],
+  ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent implements OnInit {
   isLoggedIn = false;
+  accountType: string = '';
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
     this.authService.isLoggedIn$.subscribe(
       (status) => (this.isLoggedIn = status)
+    );
+
+    this.authService.user$.subscribe(
+      (user) => {
+        if (user) {
+          this.accountType = user?.accountType;
+
+        } else {
+          this.accountType = '';
+        }
+      }
     );
   }
 }
