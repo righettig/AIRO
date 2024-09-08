@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../../../auth/services/auth.service';
 import { UserProfileComponent } from './user-profile.component';
 import { By } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs';

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatToolbar } from '@angular/material/toolbar';
-import { UserProfileComponent } from '../user-profile/user-profile.component';
-import { LogoComponent } from '../logo/logo.component';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../../auth/services/auth.service';
+import { LogoComponent } from './logo/logo.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 @Component({
   selector: 'app-navbar',

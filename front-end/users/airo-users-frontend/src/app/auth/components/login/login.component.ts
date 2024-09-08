@@ -1,13 +1,12 @@
-import { Component, inject, signal } from '@angular/core';
-import { AuthService } from '../services/auth.service';
+import { Component, inject } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule, NgForm } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { MatSelectModule } from '@angular/material/select';
-import { MatIconModule } from '@angular/material/icon';
-import { ProgressBarComponent } from '../common/components/progress-bar/progress-bar.component';
+import { ProgressBarComponent } from '../../../common/components/progress-bar/progress-bar.component';
+import { EmailInputComponent } from '../common/email-input.component';
+import { PasswordInputComponent } from '../common/password-input.component';
+import { PredefinedUserSelectionComponent } from '../common/predefined-user-selection.component';
 
 @Component({
   selector: 'app-login',
@@ -15,12 +14,11 @@ import { ProgressBarComponent } from '../common/components/progress-bar/progress
   imports: [
     RouterModule,
     FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
     MatButtonModule,
-    MatSelectModule,
-    MatIconModule,
-    ProgressBarComponent
+    PredefinedUserSelectionComponent,
+    EmailInputComponent,
+    PasswordInputComponent,
+    ProgressBarComponent,
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
@@ -38,11 +36,8 @@ export class LoginComponent {
 
   email = '';
   password = '';
-
-  showOrHidePassword = signal(true);
-
   loggingIn = false;
-  
+
   async login(form: NgForm) {
     if (form.valid) {
       this.loggingIn = true;
@@ -52,13 +47,8 @@ export class LoginComponent {
     }
   }
 
-  onUserSelect(user: { email: string; password: string }) {
+  onUserSelected(user: { email: string; password: string }) {
     this.email = user.email;
     this.password = user.password;
-  }
-
-  clickEvent(event: MouseEvent) {
-    this.showOrHidePassword.set(!this.showOrHidePassword());
-    event.stopPropagation();
   }
 }

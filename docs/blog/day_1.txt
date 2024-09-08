@@ -111,11 +111,12 @@ These are the tasks for today:
 		replace user-role with "user" endpoint. Add user role too
 				
 	WIP UI validations (SignUp should be disabled by default)
-		email + password
+		1) Login/Signup disabled unless form is valid
+		2) email + password
+		
+		WIP Show errors when login/signup fail
 	
 	- unit tests + e2e tests
 	
 	- notifications microservice + setup sendgrid
 	- reduce mem footprint of front-end docker image (1.2 GB) https://levioconsulting.com/insights/how-to-dockerize-an-angular-application-with-nginx/
-	
-Once finished let's refactor what I got so far!	

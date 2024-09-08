@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, firstValueFrom, Observable, Subject } from 'rxjs';
 import { jwtDecode } from "jwt-decode";
-import { ConfigService } from './config.service';
+import { ConfigService } from '../../common/services/config.service';
 import { User } from '../models/user';
 import { LoginResponse } from '../models/login-response';
 import { SignUpResponse } from '../models/signup-response';
@@ -11,7 +11,7 @@ import { SignUpResponse } from '../models/signup-response';
   providedIn: 'root',
 })
 export class AuthService {
-  private _user$ = new Subject<User | null>();
+  private _user$ = new BehaviorSubject<User | null>(null);
   private loggedIn$ = new BehaviorSubject<boolean>(false);
   private userRole$ = new BehaviorSubject<string | null>(null);
   private initialized$ = new BehaviorSubject<boolean>(false);
@@ -132,13 +132,16 @@ export class AuthService {
       });
 
       const response = await firstValueFrom(
-        this.http.get<{ role: string }>(`${this.apiUrl}/user`, {
+        this.http.get<User>(`${this.apiUrl}/user`, {
           headers: httpHeaders
         })
       );
 
+      this._user$.next(response);
       this.loggedIn$.next(true);
-      this.userRole$.next(response.role);
+      
+      // TODO: add userRole in /user
+      //this.userRole$.next(response.role);
 
     } catch (error) {
       console.error('Error fetching user role:', error);
