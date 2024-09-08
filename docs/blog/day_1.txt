@@ -113,6 +113,7 @@ These are the tasks for today:
 	WIP UI validations (SignUp should be disabled by default)
 		1) Login/Signup disabled unless form is valid
 		2) email + password
+		3) fix styling 100% on each form field, remove at parent component?
 		
 		WIP Show errors when login/signup fail
 	

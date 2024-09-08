@@ -18,4 +18,6 @@
   <div class="progress-bar-container">
     <app-progress-bar [loading]="loggingIn"></app-progress-bar>
   </div>
+
+  @if (error) { <app-error-message>{{error}}</app-error-message> }
 </div>

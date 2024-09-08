@@ -7,6 +7,8 @@ import { ProgressBarComponent } from '../../../common/components/progress-bar/pr
 import { EmailInputComponent } from '../common/email-input.component';
 import { PasswordInputComponent } from '../common/password-input.component';
 import { PredefinedUserSelectionComponent } from '../common/predefined-user-selection.component';
+import { MatError } from '@angular/material/form-field';
+import { ErrorMessageComponent } from '../common/error-message';
 
 @Component({
   selector: 'app-login',
@@ -19,6 +21,8 @@ import { PredefinedUserSelectionComponent } from '../common/predefined-user-sele
     EmailInputComponent,
     PasswordInputComponent,
     ProgressBarComponent,
+    MatError,
+    ErrorMessageComponent
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
@@ -36,14 +40,24 @@ export class LoginComponent {
 
   email = '';
   password = '';
+  error = '';
   loggingIn = false;
 
   async login(form: NgForm) {
     if (form.valid) {
       this.loggingIn = true;
-      await this.authService.login(this.email, this.password);
-      this.loggingIn = false;
-      this.router.navigate(['/home']);
+      this.error = '';
+      
+      try {
+        await this.authService.login(this.email, this.password);
+        this.router.navigate(['/home']);
+      }
+      catch (error) {
+        this.error = 'Error logging in. Try again!';
+      }
+      finally {
+        this.loggingIn = false;
+      }
     }
   }
 

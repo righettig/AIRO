@@ -60,6 +60,7 @@ export class AuthService {
     } catch (error) {
       console.error('Signup error', error);
       this.clearUserState();
+      throw error;
     }
   }
 
@@ -78,6 +79,7 @@ export class AuthService {
     } catch (error) {
       console.error('Login error', error);
       this.clearUserState();
+      throw error;
     }
   }
 

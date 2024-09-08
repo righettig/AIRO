@@ -7,6 +7,7 @@ import { AccountTypeSelectionComponent } from './account-type-selection.componen
 import { ProgressBarComponent } from '../../../common/components/progress-bar/progress-bar.component';
 import { EmailInputComponent } from '../common/email-input.component';
 import { PasswordInputComponent } from '../common/password-input.component';
+import { ErrorMessageComponent } from '../common/error-message';
 
 @Component({
   selector: 'app-signup',
@@ -17,7 +18,8 @@ import { PasswordInputComponent } from '../common/password-input.component';
     AccountTypeSelectionComponent,
     EmailInputComponent,
     PasswordInputComponent,
-    ProgressBarComponent
+    ProgressBarComponent,
+    ErrorMessageComponent
   ],
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss']
@@ -29,16 +31,24 @@ export class SignupComponent {
   email = '';
   password = '';
   accountType = 'free';
-
+  error = '';
   signingUp = false;
 
   async signup(form: NgForm) {
     if (form.valid) {
       this.signingUp = true;
-      await this.authService.signup(this.email, this.password, this.accountType);
-      this.signingUp = false;
+      this.error = '';
 
-      this.router.navigate(['/home']);
+      try {
+        await this.authService.signup(this.email, this.password, this.accountType);
+        this.router.navigate(['/home']);
+      }
+      catch (error) {
+        this.error = 'Error signing up. Try again!';
+      }
+      finally {
+        this.signingUp = false;
+      }
     }
   }
 }
