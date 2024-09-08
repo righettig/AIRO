@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, firstValueFrom, Observable, Subject } from 'rxjs';
 import { jwtDecode } from "jwt-decode";
@@ -127,8 +127,13 @@ export class AuthService {
 
   private async updateUserState(email: string): Promise<void> {
     try {
+      const httpHeaders: HttpHeaders = new HttpHeaders({
+        Authorization: this.accessToken!
+      });
+
       const response = await firstValueFrom(
         this.http.get<{ role: string }>(`${this.apiUrl}/user-role`, {
+          headers: httpHeaders,
           params: { email },
         })
       );

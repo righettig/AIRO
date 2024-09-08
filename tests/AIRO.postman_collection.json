@@ -132,6 +132,32 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "gateway - user",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImNjNWU0MTg0M2M1ZDUyZTY4ZWY1M2UyYmVjOTgxNDNkYTE0NDkwNWUiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWlyby00NGNhNyIsImF1ZCI6ImFpcm8tNDRjYTciLCJhdXRoX3RpbWUiOjE3MjU3OTU5ODYsInVzZXJfaWQiOiJxaXhBUjhsQ3FMUkV0d0pKZGNmNUVJYkVYWGcyIiwic3ViIjoicWl4QVI4bENxTFJFdHdKSmRjZjVFSWJFWFhnMiIsImlhdCI6MTcyNTc5NTk4NiwiZXhwIjoxNzI1Nzk5NTg2LCJlbWFpbCI6Im5ldzFAYWlyby5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsibmV3MUBhaXJvLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.o0ggKpSKCxRPEecqBJXGzVpuFHL_jGd94v_PW9LwvUaF2CuVoBxhvoOEFFVAQusbmllhd3erNJjotQuNOc5dSTtm6JOJ5izy10b7oLeLl4PpXGu_E9EeNp9id8HpCMVVS5BrXi1qlUMBzI3b_fDiqfl2BM58CG_dIVMSHcRUuycLglvrxqjcb4RxMyOen6jUWswkBO43pLyABUgQbjsGeu-wZV6BSdYis2Mm2UldpSCwBbz5YXhsTz1FETOAaxtFz2MZSDtB3-FtROtaLa2HDwQVaxXohaGKNmQ9jpHrTEyTpBBwEPTukj03903WxNeGlhYhnynaG4wFFxtue86MXA",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/gateway/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"gateway",
+								"user"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -175,7 +201,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"dummyuser@mail.com\",\r\n    \"password\": \"foo123\"\r\n}",
+							"raw": "{\r\n    \"email\": \"giacomo@airo.com\",\r\n    \"password\": \"q1w2e3\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

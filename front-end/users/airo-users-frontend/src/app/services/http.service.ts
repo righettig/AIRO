@@ -5,9 +5,9 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class HttpService {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) { }
 
-  async fetch(input: RequestInfo, init?: RequestInit): Promise<Response> {
+  async fetch<T>(input: RequestInfo, init?: RequestInit): Promise<T> {
     // Get the token from your AuthService
     const token = this.authService.accessToken;
 
@@ -23,6 +23,17 @@ export class HttpService {
     };
 
     // Perform the fetch with the modified options
-    return fetch(input, modifiedInit);
+    const response = await fetch(input, modifiedInit);
+
+    // Ensure the response is in the expected format
+    const data = await response.json();
+
+    return data as T;
+  }
+
+  async get<T>(url: string): Promise<T> {
+    return this.fetch<T>(url, {
+      method: 'GET',
+    });
   }
 }
