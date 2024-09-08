@@ -1,10 +1,10 @@
 <div class="container">
-    <form #signupForm="ngForm" (ngSubmit)="signup(signupForm)">
+    <form [formGroup]="form" (ngSubmit)="signup()">
         <app-account-type-selection [(accountType)]="accountType"></app-account-type-selection>
-        <app-email-input [(email)]="email"></app-email-input>
-        <app-password-input [(password)]="password"></app-password-input>
+        <app-email-input [email]="email!"></app-email-input>
+        <app-password-input [password]="password!"></app-password-input>
 
-        <button mat-fab extended type="submit" class="signup-btn" [disabled]="signupForm.invalid || signingUp">
+        <button mat-fab extended type="submit" class="signup-btn" [disabled]="form.invalid || signingUp">
             Sign Up
         </button>
     </form>

@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router, RouterModule } from '@angular/router';
-import { FormsModule, NgForm } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { ProgressBarComponent } from '../../../common/components/progress-bar/progress-bar.component';
 import { EmailInputComponent } from '../common/email-input.component';
@@ -14,8 +14,8 @@ import { ErrorMessageComponent } from '../common/error-message';
   selector: 'app-login',
   standalone: true,
   imports: [
+    ReactiveFormsModule,
     RouterModule,
-    FormsModule,
     MatButtonModule,
     PredefinedUserSelectionComponent,
     EmailInputComponent,
@@ -38,31 +38,42 @@ export class LoginComponent {
     { email: 'test2@airo.com', password: 'q1w2e3' },
   ];
 
-  email = '';
-  password = '';
+  form: FormGroup;
+  email: FormControl;
+  password: FormControl;
+
   error = '';
   loggingIn = false;
 
-  async login(form: NgForm) {
-    if (form.valid) {
-      this.loggingIn = true;
-      this.error = '';
-      
-      try {
-        await this.authService.login(this.email, this.password);
-        this.router.navigate(['/home']);
-      }
-      catch (error) {
-        this.error = 'Error logging in. Try again!';
-      }
-      finally {
-        this.loggingIn = false;
-      }
+  constructor(private fb: FormBuilder) {
+    this.form = this.fb.group({
+      email: '',
+      password: ''
+    });
+
+    this.email = this.form.get('email') as FormControl;
+    this.password = this.form.get('password') as FormControl;
+  }  
+
+  async login() {
+    if (this.form.invalid) return;
+
+    this.loggingIn = true;
+    this.error = '';
+    
+    try {
+      await this.authService.login(this.email.value, this.password.value);
+      this.router.navigate(['/home']);
+    }
+    catch {
+      this.error = 'Error logging in. Try again!';
+    }
+    finally {
+      this.loggingIn = false;
     }
   }
 
   onUserSelected(user: { email: string; password: string }) {
-    this.email = user.email;
-    this.password = user.password;
+    this.form.patchValue(user);
   }
 }

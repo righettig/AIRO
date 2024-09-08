@@ -1,12 +1,12 @@
 <div class="container">
-  <form #loginForm="ngForm" (ngSubmit)="login(loginForm)">
+  <form [formGroup]="form" (ngSubmit)="login()">
     <app-predefined-user-selection [users]="users"
       (userSelected)="onUserSelected($event)"></app-predefined-user-selection>
       
-    <app-email-input [(email)]="email"></app-email-input>
-    <app-password-input [(password)]="password"></app-password-input>
+    <app-email-input [email]="email"></app-email-input>
+    <app-password-input [password]="password"></app-password-input>
 
-    <button mat-fab extended type="submit" class="login-btn" [disabled]="loginForm.invalid || loggingIn">
+    <button mat-fab extended type="submit" class="login-btn" [disabled]="form.invalid || loggingIn">
       Login
     </button>
   </form>
