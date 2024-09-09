@@ -10,7 +10,6 @@ import { By } from '@angular/platform-browser';
 describe('NavbarComponent', () => {
   let component: NavbarComponent;
   let fixture: ComponentFixture<NavbarComponent>;
-  let authServiceSpy: jasmine.SpyObj<AuthService>;
   let userSubject = new BehaviorSubject<{ accountType: string }>( {accountType: 'pro' });
   let loggedInSubject = new BehaviorSubject<boolean>(true);
 
@@ -34,7 +33,6 @@ describe('NavbarComponent', () => {
 
     fixture = TestBed.createComponent(NavbarComponent);
     component = fixture.componentInstance;
-    authServiceSpy = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
     fixture.detectChanges();
   });
 
