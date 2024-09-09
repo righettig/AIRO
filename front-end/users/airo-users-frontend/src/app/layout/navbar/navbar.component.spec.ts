@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NavbarComponent } from './navbar.component';
 import { AuthService } from '../../auth/services/auth.service';
-import { BehaviorSubject, of } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { LogoComponent } from './logo/logo.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
