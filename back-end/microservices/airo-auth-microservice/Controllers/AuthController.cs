@@ -17,8 +17,14 @@ public class AuthController(IAuthService authService,
 
         if (response is not null)
         {
-            // Publish an event to RabbitMQ
-            var userData = Newtonsoft.Json.JsonConvert.SerializeObject(new { request.Email });
+            // Publish an event to RabbitMQ. To avoid NestJs message protocol read here:
+            // https://stackoverflow.com/questions/68232642/nestjs-microservice-with-rabbitmq-without-pattern
+            var message = new { 
+                pattern = "user.created", 
+                data = request.Email 
+            };
+            var userData = Newtonsoft.Json.JsonConvert.SerializeObject(message);
+
             rabbitMQPublisherService.PublishUserCreatedEvent(userData);
 
             return Ok(response);

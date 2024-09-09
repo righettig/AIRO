@@ -75,6 +75,16 @@ services:
       - "4001:8080" # https not working so far!
     volumes:
       - airo-config-volume:/app/config
+  
+  notifications-service:
+    build:
+      context: ./back-end/microservices/airo-notifications-microservice
+    environment:
+      - SENDGRID_API_KEY=${SENDGRID_API_KEY}
+      - SENDGRID_FROM_EMAIL=${SENDGRID_FROM_EMAIL}
+      - RABBITMQ_URL=${RABBITMQ_URL}
+    depends_on:
+      - rabbitmq
 
   rabbitmq:
     image: "rabbitmq:3-management"
