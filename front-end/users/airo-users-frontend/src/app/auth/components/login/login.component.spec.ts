@@ -9,16 +9,15 @@ import { PredefinedUserSelectionComponent } from '../common/predefined-user-sele
 import { ProgressBarComponent } from '../../../common/components/progress-bar/progress-bar.component';
 import { ErrorMessageComponent } from '../common/error-message';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { HomeComponent } from '../../../home/home.component';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
   let authService: jasmine.SpyObj<AuthService>;
-  // let router: jasmine.SpyObj<Router>;
 
   beforeEach(async () => {
     const authServiceSpy = jasmine.createSpyObj('AuthService', ['login']);
-    // const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
     await TestBed.configureTestingModule({
       imports: [
@@ -32,15 +31,16 @@ describe('LoginComponent', () => {
       ],
       providers: [
         { provide: AuthService, useValue: authServiceSpy },
-        // { provide: Router, useValue: routerSpy },
-        provideRouter([])
+        provideRouter([
+          { path: 'login', component: LoginComponent },
+          { path: 'home', component: HomeComponent }
+        ])
       ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
     authService = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
-    // router = TestBed.inject(Router) as jasmine.SpyObj<Router>;
 
     fixture.detectChanges();
   });
@@ -58,7 +58,7 @@ describe('LoginComponent', () => {
     await component.login();
 
     expect(authService.login).toHaveBeenCalledWith('test@example.com', 'password123');
-    //expect(router.navigate).toHaveBeenCalledWith(['/home']);
+    expect(TestBed.inject(Router).url).toEqual('/home');
     expect(component.loggingIn).toBeFalse();
   });
 
