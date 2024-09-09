@@ -4,6 +4,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { EmailInputComponent } from './email-input.component';
 import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('EmailInputComponent', () => {
     let component: EmailInputComponent;
@@ -11,8 +12,13 @@ describe('EmailInputComponent', () => {
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [ReactiveFormsModule, MatInputModule, MatIconModule],
-            declarations: [EmailInputComponent]
+            imports: [
+                ReactiveFormsModule,
+                MatInputModule,
+                MatIconModule, 
+                EmailInputComponent, 
+                NoopAnimationsModule
+            ],
         }).compileComponents();
 
         fixture = TestBed.createComponent(EmailInputComponent);

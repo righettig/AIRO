@@ -116,7 +116,12 @@ These are the tasks for today:
 		3) fix styling 100% on each form field, remove at parent component?
 		4) Show errors when login/signup fail
 	
-	- unit tests + e2e tests
-	
 	- notifications microservice + setup sendgrid
+	
+	- fix unit tests 
+		add more unit tests 
+	 
+	- add e2e tests
+	- check for cypress component tests
+	
 	- reduce mem footprint of front-end docker image (1.2 GB) https://levioconsulting.com/insights/how-to-dockerize-an-angular-application-with-nginx/
