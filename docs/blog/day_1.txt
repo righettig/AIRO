@@ -116,8 +116,7 @@ These are the tasks for today:
 		3) fix styling 100% on each form field, remove at parent component?
 		4) Show errors when login/signup fail
 	
-	WIP fix unit tests 
-		add more unit tests 
+	DONE unit testing
 		
 	- notifications microservice + setup sendgrid	 
 	- add e2e tests
