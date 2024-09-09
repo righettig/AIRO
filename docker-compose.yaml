@@ -1,0 +1,116 @@
+services:
+  users-app:
+    depends_on:
+      - airo-users-gateway-api
+    build:
+      context: ./front-end/users/airo-users-frontend
+    ports:
+      - "5000:4200"
+    environment:
+      - USERS_GATEWAY_API_URL=${USERS_GATEWAY_API_URL}
+    networks:
+      - cypress-network
+    develop:
+      context: ./front-end/users/airo-users-frontend
+      watch:
+        - action: sync
+          path: ./front-end/users/airo-users-frontend
+          target: /app
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: ./front-end/users/airo-users-frontend/package.json
+
+  airo-users-gateway-api:
+    depends_on:
+      - auth-service
+      - profile-service
+      - notifications-service
+    build:
+      context: ./back-end/gateways/airo-users-gateway-api
+    ports:
+      - "3000:3000"
+    environment:
+      - AUTH_API_URL=${AUTH_API_URL}
+      - PROFILE_API_URL=${PROFILE_API_URL}
+    develop:
+      context: ./back-end/gateways/airo-users-gateway-api
+      watch:
+        - action: sync+restart
+          path: ./back-end/gateways/airo-users-gateway-api
+          target: /app
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: ./back-end/gateways/airo-users-gateway-api/package.json
+
+  auth-service:
+    build:
+      context: .
+      dockerfile: ./back-end/microservices/airo-auth-microservice/Dockerfile
+    environment:
+      - FIREBASE_PROJECT_NAME=${FIREBASE_PROJECT_NAME}
+      - FIREBASE_API_KEY=${FIREBASE_API_KEY}
+      - FIREBASE_CONFIG_FILE=${FIREBASE_CONFIG_FILE}
+      - JWT_AUTHORITY=${JWT_AUTHORITY}
+      - CORS_ALLOWED_ORIGINS=${USERS_FRONT_END_URL}
+      - RABBITMQ_URL=${RABBITMQ_URL}
+    ports:
+      - "4000:8080" # https not working so far!
+    volumes:
+      - airo-config-volume:/app/config
+    depends_on:
+      - rabbitmq
+
+  profile-service:
+    build:
+      context: .
+      dockerfile: ./back-end/microservices/airo-profile-microservice/Dockerfile
+    environment:
+      - FIREBASE_PROJECT_NAME=${FIREBASE_PROJECT_NAME}
+      - FIREBASE_API_KEY=${FIREBASE_API_KEY}
+      - FIREBASE_CONFIG_FILE=${FIREBASE_CONFIG_FILE}
+      - JWT_AUTHORITY=${JWT_AUTHORITY}
+      - CORS_ALLOWED_ORIGINS=${USERS_FRONT_END_URL}
+    ports:
+      - "4001:8080" # https not working so far!
+    volumes:
+      - airo-config-volume:/app/config
+  
+  notifications-service:
+    build:
+      context: ./back-end/microservices/airo-notifications-microservice
+    environment:
+      - SENDGRID_API_KEY=${SENDGRID_API_KEY}
+      - SENDGRID_FROM_EMAIL=${SENDGRID_FROM_EMAIL}
+      - RABBITMQ_URL=${RABBITMQ_URL}
+    depends_on:
+      - rabbitmq
+
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"    # RabbitMQ default port
+      - "15672:15672"  # RabbitMQ management console port
+
+  cypress:
+    image: cypress/included:13.14.2
+    depends_on:
+      - users-app
+    environment:
+      # IMPORTANT: the internal post MUST be used here, otherwise cypress cannot find the app. Obviously this should be fixed!
+      - CYPRESS_BASE_URL=http://users-app:4200
+    working_dir: /e2e
+    volumes:
+      - ./front-end/users/airo-users-frontend:/e2e # Mount Cypress test folder
+    networks:
+      - cypress-network
+
+volumes:
+  airo-config-volume:
+    external: true
+
+networks:
+  cypress-network:
+    driver: bridge

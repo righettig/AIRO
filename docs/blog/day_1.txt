@@ -1,0 +1,127 @@
+Blog post 1 - 06/09/24
+======================
+
+Brief introduction on why I am doing this and what AIRO is. AIRO is my current project. It's supposed to include ideas from ANYbotics and Ev.
+
+Today I'm going to work on the first user story for the AIRO consumer platform.
+
+Free User registration
+----------------------
+	As a user I should be able to create a new free account on the AIRO consumer website
+	I need to enter email and password
+	I choose the free account
+	I click "Sign Up"
+		- IF no errors I should receive a confirmation email with a link to sign-in
+		- IF errors I should see an error message
+	I should be redirected to the home page	
+	I should be able to see that I have a free account
+	
+	AC1: e2e tests 
+		on successful signup 
+		on failed signup
+		
+	AC2: unit tests for front-end/back-end code
+	
+Yesterday I did a step of initial analysis and identified some knowledge gap that I then fixed: 
+
+	1) Setup microservices NestJs PoC with Docker/Docker compose and rabbitmq with gateway
+	2) Firebase: activate/deactivate user(s)
+	3) Cypress e2e in angular (docker)	
+
+These are the tasks for today:
+
+	DONE find a way to activate/deactivate user. This has been dealt yesterday. I need to find which API to add the code to.
+		this feature is currently not available in C#
+		I can do it by adding the "enabled" flag into a "profile" collection.
+			The user story does not mention anything about enable/disable profile so I'll pass on this one for now
+
+	DONE create firebase project "AIRO". Enabled email authentication. 
+	
+	DONE created firestore collection "userRoles", database region eur3
+		service cloud.firestore {
+		  match /databases/{database}/documents {
+			match /userRoles/{userId} {
+			  allow read: if request.auth != null;
+			}
+		  }
+		}
+		
+	DONE create 3 mock users
+	DONE download firebase project settings. Project settings -> Service accounts -> Generate new private key
+		Gitignored this file :)
+	
+	DONE gateway API, expose /signup endpoint
+		Created docker file and added service to docker compose
+	
+	DONE create Postman collection "AIRO"
+	
+	DONE create users front-end, expose it via docker compose
+	
+	DONE cypress e2e tests
+		ng add @cypress/schematic // https://testing-angular.com/end-to-end-testing/
+			Would you like to add Cypress component testing?  This will add all files needed for Cypress component testing. A: Yes
+	
+	DONE import auth microservice
+	
+	DONE generate AIRO-config-volume
+		docker run --rm -v airo-config-volume:/config -v "/c/Users/Giacomo Righetti/source/repos/AIRO/config:/source" alpine cp /source/airo-44ca7-firebase-adminsdk-etd4u-7107dcb929.json /config/airo-44ca7-firebase-adminsdk-etd4u-7107dcb929.json	
+	
+	DONE triyng to start auth microservice 
+		issue with docker I suspect there is an issue with paths
+		tried placing Program class with static Main still failing -> probably cannot find file
+		tried moving project inside ANYbotics, fixed paths and it worked!
+		
+		trying to inspect the image content I noticed that /src contains lots of unnecessary stuff
+			docker run -it image_name sh
+			
+		FIXED files that should be ignored according to .dockerignore are NOT being ignored		
+			moved .dockerignore where docker-compose.yaml is
+	
+	DONE import front-end project from ANYbotics (login, layout, home page)	
+		Re. Angular Material 
+			Set up global Angular Material typography styles? no
+			Include the Angular animations module? Include and enable animations
+	
+		DONE Need to expose the gateway api url
+	
+	DONE Remove hardcoded url in gateway: 'http://auth-service:8080'
+	
+	DONE connect gateway to auth microservice (I can hit the gateway once the full solution is running user docker compose)
+		added other postman calls
+			
+	DONE At this point I should be able to login
+		
+	DONE: add registration form
+	
+	DONE add entry in "userRoles"
+	
+	DONE TESTING (postman)
+	
+	DONE refactoring: common project for FirebaseExtensions
+		AddFirebaseAndFirestore
+		DONE refactor Dockerfile(s)& also other stuff
+		
+	DONE testing UI (signup, login, refresh token)
+	
+	DONE progress bar when authenticating
+	
+	DONE I should be able to see that I have a free account
+		need to store this info somewhere in the db
+		add UI component, store current user in app 
+		replace user-role with "user" endpoint. Add user role too
+				
+	DONE UI validations (SignUp should be disabled by default)
+		1) Login/Signup disabled unless form is valid
+		2) email + password
+		3) fix styling 100% on each form field, remove at parent component?
+		4) Show errors when login/signup fail
+	
+	DONE unit testing
+		
+	DONE notifications microservice + setup sendgrid	
+	
+	>> add e2e tests
+	
+	- check for cypress component tests
+	
+	- reduce mem footprint of front-end docker image (1.2 GB) https://levioconsulting.com/insights/how-to-dockerize-an-angular-application-with-nginx/

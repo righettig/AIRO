@@ -1,0 +1,13 @@
+{
+  "extends": "../tsconfig.json",
+  
+  // https://github.com/cypress-io/cypress/discussions/27225 -->
+  "include": ["./support/*", "**/*.ts"],
+  "exclude": [],
+  // <--
+
+  "compilerOptions": {
+    "sourceMap": false,
+    "types": ["cypress"]
+  },
+}

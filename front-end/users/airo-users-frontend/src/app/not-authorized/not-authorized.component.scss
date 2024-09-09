@@ -1,0 +1,23 @@
+.not-authorized-container {
+  text-align: center;
+  padding: 50px;
+}
+
+.not-authorized-container h1 {
+  color: #ff4d4d; /* Red color for emphasis */
+}
+
+.not-authorized-container p {
+  font-size: 1.2em;
+  margin-bottom: 20px;
+}
+
+.home-link {
+  text-decoration: none;
+  color: #007bff; /* Blue color for the link */
+  font-size: 1.1em;
+}
+
+.home-link:hover {
+  text-decoration: underline;
+}

@@ -1,0 +1,23 @@
+<div class="container">
+  <form [formGroup]="form" (ngSubmit)="login()">
+    <app-predefined-user-selection [users]="users"
+      (userSelected)="onUserSelected($event)"></app-predefined-user-selection>
+      
+    <app-email-input [email]="email"></app-email-input>
+    <app-password-input [password]="password"></app-password-input>
+
+    <button mat-fab extended type="submit" class="login-btn" [disabled]="form.invalid || loggingIn">
+      Login
+    </button>
+  </form>
+
+  <div class="signup-cta-container">
+    <span>Not a member? </span> <a routerLink="/signup" class="signup-link">Signup now</a>
+  </div>
+
+  <div class="progress-bar-container">
+    <app-progress-bar [loading]="loggingIn"></app-progress-bar>
+  </div>
+
+  @if (error) { <app-error-message>{{error}}</app-error-message> }
+</div>
