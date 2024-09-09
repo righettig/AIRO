@@ -88,4 +88,19 @@ describe('PasswordInputComponent', () => {
         const errorElement = fixture.debugElement.query(By.css('mat-error'));
         expect(errorElement).toBeNull();
     });
+
+    it('should mark password as invalid when password is empty', () => {
+        component.password.setValue('');
+        expect(component.password.invalid).toBeTrue();
+    });
+
+    it('should mark password as invalid when password is not a valid password (less than 6 chars', () => {
+        component.password.setValue('123');
+        expect(component.password.invalid).toBeTrue();
+    });
+
+    it('should mark password as valid when password is a valid password (at least 6 chars)', () => {
+        component.password.setValue('123456');
+        expect(component.password.invalid).toBeFalse();
+    });
 });

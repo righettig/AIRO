@@ -60,19 +60,16 @@ describe('EmailInputComponent', () => {
 
     it('should mark email as invalid when email is empty', () => {
         component.email.setValue('');
-        fixture.detectChanges();
         expect(component.email.invalid).toBeTrue();
     });
 
     it('should mark email as invalid when email is not a valid email', () => {
         component.email.setValue('foo');
-        fixture.detectChanges();
         expect(component.email.invalid).toBeTrue();
     });
 
     it('should mark email as valid when email is a valid email', () => {
         component.email.setValue('valid@mail.com');
-        fixture.detectChanges();
         expect(component.email.invalid).toBeFalse();
     });
 });
