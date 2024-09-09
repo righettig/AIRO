@@ -25,6 +25,7 @@ services:
     depends_on:
       - auth-service
       - profile-service
+      - notifications-service
     build:
       context: ./back-end/gateways/airo-users-gateway-api
     ports:
@@ -93,18 +94,18 @@ services:
       - "5672:5672"    # RabbitMQ default port
       - "15672:15672"  # RabbitMQ management console port
 
-  # cypress:
-  #   image: cypress/included:13.14.2
-  #   depends_on:
-  #     - users-app
-  #   environment:
-  #     # IMPORTANT: the internal post MUST be used here, otherwise cypress cannot find the app. Obviously this should be fixed!
-  #     - CYPRESS_BASE_URL=http://users-app:4200
-  #   working_dir: /e2e
-  #   volumes:
-  #     - ./front-end/users/airo-users-frontend:/e2e # Mount Cypress test folder
-  #   networks:
-  #     - cypress-network
+  cypress:
+    image: cypress/included:13.14.2
+    depends_on:
+      - users-app
+    environment:
+      # IMPORTANT: the internal post MUST be used here, otherwise cypress cannot find the app. Obviously this should be fixed!
+      - CYPRESS_BASE_URL=http://users-app:4200
+    working_dir: /e2e
+    volumes:
+      - ./front-end/users/airo-users-frontend:/e2e # Mount Cypress test folder
+    networks:
+      - cypress-network
 
 volumes:
   airo-config-volume:

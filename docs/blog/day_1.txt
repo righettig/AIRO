@@ -120,7 +120,8 @@ These are the tasks for today:
 		
 	DONE notifications microservice + setup sendgrid	
 	
-	- add e2e tests
+	>> add e2e tests
+	
 	- check for cypress component tests
 	
 	- reduce mem footprint of front-end docker image (1.2 GB) https://levioconsulting.com/insights/how-to-dockerize-an-angular-application-with-nginx/
