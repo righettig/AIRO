@@ -6,7 +6,9 @@ namespace airo_auth_microservice.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class AuthController(IAuthService authService, ILogger<AuthController> logger) : ControllerBase
+public class AuthController(IAuthService authService,
+                            IRabbitMQPublisherService rabbitMQPublisherService,
+                            ILogger<AuthController> logger) : ControllerBase
 {   
     [HttpPost("signup")]
     public async Task<IActionResult> Signup([FromBody] SignupRequest request)
@@ -15,8 +17,10 @@ public class AuthController(IAuthService authService, ILogger<AuthController> lo
 
         if (response is not null)
         {
-            // Post a message "account.created" to a RMQ queue
-            // Notifications microservice -> send confirmation email
+            // Publish an event to RabbitMQ
+            var userData = Newtonsoft.Json.JsonConvert.SerializeObject(new { request.Email });
+            rabbitMQPublisherService.PublishUserCreatedEvent(userData);
+
             return Ok(response);
         }
 

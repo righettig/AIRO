@@ -118,7 +118,12 @@ These are the tasks for today:
 	
 	DONE unit testing
 		
-	- notifications microservice + setup sendgrid	 
+	WIP notifications microservice + setup sendgrid	
+		auth to post to rmq
+		create notifications (nestjs)
+		notifications to react to rmq 
+		notifications to send email
+	
 	- add e2e tests
 	- check for cypress component tests
 	
