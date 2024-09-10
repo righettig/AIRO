@@ -10,4 +10,6 @@ export class SignupDto {
 
     @IsNotEmpty({ message: 'AccountType is required' })
     accountType: string;
+
+    creditCardDetails?: string;
 }

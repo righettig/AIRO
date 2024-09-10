@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Logger, Post, Query, Req } from '@nestjs/common';
+import { Body, Controller, Get, Logger, Post, Req } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
 import { ProfileService } from 'src/profile/profile.service';
 import { LoginDto } from 'src/gateway/models/login.dto';
@@ -6,20 +6,29 @@ import { SignupDto } from 'src/gateway/models/signup.dto';
 import { SignupResponseDto } from './models/signup.response.dto';
 import { LoginResponseDto } from './models/login.response.dto';
 import { jwtDecode } from 'jwt-decode';
+import { BillingService } from 'src/billing/billing.service';
 
 @Controller('gateway')
 export class GatewayController {
-  private logger = new Logger("GatewayController");
+  private readonly logger = new Logger(GatewayController.name);
 
   constructor(
     private readonly authService: AuthService,
     private readonly profileService: ProfileService,
+    private readonly billingService: BillingService,
   ) { }
 
   @Post('signup')
   async signup(@Body() signupDto: SignupDto) {
     this.logger.log(`signup: ${signupDto.email}, ${signupDto.password}`);
     const signupResponse = await this.authService.signup(signupDto.email, signupDto.password);
+
+    if (signupDto.accountType === 'pro') { // <-- define type for accountType
+      const paymentResponse = await this.billingService.processPayment(signupResponse.uid, signupDto.creditCardDetails);
+      if (!paymentResponse.success) {
+        throw new Error('Signup failed: subscription payment failed.');
+      }
+    }
 
     this.logger.log(`createProfile: ${signupResponse.uid}, ${signupDto.accountType}`);
     await this.profileService.createProfile(signupResponse.uid, signupDto.accountType);
@@ -71,7 +80,7 @@ export class GatewayController {
     if (!token) {
       throw new Error('Token is missing');
     }
-  
+
     const uid = this.decodeFromToken<{ user_id?: string }>(token, 'user_id');
     const userResponse = await this.profileService.getProfileByUid(uid);
 

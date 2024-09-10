@@ -53,11 +53,11 @@ describe('SignupComponent', () => {
 
         component.email.setValue('test@example.com');
         component.password.setValue('password123');
-        component.accountType = 'premium';
+        component.accountType = 'free';
 
         await component.signup();
 
-        expect(authService.signup).toHaveBeenCalledWith('test@example.com', 'password123', 'premium');
+        expect(authService.signup).toHaveBeenCalledWith('test@example.com', 'password123', 'free');
         expect(router.navigate).toHaveBeenCalledWith(['/home']);
         expect(component.signingUp).toBeFalse();
     });
@@ -91,13 +91,15 @@ describe('SignupComponent', () => {
 
     it('should disable the signup button when form is invalid', () => {
         component.email.setValue('');
-        component.password.setValue('W');
+        component.password.setValue('');
 
         fixture.detectChanges();
 
         const button = fixture.nativeElement.querySelector('.signup-btn');
         expect(button.disabled).toBeTrue();
     });
+
+    // TODO: form should be invalid when email, password are OK but credit card no is invalid
 
     it('should display progress bar while signing up', () => {
         component.signingUp = true;

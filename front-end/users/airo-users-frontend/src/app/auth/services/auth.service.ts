@@ -6,6 +6,7 @@ import { ConfigService } from '../../common/services/config.service';
 import { User } from '../models/user';
 import { LoginResponse } from '../models/login-response';
 import { SignUpResponse } from '../models/signup-response';
+import { AccountType } from '../components/signup/signup.component';
 
 @Injectable({
   providedIn: 'root',
@@ -45,10 +46,11 @@ export class AuthService {
     return this.authToken;
   }
 
-  async signup(email: string, password: string, accountType: string): Promise<void> {
+  async signup(email: string, password: string, accountType: AccountType, creditCardDetails?: string): Promise<void> {
     try {
       const response = await firstValueFrom(
-        this.http.post<SignUpResponse>(`${this.apiUrl}/signup`, { email, password, accountType })
+        this.http.post<SignUpResponse>(`${this.apiUrl}/signup`, { 
+          email, password, accountType, creditCardDetails })
       );
 
       this._user$.next(response);

@@ -8,6 +8,9 @@ import { ProgressBarComponent } from '../../../common/components/progress-bar/pr
 import { EmailInputComponent } from '../common/email-input.component';
 import { PasswordInputComponent } from '../common/password-input.component';
 import { ErrorMessageComponent } from '../common/error-message';
+import { CreditCardInputComponent } from './credit-card-input.component';
+
+export type AccountType = 'free' | 'pro';
 
 @Component({
   selector: 'app-signup',
@@ -19,7 +22,8 @@ import { ErrorMessageComponent } from '../common/error-message';
     EmailInputComponent,
     PasswordInputComponent,
     ProgressBarComponent,
-    ErrorMessageComponent
+    ErrorMessageComponent,
+    CreditCardInputComponent
   ],
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss']
@@ -31,7 +35,8 @@ export class SignupComponent {
   form: FormGroup;
   email: FormControl;
   password: FormControl;
-  accountType = 'free';
+  creditCard: FormControl;
+  accountType: AccountType = 'free';
 
   error = '';
   signingUp = false;
@@ -39,11 +44,13 @@ export class SignupComponent {
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
       email: '',
-      password: ''
+      password: '',
+      creditCard: '4012 8888 8888 1881',
     });
 
     this.email = this.form.get('email') as FormControl;
     this.password = this.form.get('password') as FormControl;
+    this.creditCard = this.form.get('creditCard') as FormControl;
   }
 
   async signup() {
@@ -53,7 +60,13 @@ export class SignupComponent {
     this.error = '';
 
     try {
-      await this.authService.signup(this.email.value, this.password.value, this.accountType);
+      await this.authService.signup(
+        this.email.value, 
+        this.password.value, 
+        this.accountType, 
+        this.accountType === 'pro' ? this.creditCard.value : null
+      );
+
       this.router.navigate(['/home']);
     }
     catch (error) {

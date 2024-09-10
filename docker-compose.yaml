@@ -26,6 +26,7 @@ services:
       - auth-service
       - profile-service
       - notifications-service
+      - billing-service
     build:
       context: ./back-end/gateways/airo-users-gateway-api
     ports:
@@ -33,6 +34,7 @@ services:
     environment:
       - AUTH_API_URL=${AUTH_API_URL}
       - PROFILE_API_URL=${PROFILE_API_URL}
+      - BILLING_API_URL=${BILLING_API_URL}
     develop:
       context: ./back-end/gateways/airo-users-gateway-api
       watch:
@@ -77,6 +79,26 @@ services:
     volumes:
       - airo-config-volume:/app/config
   
+  billing-service:
+    build:
+      context: ./back-end/microservices/airo-billing-microservice
+    environment:
+      - RABBITMQ_URL=${RABBITMQ_URL}
+    ports:
+      - "4003:3000"
+    depends_on:
+      - rabbitmq
+
+  invoicing-service:
+    build:
+      context: ./back-end/microservices/airo-invoicing-microservice
+    environment:
+      - MONGO_URL=${INVOICE_MONGO_DB_URL}
+      - RABBITMQ_URL=${RABBITMQ_URL}
+    depends_on:
+      - mongodb
+      - rabbitmq
+
   notifications-service:
     build:
       context: ./back-end/microservices/airo-notifications-microservice
@@ -94,22 +116,30 @@ services:
       - "5672:5672"    # RabbitMQ default port
       - "15672:15672"  # RabbitMQ management console port
 
-  cypress:
-    image: cypress/included:13.14.2
-    depends_on:
-      - users-app
-    environment:
-      # IMPORTANT: the internal post MUST be used here, otherwise cypress cannot find the app. Obviously this should be fixed!
-      - CYPRESS_BASE_URL=http://users-app:4200
-    working_dir: /e2e
+  mongodb:
+    image: mongo:6.0
+    ports:
+      - '27017:27017'
     volumes:
-      - ./front-end/users/airo-users-frontend:/e2e # Mount Cypress test folder
-    networks:
-      - cypress-network
+      - mongo_data:/data/db
+
+  # cypress:
+  #   image: cypress/included:13.14.2
+  #   depends_on:
+  #     - users-app
+  #   environment:
+  #     # IMPORTANT: the internal post MUST be used here, otherwise cypress cannot find the app. Obviously this should be fixed!
+  #     - CYPRESS_BASE_URL=http://users-app:4200
+  #   working_dir: /e2e
+  #   volumes:
+  #     - ./front-end/users/airo-users-frontend:/e2e # Mount Cypress test folder
+  #   networks:
+  #     - cypress-network
 
 volumes:
   airo-config-volume:
-    external: true
+    external: true 
+  mongo_data:
 
 networks:
   cypress-network:
