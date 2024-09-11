@@ -20,7 +20,7 @@ export class GatewayController {
 
   @Post('signup')
   async signup(@Body() signupDto: SignupDto) {
-    this.logger.log(`signup: ${signupDto.email}, ${signupDto.password}`);
+    this.logger.log(`signup: ${JSON.stringify(signupDto)}`);
     const signupResponse = await this.authService.signup(signupDto.email, signupDto.password);
 
     if (signupDto.accountType === 'pro') { // <-- define type for accountType

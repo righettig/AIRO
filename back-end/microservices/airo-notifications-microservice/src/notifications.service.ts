@@ -16,7 +16,7 @@ export class NotificationsService {
         queue: 'notifications-queue',
     })
     public async userCreated(email: string) {
-        this.logger.log(`user.created: ${email}`);
+        this.logger.log(`user.created: ${JSON.stringify(email)}`);
 
         await this.emailService.sendEmail(
             email,

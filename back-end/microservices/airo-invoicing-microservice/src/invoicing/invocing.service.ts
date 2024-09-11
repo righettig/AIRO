@@ -1,5 +1,6 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { AmqpConnection, RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
+import { InvoiceRepository } from "./invoice.repository";
 
 export type PaymentSuccessfulMessage = { uid: string, creditCardDetails: string, amount: number };
 export type InvoiceCreatedMessage = { uid: string, creditCardDetails: string, amount: number, invoiceId: string, email: string }
@@ -8,7 +9,10 @@ export type InvoiceCreatedMessage = { uid: string, creditCardDetails: string, am
 export class InvoiceService {
     private readonly logger = new Logger(InvoiceService.name);
 
-    constructor(private readonly amqpConnection: AmqpConnection) { }
+    constructor(
+        private readonly invoiceRepository: InvoiceRepository,
+        private readonly amqpConnection: AmqpConnection
+    ) { }
 
     @RabbitSubscribe({
         exchange: 'billing-exchange',
@@ -18,7 +22,8 @@ export class InvoiceService {
     public async createInvoice(data: PaymentSuccessfulMessage) { // TODO: ideally I should keep message types centralised
         this.logger.log(`payment.successful: ${JSON.stringify(data)}`);
 
-        const invoiceId = "invoice-123-456";
+        const invoiceId = 
+            await this.invoiceRepository.createInvoice(data.uid, data.amount);
 
         const payload: InvoiceCreatedMessage = {
             ...data,
