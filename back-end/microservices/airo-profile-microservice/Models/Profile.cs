@@ -16,6 +16,9 @@ public class Profile
     
     [FirestoreProperty("accountType")]
     public string AccountType { get; set; }
-    
+
+    [FirestoreProperty("email")]
+    public string Email { get; set; }
+
     public Profile() { }
 }

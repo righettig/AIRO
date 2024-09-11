@@ -93,9 +93,11 @@ services:
     build:
       context: ./back-end/microservices/airo-invoicing-microservice
     environment:
+      - PROFILE_API_URL=${PROFILE_API_URL}
       - MONGO_URL=${INVOICE_MONGO_DB_URL}
       - RABBITMQ_URL=${RABBITMQ_URL}
     depends_on:
+      - profile-service
       - mongodb
       - rabbitmq
 

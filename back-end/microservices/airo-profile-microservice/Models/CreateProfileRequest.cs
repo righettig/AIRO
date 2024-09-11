@@ -1,3 +1,3 @@
 ﻿namespace airo_profile_microservice.Models;
 
-public record CreateProfileRequest(string Uid, string AccountType, string? CreditCardDetails);
+public record CreateProfileRequest(string Uid, string AccountType, string Email, string? CreditCardDetails);

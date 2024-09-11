@@ -30,8 +30,8 @@ export class GatewayController {
       }
     }
 
-    this.logger.log(`createProfile: ${signupResponse.uid}, ${signupDto.accountType}`);
-    await this.profileService.createProfile(signupResponse.uid, signupDto.accountType);
+    this.logger.log(`createProfile: ${signupResponse.uid}, ${signupDto.email}, ${signupDto.accountType}`);
+    await this.profileService.createProfile(signupResponse.uid, signupDto.accountType, signupDto.email);
 
     const response: SignupResponseDto = {
       uid: signupResponse.uid,

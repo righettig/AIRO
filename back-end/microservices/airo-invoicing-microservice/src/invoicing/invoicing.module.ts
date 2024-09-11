@@ -5,10 +5,11 @@ import { InvoiceController } from './invoice.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Invoice, InvoiceSchema } from './models/invoice.persistence';
 import { InvoiceRepository } from './invoice.repository';
+import { ProfileModule } from 'src/profile/profile.module';
 
 @Module({
   imports: [
-    InvoicingModule,
+    ProfileModule,
     MongooseModule.forFeature([{ name: Invoice.name, schema: InvoiceSchema }]),
     RabbitMQModule.forRoot(RabbitMQModule, {
       exchanges: [

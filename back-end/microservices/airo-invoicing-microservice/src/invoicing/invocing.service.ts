@@ -1,6 +1,7 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { AmqpConnection, RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
 import { InvoiceRepository } from "./invoice.repository";
+import { ProfileService } from "src/profile/profile.service";
 
 export type PaymentSuccessfulMessage = { uid: string, creditCardDetails: string, amount: number };
 export type InvoiceCreatedMessage = { uid: string, creditCardDetails: string, amount: number, invoiceId: string, email: string }
@@ -10,6 +11,7 @@ export class InvoiceService {
     private readonly logger = new Logger(InvoiceService.name);
 
     constructor(
+        private readonly profileService: ProfileService,
         private readonly invoiceRepository: InvoiceRepository,
         private readonly amqpConnection: AmqpConnection
     ) { }
@@ -25,10 +27,13 @@ export class InvoiceService {
         const invoiceId = 
             await this.invoiceRepository.createInvoice(data.uid, data.amount);
 
+        const email = 
+            await this.profileService.getUserMailByUid(data.uid);
+
         const payload: InvoiceCreatedMessage = {
             ...data,
             invoiceId,
-            email: 'kirkrulez83@gmail.com' // TODO: where do I get the email from?
+            email
         };
 
         this.amqpConnection.publish(
