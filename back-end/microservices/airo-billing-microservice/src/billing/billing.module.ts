@@ -1,22 +1,24 @@
 import { Module } from '@nestjs/common';
 import { BillingController } from './billing.controller';
 import { PaymentModule } from 'src/payment/payment.module';
-import { ClientsModule, Transport } from '@nestjs/microservices';
+import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
+import { BillingService } from './billing.service';
 
 @Module({
   imports: [
-    ClientsModule.register([
-      {
-        name: 'invoiceService',
-        transport: Transport.RMQ,
-        options: {       
-          urls: ['amqp://rabbitmq:5672'],
-          queue: 'payment.successful',
+    RabbitMQModule.forRoot(RabbitMQModule, {
+      exchanges: [
+        {
+          name: 'billing-exchange',
+          type: 'fanout',
         },
-      },
-    ]),
+      ],
+      uri: process.env.RABBITMQ_URL,
+      connectionInitOptions: { wait: false },
+    }),
     PaymentModule
   ],
-  controllers: [BillingController]
+  controllers: [BillingController],
+  providers: [BillingService],
 })
 export class BillingModule { }

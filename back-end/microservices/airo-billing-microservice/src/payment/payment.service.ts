@@ -19,9 +19,9 @@ export class PaymentService {
         return success;
     }
 
-    @Cron(CronExpression.EVERY_30_SECONDS)
+    @Cron(CronExpression.EVERY_MINUTE)
     getAccountsDueForBilling() {
-        this.logger.debug('Called every 30 seconds');
+        this.logger.debug('Checking for accounts due for billing');
 
         // get all (uid, creditCardDetails) WHERE (TODAY - lastPaymentDate) > MONTH
         // foreach result queue "process.payment" (uid, creditCardDetails)

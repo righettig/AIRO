@@ -3,7 +3,5 @@ import { InvoicingModule } from './invoicing/invoicing.module';
 
 @Module({
   imports: [InvoicingModule],
-  controllers: [],
-  providers: [],
 })
-export class AppModule {}
+export class AppModule { }

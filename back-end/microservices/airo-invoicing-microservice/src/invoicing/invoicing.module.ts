@@ -1,22 +1,27 @@
 import { Module } from '@nestjs/common';
-import { InvoiceController } from './invoice.controller';
+import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
 import { InvoiceService } from './invocing.service';
-import { ClientsModule, Transport } from '@nestjs/microservices';
+import { InvoiceController } from './invoice.controller';
 
 @Module({
-    imports: [
-        ClientsModule.register([
-            {
-                name: 'notificationService',
-                transport: Transport.RMQ,
-                options: {
-                    urls: [process.env.RABBITMQ_URL],
-                    queue: 'invoice.created',
-                },
-            },
-        ])
-    ],
-    providers: [InvoiceService],
-    controllers: [InvoiceController]
+  imports: [
+    InvoicingModule,
+    RabbitMQModule.forRoot(RabbitMQModule, {
+      exchanges: [
+        {
+          name: 'invoice-exchange',
+          type: 'direct',
+        },
+        {
+          name: 'billing-exchange',
+          type: 'fanout',
+        },
+      ],
+      uri: process.env.RABBITMQ_URL,
+      connectionInitOptions: { wait: false },
+    }),
+  ],
+  providers: [InvoiceService],
+  controllers: [InvoiceController]
 })
-export class InvoicingModule { }
+export class InvoicingModule {}

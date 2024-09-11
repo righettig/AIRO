@@ -1,7 +1,9 @@
-import { Body, Controller, Inject, Logger, Post } from '@nestjs/common';
+import { Body, Controller, Logger, Post } from '@nestjs/common';
 import { PaymentDto } from './models/payment.dto';
 import { PaymentService } from 'src/payment/payment.service';
-import { ClientProxy, EventPattern } from '@nestjs/microservices';
+import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
+
+export type PaymentSuccessfulMessage = PaymentDto & { amount: number };
 
 type BillingPaymentResponse = { success: boolean };
 
@@ -11,34 +13,33 @@ export class BillingController {
 
   constructor(
     private readonly paymentService: PaymentService,
-    @Inject('invoiceService') private invoiceService: ClientProxy,
+    private readonly amqpConnection: AmqpConnection
   ) { }
 
   @Post()
   async processPayment(@Body() paymentDto: PaymentDto): Promise<BillingPaymentResponse> {
+    this.logger.log(`Received request for processPayment: ${JSON.stringify(paymentDto)}`);
+
     try {
       const success = await this.paymentService.process(paymentDto.creditCardDetails);
+      
       if (!success) return { success: false };
 
-      const pattern = 'payment.successful';
-      const payload = {
+      const payload: PaymentSuccessfulMessage = {
         ...paymentDto,
-        amount: 100
+        amount: 100,
       };
 
-      this.invoiceService.emit(pattern, payload);
+      this.amqpConnection.publish(
+        'billing-exchange', 
+        'payment.successful',
+        payload
+      );
     }
     catch {
       return { success: false }
     }
 
     return { success: true }
-  }
-
-  @EventPattern('payment.successful')
-  async handlePaymentSuccessful(data: { uid: string, amount: number }) {
-    // use PaymentService, in-memory-repository
-    this.logger.log(
-      'handlePaymentSuccessful: create record in payments: <uid, amount, lastPaymentDate = now>', data);
   }
 }
