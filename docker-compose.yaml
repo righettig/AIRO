@@ -81,10 +81,12 @@ services:
     build:
       context: ./back-end/microservices/airo-billing-microservice
     environment:
+      - MONGO_URL=${BILLING_MONGO_DB_URL}
       - RABBITMQ_URL=${RABBITMQ_URL}
     ports:
       - "4003:3000"
     depends_on:
+      - mongodb
       - rabbitmq
 
   invoicing-service:
@@ -121,16 +123,17 @@ services:
     volumes:
       - mongo_data:/data/db
 
-  cypress:
-    image: cypress/included:13.14.2
-    depends_on:
-      - users-app
-    environment:
-      # IMPORTANT: the internal post MUST be used here, otherwise cypress cannot find the app. Obviously this should be fixed!
-      - CYPRESS_BASE_URL=http://users-app:4200
-    working_dir: /e2e
-    volumes:
-      - ./front-end/users/airo-users-frontend:/e2e # Mount Cypress test folder
+  # When uncommenting to run e2e tests please update .env file with correct USERS_GATEWAY_API_URL for e2e
+  # cypress:
+  #   image: cypress/included:13.14.2
+  #   depends_on:
+  #     - users-app
+  #   environment:
+  #     # IMPORTANT: the internal post MUST be used here, otherwise cypress cannot find the app. Obviously this should be fixed!
+  #     - CYPRESS_BASE_URL=http://users-app:4200
+  #   working_dir: /e2e
+  #   volumes:
+  #     - ./front-end/users/airo-users-frontend:/e2e # Mount Cypress test folder
 
 volumes:
   airo-config-volume:
