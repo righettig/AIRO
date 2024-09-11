@@ -8,8 +8,6 @@ services:
       - "5000:4200"
     environment:
       - USERS_GATEWAY_API_URL=${USERS_GATEWAY_API_URL}
-    networks:
-      - cypress-network
     develop:
       context: ./front-end/users/airo-users-frontend
       watch:
@@ -123,24 +121,18 @@ services:
     volumes:
       - mongo_data:/data/db
 
-  # cypress:
-  #   image: cypress/included:13.14.2
-  #   depends_on:
-  #     - users-app
-  #   environment:
-  #     # IMPORTANT: the internal post MUST be used here, otherwise cypress cannot find the app. Obviously this should be fixed!
-  #     - CYPRESS_BASE_URL=http://users-app:4200
-  #   working_dir: /e2e
-  #   volumes:
-  #     - ./front-end/users/airo-users-frontend:/e2e # Mount Cypress test folder
-  #   networks:
-  #     - cypress-network
+  cypress:
+    image: cypress/included:13.14.2
+    depends_on:
+      - users-app
+    environment:
+      # IMPORTANT: the internal post MUST be used here, otherwise cypress cannot find the app. Obviously this should be fixed!
+      - CYPRESS_BASE_URL=http://users-app:4200
+    working_dir: /e2e
+    volumes:
+      - ./front-end/users/airo-users-frontend:/e2e # Mount Cypress test folder
 
 volumes:
   airo-config-volume:
     external: true 
   mongo_data:
-
-networks:
-  cypress-network:
-    driver: bridge
