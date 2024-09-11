@@ -1,6 +1,7 @@
 import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
 import { Injectable, Logger } from '@nestjs/common';
 import { EmailService } from './email/email.service';
+import { ConsumeMessage } from 'amqplib';
 
 export type InvoiceCreatedMessage = { uid: string, creditCardDetails: string, amount: number, invoiceId: string, email: string }
 
@@ -13,9 +14,14 @@ export class NotificationsService {
     @RabbitSubscribe({
         exchange: 'auth-exchange',
         routingKey: 'user.created',
-        queue: 'notifications-queue',
+
+        // Ideally I'd like to have the same 'notifications-queue' across handlers but it seems like this causes confusion
+        // when routing messages. In fact there was a time when a 'user.created' message was routed to the other handler and
+        // vice-versa
+        queue: 'user-created-notifications-queue',
     })
-    public async userCreated(email: string) {
+    public async userCreated(email: string, amqpMsg: ConsumeMessage) {
+        console.log(`Correlation id: ${JSON.stringify(amqpMsg)}`);
         this.logger.log(`user.created: ${JSON.stringify(email)}`);
 
         await this.emailService.sendEmail(
@@ -29,9 +35,10 @@ export class NotificationsService {
     @RabbitSubscribe({
         exchange: 'invoice-exchange',
         routingKey: 'invoice.created',
-        queue: 'notifications-queue',
+        queue: 'invoice-created-notifications-queue',
     })
-    public async invoiceCreated(data: InvoiceCreatedMessage) { // TODO: ideally I should keep message types centralised
+    public async invoiceCreated(data: InvoiceCreatedMessage, amqpMsg: ConsumeMessage) { // TODO: ideally I should keep message types centralised
+        console.log(`Correlation id: ${JSON.stringify(amqpMsg)}`);
         this.logger.log(`invoice.created: ${JSON.stringify(data)}`);
 
         await this.emailService.sendEmail(
