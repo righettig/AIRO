@@ -7,6 +7,8 @@ import { SignupResponseDto } from './models/signup.response.dto';
 import { LoginResponseDto } from './models/login.response.dto';
 import { jwtDecode } from 'jwt-decode';
 import { BillingService } from 'src/billing/billing.service';
+import { InvoiceService } from 'src/invoice/invoice.service';
+import { InvoiceDto } from 'src/invoice/models/invoice.dto';
 
 @Controller('gateway')
 export class GatewayController {
@@ -16,6 +18,7 @@ export class GatewayController {
     private readonly authService: AuthService,
     private readonly profileService: ProfileService,
     private readonly billingService: BillingService,
+    private readonly invoiceService: InvoiceService,
   ) { }
 
   @Post('signup')
@@ -91,6 +94,19 @@ export class GatewayController {
       ...userResponse,
       ...userRoleResponse
     };
+  }
+
+  @Get('invoices')
+  async getAllInvoices(@Req() request: Request): Promise<InvoiceDto[]> {
+    const token = request.headers['authorization'];
+    if (!token) {
+      throw new Error('Token is missing');
+    }
+
+    const uid = this.decodeFromToken<{ user_id?: string }>(token, 'user_id');
+    const invoicesResponse = await this.invoiceService.getAllInvoicesByUid(uid);
+
+    return invoicesResponse;
   }
 
   private decodeFromToken<T>(token: string, property: keyof T): T[keyof T] | null {

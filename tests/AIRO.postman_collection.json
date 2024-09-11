@@ -132,6 +132,32 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "gateway - invoices",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjAyMTAwNzE2ZmRkOTA0ZTViNGQ0OTExNmZmNWRiZGZjOTg5OTk0MDEiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWlyby00NGNhNyIsImF1ZCI6ImFpcm8tNDRjYTciLCJhdXRoX3RpbWUiOjE3MjYwODA5MTAsInVzZXJfaWQiOiJlWHhhZjJveTBYYlZLb05Bd3pCN3hXaFh6N0EzIiwic3ViIjoiZVh4YWYyb3kwWGJWS29OQXd6Qjd4V2hYejdBMyIsImlhdCI6MTcyNjA4MDkxMCwiZXhwIjoxNzI2MDg0NTEwLCJlbWFpbCI6InFxcTFAbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsicXFxMUBtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.iYUihXr-RZw9y0p4t0V0bfmj4ZhRoczms4B3G-ZJNPsBa6sFa9J5XnpZYxmUT8MH4LTwsxsPgFJWJiTmst_5JsRgWXeIPQAXbMUPS8gcRM7-1rnG578E0AzZdbcl81gtoZIAqDXZn8oK17nHlEtFFzvPDEbVnOTYVWdzSq9TNDoNzJxWTBswAKM8WEIxXohNyge_csPQDvVKTkXf3Vz8FyL7vRBJ0OEEiilKx-F6jc1cPnCWxlbpOFBfmL9Q-155ZTu9mkJEhuHQu5EDjs2gLLNmY1OJqoOCVMSK9ljpOf9JpQSEM3AlxMZEhuV3p3EUIVCOyh1IZyynySP21ccvTA",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/gateway/invoices",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"gateway",
+								"invoices"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -321,6 +347,37 @@
 								{
 									"key": "uid",
 									"value": "9HofO6GWYrOxfE6QAd8ztPJu43j1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Invoice",
+			"item": [
+				{
+					"name": "Invoice - get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4003/api/invoices?uid=eXxaf2oy0XbVKoNAwzB7xWhXz7A3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4003",
+							"path": [
+								"api",
+								"invoices"
+							],
+							"query": [
+								{
+									"key": "uid",
+									"value": "eXxaf2oy0XbVKoNAwzB7xWhXz7A3"
 								}
 							]
 						}

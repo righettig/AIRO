@@ -18,7 +18,7 @@ export class InvoiceRepository {
     return invoice._id.toString();
   }
 
-  async getAllInvoices(): Promise<Invoice[]> {
-    return this.invoiceModel.find().exec();
+  async getAllInvoices(uid: string): Promise<Invoice[]> {
+    return this.invoiceModel.find({ uid }).sort({ createdAt: -1 }).exec();
   }
 }

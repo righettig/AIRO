@@ -1,0 +1,14 @@
+@if (invoices) {
+    @for (invoice of invoices; track invoice) {
+        <div>
+            <div>
+                <span>Invoice Date</span>
+                <div>{{invoice.createdAt}}</div>
+            </div>
+            <div>
+                <span>Amount</span>
+                <div>{{invoice.amount}}</div>
+            </div>
+        </div>
+    }
+}
