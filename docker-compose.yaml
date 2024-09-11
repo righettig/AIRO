@@ -1,7 +1,7 @@
 services:
   users-app:
     depends_on:
-      - airo-users-gateway-api
+      - users-gateway-api
     build:
       context: ./front-end/users/airo-users-frontend
     ports:
@@ -19,7 +19,7 @@ services:
         - action: rebuild
           path: ./front-end/users/airo-users-frontend/package.json
 
-  airo-users-gateway-api:
+  users-gateway-api:
     depends_on:
       - auth-service
       - profile-service
