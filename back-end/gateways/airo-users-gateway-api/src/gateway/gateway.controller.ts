@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Logger, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, Logger, Patch, Post, Put, Req } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
 import { ProfileService } from 'src/profile/profile.service';
 import { LoginDto } from 'src/gateway/models/login.dto';
@@ -9,6 +9,7 @@ import { jwtDecode } from 'jwt-decode';
 import { BillingService } from 'src/billing/billing.service';
 import { InvoiceService } from 'src/invoice/invoice.service';
 import { InvoiceDto } from 'src/invoice/models/invoice.dto';
+import { UpdateProfileDto } from 'src/profile/models/update-profile-dto';
 
 @Controller('gateway')
 export class GatewayController {
@@ -94,6 +95,19 @@ export class GatewayController {
       ...userResponse,
       ...userRoleResponse
     };
+  }
+
+  @Patch('user')
+  async updateProfile(@Req() request: Request, @Body() updateProfileDto: UpdateProfileDto) {
+    const token = request.headers['authorization'];
+    if (!token) {
+      throw new Error('Token is missing');
+    }
+
+    const uid = this.decodeFromToken<{ user_id?: string }>(token, 'user_id');
+    const userResponse = await this.profileService.updateProfileByUid(uid, updateProfileDto.firstName, updateProfileDto.lastName);
+
+    return userResponse;
   }
 
   @Get('invoices')

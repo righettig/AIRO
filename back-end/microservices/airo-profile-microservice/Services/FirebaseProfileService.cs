@@ -29,6 +29,19 @@ public class FirebaseProfileService : IProfileService
         await docRef.SetAsync(data);
     }
 
+    public async Task UpdateProfile(string uid, string firstName, string lastName)
+    {
+        var docRef = _firestoreDb.Collection("profiles").Document(uid);
+
+        var updates = new Dictionary<string, object>
+        {
+            { "firstName", firstName },
+            { "lastName", lastName }
+        };
+
+        await docRef.UpdateAsync(updates);
+    }
+
     public async Task<Profile?> GetByUid(string uid)
     {
         var docRef = _firestoreDb.Collection("profiles").Document(uid);

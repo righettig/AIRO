@@ -5,5 +5,6 @@ namespace airo_profile_microservice.Services;
 public interface IProfileService
 {
     Task CreateProfile(string uid, string accountType, string emaill, string? creditCardDetails);
+    Task UpdateProfile(string uid, string firstName, string lastName);
     Task<Profile?> GetByUid(string uid);
 }

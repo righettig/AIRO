@@ -2,12 +2,36 @@
     <div>
         <h3>General</h3>
     </div>
+
     <div>
-        <div>
-            <span>First Name</span> <span>John</span>
-        </div>
-        <div>
-            <span>Last Name</span> <span>Doe</span>
-        </div>
+        <form [formGroup]="form" (ngSubmit)="updateProfile()">
+            <mat-form-field appearance="outline">
+                <mat-label>First name</mat-label>
+                <input matInput placeholder="Enter your first name" formControlName="firstName" name="firstName" required />
+                @if (firstName.invalid && firstName.touched) {
+                <mat-error>
+                    @if (firstName.errors?.['required']) { <span>First name is required</span> }
+                </mat-error>
+                }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Last name</mat-label>
+                <input matInput placeholder="Enter your last name" formControlName="lastName" name="lastName" required />
+                @if (lastName.invalid && lastName.touched) {
+                <mat-error>
+                    @if (lastName.errors?.['required']) { <span>Last name is required</span> }
+                </mat-error>
+                }
+            </mat-form-field>
+
+            <button mat-fab extended type="submit" class="login-btn" [disabled]="form.invalid || saving">
+                Save
+            </button>
+        </form>
+    </div>
+
+    <div class="progress-bar-container">
+        <app-progress-bar [loading]="saving"></app-progress-bar>
     </div>
 </div>
