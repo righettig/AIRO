@@ -15,7 +15,7 @@ export class AuthService {
 
     async signup(email: string, password: string): Promise<AuthSignupResponse> {
         const signupResponse = await firstValueFrom(
-            this.httpService.post(`${this.authServiceUrl}/api/auth/signup`, {
+            this.httpService.post<AuthSignupResponse>(`${this.authServiceUrl}/api/auth/signup`, {
                 email,
                 password
             }),

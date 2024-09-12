@@ -12,7 +12,7 @@ public class FirebaseProfileService : IProfileService
         _firestoreDb = firestoreDb;
     }
 
-    public async Task CreateProfile(string uid, string accountType, string? creditCardDetails)
+    public async Task CreateProfile(string uid, string accountType, string email, string? creditCardDetails)
     {
         var docRef = _firestoreDb.Collection("profiles").Document(uid);
 
@@ -22,6 +22,7 @@ public class FirebaseProfileService : IProfileService
             { "firstName", "" },
             { "lastName", "" },
             { "accountType", accountType },
+            { "email", email },
             { "creditCardDetails", creditCardDetails },
         };
 

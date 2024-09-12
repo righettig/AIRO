@@ -11,7 +11,7 @@ public class ProfileController(IProfileService profileService, ILogger<ProfileCo
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateProfileRequest request)
     {
-        await profileService.CreateProfile(request.Uid, request.AccountType, request.CreditCardDetails);
+        await profileService.CreateProfile(request.Uid, request.AccountType, request.Email, request.CreditCardDetails);
 
         return Ok();
     }

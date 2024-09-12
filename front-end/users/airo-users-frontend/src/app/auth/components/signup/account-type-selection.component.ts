@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
+import { AccountType } from './signup.component';
 
 @Component({
   selector: 'app-account-type-selection',
@@ -19,6 +20,6 @@ import { FormsModule } from '@angular/forms';
   `
 })
 export class AccountTypeSelectionComponent {
-  @Input() accountType = 'free';
-  @Output() accountTypeChange = new EventEmitter<string>();
+  @Input() accountType: AccountType = 'free';
+  @Output() accountTypeChange = new EventEmitter<AccountType>();
 }

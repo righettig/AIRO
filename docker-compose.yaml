@@ -1,15 +1,13 @@
 services:
   users-app:
     depends_on:
-      - airo-users-gateway-api
+      - users-gateway-api
     build:
       context: ./front-end/users/airo-users-frontend
     ports:
       - "5000:4200"
     environment:
       - USERS_GATEWAY_API_URL=${USERS_GATEWAY_API_URL}
-    networks:
-      - cypress-network
     develop:
       context: ./front-end/users/airo-users-frontend
       watch:
@@ -21,11 +19,12 @@ services:
         - action: rebuild
           path: ./front-end/users/airo-users-frontend/package.json
 
-  airo-users-gateway-api:
+  users-gateway-api:
     depends_on:
       - auth-service
       - profile-service
       - notifications-service
+      - billing-service
     build:
       context: ./back-end/gateways/airo-users-gateway-api
     ports:
@@ -33,10 +32,12 @@ services:
     environment:
       - AUTH_API_URL=${AUTH_API_URL}
       - PROFILE_API_URL=${PROFILE_API_URL}
+      - BILLING_API_URL=${BILLING_API_URL}
+      - INVOICE_API_URL=${INVOICE_API_URL}
     develop:
       context: ./back-end/gateways/airo-users-gateway-api
       watch:
-        - action: sync+restart
+        - action: rebuild
           path: ./back-end/gateways/airo-users-gateway-api
           target: /app
           ignore:
@@ -77,6 +78,52 @@ services:
     volumes:
       - airo-config-volume:/app/config
   
+  billing-service:
+    build:
+      context: ./back-end/microservices/airo-billing-microservice
+    environment:
+      - MONGO_URL=${BILLING_MONGO_DB_URL}
+      - RABBITMQ_URL=${RABBITMQ_URL}
+    ports:
+      - "4002:3000"
+    depends_on:
+      - mongodb
+      - rabbitmq
+    develop:
+      context: ./back-end/microservices/airo-billing-microservice
+      watch:
+        - action: rebuild
+          path: ./back-end/microservices/airo-billing-microservice
+          target: /app
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: ./back-end/microservices/airo-billing-microservice/package.json
+
+  invoicing-service:
+    build:
+      context: ./back-end/microservices/airo-invoicing-microservice
+    environment:
+      - PROFILE_API_URL=${PROFILE_API_URL}
+      - MONGO_URL=${INVOICE_MONGO_DB_URL}
+      - RABBITMQ_URL=${RABBITMQ_URL}
+    ports:
+      - "4003:3000"
+    depends_on:
+      - profile-service
+      - mongodb
+      - rabbitmq
+    develop:
+      context: ./back-end/microservices/airo-invoicing-microservice
+      watch:
+        - action: rebuild
+          path: ./back-end/microservices/airo-invoicing-microservice
+          target: /app
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: ./back-end/microservices/airo-invoicing-microservice/package.json
+
   notifications-service:
     build:
       context: ./back-end/microservices/airo-notifications-microservice
@@ -84,8 +131,20 @@ services:
       - SENDGRID_API_KEY=${SENDGRID_API_KEY}
       - SENDGRID_FROM_EMAIL=${SENDGRID_FROM_EMAIL}
       - RABBITMQ_URL=${RABBITMQ_URL}
+    ports:
+      - "4004:3000"
     depends_on:
       - rabbitmq
+    develop:
+      context: ./back-end/microservices/airo-notifications-microservice
+      watch:
+        - action: rebuild
+          path: ./back-end/microservices/airo-notifications-microservice
+          target: /app
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: ./back-end/microservices/airo-notifications-microservice/package.json
 
   rabbitmq:
     image: "rabbitmq:3-management"
@@ -94,23 +153,26 @@ services:
       - "5672:5672"    # RabbitMQ default port
       - "15672:15672"  # RabbitMQ management console port
 
-  cypress:
-    image: cypress/included:13.14.2
-    depends_on:
-      - users-app
-    environment:
-      # IMPORTANT: the internal post MUST be used here, otherwise cypress cannot find the app. Obviously this should be fixed!
-      - CYPRESS_BASE_URL=http://users-app:4200
-    working_dir: /e2e
+  mongodb:
+    image: mongo:6.0
+    ports:
+      - '27017:27017'
     volumes:
-      - ./front-end/users/airo-users-frontend:/e2e # Mount Cypress test folder
-    networks:
-      - cypress-network
+      - mongo_data:/data/db
+
+  # When uncommenting to run e2e tests please update .env file with correct USERS_GATEWAY_API_URL for e2e
+  # cypress:
+  #   image: cypress/included:13.14.2
+  #   depends_on:
+  #     - users-app
+  #   environment:
+  #     # IMPORTANT: the internal post MUST be used here, otherwise cypress cannot find the app. Obviously this should be fixed!
+  #     - CYPRESS_BASE_URL=http://users-app:4200
+  #   working_dir: /e2e
+  #   volumes:
+  #     - ./front-end/users/airo-users-frontend:/e2e # Mount Cypress test folder
 
 volumes:
   airo-config-volume:
-    external: true
-
-networks:
-  cypress-network:
-    driver: bridge
+    external: true 
+  mongo_data:

@@ -27,7 +27,7 @@ var corsAllowedOrigins = builder.Configuration["CORS_ALLOWED_ORIGINS"]?.Split(',
 builder.Services.AddCors(corsAllowedOrigins);
 
 var rabbitMqUrl = builder.Configuration["RABBITMQ_URL"];
-builder.Services.AddSingleton<IRabbitMQPublisherService>(sp => new RabbitMQPublisherService(rabbitMqUrl, "user.created"));
+builder.Services.AddSingleton<IRabbitMQPublisherService>(sp => new RabbitMQPublisherService(rabbitMqUrl));
 
 var app = builder.Build();
 

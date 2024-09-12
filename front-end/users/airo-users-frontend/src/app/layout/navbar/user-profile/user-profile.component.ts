@@ -27,6 +27,10 @@ export class UserProfileComponent {
 
   constructor(private authService: AuthService) { }
 
+  onProfile() {
+    this.router.navigate(['/profile']);
+  }
+
   onLogout() {
     this.authService.logout().then(() => {
       this.router.navigate(['/login']);

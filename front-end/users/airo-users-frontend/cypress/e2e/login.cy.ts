@@ -1,7 +1,10 @@
 describe('Login Page', () => {
   beforeEach(() => {
-    // Visit the login page
     cy.visit('/login');
+
+    cy.intercept('*', (req) => {
+      console.log(req);
+    });
   });
 
   it('should display the login form and all required elements', () => {

@@ -15,11 +15,12 @@ export class ProfileService {
 
     constructor(private readonly httpService: HttpService) { }
 
-    async createProfile(uid: string, accountType: string, creditCardDetails?: string): Promise<void> {
+    async createProfile(uid: string, accountType: string, email: string, creditCardDetails?: string): Promise<void> {
         await firstValueFrom(
             this.httpService.post(`${this.profileServiceUrl}/api/profile`, {
                 uid,
                 accountType,
+                email,
                 creditCardDetails,
             }),
         );

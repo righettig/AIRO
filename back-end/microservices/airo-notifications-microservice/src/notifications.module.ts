@@ -1,10 +1,25 @@
 import { Module } from '@nestjs/common';
-import { NotificationsController } from './notifications.controller';
 import { EmailService } from './email/email.service';
+import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
+import { NotificationsService } from './notifications.service';
 
 @Module({
-  imports: [],
-  controllers: [NotificationsController],
-  providers: [EmailService],
+  imports: [
+    RabbitMQModule.forRoot(RabbitMQModule, {
+      exchanges: [
+        {
+          name: 'auth-exchange',
+          type: 'direct',
+        },
+        {
+          name: 'invoice-exchange',
+          type: 'direct',
+        },
+      ],
+      uri: process.env.RABBITMQ_URL,
+      connectionInitOptions: { wait: false },
+    }),
+  ],
+  providers: [NotificationsService, EmailService]  
 })
 export class NotificationsModule {}

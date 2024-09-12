@@ -13,3 +13,10 @@
 3) All microservice(s) projects should be exposed in the 4000 range
 
 4) All front-end(s) projects should be exposed in the 5000 range
+
+5) RabbitMq
+	<<MICROSERVICE_NAME>>-exchange, e.g. invoice-exchange
+	<<MICROSERVICE_NAME>>-queue, e.g. invoice-queue
+	
+	<<MESSAGE_NAME>>Message e.g, InvoiceCreatedMessage
+	
