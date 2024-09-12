@@ -76,7 +76,7 @@ describe('LoginComponent', () => {
   });
 
   it('should patch form values when a predefined user is selected', () => {
-    const user = { email: 'giacomo@airo.com', password: 'q1w2e3' };
+    const user = { email: 'giacomo_free@airo.com', password: 'q1w2e3' };
 
     component.onUserSelected(user);
 
