@@ -4,7 +4,7 @@ import { login } from '@/app/common/auth.service';
 import styles from './login.module.css';
 
 const Login: FC<{ onLogin: () => void }> = ({ onLogin }) => {
-    const [username, setUsername] = useState('admin@anybotics.com');
+    const [username, setUsername] = useState('admin@airo.com');
     const [password, setPassword] = useState('q1w2e3');
 
     const [error, setError] = useState('');

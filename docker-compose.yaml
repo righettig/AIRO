@@ -6,10 +6,8 @@ services:
       context: ./front-end/admin/airo-admin-frontend
     ports:
       - "5001:3000"
-    # environment:
-    #   - NEXT_PUBLIC_AUTH_API_URL=${AUTH_API_URL}
-    #   - NEXT_PUBLIC_ADMIN_API_URL=${ADMIN_API_URL}
-    #   - NEXT_PUBLIC_EVENTS_API_URL=${EVENTS_API_URL}
+    environment:
+      - NEXT_ADMIN_GATEWAY_API_URL=${ADMIN_GATEWAY_API_URL}
     develop:
       context: ./front-end/admin/airo-admin-frontend
       watch:
