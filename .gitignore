@@ -20,3 +20,5 @@ back-end/microservices/airo-profile-microservice/airo-profile-microservice.cspro
 /back-end/microservices/airo-admin-auth-microservice/.vs
 /back-end/microservices/airo-admin-auth-microservice/bin
 /back-end/microservices/airo-admin-auth-microservice/obj
+/back-end/microservices/airo-bots-microservice/bin
+/back-end/microservices/airo-bots-microservice/obj
