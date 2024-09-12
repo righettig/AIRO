@@ -32,4 +32,11 @@ export class ProfileService {
         );
         return response.data;
     }
+
+    async updateProfileByUid(uid: string, firstName: string, lastName: string): Promise<ProfileGetProfileByUidResponse> {
+        const response = await firstValueFrom(
+            this.httpService.patch(`${this.profileServiceUrl}/api/profile`, { uid, firstName, lastName }),
+        );
+        return response.data;
+    }
 }

@@ -48,7 +48,7 @@ User login [DONE]
 	When account is NOT FOUND -> see error message
 	
 
-Profile management [WIP]
+Profile management [DONE]
 ------------------------
 	As a user I should be able to enter my user name, first name and last name
 	Upon saving my profile those details should be saved so that when I refresh the page they are shown again
@@ -58,7 +58,7 @@ Profile management [WIP]
 		on failure -> details not saved
 	
 
-Bot selection for free users
+Bot selection for free users [requires Admin, Store]
 ----------------------------	
 	As a free user I should be able to select a single bot.
 	I enter the store
@@ -68,7 +68,7 @@ Bot selection for free users
 	When clicked I should be redirected to the upgrade account page.
 
 
-Bot selection for pro users
+Bot selection for pro users [requires Admin, Store]
 ----------------------------
 	As a pro user I should be able to select up to 3 bots.
 	As a free user I should be able to select a single bot.

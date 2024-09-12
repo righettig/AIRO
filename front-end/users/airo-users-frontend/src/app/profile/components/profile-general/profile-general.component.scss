@@ -1,3 +1,18 @@
-span {
-    margin-right: 8px;
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    mat-form-field {
+        width: 100%;
+    }
+
+    button {
+        width: 80px;
+        align-self: flex-end;
+    }
+}
+
+.progress-bar-container {
+    margin-top: 18px;
 }

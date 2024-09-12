@@ -6,6 +6,7 @@ import { InvoiceService } from '../invoice/invoice.service';
 import { AuthService } from '../auth/auth.service';
 import { LoginDto } from './models/login.dto';
 import { SignupDto } from './models/signup.dto';
+import { UpdateProfileDto } from 'src/profile/models/update-profile-dto';
 
 describe('GatewayController', () => {
   let controller: GatewayController;
@@ -33,6 +34,7 @@ describe('GatewayController', () => {
           useValue: {
             createProfile: jest.fn(),
             getProfileByUid: jest.fn(),
+            updateProfileByUid: jest.fn(),
           },
         },
         {
@@ -191,6 +193,36 @@ describe('GatewayController', () => {
       expect(result).toEqual({ ...userResponse, ...userRoleResponse });
     });
   });
+
+  describe('updateProfile', () => {
+    it('should update the user profile successfully', async () => {
+      const mockRequest = { headers: { authorization: 'Bearer jwt-token' } } as any;
+      const updateProfileDto: UpdateProfileDto = {
+        firstName: 'John',
+        lastName: 'Doe',
+      };
+      const uid = '123';
+      const userResponse = { uid, firstName: 'John', lastName: 'Doe', accountType: 'basic' };
+  
+      jest.spyOn(controller as any, 'decodeFromToken').mockReturnValue(uid);
+      jest.spyOn(profileService, 'updateProfileByUid').mockResolvedValue(userResponse);
+  
+      const result = await controller.updateProfile(mockRequest, updateProfileDto);
+  
+      expect(profileService.updateProfileByUid).toHaveBeenCalledWith(uid, updateProfileDto.firstName, updateProfileDto.lastName);
+      expect(result).toEqual(userResponse);
+    });
+  
+    it('should throw an error if the token is missing', async () => {
+      const mockRequest = { headers: {} } as any;
+      const updateProfileDto: UpdateProfileDto = {
+        firstName: 'John',
+        lastName: 'Doe',
+      };
+  
+      await expect(controller.updateProfile(mockRequest, updateProfileDto)).rejects.toThrow('Token is missing');
+    });
+  }); 
 
   describe('getAllInvoices', () => {
     it('should return all invoices for the user', async () => {

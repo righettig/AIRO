@@ -1,4 +1,4 @@
-using airo_profile_microservice.Models;
+using airo_profile_microservice.Models.DTOs;
 using airo_profile_microservice.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,12 +16,19 @@ public class ProfileController(IProfileService profileService, ILogger<ProfileCo
         return Ok();
     }
 
-    // TODO: uid should be extracted from token
     [HttpGet]
     public async Task<IActionResult> Get(string uid)
     {
         var profile = await profileService.GetByUid(uid);
 
         return Ok(profile);
+    }
+
+    [HttpPatch]
+    public async Task<IActionResult> Update([FromBody] UpdateProfileRequest request)
+    {
+        await profileService.UpdateProfile(request.Uid, request.FirstName, request.LastName);
+
+        return Ok();
     }
 }

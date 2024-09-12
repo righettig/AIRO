@@ -5,6 +5,7 @@ import { of } from "rxjs";
 let httpService: Partial<HttpService> = {
     get: () => of(),
     post: () => of(),
+    patch: () => of(),
 };
 
 export let HttpServiceMock = {

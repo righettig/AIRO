@@ -1,15 +1,18 @@
 @if (invoices) {
     @for (invoice of invoices; track invoice) {
-        <div>
+        <div class="invoice">
             <div>
-                <span>Invoice Date</span>
+                <span class="invoice-title">Invoice Date</span>
                 <span>{{invoice.createdAt}}</span>
             </div>
             <div>
-                <span>Amount</span>
+                <span class="invoice-title">Amount</span>
                 <span>{{invoice.amount}}</span>
             </div>
+
+            <button mat-mini-fab aria-label="Download invoice">
+                <mat-icon>download</mat-icon>
+            </button>
         </div>
     }
-
 }

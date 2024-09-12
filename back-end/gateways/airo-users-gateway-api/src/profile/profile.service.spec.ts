@@ -61,4 +61,44 @@ describe('ProfileService', () => {
       );
     });
   });
+
+  describe('updateProfileByUid', () => {
+    it('should update the profile with the correct parameters', async () => {
+      const uid = '123';
+      const firstName = 'John';
+      const lastName = 'Doe';
+      const mockResponse = createMockResponse({
+        data: {
+          uid,
+          firstName,
+          lastName,
+          accountType: 'user',
+        },
+      });
+
+      jest.spyOn(httpService, 'patch').mockReturnValue(of(mockResponse));
+
+      const result = await service.updateProfileByUid(uid, firstName, lastName);
+
+      expect(httpService.patch).toHaveBeenCalledWith(
+        `${process.env.PROFILE_API_URL}/api/profile`,
+        { uid, firstName, lastName }
+      );
+      expect(result).toEqual(mockResponse.data);
+    });
+
+    it('should throw an error if the patch request fails', async () => {
+      const uid = '123';
+      const firstName = 'John';
+      const lastName = 'Doe';
+
+      jest.spyOn(httpService, 'patch').mockImplementation(() => {
+        throw new Error('Patch request failed');
+      });
+
+      await expect(service.updateProfileByUid(uid, firstName, lastName)).rejects.toThrow(
+        'Patch request failed'
+      );
+    });
+  });
 });
