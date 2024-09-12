@@ -45,7 +45,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"giacomo@airo.com\",\r\n    \"password\": \"q1w2e3\"\r\n}",
+							"raw": "{\r\n    \"email\": \"giacomo_free@airo.com\",\r\n    \"password\": \"q1w2e3\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -201,7 +201,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"giacomo@airo.com\",\r\n    \"password\": \"q1w2e3\"\r\n}",
+							"raw": "{\r\n    \"email\": \"giacomo_free@airo.com\",\r\n    \"password\": \"q1w2e3\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

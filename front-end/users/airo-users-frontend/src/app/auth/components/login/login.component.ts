@@ -33,9 +33,8 @@ export class LoginComponent {
 
   // Predefined users for quick selection
   users = [
-    { email: 'giacomo@airo.com', password: 'q1w2e3' },
-    { email: 'test1@airo.com', password: 'q1w2e3' },
-    { email: 'test2@airo.com', password: 'q1w2e3' },
+    { email: 'giacomo_free@airo.com', password: 'q1w2e3' },
+    { email: 'giacomo_pro@airo.com', password: 'q1w2e3' },
   ];
 
   form: FormGroup;
