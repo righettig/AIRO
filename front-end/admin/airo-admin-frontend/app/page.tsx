@@ -6,11 +6,10 @@ import { logout, refreshToken } from '@/app/common/auth.service';
 import Login from './features/login/login';
 import Sidebar from './features/layout/sidebar';
 import Events from './features/events/components/events';
-import Users from './features/users/components/users';
 
 const Home = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [selectedView, setSelectedView] = useState<'events' | 'users'>('events');
+  const [selectedView, setSelectedView] = useState<'events'>('events');
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [error, setError] = useState('');
 
@@ -35,7 +34,7 @@ const Home = () => {
     }
   };
 
-  const handleSelectView = (view: 'events' | 'users') => {
+  const handleSelectView = (view: 'events') => {
     setSelectedView(view);
   };
 
@@ -80,7 +79,7 @@ const Home = () => {
           transition: 'width 0.3s ease, margin-left 0.3s ease',
         }}
       >
-        {selectedView === 'events' ? <Events /> : <Users />}
+        {selectedView === 'events' ? <Events /> : <></>}
       </div>
       {error && <div>{error}</div>}
     </div>
