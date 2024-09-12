@@ -1,8 +1,8 @@
 CONSUMER PLATFORM
 ==================
 
-Free User registration
-----------------------
+Free User registration [DONE]
+-----------------------------
 	As a user I should be able to create a new free account on the AIRO consumer website
 	I need to enter email and password
 	I choose the free account
@@ -19,8 +19,8 @@ Free User registration
 	AC2: unit tests for front-end/back-end code
 
 
-Pro User registration
-----------------------	
+Pro User registration [DONE]
+----------------------------
 	As a user I should be able to create a new pro account on the AIRO consumer website
 	I need to enter email and password
 	I choose the pro account
@@ -39,8 +39,8 @@ Pro User registration
 		on failed signup (including failed payment)
 
 
-User login
-----------
+User login [DONE]
+-----------------
 	As a user who has already a consumer account on the AIRO consumer website I should be able to login
 	I need to enter email and password
 	When password is OK I should be redirected to the home page
@@ -48,8 +48,8 @@ User login
 	When account is NOT FOUND -> see error message
 	
 
-Profile management
-------------------
+Profile management [WIP]
+------------------------
 	As a user I should be able to enter my user name, first name and last name
 	Upon saving my profile those details should be saved so that when I refresh the page they are shown again
 	
