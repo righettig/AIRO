@@ -3,23 +3,23 @@ services:
     depends_on:
       - admin-gateway-api
     build:
-      context: ./front-end/admin/anybotics-admin # TODO: rename app
+      context: ./front-end/admin/airo-admin-frontend
     ports:
       - "5001:3000"
     # environment:
     #   - NEXT_PUBLIC_AUTH_API_URL=${AUTH_API_URL}
     #   - NEXT_PUBLIC_ADMIN_API_URL=${ADMIN_API_URL}
     #   - NEXT_PUBLIC_EVENTS_API_URL=${EVENTS_API_URL}
-    # develop:
-    #   context: ./anybotics-admin
-    #   watch:
-    #     - action: sync
-    #       path: ./anybotics-admin
-    #       target: /app
-    #       ignore:
-    #         - node_modules/
-    #     - action: rebuild
-    #       path: ./anybotics-admin/package.json
+    develop:
+      context: ./front-end/admin/airo-admin-frontend
+      watch:
+        - action: sync
+          path: ./front-end/admin/airo-users-frontend
+          target: /app
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: ./front-end/admin/airo-admin-frontend/package.json
 
   users-app:
     depends_on:
@@ -82,16 +82,16 @@ services:
     #   - PROFILE_API_URL=${PROFILE_API_URL}
     #   - BILLING_API_URL=${BILLING_API_URL}
     #   - INVOICE_API_URL=${INVOICE_API_URL}
-    # develop:
-    #   context: ./back-end/gateways/airo-users-gateway-api
-    #   watch:
-    #     - action: rebuild
-    #       path: ./back-end/gateways/airo-users-gateway-api
-    #       target: /app
-    #       ignore:
-    #         - node_modules/
-    #     - action: rebuild
-    #       path: ./back-end/gateways/airo-users-gateway-api/package.json
+    develop:
+      context: ./back-end/gateways/airo-admin-gateway-api
+      watch:
+        - action: rebuild
+          path: ./back-end/gateways/airo-admin-gateway-api
+          target: /app
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: ./back-end/gateways/airo-admin-gateway-api/package.json
 
   auth-service:
     build:
