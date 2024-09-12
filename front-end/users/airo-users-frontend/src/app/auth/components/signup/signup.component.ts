@@ -64,7 +64,7 @@ export class SignupComponent {
         this.email.value, 
         this.password.value, 
         this.accountType, 
-        this.accountType === 'pro' ? this.creditCard.value : null
+        this.accountType === 'pro' ? this.creditCard.value : undefined
       );
 
       this.router.navigate(['/home']);

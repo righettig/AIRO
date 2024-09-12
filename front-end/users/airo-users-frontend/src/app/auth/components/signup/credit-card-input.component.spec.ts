@@ -4,6 +4,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('CreditCardInputComponent', () => {
     let component: CreditCardInputComponent;
@@ -16,7 +17,8 @@ describe('CreditCardInputComponent', () => {
                 ReactiveFormsModule, 
                 MatInputModule, 
                 MatIconModule,
-                CreditCardInputComponent
+                CreditCardInputComponent,
+                NoopAnimationsModule
             ],
         }).compileComponents();
     });

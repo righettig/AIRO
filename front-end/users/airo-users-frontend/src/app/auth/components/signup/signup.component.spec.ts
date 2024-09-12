@@ -48,73 +48,125 @@ describe('SignupComponent', () => {
         expect(component).toBeTruthy();
     });
 
-    it('should signup successfully and navigate to /home', async () => {
-        authService.signup.and.returnValue(Promise.resolve());
+    describe('when signing up for a free account', () => {
+        beforeEach(() => {
+            component.accountType = 'free';
+        });
 
-        component.email.setValue('test@example.com');
-        component.password.setValue('password123');
-        component.accountType = 'free';
+        it('should signup successfully and navigate to /home', async () => {
+            authService.signup.and.returnValue(Promise.resolve());
 
-        await component.signup();
+            component.email.setValue('test@example.com');
+            component.password.setValue('password123');
 
-        expect(authService.signup).toHaveBeenCalledWith('test@example.com', 'password123', 'free');
-        expect(router.navigate).toHaveBeenCalledWith(['/home']);
-        expect(component.signingUp).toBeFalse();
+            await component.signup();
+
+            expect(authService.signup).toHaveBeenCalledWith('test@example.com', 'password123', 'free', undefined);
+            expect(router.navigate).toHaveBeenCalledWith(['/home']);
+            expect(component.signingUp).toBeFalse();
+        });
+
+        it('should show error message if signup fails', async () => {
+            authService.signup.and.returnValue(Promise.reject());
+
+            component.email.setValue('test@example.com');
+            component.password.setValue('password123');
+
+            await component.signup();
+
+            expect(authService.signup).toHaveBeenCalledWith('test@example.com', 'password123', 'free', undefined);
+            expect(component.error).toBe('Error signing up. Try again!');
+            expect(component.signingUp).toBeFalse();
+        });
     });
 
-    it('should show error message if signup fails', async () => {
-        authService.signup.and.returnValue(Promise.reject());
+    describe('when signing up for a pro account', () => {
+        beforeEach(() => {
+            component.accountType = 'pro';
+        });
 
-        component.email.setValue('test@example.com');
-        component.password.setValue('password123');
+        it('should signup successfully and navigate to /home', async () => {
+            authService.signup.and.returnValue(Promise.resolve());
 
-        await component.signup();
+            component.email.setValue('test@example.com');
+            component.password.setValue('password123');
+            component.creditCard.setValue('123-abc-456');
 
-        expect(authService.signup).toHaveBeenCalledWith('test@example.com', 'password123', 'free');
-        expect(component.error).toBe('Error signing up. Try again!');
-        expect(component.signingUp).toBeFalse();
+            await component.signup();
+
+            expect(authService.signup).toHaveBeenCalledWith('test@example.com', 'password123', 'pro', '123-abc-456');
+            expect(router.navigate).toHaveBeenCalledWith(['/home']);
+            expect(component.signingUp).toBeFalse();
+        });
+
+        it('should show error message if signup fails', async () => {
+            authService.signup.and.returnValue(Promise.reject());
+
+            component.email.setValue('test@example.com');
+            component.password.setValue('password123');
+            component.creditCard.setValue('123-abc-456');
+
+            await component.signup();
+
+            expect(authService.signup).toHaveBeenCalledWith('test@example.com', 'password123', 'pro', '123-abc-456');
+            expect(component.error).toBe('Error signing up. Try again!');
+            expect(component.signingUp).toBeFalse();
+        });
     });
 
-    it('should mark the form as valid', () => {
-        component.email.setValue('foo@bar.com');
-        component.password.setValue('1234567');
+    describe('validation', () => {
+        it('should mark the form as valid', () => {
+            component.email.setValue('foo@bar.com');
+            component.password.setValue('1234567');
 
-        expect(component.form.invalid).toBeFalse();
-    });
+            expect(component.form.invalid).toBeFalse();
+        });
 
-    it('should mark the form as invalid', () => {
-        component.email.setValue('');
-        component.password.setValue('');
+        it('should mark the form as invalid', () => {
+            component.email.setValue('');
+            component.password.setValue('');
 
-        expect(component.form.invalid).toBeTrue();
-    });
+            expect(component.form.invalid).toBeTrue();
+        });
 
-    it('should disable the signup button when form is invalid', () => {
-        component.email.setValue('');
-        component.password.setValue('');
+        it('should disable the signup button when form is invalid', () => {
+            component.email.setValue('');
+            component.password.setValue('');
 
-        fixture.detectChanges();
+            const button = fixture.nativeElement.querySelector('.signup-btn');
+            expect(button.disabled).toBeTrue();
+        });
 
-        const button = fixture.nativeElement.querySelector('.signup-btn');
-        expect(button.disabled).toBeTrue();
-    });
+        it('should disable the signup button when credit card no is invalid', () => {
+            component.accountType = 'pro';
+            fixture.detectChanges();
 
-    // TODO: form should be invalid when email, password are OK but credit card no is invalid
+            // these are valid values
+            component.email.setValue('foo@bar.com');
+            component.password.setValue('1234567');
 
-    it('should display progress bar while signing up', () => {
-        component.signingUp = true;
-        fixture.detectChanges();
+            // this is invalid
+            component.creditCard.setValue('');
 
-        const progressBar = fixture.nativeElement.querySelector('app-progress-bar');
-        expect(progressBar).toBeTruthy();
-    });
+            const button = fixture.nativeElement.querySelector('.signup-btn');
+            expect(button.disabled).toBeTrue();
+        });
 
-    it('should show error message component when there is an error', () => {
-        component.error = 'Error signing up. Try again!';
-        fixture.detectChanges();
+        it('should display progress bar while signing up', () => {
+            component.signingUp = true;
+            fixture.detectChanges();
 
-        const errorMessage = fixture.nativeElement.querySelector('app-error-message');
-        expect(errorMessage).toBeTruthy();
-        expect(errorMessage.textContent).toContain('Error signing up. Try again!');
+            const progressBar = fixture.nativeElement.querySelector('app-progress-bar');
+            expect(progressBar).toBeTruthy();
+        });
+
+        it('should show error message component when there is an error', () => {
+            component.error = 'Error signing up. Try again!';
+            fixture.detectChanges();
+
+            const errorMessage = fixture.nativeElement.querySelector('app-error-message');
+            expect(errorMessage).toBeTruthy();
+            expect(errorMessage.textContent).toContain('Error signing up. Try again!');
+        });
     });
 });
