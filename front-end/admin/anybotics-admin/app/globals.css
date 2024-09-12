@@ -1,0 +1,22 @@
+/* Global styles for the entire app */
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+/* Common styles for form elements */
+input,
+button {
+  display: block;
+  margin-bottom: 10px;
+}
+
+button {
+  margin-top: 10px;
+}
+
+/* Common list styles */
+ul {
+  list-style-type: none;
+  padding: 0;
+}

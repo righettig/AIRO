@@ -1,0 +1,12 @@
+.eventCreator {
+    margin-bottom: 20px;
+}
+
+.eventCreator input {
+    margin-bottom: 10px;
+}
+
+.eventCreator button {
+    display: block;
+    margin-top: 10px;
+}
