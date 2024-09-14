@@ -19,6 +19,9 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssemblyContaining<BotAggregate>();
 });
 
+var eventStoreDbConnectionString = builder.Configuration["EVENT_STORE_DB_URL"];
+builder.Services.AddEventStoreClient(eventStoreDbConnectionString);
+
 builder.Services.AddSingleton<IEventStore, airo_cqrs_eventsourcing_lib.Impl.EventStore>();
 
 builder.Services.RegisterHandlers(typeof(BotAggregate).Assembly);
@@ -45,9 +48,6 @@ builder.Services.AddSingleton<IEventListener, EventListener<BotReadModel>>(provi
 });
 
 builder.Services.AddHostedService<EventListenerBackgroundService>();
-
-var eventStoreDbConnectionString = builder.Configuration["EVENT_STORE_DB_URL"];
-builder.Services.AddEventStoreClient(eventStoreDbConnectionString);
 
 var app = builder.Build();
 
