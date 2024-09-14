@@ -34,12 +34,12 @@ public class BotController : ControllerBase
     //    return NoContent();
     //}
 
-    //[HttpGet]
-    //public async Task<IActionResult> GetBots()
-    //{
-    //    var bots = await _mediator.Send(new GetBotsQuery());
-    //    return Ok(bots);
-    //}
+    [HttpGet]
+    public async Task<IActionResult> GetBots()
+    {
+        var bots = await _mediator.Send(new GetAllBots());
+        return Ok(bots);
+    }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetBot(Guid id)
