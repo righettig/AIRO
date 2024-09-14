@@ -38,6 +38,7 @@ builder.Services.AddSingleton<IEventListener, EventListener<BotReadModel>>(provi
 
     // Bind the event handlers
     eventListener.Bind<BotCreatedEvent, BotCreatedEventHandler>();
+    eventListener.Bind<BotDeletedEvent, BotDeleteEventHandler>();
 
     return eventListener;
 });

@@ -504,6 +504,27 @@
 					"response": []
 				},
 				{
+					"name": "bots - delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4005/api/bot/ec5d0e40-5ce9-40dd-ac66-61a6ca22852d",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4005",
+							"path": [
+								"api",
+								"bot",
+								"ec5d0e40-5ce9-40dd-ac66-61a6ca22852d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "bots - get all",
 					"request": {
 						"method": "GET",

@@ -8,6 +8,6 @@ public class CreateBotCommandHandler(AggregateRepository<BotAggregate> aggregate
 {
     protected override void ProcessCommand(CreateBotCommand command, BotAggregate aggregate)
     {
-        aggregate.CreateProduct(command.Id, command.Name, command.Price);
+        aggregate.CreateBot(command.Id, command.Name, command.Price);
     }
 }

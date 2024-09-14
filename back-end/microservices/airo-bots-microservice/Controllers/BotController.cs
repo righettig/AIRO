@@ -27,12 +27,12 @@ public class BotController : ControllerBase
         return Ok(botId);
     }
 
-    //[HttpDelete("{id}")]
-    //public async Task<IActionResult> DeleteBot(Guid id)
-    //{
-    //    await _mediator.Send(new DeleteBotCommand(id));
-    //    return NoContent();
-    //}
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteBot(Guid id)
+    {
+        await _mediator.Send(new DeleteBotCommand(id));
+        return NoContent();
+    }
 
     [HttpGet]
     public async Task<IActionResult> GetBots()
