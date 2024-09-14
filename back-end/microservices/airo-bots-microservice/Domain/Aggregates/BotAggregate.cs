@@ -1,7 +1,6 @@
 ﻿using airo_bots_microservice.Domain.Write.Events;
 using airo_cqrs_eventsourcing_lib.Core;
 using airo_cqrs_eventsourcing_lib.Impl;
-using System.Xml.Linq;
 
 namespace airo_bots_microservice.Domain.Aggregates;
 
@@ -20,7 +19,18 @@ public class BotAggregate : AggregateRoot, IAggregateRoot
         RaiseEvent(new BotDeletedEvent(id));
     }
 
+    public void UpdateBot(Guid id, string name, decimal price)
+    {
+        RaiseEvent(new BotUpdatedEvent(id, name, price));
+    }
+
     private void Apply(BotCreatedEvent @event)
+    {
+        Name = @event.Name;
+        Price = @event.Price;
+    }
+
+    private void Apply(BotUpdatedEvent @event)
     {
         Name = @event.Name;
         Price = @event.Price;

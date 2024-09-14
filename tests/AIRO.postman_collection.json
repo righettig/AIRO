@@ -483,6 +483,35 @@
 					"response": []
 				},
 				{
+					"name": "bots - update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"c72236e1-039d-42ed-a316-798c29321ecc\",\r\n    \"name\": \"bot1\",\r\n    \"price\": 123\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4005/api/bot",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4005",
+							"path": [
+								"api",
+								"bot"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "bots - get",
 					"request": {
 						"method": "GET",
