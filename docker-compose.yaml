@@ -74,6 +74,7 @@ services:
       - "3001:3000"
     environment:
       - ADMIN_AUTH_API_URL=${ADMIN_AUTH_API_URL}
+      - BOTS_API_URL=${BOTS_API_URL}
     develop:
       context: ./back-end/gateways/airo-admin-gateway-api
       watch:
