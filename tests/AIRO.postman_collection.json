@@ -45,7 +45,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"giacomo_free@airo.com\",\r\n    \"password\": \"q1w2e3\"\r\n}",
+							"raw": "{\r\n    \"email\": \"giacomo@airo.com\",\r\n    \"password\": \"q1w2e3\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -134,6 +134,41 @@
 					"response": []
 				},
 				{
+					"name": "gateway - profile",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjAyMTAwNzE2ZmRkOTA0ZTViNGQ0OTExNmZmNWRiZGZjOTg5OTk0MDEiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWlyby00NGNhNyIsImF1ZCI6ImFpcm8tNDRjYTciLCJhdXRoX3RpbWUiOjE3MjYxNDI4ODMsInVzZXJfaWQiOiJKTXFVWk1zOXdkUHBKVUVZUnpKWWx0Y2VESEwyIiwic3ViIjoiSk1xVVpNczl3ZFBwSlVFWVJ6SllsdGNlREhMMiIsImlhdCI6MTcyNjE0Mjg4MywiZXhwIjoxNzI2MTQ2NDgzLCJlbWFpbCI6ImdpYWNvbW9fZnJlZUBhaXJvLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJnaWFjb21vX2ZyZWVAYWlyby5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.DuhDbdhSqLN1SDyDueDyc6hLjVY24iM3OWhWxZdttzS1WixCMW8c5PteDikL5JDI6658GwviSECCv8YYobpt9U22jH857owQEuMwuyajeR0w7Wvj3ccKcN-Vjec5BsWYXJVctwkYeYppo9pQZRSXQUzaDWGZQ-7zskUeQ4EVk-WtpMxR2Kl9m0xNwS20yPgOpihZO_BT84HFxHUxl9sad1Tl3I-pEjxuT8RqLvgYZhaOcy0TM_A9qw8rDL4AEoyoWIzg_lrnIOAkeoL-lw0GLpHTdJw2Qwq8gmhqE8ffzW0dAy1BZ1KCmQ73tM_Ofg6t7LRk6gtLOhlI8NDziE9Gvg",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"foo\",\r\n    \"lastName\": \"bar\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/gateway/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"gateway",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "gateway - invoices",
 					"request": {
 						"method": "GET",
@@ -201,7 +236,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"giacomo_free@airo.com\",\r\n    \"password\": \"q1w2e3\"\r\n}",
+							"raw": "{\r\n    \"email\": \"giacomo@airo.com\",\r\n    \"password\": \"q1w2e3\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -328,6 +363,35 @@
 					"response": []
 				},
 				{
+					"name": "profile - update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"uid\": \"JMqUZMs9wdPpJUEYRzJYltceDHL2\",\r\n    \"firstName\": \"Giacomo\",\r\n    \"lastName\": \"Righetti\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4001/api/profile",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4001",
+							"path": [
+								"api",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "profile - get",
 					"request": {
 						"method": "GET",
@@ -379,6 +443,61 @@
 									"key": "uid",
 									"value": "eXxaf2oy0XbVKoNAwzB7xWhXz7A3"
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Bots",
+			"item": [
+				{
+					"name": "bots - create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"bot1\",\r\n    \"price\": 123\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4005/api/bot",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4005",
+							"path": [
+								"api",
+								"bot"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "bots - get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4005/api/bot/c72236e1-039d-42ed-a316-798c29321ecc",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4005",
+							"path": [
+								"api",
+								"bot",
+								"c72236e1-039d-42ed-a316-798c29321ecc"
 							]
 						}
 					},

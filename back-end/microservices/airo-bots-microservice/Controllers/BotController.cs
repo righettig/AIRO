@@ -1,5 +1,6 @@
-﻿using airo_bots_microservice.Application.Commands;
-using airo_bots_microservice.Application.Queries;
+﻿using airo_bots_microservice.Domain.Read.Queries;
+using airo_bots_microservice.Domain.Write.Commands;
+using airo_bots_microservice.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,30 +18,33 @@ public class BotController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateBot(CreateBotCommand command)
+    public async Task<IActionResult> CreateBot([FromBody] CreateBotRequest request)
     {
-        var id = await _mediator.Send(command);
-        return Ok(id);
+        var botId = Guid.NewGuid();
+
+        await _mediator.Send(new CreateBotCommand(botId, request.Name, request.Price));
+
+        return Ok(botId);
     }
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteBot(Guid id)
-    {
-        await _mediator.Send(new DeleteBotCommand(id));
-        return NoContent();
-    }
+    //[HttpDelete("{id}")]
+    //public async Task<IActionResult> DeleteBot(Guid id)
+    //{
+    //    await _mediator.Send(new DeleteBotCommand(id));
+    //    return NoContent();
+    //}
 
-    [HttpGet]
-    public async Task<IActionResult> GetBots()
-    {
-        var bots = await _mediator.Send(new GetBotsQuery());
-        return Ok(bots);
-    }
+    //[HttpGet]
+    //public async Task<IActionResult> GetBots()
+    //{
+    //    var bots = await _mediator.Send(new GetBotsQuery());
+    //    return Ok(bots);
+    //}
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetBot(Guid id)
     {
-        var bot = await _mediator.Send(new GetBotQuery(id));
+        var bot = await _mediator.Send(new GetBotById(id));
         return Ok(bot);
     }
 }
