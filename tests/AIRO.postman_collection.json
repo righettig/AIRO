@@ -502,6 +502,26 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "bots - get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4005/api/bot",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4005",
+							"path": [
+								"api",
+								"bot"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
