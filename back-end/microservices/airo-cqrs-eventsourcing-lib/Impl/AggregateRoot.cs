@@ -3,9 +3,11 @@ using System.Reflection;
 
 namespace airo_cqrs_eventsourcing_lib.Impl;
 
-public abstract class AggregateRoot
+public abstract class AggregateRoot : IAggregateRoot
 {
     public Guid Id { get; init; }
+
+    public IReadOnlyList<IEvent> GetUncommittedEvents() => Events.AsReadOnly();
 
     protected List<IEvent> Events { get; private set; } = [];
 
@@ -13,12 +15,15 @@ public abstract class AggregateRoot
     {
     }
 
-    public IReadOnlyList<IEvent> GetUncommittedEvents() => Events.AsReadOnly();
-
-    public void MarkEventsAsCommitted()
+    public void LoadFromHistory(IEnumerable<IEvent> events)
     {
-        Events.Clear();
+        foreach (var @event in events)
+        {
+            ApplyEvent(@event);
+        }
     }
+
+    public void MarkEventsAsCommitted() => Events.Clear();
 
     protected void RaiseEvent(IEvent @event)
     {
@@ -31,6 +36,7 @@ public abstract class AggregateRoot
         // Use reflection to find and invoke the correct Apply method
         var applyMethod = GetType().GetMethod("Apply", BindingFlags.NonPublic | BindingFlags.Instance, [@event.GetType()]);
 
+        // TODO: perhaps I should not be forced to process events if there are not relevant for my business logic
         if (applyMethod != null)
         {
             applyMethod.Invoke(this, [@event]);
