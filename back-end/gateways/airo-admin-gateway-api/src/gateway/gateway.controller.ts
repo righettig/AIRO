@@ -1,9 +1,10 @@
-import { Body, Controller, Logger, Post } from '@nestjs/common';
+import { Body, Controller, Get, Logger, Post, Put, Query } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
 import { LoginDto } from 'src/gateway/models/login.dto';
 import { LoginResponseDto } from './models/login.response.dto';
 import { BotsService } from 'src/bots/bots.service';
 import { CreateBotDto } from './models/create-bot.dto';
+import { UpdateBotDto } from './models/update-bot.dto';
 
 @Controller('gateway')
 export class GatewayController {
@@ -37,9 +38,27 @@ export class GatewayController {
     return response;
   }
 
-  @Post('createBot')
+  @Post('bot')
   async createBot(@Body() createBotDto: CreateBotDto) {
     const response = await this.botsService.create(createBotDto.name, createBotDto.price);
+    return response;
+  }
+
+  @Put('bot')
+  async updateBot(@Body() updateDtoBot: UpdateBotDto) {
+    const response = await this.botsService.update(updateDtoBot.id, updateDtoBot.name, updateDtoBot.price);
+    return response;
+  }
+
+  @Get('bot')
+  async getBot(@Query() botId: string) {
+    const response = await this.botsService.getById(botId);
+    return response;
+  }
+
+  @Get('bot')
+  async getAllBots() {
+    const response = await this.botsService.getAll();
     return response;
   }
 }

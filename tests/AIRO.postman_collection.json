@@ -206,7 +206,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"foo@bar.com\",\r\n    \"password\": \"q1w2e3\",\r\n    \"accountType\": \"free\"\r\n}",
+							"raw": "{\r\n    \"name\": \"bot1\",\r\n    \"price\": 123\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -214,15 +214,90 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/gateway/signup",
+							"raw": "http://localhost:3001/gateway/bot",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
+							"port": "3001",
 							"path": [
 								"gateway",
-								"signup"
+								"bot"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - bot update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"5b2c2d34-36e8-4b39-8add-bb103b7905ab\",\r\n   \"name\": \"bot1\",\r\n    \"price\": 123\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/gateway/bot",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"bot"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - bot get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/gateway/bot?botId=5b2c2d34-36e8-4b39-8add-bb103b7905ab",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"bot"
+							],
+							"query": [
+								{
+									"key": "botId",
+									"value": "5b2c2d34-36e8-4b39-8add-bb103b7905ab"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - bot get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/gateway/bot",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"bot"
 							]
 						}
 					},
