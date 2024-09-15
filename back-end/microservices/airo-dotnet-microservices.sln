@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "airo-admin-auth-microservic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "airo-bots-microservice", "airo-bots-microservice\airo-bots-microservice.csproj", "{47E22FC6-2859-4867-9F47-7272CF907A9C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "airo-cqrs-eventsourcing-lib", "airo-cqrs-eventsourcing-lib\airo-cqrs-eventsourcing-lib.csproj", "{CF293D32-26AE-4D43-8340-C46D87EE8B00}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "airo-cqrs-eventsourcing-lib", "airo-cqrs-eventsourcing-lib\airo-cqrs-eventsourcing-lib.csproj", "{CF293D32-26AE-4D43-8340-C46D87EE8B00}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "airo-events-microservice", "airo-events-microservice\airo-events-microservice.csproj", "{AA946884-A05E-4244-872C-5802A15BEBF2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{CF293D32-26AE-4D43-8340-C46D87EE8B00}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF293D32-26AE-4D43-8340-C46D87EE8B00}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF293D32-26AE-4D43-8340-C46D87EE8B00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA946884-A05E-4244-872C-5802A15BEBF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA946884-A05E-4244-872C-5802A15BEBF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA946884-A05E-4244-872C-5802A15BEBF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA946884-A05E-4244-872C-5802A15BEBF2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

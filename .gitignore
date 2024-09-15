@@ -24,3 +24,5 @@ back-end/microservices/airo-profile-microservice/airo-profile-microservice.cspro
 /back-end/microservices/airo-bots-microservice/obj
 /back-end/microservices/airo-cqrs-eventsourcing-lib/bin
 /back-end/microservices/airo-cqrs-eventsourcing-lib/obj
+/back-end/microservices/airo-events-microservice/obj
+/back-end/microservices/airo-events-microservice/bin
