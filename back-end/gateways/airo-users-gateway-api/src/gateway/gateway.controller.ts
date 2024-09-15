@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Logger, Patch, Post, Put, Req } from '@nestjs/common';
+import { Body, Controller, Get, Logger, Patch, Post, Query, Req } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
 import { ProfileService } from 'src/profile/profile.service';
 import { LoginDto } from 'src/gateway/models/login.dto';
@@ -10,6 +10,7 @@ import { BillingService } from 'src/billing/billing.service';
 import { InvoiceService } from 'src/invoice/invoice.service';
 import { InvoiceDto } from 'src/invoice/models/invoice.dto';
 import { UpdateProfileDto } from 'src/profile/models/update-profile-dto';
+import { BotsService } from 'src/bots/bots.service';
 
 @Controller('gateway')
 export class GatewayController {
@@ -20,6 +21,7 @@ export class GatewayController {
     private readonly profileService: ProfileService,
     private readonly billingService: BillingService,
     private readonly invoiceService: InvoiceService,
+    private readonly botsService: BotsService,
   ) { }
 
   @Post('signup')
@@ -121,6 +123,18 @@ export class GatewayController {
     const invoicesResponse = await this.invoiceService.getAllInvoicesByUid(uid);
 
     return invoicesResponse;
+  }
+
+  @Get('bot')
+  async getBot(@Query() botId: string) {
+    const response = await this.botsService.getById(botId);
+    return response;
+  }
+
+  @Get('bot')
+  async getAllBots() {
+    const response = await this.botsService.getAll();
+    return response;
   }
 
   private decodeFromToken<T>(token: string, property: keyof T): T[keyof T] | null {
