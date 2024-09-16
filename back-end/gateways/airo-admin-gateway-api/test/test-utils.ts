@@ -6,6 +6,8 @@ let httpService: Partial<HttpService> = {
     get: () => of(),
     post: () => of(),
     patch: () => of(),
+    put: () => of(),
+    delete: () => of(),
 };
 
 export let HttpServiceMock = {

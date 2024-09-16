@@ -4,7 +4,7 @@ import { BotDto } from '@/app/features/bots/types/bot';
 
 const BOTS_API_URL = process.env.NEXT_PUBLIC_ADMIN_GATEWAY_API_URL!;
 
-const botsService = createApiService(BOTS_API_URL);
+const botsService = createApiService(BOTS_API_URL + '/gateway/bot');
 
 export const fetchBots = () =>
     botsService.request('', 'GET');

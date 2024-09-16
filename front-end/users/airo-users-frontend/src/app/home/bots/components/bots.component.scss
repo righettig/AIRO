@@ -1,0 +1,29 @@
+.welcome-message {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 40px;
+
+    .upgrade-link {
+        text-decoration: none;
+        color: #007bff; /* Blue color for the link */
+        font-size: 1.1em;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+
+    app-bot-list {
+        flex: 1;
+    }
+
+    app-my-bots {
+        flex: 1;
+    }
+}

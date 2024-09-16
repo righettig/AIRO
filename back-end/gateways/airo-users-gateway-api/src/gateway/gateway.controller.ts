@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Logger, Patch, Post, Query, Req } from '@nestjs/common';
+import { Body, Controller, Get, Logger, Param, Patch, Post, Req } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
 import { ProfileService } from 'src/profile/profile.service';
 import { LoginDto } from 'src/gateway/models/login.dto';
@@ -125,16 +125,78 @@ export class GatewayController {
     return invoicesResponse;
   }
 
-  @Get('bot')
-  async getBot(@Query() botId: string) {
-    const response = await this.botsService.getById(botId);
+  // OBSOLETE, to be replaced by "store" API --->
+  // @Get('bot/:botId')
+  // async getBot(@Param('botId') botId: string) {
+  //   const response = await this.botsService.getById(botId);
+  //   return response;
+  // }
+
+  // @Get('bot')
+  // async getAllBots() {
+  //   const response = await this.botsService.getAll();
+  //   return response;
+  // }
+  // <-------------------------------------------
+
+  @Get('store/my-bots')
+  async myBots(@Req() request: Request) {
+    const token = request.headers['authorization'];
+    if (!token) {
+      throw new Error('Token is missing');
+    }
+
+    const uid = this.decodeFromToken<{ user_id?: string }>(token, 'user_id');
+
+    const response = [
+      { id: '1', name: 'mybot1' },
+      { id: '2', name: 'mybot2' },
+      { id: '3', name: 'mybot3' }
+    ]
     return response;
   }
 
-  @Get('bot')
-  async getAllBots() {
-    const response = await this.botsService.getAll();
+  @Get('store/bots')
+  async getAllBots(@Req() request: Request) {
+    const token = request.headers['authorization'];
+    if (!token) {
+      throw new Error('Token is missing');
+    }
+
+    const uid = this.decodeFromToken<{ user_id?: string }>(token, 'user_id');
+
+    const response = [
+      { id: '11', name: 'mybot11' },
+      { id: '22', name: 'mybot22' },
+      { id: '33', name: 'mybot33' }
+    ]
     return response;
+  }
+
+  @Get('store/free-bots-count')
+  async getFreeBotsAllowance(@Req() request: Request) {
+    const token = request.headers['authorization'];
+    if (!token) {
+      throw new Error('Token is missing');
+    }
+
+    const uid = this.decodeFromToken<{ user_id?: string }>(token, 'user_id');
+
+    return 2;
+  }
+
+  @Post('store/bots/:botId')
+  async buyBot(@Req() request: Request, @Param('botId') botId) {
+    const token = request.headers['authorization'];
+    if (!token) {
+      throw new Error('Token is missing');
+    }
+
+    const uid = this.decodeFromToken<{ user_id?: string }>(token, 'user_id');
+
+    return {
+      success: true
+    };
   }
 
   private decodeFromToken<T>(token: string, property: keyof T): T[keyof T] | null {

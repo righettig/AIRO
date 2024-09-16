@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "Gateway",
+			"name": "Users Gateway",
 			"item": [
 				{
 					"name": "gateway - signup",
@@ -62,6 +62,34 @@
 							"path": [
 								"gateway",
 								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - store bots purchase",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjAyMTAwNzE2ZmRkOTA0ZTViNGQ0OTExNmZmNWRiZGZjOTg5OTk0MDEiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWlyby00NGNhNyIsImF1ZCI6ImFpcm8tNDRjYTciLCJhdXRoX3RpbWUiOjE3MjYxNDI4ODMsInVzZXJfaWQiOiJKTXFVWk1zOXdkUHBKVUVZUnpKWWx0Y2VESEwyIiwic3ViIjoiSk1xVVpNczl3ZFBwSlVFWVJ6SllsdGNlREhMMiIsImlhdCI6MTcyNjE0Mjg4MywiZXhwIjoxNzI2MTQ2NDgzLCJlbWFpbCI6ImdpYWNvbW9fZnJlZUBhaXJvLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJnaWFjb21vX2ZyZWVAYWlyby5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.DuhDbdhSqLN1SDyDueDyc6hLjVY24iM3OWhWxZdttzS1WixCMW8c5PteDikL5JDI6658GwviSECCv8YYobpt9U22jH857owQEuMwuyajeR0w7Wvj3ccKcN-Vjec5BsWYXJVctwkYeYppo9pQZRSXQUzaDWGZQ-7zskUeQ4EVk-WtpMxR2Kl9m0xNwS20yPgOpihZO_BT84HFxHUxl9sad1Tl3I-pEjxuT8RqLvgYZhaOcy0TM_A9qw8rDL4AEoyoWIzg_lrnIOAkeoL-lw0GLpHTdJw2Qwq8gmhqE8ffzW0dAy1BZ1KCmQ73tM_Ofg6t7LRk6gtLOhlI8NDziE9Gvg",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/gateway/store/bots/123",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"gateway",
+								"store",
+								"bots",
+								"123"
 							]
 						}
 					},
@@ -193,6 +221,87 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "gateway - store my-bots",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjAyMTAwNzE2ZmRkOTA0ZTViNGQ0OTExNmZmNWRiZGZjOTg5OTk0MDEiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWlyby00NGNhNyIsImF1ZCI6ImFpcm8tNDRjYTciLCJhdXRoX3RpbWUiOjE3MjYxNDI4ODMsInVzZXJfaWQiOiJKTXFVWk1zOXdkUHBKVUVZUnpKWWx0Y2VESEwyIiwic3ViIjoiSk1xVVpNczl3ZFBwSlVFWVJ6SllsdGNlREhMMiIsImlhdCI6MTcyNjE0Mjg4MywiZXhwIjoxNzI2MTQ2NDgzLCJlbWFpbCI6ImdpYWNvbW9fZnJlZUBhaXJvLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJnaWFjb21vX2ZyZWVAYWlyby5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.DuhDbdhSqLN1SDyDueDyc6hLjVY24iM3OWhWxZdttzS1WixCMW8c5PteDikL5JDI6658GwviSECCv8YYobpt9U22jH857owQEuMwuyajeR0w7Wvj3ccKcN-Vjec5BsWYXJVctwkYeYppo9pQZRSXQUzaDWGZQ-7zskUeQ4EVk-WtpMxR2Kl9m0xNwS20yPgOpihZO_BT84HFxHUxl9sad1Tl3I-pEjxuT8RqLvgYZhaOcy0TM_A9qw8rDL4AEoyoWIzg_lrnIOAkeoL-lw0GLpHTdJw2Qwq8gmhqE8ffzW0dAy1BZ1KCmQ73tM_Ofg6t7LRk6gtLOhlI8NDziE9Gvg",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/gateway/store/my-bots",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"gateway",
+								"store",
+								"my-bots"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - store bots",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjAyMTAwNzE2ZmRkOTA0ZTViNGQ0OTExNmZmNWRiZGZjOTg5OTk0MDEiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWlyby00NGNhNyIsImF1ZCI6ImFpcm8tNDRjYTciLCJhdXRoX3RpbWUiOjE3MjYxNDI4ODMsInVzZXJfaWQiOiJKTXFVWk1zOXdkUHBKVUVZUnpKWWx0Y2VESEwyIiwic3ViIjoiSk1xVVpNczl3ZFBwSlVFWVJ6SllsdGNlREhMMiIsImlhdCI6MTcyNjE0Mjg4MywiZXhwIjoxNzI2MTQ2NDgzLCJlbWFpbCI6ImdpYWNvbW9fZnJlZUBhaXJvLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJnaWFjb21vX2ZyZWVAYWlyby5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.DuhDbdhSqLN1SDyDueDyc6hLjVY24iM3OWhWxZdttzS1WixCMW8c5PteDikL5JDI6658GwviSECCv8YYobpt9U22jH857owQEuMwuyajeR0w7Wvj3ccKcN-Vjec5BsWYXJVctwkYeYppo9pQZRSXQUzaDWGZQ-7zskUeQ4EVk-WtpMxR2Kl9m0xNwS20yPgOpihZO_BT84HFxHUxl9sad1Tl3I-pEjxuT8RqLvgYZhaOcy0TM_A9qw8rDL4AEoyoWIzg_lrnIOAkeoL-lw0GLpHTdJw2Qwq8gmhqE8ffzW0dAy1BZ1KCmQ73tM_Ofg6t7LRk6gtLOhlI8NDziE9Gvg",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/gateway/store/bots",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"gateway",
+								"store",
+								"bots"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - store free-bots-count",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjAyMTAwNzE2ZmRkOTA0ZTViNGQ0OTExNmZmNWRiZGZjOTg5OTk0MDEiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWlyby00NGNhNyIsImF1ZCI6ImFpcm8tNDRjYTciLCJhdXRoX3RpbWUiOjE3MjYxNDI4ODMsInVzZXJfaWQiOiJKTXFVWk1zOXdkUHBKVUVZUnpKWWx0Y2VESEwyIiwic3ViIjoiSk1xVVpNczl3ZFBwSlVFWVJ6SllsdGNlREhMMiIsImlhdCI6MTcyNjE0Mjg4MywiZXhwIjoxNzI2MTQ2NDgzLCJlbWFpbCI6ImdpYWNvbW9fZnJlZUBhaXJvLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJnaWFjb21vX2ZyZWVAYWlyby5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.DuhDbdhSqLN1SDyDueDyc6hLjVY24iM3OWhWxZdttzS1WixCMW8c5PteDikL5JDI6658GwviSECCv8YYobpt9U22jH857owQEuMwuyajeR0w7Wvj3ccKcN-Vjec5BsWYXJVctwkYeYppo9pQZRSXQUzaDWGZQ-7zskUeQ4EVk-WtpMxR2Kl9m0xNwS20yPgOpihZO_BT84HFxHUxl9sad1Tl3I-pEjxuT8RqLvgYZhaOcy0TM_A9qw8rDL4AEoyoWIzg_lrnIOAkeoL-lw0GLpHTdJw2Qwq8gmhqE8ffzW0dAy1BZ1KCmQ73tM_Ofg6t7LRk6gtLOhlI8NDziE9Gvg",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/gateway/store/free-bots-count",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"gateway",
+								"store",
+								"free-bots-count"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -235,7 +344,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": \"5b2c2d34-36e8-4b39-8add-bb103b7905ab\",\r\n   \"name\": \"bot1\",\r\n    \"price\": 123\r\n}",
+							"raw": "{\r\n    \"id\": \"8b4ddfb1-b050-43dc-80cf-49afa8c2c247\",\r\n    \"name\": \"bot1\",\r\n    \"price\": 123\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -263,7 +372,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3001/gateway/bot?botId=5b2c2d34-36e8-4b39-8add-bb103b7905ab",
+							"raw": "http://localhost:3001/gateway/bot/8b4ddfb1-b050-43dc-80cf-49afa8c2c247",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -271,13 +380,29 @@
 							"port": "3001",
 							"path": [
 								"gateway",
-								"bot"
+								"bot",
+								"8b4ddfb1-b050-43dc-80cf-49afa8c2c247"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - bot delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/gateway/bot/df542a69-bef2-4806-80fa-15ea7ad9c0cb",
+							"protocol": "http",
+							"host": [
+								"localhost"
 							],
-							"query": [
-								{
-									"key": "botId",
-									"value": "5b2c2d34-36e8-4b39-8add-bb103b7905ab"
-								}
+							"port": "3001",
+							"path": [
+								"gateway",
+								"bot",
+								"df542a69-bef2-4806-80fa-15ea7ad9c0cb"
 							]
 						}
 					},
@@ -626,7 +751,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:4005/api/bot/c72236e1-039d-42ed-a316-798c29321ecc",
+							"raw": "http://localhost:4005/api/bot/8b4ddfb1-b050-43dc-80cf-49afa8c2c247",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -635,7 +760,7 @@
 							"path": [
 								"api",
 								"bot",
-								"c72236e1-039d-42ed-a316-798c29321ecc"
+								"8b4ddfb1-b050-43dc-80cf-49afa8c2c247"
 							]
 						}
 					},

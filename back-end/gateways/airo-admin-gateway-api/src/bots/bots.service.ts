@@ -8,13 +8,13 @@ type GetAllBotsResponse = BotDto[];
 
 @Injectable()
 export class BotsService {
-    private readonly authServiceUrl = process.env.BOTS_API_URL!;
+    private readonly serviceUrl = process.env.BOTS_API_URL!;
 
     constructor(private readonly httpService: HttpService) { }
 
     async create(name: string, price: number): Promise<string> {
         const response = await firstValueFrom(
-            this.httpService.post(`${this.authServiceUrl}/api/bot`, {
+            this.httpService.post(`${this.serviceUrl}/api/bot`, {
                 name,
                 price
             }),
@@ -24,7 +24,7 @@ export class BotsService {
 
     async update(id: string, name: string, price: number): Promise<void> {
         const response = await firstValueFrom(
-            this.httpService.put(`${this.authServiceUrl}/api/bot`, {
+            this.httpService.put(`${this.serviceUrl}/api/bot`, {
                 id,
                 name,
                 price
@@ -35,21 +35,21 @@ export class BotsService {
 
     async delete(id: string): Promise<void> {
         const response = await firstValueFrom(
-            this.httpService.delete(`${this.authServiceUrl}/api/bot/${id}`),
+            this.httpService.delete(`${this.serviceUrl}/api/bot/${id}`),
         );
         return response.data;
     }
 
     async getById(id: string): Promise<GetBotResponse> {
         const response = await firstValueFrom(
-            this.httpService.get(`${this.authServiceUrl}/api/bot/${id}`),
+            this.httpService.get(`${this.serviceUrl}/api/bot/${id}`),
         );
         return response.data;
     }
 
     async getAll(): Promise<GetAllBotsResponse> {
         const response = await firstValueFrom(
-            this.httpService.get(`${this.authServiceUrl}/api/bot`),
+            this.httpService.get(`${this.serviceUrl}/api/bot`),
         );
         return response.data;
     }
