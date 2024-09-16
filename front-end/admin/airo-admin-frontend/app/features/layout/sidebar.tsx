@@ -4,7 +4,7 @@ import styles from './sidebar.module.css';
 
 interface SidebarProps {
     onLogout: () => void;
-    onSelect: (view: 'events') => void;
+    onSelect: (view: 'events' | 'bots') => void;
     isCollapsed: boolean;
     onToggle: () => void;
 }
@@ -16,6 +16,7 @@ const Sidebar: FC<SidebarProps> = ({ onLogout, onSelect, isCollapsed, onToggle }
                 {isCollapsed ? '>' : '<'}
             </button>
             <div className={styles.menu}>
+                <button onClick={() => onSelect('bots')}>Bots</button>
                 <button onClick={() => onSelect('events')}>Events</button>
                 <button onClick={onLogout}>Logout</button>
             </div>
