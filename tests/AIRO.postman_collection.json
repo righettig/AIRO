@@ -435,7 +435,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"bot1\",\r\n    \"price\": 123\r\n}",
+							"raw": "{\r\n    \"name\": \"event4\",\r\n    \"description\": \"fourth\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -443,7 +443,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3001/gateway/bot",
+							"raw": "http://localhost:3001/gateway/events",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -451,7 +451,7 @@
 							"port": "3001",
 							"path": [
 								"gateway",
-								"bot"
+								"events"
 							]
 						}
 					},
@@ -464,7 +464,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": \"8b4ddfb1-b050-43dc-80cf-49afa8c2c247\",\r\n    \"name\": \"bot1\",\r\n    \"price\": 123\r\n}",
+							"raw": "{\r\n    \"id\": \"578ef806-c986-4608-adf2-f7e31a9dc1ae\",\r\n    \"name\": \"FOO\",\r\n    \"description\": \"new\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -472,7 +472,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3001/gateway/bot",
+							"raw": "http://localhost:3001/gateway/events",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -480,7 +480,7 @@
 							"port": "3001",
 							"path": [
 								"gateway",
-								"bot"
+								"events"
 							]
 						}
 					},
@@ -492,7 +492,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3001/gateway/bot/8b4ddfb1-b050-43dc-80cf-49afa8c2c247",
+							"raw": "http://localhost:3001/gateway/events/8b4ddfb1-b050-43dc-80cf-49afa8c2c247",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -500,7 +500,7 @@
 							"port": "3001",
 							"path": [
 								"gateway",
-								"bot",
+								"events",
 								"8b4ddfb1-b050-43dc-80cf-49afa8c2c247"
 							]
 						}
@@ -513,7 +513,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3001/gateway/bot/df542a69-bef2-4806-80fa-15ea7ad9c0cb",
+							"raw": "http://localhost:3001/gateway/events/6160ef24-5025-429f-b12e-c4729fa5c9de",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -521,8 +521,8 @@
 							"port": "3001",
 							"path": [
 								"gateway",
-								"bot",
-								"df542a69-bef2-4806-80fa-15ea7ad9c0cb"
+								"events",
+								"6160ef24-5025-429f-b12e-c4729fa5c9de"
 							]
 						}
 					},
@@ -534,7 +534,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3001/gateway/bot",
+							"raw": "http://localhost:3001/gateway/events",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -542,7 +542,7 @@
 							"port": "3001",
 							"path": [
 								"gateway",
-								"bot"
+								"events"
 							]
 						}
 					},

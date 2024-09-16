@@ -5,6 +5,9 @@ import { LoginResponseDto } from './models/login.response.dto';
 import { BotsService } from 'src/bots/bots.service';
 import { CreateBotDto } from './models/create-bot.dto';
 import { UpdateBotDto } from './models/update-bot.dto';
+import { CreateEventDto } from './models/create-event.dto';
+import { EventsService } from 'src/events/events.service';
+import { UpdateEVentDto } from './models/update-event.dto';
 
 @Controller('gateway')
 export class GatewayController {
@@ -13,6 +16,7 @@ export class GatewayController {
   constructor(
     private readonly authService: AuthService,
     private readonly botsService: BotsService,
+    private readonly eventsService: EventsService,
   ) { }
 
   @Post('login')
@@ -65,6 +69,36 @@ export class GatewayController {
   @Get('bot')
   async getAllBots() {
     const response = await this.botsService.getAll();
+    return response;
+  }
+
+  @Post('events')
+  async createEvent(@Body() createEventDto: CreateEventDto) {
+    const response = await this.eventsService.create(createEventDto.name, createEventDto.description);
+    return response;
+  }
+
+  @Put('events')
+  async updateEvent(@Body() updateEventDto: UpdateEVentDto) {
+    const response = await this.eventsService.update(updateEventDto.id, updateEventDto.name, updateEventDto.description);
+    return response;
+  }
+
+  @Delete('events/:eventId')
+  async deleteEvent(@Param('eventId') eventId: string) {
+    const response = await this.eventsService.delete(eventId);
+    return response;
+  }
+
+  @Get('events/:eventId')
+  async getEvent(@Param('eventId') eventId: string) {;
+    const response = await this.eventsService.getById(eventId);
+    return response;
+  }
+
+  @Get('events')
+  async getAllEvents() {
+    const response = await this.eventsService.getAll();
     return response;
   }
 }

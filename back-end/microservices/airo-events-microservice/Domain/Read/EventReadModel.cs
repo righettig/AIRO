@@ -8,6 +8,6 @@ public class EventReadModel
 
     public override string? ToString()
     {
-        return $"Id: {Id}, Name: {Name}, Price {Description}";
+        return $"Id: {Id}, Name: {Name}, Description {Description}";
     }
 }
