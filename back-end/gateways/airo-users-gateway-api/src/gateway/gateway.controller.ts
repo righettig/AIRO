@@ -182,6 +182,9 @@ export class GatewayController {
 
     const uid = this.decodeFromToken<{ user_id?: string }>(token, 'user_id');
 
+    // 1) GET profile, to get 'AccountType'
+    // 2) GET store/my-bots/:userId // retrieve bot purchased by a given user
+    // 3) Implement logic on gateway
     return 2;
   }
 
