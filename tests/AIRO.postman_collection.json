@@ -427,6 +427,126 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "gateway - event create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"bot1\",\r\n    \"price\": 123\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/gateway/bot",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"bot"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - event update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"8b4ddfb1-b050-43dc-80cf-49afa8c2c247\",\r\n    \"name\": \"bot1\",\r\n    \"price\": 123\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/gateway/bot",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"bot"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - event get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/gateway/bot/8b4ddfb1-b050-43dc-80cf-49afa8c2c247",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"bot",
+								"8b4ddfb1-b050-43dc-80cf-49afa8c2c247"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - event delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/gateway/bot/df542a69-bef2-4806-80fa-15ea7ad9c0cb",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"bot",
+								"df542a69-bef2-4806-80fa-15ea7ad9c0cb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - event get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/gateway/bot",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"bot"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -802,6 +922,131 @@
 							"path": [
 								"api",
 								"bot"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Events",
+			"item": [
+				{
+					"name": "events - create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"event1\",\r\n    \"description\": \"first event\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4006/api/events",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4006",
+							"path": [
+								"api",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "events - update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"78f538c5-baef-4909-8958-fdc6f0e5bc63\",\r\n    \"name\": \"event1\",\r\n    \"description\": \"updated description\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4006/api/events",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4006",
+							"path": [
+								"api",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "events - get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4006/api/events/78f538c5-baef-4909-8958-fdc6f0e5bc63",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4006",
+							"path": [
+								"api",
+								"events",
+								"78f538c5-baef-4909-8958-fdc6f0e5bc63"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "events - delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4006/api/events/78f538c5-baef-4909-8958-fdc6f0e5bc63",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4006",
+							"path": [
+								"api",
+								"events",
+								"78f538c5-baef-4909-8958-fdc6f0e5bc63"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "events - get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4006/api/events",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4006",
+							"path": [
+								"api",
+								"events"
 							]
 						}
 					},
