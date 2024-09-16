@@ -7,6 +7,7 @@ import { AuthService } from '../auth/auth.service';
 import { LoginDto } from './models/login.dto';
 import { SignupDto } from './models/signup.dto';
 import { UpdateProfileDto } from 'src/profile/models/update-profile-dto';
+import { BotsService } from 'src/bots/bots.service';
 
 describe('GatewayController', () => {
   let controller: GatewayController;
@@ -14,6 +15,7 @@ describe('GatewayController', () => {
   let profileService: ProfileService;
   let billingService: BillingService;
   let invoiceService: InvoiceService;
+  let botsService: BotsService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -49,6 +51,13 @@ describe('GatewayController', () => {
             getAllInvoicesByUid: jest.fn(),
           },
         },
+        {
+          provide: BotsService,
+          useValue: {
+            getById: jest.fn(),
+            getAll: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
@@ -57,6 +66,7 @@ describe('GatewayController', () => {
     profileService = module.get<ProfileService>(ProfileService);
     billingService = module.get<BillingService>(BillingService);
     invoiceService = module.get<InvoiceService>(InvoiceService);
+    botsService = module.get<BotsService>(BotsService);
   });
 
   it('should be defined', () => {
