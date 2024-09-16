@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Logger, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Logger, Param, Post, Put } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
 import { LoginDto } from 'src/gateway/models/login.dto';
 import { LoginResponseDto } from './models/login.response.dto';
@@ -47,6 +47,12 @@ export class GatewayController {
   @Put('bot')
   async updateBot(@Body() updateDtoBot: UpdateBotDto) {
     const response = await this.botsService.update(updateDtoBot.id, updateDtoBot.name, updateDtoBot.price);
+    return response;
+  }
+
+  @Delete('bot/:botId')
+  async deleteBot(@Param('botId') botId: string) {
+    const response = await this.botsService.delete(botId);
     return response;
   }
 

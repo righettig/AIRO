@@ -320,6 +320,27 @@
 					"response": []
 				},
 				{
+					"name": "gateway - bot delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/gateway/bot/df542a69-bef2-4806-80fa-15ea7ad9c0cb",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"bot",
+								"df542a69-bef2-4806-80fa-15ea7ad9c0cb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "gateway - bot get all",
 					"request": {
 						"method": "GET",
