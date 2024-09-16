@@ -1,0 +1,29 @@
+<div class="title">
+    My Bots
+</div>
+
+<div class="container">
+    <ul>
+        @for (bot of bots; track bot.id) {
+        <li class="bot-item">
+            <div style="display: flex;align-items: center;">
+                <div style="flex: 1;">
+                    <div style="padding: 20px; border:lightgray 3px solid;">
+                        <img src="dog_robot_icon_48.png" alt="bot">
+                    </div>
+                </div>
+                <div style="flex: 10;padding-left: 14px;">
+                    <div class="bot-item-details">
+                        <strong>{{bot.name}}</strong>
+                        <p>{{bot.price}}</p>
+                    </div>
+                </div>
+            </div>
+        </li>
+        }
+    </ul>
+
+    @if (!bots?.length) {
+    <div>You do not currently own any bots.</div>
+    }
+</div>

@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { firstValueFrom, last } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { AuthService } from '../../auth/services/auth.service';
 import { ConfigService } from '../../common/services/config.service';
 import { Profile } from '../models/profile';

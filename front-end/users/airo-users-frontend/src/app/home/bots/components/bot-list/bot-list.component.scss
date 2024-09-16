@@ -1,0 +1,36 @@
+.title {
+    text-align: center;
+    font-size: 20px;
+}
+
+.container {
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .bot-item {
+        border: 1px solid #ddd;
+        padding: 10px;
+        margin-bottom: 10px;
+        position: relative;
+
+        .bot-item-details {
+            margin-bottom: 20px;
+        }
+
+        .bot-item-actions {
+            margin-top: 10px;
+        }
+
+        &:hover {
+            background: aliceblue;
+        }
+    }
+
+    button {
+        margin-right: 10px;
+        margin-bottom: 0;
+        display: inline-block;
+    }
+}

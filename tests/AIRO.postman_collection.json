@@ -68,6 +68,34 @@
 					"response": []
 				},
 				{
+					"name": "gateway - store bots purchase",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjAyMTAwNzE2ZmRkOTA0ZTViNGQ0OTExNmZmNWRiZGZjOTg5OTk0MDEiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWlyby00NGNhNyIsImF1ZCI6ImFpcm8tNDRjYTciLCJhdXRoX3RpbWUiOjE3MjYxNDI4ODMsInVzZXJfaWQiOiJKTXFVWk1zOXdkUHBKVUVZUnpKWWx0Y2VESEwyIiwic3ViIjoiSk1xVVpNczl3ZFBwSlVFWVJ6SllsdGNlREhMMiIsImlhdCI6MTcyNjE0Mjg4MywiZXhwIjoxNzI2MTQ2NDgzLCJlbWFpbCI6ImdpYWNvbW9fZnJlZUBhaXJvLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJnaWFjb21vX2ZyZWVAYWlyby5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.DuhDbdhSqLN1SDyDueDyc6hLjVY24iM3OWhWxZdttzS1WixCMW8c5PteDikL5JDI6658GwviSECCv8YYobpt9U22jH857owQEuMwuyajeR0w7Wvj3ccKcN-Vjec5BsWYXJVctwkYeYppo9pQZRSXQUzaDWGZQ-7zskUeQ4EVk-WtpMxR2Kl9m0xNwS20yPgOpihZO_BT84HFxHUxl9sad1Tl3I-pEjxuT8RqLvgYZhaOcy0TM_A9qw8rDL4AEoyoWIzg_lrnIOAkeoL-lw0GLpHTdJw2Qwq8gmhqE8ffzW0dAy1BZ1KCmQ73tM_Ofg6t7LRk6gtLOhlI8NDziE9Gvg",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/gateway/store/bots/123",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"gateway",
+								"store",
+								"bots",
+								"123"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "gateway - logout",
 					"request": {
 						"method": "POST",
@@ -195,12 +223,18 @@
 					"response": []
 				},
 				{
-					"name": "gateway - bot get",
+					"name": "gateway - store my-bots",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjAyMTAwNzE2ZmRkOTA0ZTViNGQ0OTExNmZmNWRiZGZjOTg5OTk0MDEiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWlyby00NGNhNyIsImF1ZCI6ImFpcm8tNDRjYTciLCJhdXRoX3RpbWUiOjE3MjYxNDI4ODMsInVzZXJfaWQiOiJKTXFVWk1zOXdkUHBKVUVZUnpKWWx0Y2VESEwyIiwic3ViIjoiSk1xVVpNczl3ZFBwSlVFWVJ6SllsdGNlREhMMiIsImlhdCI6MTcyNjE0Mjg4MywiZXhwIjoxNzI2MTQ2NDgzLCJlbWFpbCI6ImdpYWNvbW9fZnJlZUBhaXJvLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJnaWFjb21vX2ZyZWVAYWlyby5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.DuhDbdhSqLN1SDyDueDyc6hLjVY24iM3OWhWxZdttzS1WixCMW8c5PteDikL5JDI6658GwviSECCv8YYobpt9U22jH857owQEuMwuyajeR0w7Wvj3ccKcN-Vjec5BsWYXJVctwkYeYppo9pQZRSXQUzaDWGZQ-7zskUeQ4EVk-WtpMxR2Kl9m0xNwS20yPgOpihZO_BT84HFxHUxl9sad1Tl3I-pEjxuT8RqLvgYZhaOcy0TM_A9qw8rDL4AEoyoWIzg_lrnIOAkeoL-lw0GLpHTdJw2Qwq8gmhqE8ffzW0dAy1BZ1KCmQ73tM_Ofg6t7LRk6gtLOhlI8NDziE9Gvg",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "http://localhost:3000/gateway/bot/8b4ddfb1-b050-43dc-80cf-49afa8c2c247",
+							"raw": "http://localhost:3000/gateway/store/my-bots",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -208,20 +242,26 @@
 							"port": "3000",
 							"path": [
 								"gateway",
-								"bot",
-								"8b4ddfb1-b050-43dc-80cf-49afa8c2c247"
+								"store",
+								"my-bots"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "gateway - bot get all",
+					"name": "gateway - store bots",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjAyMTAwNzE2ZmRkOTA0ZTViNGQ0OTExNmZmNWRiZGZjOTg5OTk0MDEiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWlyby00NGNhNyIsImF1ZCI6ImFpcm8tNDRjYTciLCJhdXRoX3RpbWUiOjE3MjYxNDI4ODMsInVzZXJfaWQiOiJKTXFVWk1zOXdkUHBKVUVZUnpKWWx0Y2VESEwyIiwic3ViIjoiSk1xVVpNczl3ZFBwSlVFWVJ6SllsdGNlREhMMiIsImlhdCI6MTcyNjE0Mjg4MywiZXhwIjoxNzI2MTQ2NDgzLCJlbWFpbCI6ImdpYWNvbW9fZnJlZUBhaXJvLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJnaWFjb21vX2ZyZWVAYWlyby5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.DuhDbdhSqLN1SDyDueDyc6hLjVY24iM3OWhWxZdttzS1WixCMW8c5PteDikL5JDI6658GwviSECCv8YYobpt9U22jH857owQEuMwuyajeR0w7Wvj3ccKcN-Vjec5BsWYXJVctwkYeYppo9pQZRSXQUzaDWGZQ-7zskUeQ4EVk-WtpMxR2Kl9m0xNwS20yPgOpihZO_BT84HFxHUxl9sad1Tl3I-pEjxuT8RqLvgYZhaOcy0TM_A9qw8rDL4AEoyoWIzg_lrnIOAkeoL-lw0GLpHTdJw2Qwq8gmhqE8ffzW0dAy1BZ1KCmQ73tM_Ofg6t7LRk6gtLOhlI8NDziE9Gvg",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "http://localhost:3000/gateway/bot",
+							"raw": "http://localhost:3000/gateway/store/bots",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -229,7 +269,35 @@
 							"port": "3000",
 							"path": [
 								"gateway",
-								"bot"
+								"store",
+								"bots"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - store free-bots-count",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjAyMTAwNzE2ZmRkOTA0ZTViNGQ0OTExNmZmNWRiZGZjOTg5OTk0MDEiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWlyby00NGNhNyIsImF1ZCI6ImFpcm8tNDRjYTciLCJhdXRoX3RpbWUiOjE3MjYxNDI4ODMsInVzZXJfaWQiOiJKTXFVWk1zOXdkUHBKVUVZUnpKWWx0Y2VESEwyIiwic3ViIjoiSk1xVVpNczl3ZFBwSlVFWVJ6SllsdGNlREhMMiIsImlhdCI6MTcyNjE0Mjg4MywiZXhwIjoxNzI2MTQ2NDgzLCJlbWFpbCI6ImdpYWNvbW9fZnJlZUBhaXJvLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJnaWFjb21vX2ZyZWVAYWlyby5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.DuhDbdhSqLN1SDyDueDyc6hLjVY24iM3OWhWxZdttzS1WixCMW8c5PteDikL5JDI6658GwviSECCv8YYobpt9U22jH857owQEuMwuyajeR0w7Wvj3ccKcN-Vjec5BsWYXJVctwkYeYppo9pQZRSXQUzaDWGZQ-7zskUeQ4EVk-WtpMxR2Kl9m0xNwS20yPgOpihZO_BT84HFxHUxl9sad1Tl3I-pEjxuT8RqLvgYZhaOcy0TM_A9qw8rDL4AEoyoWIzg_lrnIOAkeoL-lw0GLpHTdJw2Qwq8gmhqE8ffzW0dAy1BZ1KCmQ73tM_Ofg6t7LRk6gtLOhlI8NDziE9Gvg",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/gateway/store/free-bots-count",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"gateway",
+								"store",
+								"free-bots-count"
 							]
 						}
 					},
