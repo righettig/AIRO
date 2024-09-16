@@ -251,4 +251,31 @@ describe('GatewayController', () => {
       expect(result).toEqual(invoicesResponse);
     });
   });
+
+  describe('getBot', () => {
+    it('should call botsService.getById and return the bot data', async () => {
+      const botId = 'bot-123';
+      const bot = { id: botId, name: 'TestBot', price: '100' };
+
+      jest.spyOn(botsService, 'getById').mockResolvedValue(bot);
+
+      const result = await controller.getBot(botId);
+
+      expect(botsService.getById).toHaveBeenCalledWith(botId);
+      expect(result).toEqual(bot);
+    });
+  });
+
+  describe('getAllBots', () => {
+    it('should call botsService.getAll and return the list of bots', async () => {
+      const bots = [{ id: 'bot-123', name: 'Bot1', price: '100' }];
+
+      jest.spyOn(botsService, 'getAll').mockResolvedValue(bots);
+
+      const result = await controller.getAllBots();
+
+      expect(botsService.getAll).toHaveBeenCalled();
+      expect(result).toEqual(bots);
+    });
+  });
 });
