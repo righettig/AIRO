@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Logger, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Get, Logger, Param, Post, Put } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
 import { LoginDto } from 'src/gateway/models/login.dto';
 import { LoginResponseDto } from './models/login.response.dto';
@@ -50,8 +50,8 @@ export class GatewayController {
     return response;
   }
 
-  @Get('bot')
-  async getBot(@Query() botId: string) {
+  @Get('bot/:botId')
+  async getBot(@Param('botId') botId: string) {;
     const response = await this.botsService.getById(botId);
     return response;
   }

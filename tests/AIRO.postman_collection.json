@@ -235,7 +235,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": \"5b2c2d34-36e8-4b39-8add-bb103b7905ab\",\r\n   \"name\": \"bot1\",\r\n    \"price\": 123\r\n}",
+							"raw": "{\r\n    \"id\": \"8b4ddfb1-b050-43dc-80cf-49afa8c2c247\",\r\n    \"name\": \"bot1\",\r\n    \"price\": 123\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -263,7 +263,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3001/gateway/bot?botId=5b2c2d34-36e8-4b39-8add-bb103b7905ab",
+							"raw": "http://localhost:3001/gateway/bot/8b4ddfb1-b050-43dc-80cf-49afa8c2c247",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -271,13 +271,8 @@
 							"port": "3001",
 							"path": [
 								"gateway",
-								"bot"
-							],
-							"query": [
-								{
-									"key": "botId",
-									"value": "5b2c2d34-36e8-4b39-8add-bb103b7905ab"
-								}
+								"bot",
+								"8b4ddfb1-b050-43dc-80cf-49afa8c2c247"
 							]
 						}
 					},
@@ -626,7 +621,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:4005/api/bot/c72236e1-039d-42ed-a316-798c29321ecc",
+							"raw": "http://localhost:4005/api/bot/8b4ddfb1-b050-43dc-80cf-49afa8c2c247",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -635,7 +630,7 @@
 							"path": [
 								"api",
 								"bot",
-								"c72236e1-039d-42ed-a316-798c29321ecc"
+								"8b4ddfb1-b050-43dc-80cf-49afa8c2c247"
 							]
 						}
 					},
