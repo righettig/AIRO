@@ -22,11 +22,13 @@ back-end/microservices/airo-profile-microservice/airo-profile-microservice.cspro
 /back-end/microservices/airo-admin-auth-microservice/obj
 /back-end/microservices/airo-bots-microservice/bin
 /back-end/microservices/airo-bots-microservice/obj
+/back-end/microservices/airo-bots-tests/bin
+/back-end/microservices/airo-bots-tests/obj
 /back-end/microservices/airo-cqrs-eventsourcing-lib/bin
 /back-end/microservices/airo-cqrs-eventsourcing-lib/obj
+/back-end/microservices/airo-events-microservice/obj
+/back-end/microservices/airo-events-microservice/bin
 /back-end/microservices/airo-purchase-microservice/bin
 /back-end/microservices/airo-purchase-microservice/obj
 /back-end/microservices/airo-purchase-tests/bin
 /back-end/microservices/airo-purchase-tests/obj
-/back-end/microservices/airo-bots-tests/bin
-/back-end/microservices/airo-bots-tests/obj

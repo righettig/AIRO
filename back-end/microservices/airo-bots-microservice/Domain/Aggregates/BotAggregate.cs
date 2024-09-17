@@ -6,8 +6,8 @@ namespace airo_bots_microservice.Domain.Aggregates;
 
 public class BotAggregate : AggregateRoot, IAggregateRoot
 {
-    public string Name { get; private set; }
-    public decimal Price { get; private set; }
+    //public string Name { get; private set; }
+    //public decimal Price { get; private set; }
 
     public void CreateBot(Guid id, string name, decimal price)
     {
@@ -26,14 +26,14 @@ public class BotAggregate : AggregateRoot, IAggregateRoot
 
     private void Apply(BotCreatedEvent @event)
     {
-        Name = @event.Name;
-        Price = @event.Price;
+        //Name = @event.Name;
+        //Price = @event.Price;
     }
 
     private void Apply(BotUpdatedEvent @event)
     {
-        Name = @event.Name;
-        Price = @event.Price;
+        //Name = @event.Name;
+        //Price = @event.Price;
     }
 
     private void Apply(BotDeletedEvent @event)

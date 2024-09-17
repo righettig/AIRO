@@ -73,6 +73,7 @@ services:
     depends_on:
       - auth-service
       - bots-service
+      - events-service
     build:
       context: ./back-end/gateways/airo-admin-gateway-api
     ports:
@@ -80,6 +81,7 @@ services:
     environment:
       - ADMIN_AUTH_API_URL=${ADMIN_AUTH_API_URL}
       - BOTS_API_URL=${BOTS_API_URL}
+      - EVENTS_API_URL=${EVENTS_API_URL}
     develop:
       context: ./back-end/gateways/airo-admin-gateway-api
       watch:
@@ -148,6 +150,15 @@ services:
     ports:
       - "4005:8080" # https not working so far!
 
+  events-service:
+    build:
+      context: .
+      dockerfile: ./back-end/microservices/airo-events-microservice/Dockerfile
+    environment:
+      - EVENT_STORE_DB_URL=${EVENT_STORE_DB_URL}
+    ports:
+      - "4006:8080" # https not working so far!
+      
   purchase-service:
     build:
       context: .

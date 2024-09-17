@@ -547,6 +547,126 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "gateway - event create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"event4\",\r\n    \"description\": \"fourth\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/gateway/events",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - event update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"578ef806-c986-4608-adf2-f7e31a9dc1ae\",\r\n    \"name\": \"FOO\",\r\n    \"description\": \"new\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/gateway/events",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - event get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/gateway/events/8b4ddfb1-b050-43dc-80cf-49afa8c2c247",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"events",
+								"8b4ddfb1-b050-43dc-80cf-49afa8c2c247"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - event delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/gateway/events/6160ef24-5025-429f-b12e-c4729fa5c9de",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"events",
+								"6160ef24-5025-429f-b12e-c4729fa5c9de"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - event get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/gateway/events",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"events"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
