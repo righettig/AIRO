@@ -34,3 +34,13 @@ back-end/microservices/airo-profile-microservice/airo-profile-microservice.cspro
 /back-end/microservices/airo-purchase-tests/obj
 /simulators/anybotics-agent-runner/bin
 /simulators/anybotics-agent-runner/obj
+/back-end/external APIs/anybotics/.vs
+/back-end/external APIs/anybotics/anybotics-anymal-api/.vs
+/back-end/external APIs/anybotics/anybotics-anymal-api/bin
+/back-end/external APIs/anybotics/anybotics-anymal-api/obj
+/back-end/external APIs/anybotics/anybotics-anymal-common/obj
+back-end/external APIs/anybotics/anybotics-c5ce9-2b6704ee0c6b.json
+/back-end/external APIs/anybotics/anybotics-unit-tests/bin
+/back-end/external APIs/anybotics/anybotics-unit-tests/obj
+/simulators/anybotics/anybotics-agent-runner/bin
+/simulators/anybotics/anybotics-agent-runner/obj
