@@ -58,7 +58,7 @@ Profile management [DONE]
 		on failure -> details not saved
 	
 
-Bot selection for free users [requires Admin, Store]
+Bot selection for free users [requires Admin, Store] [DONE]
 ----------------------------	
 	As a free user I should be able to select a single bot.
 	I enter the store
@@ -68,7 +68,7 @@ Bot selection for free users [requires Admin, Store]
 	When clicked I should be redirected to the upgrade account page.
 
 
-Bot selection for pro users [requires Admin, Store]
+Bot selection for pro users [requires Admin, Store] [DONE]
 ----------------------------
 	As a pro user I should be able to select up to 3 bots.
 	As a free user I should be able to select a single bot.
@@ -171,24 +171,24 @@ Companion App
 AIRO ADMIN PLATFORM
 ===================
 
-Login
------
+Login [DONE]
+------------
 	As an ADMIN I should be able to login with my @airo.com account (SSO?)
 
 
-Events mgmt
+Events mgmt [DONE]
 -----------
 	Create event
-		push email etc.
+		push email etc. [Not Done]
 	
 	Delete event
 	Update event 
-	Start event
 	List events
+	Start event [Not Done]
 	
-	Enter news
 	
-Bots mgmt
+	
+Bots mgmt WIP
 ---------	
 	Add bot -> send news (email + UI notification)
 		Bot should now be available for users
