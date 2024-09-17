@@ -1,4 +1,7 @@
 services:
+  #------------#
+  # Front-ends #
+  #------------#
   admin-app:
     depends_on:
       - admin-gateway-api
@@ -39,6 +42,9 @@ services:
         - action: rebuild
           path: ./front-end/users/airo-users-frontend/package.json
 
+  #--------------#
+  # Gateway APIs #
+  #--------------#
   users-gateway-api:
     depends_on:
       - auth-service
@@ -93,6 +99,25 @@ services:
         - action: rebuild
           path: ./back-end/gateways/airo-admin-gateway-api/package.json
 
+  enterprise-gateway-api:
+    build:
+      context: ./back-end/gateways/airo-enterprise-gateway-api
+    ports:
+      - "3002:3000"
+    develop:
+      context: ./back-end/gateways/airo-enterprise-gateway-api
+      watch:
+        - action: rebuild
+          path: ./back-end/gateways/airo-enterprise-gateway-api
+          target: /app
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: ./back-end/gateways/airo-enterprise-gateway-api/package.json
+
+  #---------------#
+  # Microservices #
+  #---------------#
   auth-service:
     build:
       context: .
@@ -236,6 +261,9 @@ services:
         - action: rebuild
           path: ./back-end/microservices/airo-notifications-microservice/package.json
 
+  #----------------------#
+  # DBs & Message queues #
+  #----------------------#
   rabbitmq:
     image: "rabbitmq:3-management"
     container_name: rabbitmq
