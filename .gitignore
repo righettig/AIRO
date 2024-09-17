@@ -2,6 +2,7 @@
 
 config/airo-44ca7-firebase-adminsdk-etd4u-7107dcb929.json
 config/airo-admin-firebase-adminsdk-a1emx-f61c9458c3.json
+config/anybotics-c5ce9-2b6704ee0c6b.json
 
 /back-end/microservices/airo-auth-microservice/.vs
 /back-end/microservices/airo-auth-microservice/bin
@@ -17,17 +18,22 @@ back-end/microservices/airo-profile-microservice/airo-profile-microservice.cspro
 
 /back-end/microservices/airo-common-lib/obj
 /back-end/microservices/airo-common-lib/bin
+
 /back-end/microservices/airo-admin-auth-microservice/.vs
 /back-end/microservices/airo-admin-auth-microservice/bin
 /back-end/microservices/airo-admin-auth-microservice/obj
+
 /back-end/microservices/airo-bots-microservice/bin
 /back-end/microservices/airo-bots-microservice/obj
 /back-end/microservices/airo-bots-tests/bin
 /back-end/microservices/airo-bots-tests/obj
+
 /back-end/microservices/airo-cqrs-eventsourcing-lib/bin
 /back-end/microservices/airo-cqrs-eventsourcing-lib/obj
+
 /back-end/microservices/airo-events-microservice/obj
 /back-end/microservices/airo-events-microservice/bin
+
 /back-end/microservices/airo-purchase-microservice/bin
 /back-end/microservices/airo-purchase-microservice/obj
 /back-end/microservices/airo-purchase-tests/bin
@@ -44,8 +50,6 @@ back-end/microservices/airo-profile-microservice/airo-profile-microservice.cspro
 /back-end/external APIs/anybotics/anybotics-anymal-common/bin
 /back-end/external APIs/anybotics/anybotics-unit-tests/bin
 /back-end/external APIs/anybotics/anybotics-unit-tests/obj
-
-back-end/external APIs/anybotics/anybotics-c5ce9-2b6704ee0c6b.json
 
 /simulators/anybotics/anybotics-agent-runner/bin
 /simulators/anybotics/anybotics-agent-runner/obj
