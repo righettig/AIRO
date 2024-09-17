@@ -1,0 +1,28 @@
+<div class="welcome-message">
+    <span>
+        @if (isProUser$ | async) {
+            @if (freeBotsCount > 0) 
+            {
+                With your <strong>Pro</strong> account your can still get <strong>{{freeBotsCount}}</strong> bots for free.
+            } 
+            @else {
+                You no longer have access to free bots.
+            }
+        } 
+        @else {
+            @if (freeBotsCount > 0) 
+            {
+                Your <strong>Free</strong> account allows you to get a <strong>single</strong> bot for free. <br> 
+            }
+            @else {
+                You have run out of free bots. <br>
+            }
+            <span style="font-size: 20px;">Consider <a routerLink="/upgrade" class="upgrade-link">upgrading</a> to a Pro account to get up to 3 bots.</span>
+        }
+    </span>
+</div>
+
+<div class="container">
+    <app-bot-list [bots]="bots" [canGetBotsForFree]="freeBotsCount > 0" (onBuy)="onBuy($event)"></app-bot-list>
+    <app-my-bots [bots]="myBots"></app-my-bots>
+</div>

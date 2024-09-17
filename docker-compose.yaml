@@ -45,6 +45,8 @@ services:
       - profile-service
       - notifications-service
       - billing-service
+      - bots-service
+      - purchase-service
     build:
       context: ./back-end/gateways/airo-users-gateway-api
     ports:
@@ -54,6 +56,8 @@ services:
       - PROFILE_API_URL=${PROFILE_API_URL}
       - BILLING_API_URL=${BILLING_API_URL}
       - INVOICE_API_URL=${INVOICE_API_URL}
+      - BOTS_API_URL=${BOTS_API_URL}
+      - PURCHASE_API_URL=${PURCHASE_API_URL}
     develop:
       context: ./back-end/gateways/airo-users-gateway-api
       watch:
@@ -68,12 +72,14 @@ services:
   admin-gateway-api:
     depends_on:
       - auth-service
+      - bots-service
     build:
       context: ./back-end/gateways/airo-admin-gateway-api
     ports:
       - "3001:3000"
     environment:
       - ADMIN_AUTH_API_URL=${ADMIN_AUTH_API_URL}
+      - BOTS_API_URL=${BOTS_API_URL}
     develop:
       context: ./back-end/gateways/airo-admin-gateway-api
       watch:
@@ -133,6 +139,24 @@ services:
     volumes:
       - airo-config-volume:/app/config
   
+  bots-service:
+    build:
+      context: .
+      dockerfile: ./back-end/microservices/airo-bots-microservice/Dockerfile
+    environment:
+      - EVENT_STORE_DB_URL=${EVENT_STORE_DB_URL}
+    ports:
+      - "4005:8080" # https not working so far!
+
+  purchase-service:
+    build:
+      context: .
+      dockerfile: ./back-end/microservices/airo-purchase-microservice/Dockerfile
+    environment:
+      - EVENT_STORE_DB_URL=${EVENT_STORE_DB_URL}
+    ports:
+      - "4007:8080" # https not working so far!
+
   billing-service:
     build:
       context: ./back-end/microservices/airo-billing-microservice
@@ -215,6 +239,37 @@ services:
     volumes:
       - mongo_data:/data/db
 
+  eventstore.db:
+    image: eventstore/eventstore:lts
+    #image: eventstore/eventstore:latest
+    environment:
+      - EVENTSTORE_INSECURE=true # let eventstore run without ceritficate
+      - EVENTSTORE_EXT_TCP_PORT=1113 # set internal tcp port
+      - EVENTSTORE_HTTP_PORT=2113 # set internal admin ui port
+      - EVENTSTORE_ENABLE_ATOM_PUB_OVER_HTTP=true
+      # - EVENTSTORE_INSECURE=true # let eventstore run without ceritficate
+      # - EVENTSTORE_CLUSTER_SIZE=1
+      # - EVENTSTORE_RUN_PROJECTIONS=All
+      # - EVENTSTORE_START_STANDARD_PROJECTIONS=True
+      # - EVENTSTORE_DB=/var/lib/eventstore-data
+      # - EVENTSTORE_INDEX=/var/lib/eventstore-index
+      # - EVENTSTORE_LOG=/var/log/eventstore
+      # - EVENTSTORE_EXT_TCP_PORT=1113
+      # - EVENTSTORE_HTTP_PORT=2113
+    ports:
+      - "1113:1113" # map internal tcp port
+      - "2113:2113" # map internal admin ui port
+    volumes:
+      - type: volume
+        source: eventstore-volume-data
+        target: /var/lib/eventstore-data
+      # - type: volume
+      #   source: eventstore-volume-index
+      #   target: /var/lib/eventstore-index
+      - type: volume
+        source: eventstore-volume-logs
+        target: /var/log/eventstore
+
   # When uncommenting to run e2e tests please update .env file with correct USERS_GATEWAY_API_URL for e2e
   # cypress:
   #   image: cypress/included:13.14.2
@@ -235,3 +290,7 @@ volumes:
     external: true 
   
   mongo_data:
+
+  eventstore-volume-data:
+  eventstore-volume-index:
+  eventstore-volume-logs:

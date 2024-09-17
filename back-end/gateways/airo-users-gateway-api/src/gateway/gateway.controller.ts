@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Logger, Patch, Post, Put, Req } from '@nestjs/common';
+import { Body, Controller, Get, Logger, Param, Patch, Post, Req } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
 import { ProfileService } from 'src/profile/profile.service';
 import { LoginDto } from 'src/gateway/models/login.dto';
@@ -10,6 +10,8 @@ import { BillingService } from 'src/billing/billing.service';
 import { InvoiceService } from 'src/invoice/invoice.service';
 import { InvoiceDto } from 'src/invoice/models/invoice.dto';
 import { UpdateProfileDto } from 'src/profile/models/update-profile-dto';
+import { BotsService } from 'src/bots/bots.service';
+import { PurchaseService } from 'src/purchase/purchase.service';
 
 @Controller('gateway')
 export class GatewayController {
@@ -20,6 +22,8 @@ export class GatewayController {
     private readonly profileService: ProfileService,
     private readonly billingService: BillingService,
     private readonly invoiceService: InvoiceService,
+    private readonly botsService: BotsService,
+    private readonly purchaseService: PurchaseService
   ) { }
 
   @Post('signup')
@@ -121,6 +125,70 @@ export class GatewayController {
     const invoicesResponse = await this.invoiceService.getAllInvoicesByUid(uid);
 
     return invoicesResponse;
+  }
+
+  @Get('store/my-bots')
+  async myBots(@Req() request: Request) {
+    const token = request.headers['authorization'];
+    if (!token) {
+      throw new Error('Token is missing');
+    }
+
+    const uid = this.decodeFromToken<{ user_id?: string }>(token, 'user_id');
+
+    const botIds = await this.purchaseService.getAll(uid);
+    const bots = await this.botsService.getByIds(botIds);
+
+    return bots;
+  }
+
+  @Get('store/bots')
+  async getAllBots(@Req() request: Request) {
+    const token = request.headers['authorization'];
+    if (!token) {
+      throw new Error('Token is missing');
+    }
+
+    // TODO: userId could be used in future to get user-specific prices/promotions
+    // or it might not be needed! Please cleanup if that's the case!
+    const uid = this.decodeFromToken<{ user_id?: string }>(token, 'user_id');
+
+    const response = await this.botsService.getAll();
+    return response;
+  }
+
+  @Get('store/free-bots-count')
+  async getFreeBotsAllowance(@Req() request: Request) {
+    const token = request.headers['authorization'];
+    if (!token) {
+      throw new Error('Token is missing');
+    }
+
+    const uid = this.decodeFromToken<{ user_id?: string }>(token, 'user_id');
+
+    const profile = await this.profileService.getProfileByUid(uid);
+    const botIds = await this.purchaseService.getAll(uid);
+
+    const freeBotsAllowance = (profile.accountType == 'pro' ? 3 : 1) - botIds.length;
+    return freeBotsAllowance;
+  }
+
+  @Post('store/bots/:botId')
+  async buyBot(@Req() request: Request, @Param('botId') botId) {
+    const token = request.headers['authorization'];
+    if (!token) {
+      throw new Error('Token is missing');
+    }
+
+    const uid = this.decodeFromToken<{ user_id?: string }>(token, 'user_id');
+
+    try {
+      await this.purchaseService.purchase(uid, botId);
+      return { success: true };
+    }
+    catch {
+      return { success: false };
+    }
   }
 
   private decodeFromToken<T>(token: string, property: keyof T): T[keyof T] | null {

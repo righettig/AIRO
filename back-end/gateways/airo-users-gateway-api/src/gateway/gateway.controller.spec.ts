@@ -7,6 +7,7 @@ import { AuthService } from '../auth/auth.service';
 import { LoginDto } from './models/login.dto';
 import { SignupDto } from './models/signup.dto';
 import { UpdateProfileDto } from 'src/profile/models/update-profile-dto';
+import { BotsService } from 'src/bots/bots.service';
 
 describe('GatewayController', () => {
   let controller: GatewayController;
@@ -14,6 +15,7 @@ describe('GatewayController', () => {
   let profileService: ProfileService;
   let billingService: BillingService;
   let invoiceService: InvoiceService;
+  let botsService: BotsService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -49,6 +51,13 @@ describe('GatewayController', () => {
             getAllInvoicesByUid: jest.fn(),
           },
         },
+        {
+          provide: BotsService,
+          useValue: {
+            getById: jest.fn(),
+            getAll: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
@@ -57,6 +66,7 @@ describe('GatewayController', () => {
     profileService = module.get<ProfileService>(ProfileService);
     billingService = module.get<BillingService>(BillingService);
     invoiceService = module.get<InvoiceService>(InvoiceService);
+    botsService = module.get<BotsService>(BotsService);
   });
 
   it('should be defined', () => {
@@ -239,6 +249,33 @@ describe('GatewayController', () => {
 
       expect(invoiceService.getAllInvoicesByUid).toHaveBeenCalledWith('123');
       expect(result).toEqual(invoicesResponse);
+    });
+  });
+
+  describe('getBot', () => {
+    it('should call botsService.getById and return the bot data', async () => {
+      const botId = 'bot-123';
+      const bot = { id: botId, name: 'TestBot', price: '100' };
+
+      jest.spyOn(botsService, 'getById').mockResolvedValue(bot);
+
+      const result = await controller.getBot(botId);
+
+      expect(botsService.getById).toHaveBeenCalledWith(botId);
+      expect(result).toEqual(bot);
+    });
+  });
+
+  describe('getAllBots', () => {
+    it('should call botsService.getAll and return the list of bots', async () => {
+      const bots = [{ id: 'bot-123', name: 'Bot1', price: '100' }];
+
+      jest.spyOn(botsService, 'getAll').mockResolvedValue(bots);
+
+      const result = await controller.getAllBots();
+
+      expect(botsService.getAll).toHaveBeenCalled();
+      expect(result).toEqual(bots);
     });
   });
 });

@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "Gateway",
+			"name": "Users Gateway",
 			"item": [
 				{
 					"name": "gateway - signup",
@@ -45,7 +45,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"giacomo_free@airo.com\",\r\n    \"password\": \"q1w2e3\"\r\n}",
+							"raw": "{\r\n    \"email\": \"giacomo@airo.com\",\r\n    \"password\": \"q1w2e3\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -134,6 +134,41 @@
 					"response": []
 				},
 				{
+					"name": "gateway - profile",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjAyMTAwNzE2ZmRkOTA0ZTViNGQ0OTExNmZmNWRiZGZjOTg5OTk0MDEiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWlyby00NGNhNyIsImF1ZCI6ImFpcm8tNDRjYTciLCJhdXRoX3RpbWUiOjE3MjYxNDI4ODMsInVzZXJfaWQiOiJKTXFVWk1zOXdkUHBKVUVZUnpKWWx0Y2VESEwyIiwic3ViIjoiSk1xVVpNczl3ZFBwSlVFWVJ6SllsdGNlREhMMiIsImlhdCI6MTcyNjE0Mjg4MywiZXhwIjoxNzI2MTQ2NDgzLCJlbWFpbCI6ImdpYWNvbW9fZnJlZUBhaXJvLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJnaWFjb21vX2ZyZWVAYWlyby5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.DuhDbdhSqLN1SDyDueDyc6hLjVY24iM3OWhWxZdttzS1WixCMW8c5PteDikL5JDI6658GwviSECCv8YYobpt9U22jH857owQEuMwuyajeR0w7Wvj3ccKcN-Vjec5BsWYXJVctwkYeYppo9pQZRSXQUzaDWGZQ-7zskUeQ4EVk-WtpMxR2Kl9m0xNwS20yPgOpihZO_BT84HFxHUxl9sad1Tl3I-pEjxuT8RqLvgYZhaOcy0TM_A9qw8rDL4AEoyoWIzg_lrnIOAkeoL-lw0GLpHTdJw2Qwq8gmhqE8ffzW0dAy1BZ1KCmQ73tM_Ofg6t7LRk6gtLOhlI8NDziE9Gvg",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"foo\",\r\n    \"lastName\": \"bar\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/gateway/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"gateway",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "gateway - invoices",
 					"request": {
 						"method": "GET",
@@ -154,6 +189,360 @@
 							"path": [
 								"gateway",
 								"invoices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - store my-bots",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjAyMTAwNzE2ZmRkOTA0ZTViNGQ0OTExNmZmNWRiZGZjOTg5OTk0MDEiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWlyby00NGNhNyIsImF1ZCI6ImFpcm8tNDRjYTciLCJhdXRoX3RpbWUiOjE3MjY1NTg5MzYsInVzZXJfaWQiOiJJUEVCaGwyaDM2ZGNoTlZZMkN4N1NKd2xKTUQzIiwic3ViIjoiSVBFQmhsMmgzNmRjaE5WWTJDeDdTSndsSk1EMyIsImlhdCI6MTcyNjU1ODkzNiwiZXhwIjoxNzI2NTYyNTM2LCJlbWFpbCI6ImdpYWNvbW9fcHJvQGFpcm8uY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbImdpYWNvbW9fcHJvQGFpcm8uY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.sKbMyNZWclGSCMM_mcA73VYaEL1oPJN1qVxIUQpk4LWzCkhrLR3ke4DGgAWUq85AX00LUbfPO90xEUFWDkViVoi8ilrvneF1WYy00gsJTPPIKkRPF36hlWNLROrB7Evp1qNcTRWkc-sRsiELlN9RvlHv7fDFNfskRXqp3ERREmHsOSNTR8fOnBK1tlukvsLOBfgLe_9EawXb3Yl3vvsxmsgsTZJAUn-oCdzHxhRcuLass8j9qvWUGz3tM2HiB5lN0x0JwXbNT-Di3_HpZkJPmJRqdsCCC7jmZLorfYmfK0Znh3Xtkzz2ZKNf22h7Fp1O1mTcqoZ86-k6Q5CpBIJhwA",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/gateway/store/my-bots",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"gateway",
+								"store",
+								"my-bots"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - store bots",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjAyMTAwNzE2ZmRkOTA0ZTViNGQ0OTExNmZmNWRiZGZjOTg5OTk0MDEiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWlyby00NGNhNyIsImF1ZCI6ImFpcm8tNDRjYTciLCJhdXRoX3RpbWUiOjE3MjYxNDI4ODMsInVzZXJfaWQiOiJKTXFVWk1zOXdkUHBKVUVZUnpKWWx0Y2VESEwyIiwic3ViIjoiSk1xVVpNczl3ZFBwSlVFWVJ6SllsdGNlREhMMiIsImlhdCI6MTcyNjE0Mjg4MywiZXhwIjoxNzI2MTQ2NDgzLCJlbWFpbCI6ImdpYWNvbW9fZnJlZUBhaXJvLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJnaWFjb21vX2ZyZWVAYWlyby5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.DuhDbdhSqLN1SDyDueDyc6hLjVY24iM3OWhWxZdttzS1WixCMW8c5PteDikL5JDI6658GwviSECCv8YYobpt9U22jH857owQEuMwuyajeR0w7Wvj3ccKcN-Vjec5BsWYXJVctwkYeYppo9pQZRSXQUzaDWGZQ-7zskUeQ4EVk-WtpMxR2Kl9m0xNwS20yPgOpihZO_BT84HFxHUxl9sad1Tl3I-pEjxuT8RqLvgYZhaOcy0TM_A9qw8rDL4AEoyoWIzg_lrnIOAkeoL-lw0GLpHTdJw2Qwq8gmhqE8ffzW0dAy1BZ1KCmQ73tM_Ofg6t7LRk6gtLOhlI8NDziE9Gvg",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/gateway/store/bots",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"gateway",
+								"store",
+								"bots"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - store bot purchase",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjAyMTAwNzE2ZmRkOTA0ZTViNGQ0OTExNmZmNWRiZGZjOTg5OTk0MDEiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWlyby00NGNhNyIsImF1ZCI6ImFpcm8tNDRjYTciLCJhdXRoX3RpbWUiOjE3MjY1NTg5MzYsInVzZXJfaWQiOiJJUEVCaGwyaDM2ZGNoTlZZMkN4N1NKd2xKTUQzIiwic3ViIjoiSVBFQmhsMmgzNmRjaE5WWTJDeDdTSndsSk1EMyIsImlhdCI6MTcyNjU1ODkzNiwiZXhwIjoxNzI2NTYyNTM2LCJlbWFpbCI6ImdpYWNvbW9fcHJvQGFpcm8uY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbImdpYWNvbW9fcHJvQGFpcm8uY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.sKbMyNZWclGSCMM_mcA73VYaEL1oPJN1qVxIUQpk4LWzCkhrLR3ke4DGgAWUq85AX00LUbfPO90xEUFWDkViVoi8ilrvneF1WYy00gsJTPPIKkRPF36hlWNLROrB7Evp1qNcTRWkc-sRsiELlN9RvlHv7fDFNfskRXqp3ERREmHsOSNTR8fOnBK1tlukvsLOBfgLe_9EawXb3Yl3vvsxmsgsTZJAUn-oCdzHxhRcuLass8j9qvWUGz3tM2HiB5lN0x0JwXbNT-Di3_HpZkJPmJRqdsCCC7jmZLorfYmfK0Znh3Xtkzz2ZKNf22h7Fp1O1mTcqoZ86-k6Q5CpBIJhwA",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/gateway/store/bots/d58cdc52-afae-418a-9db0-ebed65c95682",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"gateway",
+								"store",
+								"bots",
+								"d58cdc52-afae-418a-9db0-ebed65c95682"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - store free-bots-count",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjAyMTAwNzE2ZmRkOTA0ZTViNGQ0OTExNmZmNWRiZGZjOTg5OTk0MDEiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWlyby00NGNhNyIsImF1ZCI6ImFpcm8tNDRjYTciLCJhdXRoX3RpbWUiOjE3MjY1NTg5MzYsInVzZXJfaWQiOiJJUEVCaGwyaDM2ZGNoTlZZMkN4N1NKd2xKTUQzIiwic3ViIjoiSVBFQmhsMmgzNmRjaE5WWTJDeDdTSndsSk1EMyIsImlhdCI6MTcyNjU1ODkzNiwiZXhwIjoxNzI2NTYyNTM2LCJlbWFpbCI6ImdpYWNvbW9fcHJvQGFpcm8uY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbImdpYWNvbW9fcHJvQGFpcm8uY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.sKbMyNZWclGSCMM_mcA73VYaEL1oPJN1qVxIUQpk4LWzCkhrLR3ke4DGgAWUq85AX00LUbfPO90xEUFWDkViVoi8ilrvneF1WYy00gsJTPPIKkRPF36hlWNLROrB7Evp1qNcTRWkc-sRsiELlN9RvlHv7fDFNfskRXqp3ERREmHsOSNTR8fOnBK1tlukvsLOBfgLe_9EawXb3Yl3vvsxmsgsTZJAUn-oCdzHxhRcuLass8j9qvWUGz3tM2HiB5lN0x0JwXbNT-Di3_HpZkJPmJRqdsCCC7jmZLorfYmfK0Znh3Xtkzz2ZKNf22h7Fp1O1mTcqoZ86-k6Q5CpBIJhwA",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/gateway/store/free-bots-count",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"gateway",
+								"store",
+								"free-bots-count"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin Gateway",
+			"item": [
+				{
+					"name": "gateway - bot create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"bot3\",\r\n    \"price\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/gateway/bot",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"bot"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - event create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"event4\",\r\n    \"description\": \"fourth\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/gateway/events",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - event update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"578ef806-c986-4608-adf2-f7e31a9dc1ae\",\r\n    \"name\": \"FOO\",\r\n    \"description\": \"new\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/gateway/events",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - event get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/gateway/events/8b4ddfb1-b050-43dc-80cf-49afa8c2c247",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"events",
+								"8b4ddfb1-b050-43dc-80cf-49afa8c2c247"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - event delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/gateway/events/6160ef24-5025-429f-b12e-c4729fa5c9de",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"events",
+								"6160ef24-5025-429f-b12e-c4729fa5c9de"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - event get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/gateway/events",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - bot update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"8b4ddfb1-b050-43dc-80cf-49afa8c2c247\",\r\n    \"name\": \"bot1\",\r\n    \"price\": 123\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/gateway/bot",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"bot"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - bot get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/gateway/bot/3d1b3170-48ec-466f-8b02-36d36801fd9a",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"bot",
+								"3d1b3170-48ec-466f-8b02-36d36801fd9a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - bot delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/gateway/bot/df542a69-bef2-4806-80fa-15ea7ad9c0cb",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"bot",
+								"df542a69-bef2-4806-80fa-15ea7ad9c0cb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - bot get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/gateway/bot",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"bot"
 							]
 						}
 					},
@@ -201,7 +590,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"giacomo_free@airo.com\",\r\n    \"password\": \"q1w2e3\"\r\n}",
+							"raw": "{\r\n    \"email\": \"giacomo@airo.com\",\r\n    \"password\": \"q1w2e3\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -328,6 +717,35 @@
 					"response": []
 				},
 				{
+					"name": "profile - update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"uid\": \"JMqUZMs9wdPpJUEYRzJYltceDHL2\",\r\n    \"firstName\": \"Giacomo\",\r\n    \"lastName\": \"Righetti\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4001/api/profile",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4001",
+							"path": [
+								"api",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "profile - get",
 					"request": {
 						"method": "GET",
@@ -379,6 +797,320 @@
 									"key": "uid",
 									"value": "eXxaf2oy0XbVKoNAwzB7xWhXz7A3"
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Bots",
+			"item": [
+				{
+					"name": "bots - create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"bot1\",\r\n    \"price\": 123\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4005/api/bot",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4005",
+							"path": [
+								"api",
+								"bot"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "bots - update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"c72236e1-039d-42ed-a316-798c29321ecc\",\r\n    \"name\": \"bot1\",\r\n    \"price\": 123\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4005/api/bot",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4005",
+							"path": [
+								"api",
+								"bot"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "bots - get by ids",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4005/api/bot?ids=8268a1b9-fc6d-46ce-99c1-f2d02fb81af3&ids=0f66ef91-7b93-44b4-bb05-c69f8cd1af76",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4005",
+							"path": [
+								"api",
+								"bot"
+							],
+							"query": [
+								{
+									"key": "ids",
+									"value": "8268a1b9-fc6d-46ce-99c1-f2d02fb81af3"
+								},
+								{
+									"key": "ids",
+									"value": "0f66ef91-7b93-44b4-bb05-c69f8cd1af76"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "bots - delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4005/api/bot/ec5d0e40-5ce9-40dd-ac66-61a6ca22852d",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4005",
+							"path": [
+								"api",
+								"bot",
+								"ec5d0e40-5ce9-40dd-ac66-61a6ca22852d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "bots - get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4005/api/bot",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4005",
+							"path": [
+								"api",
+								"bot"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Events",
+			"item": [
+				{
+					"name": "events - create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"event1\",\r\n    \"description\": \"first event\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4006/api/events",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4006",
+							"path": [
+								"api",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "events - update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"78f538c5-baef-4909-8958-fdc6f0e5bc63\",\r\n    \"name\": \"event1\",\r\n    \"description\": \"updated description\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4006/api/events",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4006",
+							"path": [
+								"api",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "events - get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4006/api/events/78f538c5-baef-4909-8958-fdc6f0e5bc63",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4006",
+							"path": [
+								"api",
+								"events",
+								"78f538c5-baef-4909-8958-fdc6f0e5bc63"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "events - delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4006/api/events/78f538c5-baef-4909-8958-fdc6f0e5bc63",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4006",
+							"path": [
+								"api",
+								"events",
+								"78f538c5-baef-4909-8958-fdc6f0e5bc63"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "events - get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4006/api/events",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4006",
+							"path": [
+								"api",
+								"events"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Purchase",
+			"item": [
+				{
+					"name": "purchase - create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": \"IPEBhl2h36dchNVY2Cx7SJwlJMD3\",\r\n    \"botId\": \"e844da5f-1915-43ab-81f1-24d37cb7ccb5\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4007/api/purchase",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4007",
+							"path": [
+								"api",
+								"purchase"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "purchase - get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4007/api/purchase/71d484cc-c4a4-4376-bb2f-43e1465df028",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4007",
+							"path": [
+								"api",
+								"purchase",
+								"71d484cc-c4a4-4376-bb2f-43e1465df028"
 							]
 						}
 					},

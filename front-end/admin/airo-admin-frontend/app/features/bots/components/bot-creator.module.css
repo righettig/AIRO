@@ -1,0 +1,12 @@
+.botCreator {
+    margin-bottom: 20px;
+}
+
+.botCreator input {
+    margin-bottom: 10px;
+}
+
+.botCreator button {
+    display: block;
+    margin-top: 10px;
+}
