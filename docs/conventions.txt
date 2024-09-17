@@ -20,6 +20,8 @@
 
 4) All front-end(s) projects should be exposed in the 5000 range
 
+5) All external API(s) projects should be exposed in the 6000 range
+
 5) RabbitMq
 	<<MICROSERVICE_NAME>>-exchange, e.g. invoice-exchange
 	<<MICROSERVICE_NAME>>-queue, e.g. invoice-queue

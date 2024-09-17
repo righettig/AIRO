@@ -100,6 +100,8 @@ services:
           path: ./back-end/gateways/airo-admin-gateway-api/package.json
 
   enterprise-gateway-api:
+    depends_on:
+      - anybotics-service
     build:
       context: ./back-end/gateways/airo-enterprise-gateway-api
     ports:
@@ -260,6 +262,16 @@ services:
             - node_modules/
         - action: rebuild
           path: ./back-end/microservices/airo-notifications-microservice/package.json
+
+  #---------------#
+  # External APIs #
+  #---------------#
+  anybotics-service:
+    build:
+      context: .
+      dockerfile: ./back-end/external APIs/anybotics/anybotics-anymal-api/Dockerfile
+    ports:
+      - "6000:8080" # https not working so far!
 
   #----------------------#
   # DBs & Message queues #
