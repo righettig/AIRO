@@ -12,7 +12,7 @@ namespace anybotics_anymal_api.Extensions;
 // Extension methods to organize service registration and middleware configuration
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddCustomServices(this IServiceCollection services)
+    public static IServiceCollection AddCustomServices(this IServiceCollection services, string? firebaseConfigFile, string? firebaseProjectName)
     {
         services.ConfigureCors();
         services.ConfigureAuthentication();
@@ -29,8 +29,7 @@ public static class ServiceCollectionExtensions
 
         services.AddCommandHandlers(Assembly.GetExecutingAssembly());
 
-        // TODO
-        services.AddFirebaseAndFirestore("anybotics-c5ce9-b8d42a6f97b1.json", "anybotics-c5ce9");
+        services.AddFirebaseAndFirestore(firebaseConfigFile, firebaseProjectName);
 
         return services;
     }
