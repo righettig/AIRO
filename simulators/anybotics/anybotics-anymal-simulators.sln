@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "anybotics-anymal", "anyboti
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "anybotics-agent-runner", "anybotics-agent-runner\anybotics-agent-runner.csproj", "{38FBD341-FCD7-4527-8BDB-A29B45E4B89E}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "anybotics-anymal-common", "..\..\back-end\external APIs\anybotics\anybotics-anymal-common\anybotics-anymal-common.csproj", "{AEAE8BE1-2C7D-4590-8F58-8EEDDC9092F1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{38FBD341-FCD7-4527-8BDB-A29B45E4B89E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38FBD341-FCD7-4527-8BDB-A29B45E4B89E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38FBD341-FCD7-4527-8BDB-A29B45E4B89E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AEAE8BE1-2C7D-4590-8F58-8EEDDC9092F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEAE8BE1-2C7D-4590-8F58-8EEDDC9092F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEAE8BE1-2C7D-4590-8F58-8EEDDC9092F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEAE8BE1-2C7D-4590-8F58-8EEDDC9092F1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

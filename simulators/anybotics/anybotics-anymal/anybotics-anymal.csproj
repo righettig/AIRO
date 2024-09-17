@@ -7,9 +7,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
+  
   <ItemGroup>
-    <ProjectReference Include="..\anybotics-anymal-common\anybotics-anymal-common.csproj" />
+    <ProjectReference Include="..\..\..\back-end\external APIs\anybotics\anybotics-anymal-common\anybotics-anymal-common.csproj" />
   </ItemGroup>
   
 </Project>
