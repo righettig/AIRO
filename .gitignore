@@ -32,3 +32,5 @@ back-end/microservices/airo-profile-microservice/airo-profile-microservice.cspro
 /back-end/microservices/airo-purchase-microservice/obj
 /back-end/microservices/airo-purchase-tests/bin
 /back-end/microservices/airo-purchase-tests/obj
+/simulators/anybotics-agent-runner/bin
+/simulators/anybotics-agent-runner/obj
