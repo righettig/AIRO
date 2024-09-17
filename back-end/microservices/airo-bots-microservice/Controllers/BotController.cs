@@ -42,16 +42,17 @@ public class BotController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetBots()
+    public async Task<IActionResult> GetBots([FromQuery] Guid[]? ids = null)
     {
-        var bots = await _mediator.Send(new GetAllBots());
-        return Ok(bots);
-    }
-
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetBot(Guid id)
-    {
-        var bot = await _mediator.Send(new GetBotById(id));
-        return Ok(bot);
+        if (ids == null || ids.Length == 0)
+        {
+            var bots = await _mediator.Send(new GetAllBots());
+            return Ok(bots);
+        }
+        else
+        {
+            var bots = await _mediator.Send(new GetBotsByIds(ids));
+            return Ok(bots);
+        }
     }
 }

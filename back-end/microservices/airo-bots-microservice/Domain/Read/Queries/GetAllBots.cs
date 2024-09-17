@@ -2,6 +2,6 @@
 
 namespace airo_bots_microservice.Domain.Read.Queries;
 
-public class GetAllBots() : IQuery<IEnumerable<BotReadModel>>
+public class GetAllBots() : IQuery<BotReadModel[]>
 {
 }

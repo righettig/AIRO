@@ -9,7 +9,7 @@ public class BotPurchasedEventHandler(IReadRepository<PurchaseReadModel> readRep
 {
     public override void Handle(BotPurchasedEvent @event)
     {
-        readRepository.Add(new PurchaseReadModel { Id = @event.Id, UserId = @event.UserId, BotId = @event.BotId });
+        readRepository.Add(new PurchaseReadModel { UserId = @event.UserId, BotId = @event.BotId });
         readRepository.SaveChanges();
     }
 }

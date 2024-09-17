@@ -1,6 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Bot } from '../../models/bot.model';
-import { BotStoreService } from '../../services/bots-service';
 
 @Component({
   selector: 'app-my-bots',
@@ -10,14 +9,8 @@ import { BotStoreService } from '../../services/bots-service';
   imports: []
 })
 export class MyBotsComponent {
-  bots: Bot[] | undefined;
+  @Input() bots: Bot[] = [];
 
-  constructor(private botStoreService: BotStoreService) { }
-
-  async ngOnInit(): Promise<void> {
-    this.bots = await this.botStoreService.getMyBots();
-  }
-  
   remove(botId: string) {
     
   }

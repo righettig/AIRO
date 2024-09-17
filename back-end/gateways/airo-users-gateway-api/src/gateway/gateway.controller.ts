@@ -11,6 +11,7 @@ import { InvoiceService } from 'src/invoice/invoice.service';
 import { InvoiceDto } from 'src/invoice/models/invoice.dto';
 import { UpdateProfileDto } from 'src/profile/models/update-profile-dto';
 import { BotsService } from 'src/bots/bots.service';
+import { PurchaseService } from 'src/purchase/purchase.service';
 
 @Controller('gateway')
 export class GatewayController {
@@ -22,6 +23,7 @@ export class GatewayController {
     private readonly billingService: BillingService,
     private readonly invoiceService: InvoiceService,
     private readonly botsService: BotsService,
+    private readonly purchaseService: PurchaseService
   ) { }
 
   @Post('signup')
@@ -125,20 +127,6 @@ export class GatewayController {
     return invoicesResponse;
   }
 
-  // OBSOLETE, to be replaced by "store" API --->
-  // @Get('bot/:botId')
-  // async getBot(@Param('botId') botId: string) {
-  //   const response = await this.botsService.getById(botId);
-  //   return response;
-  // }
-
-  // @Get('bot')
-  // async getAllBots() {
-  //   const response = await this.botsService.getAll();
-  //   return response;
-  // }
-  // <-------------------------------------------
-
   @Get('store/my-bots')
   async myBots(@Req() request: Request) {
     const token = request.headers['authorization'];
@@ -148,12 +136,10 @@ export class GatewayController {
 
     const uid = this.decodeFromToken<{ user_id?: string }>(token, 'user_id');
 
-    const response = [
-      { id: '1', name: 'mybot1' },
-      { id: '2', name: 'mybot2' },
-      { id: '3', name: 'mybot3' }
-    ]
-    return response;
+    const botIds = await this.purchaseService.getAll(uid);
+    const bots = await this.botsService.getByIds(botIds);
+
+    return bots;
   }
 
   @Get('store/bots')
@@ -163,13 +149,11 @@ export class GatewayController {
       throw new Error('Token is missing');
     }
 
+    // TODO: userId could be used in future to get user-specific prices/promotions
+    // or it might not be needed! Please cleanup if that's the case!
     const uid = this.decodeFromToken<{ user_id?: string }>(token, 'user_id');
 
-    const response = [
-      { id: '11', name: 'mybot11' },
-      { id: '22', name: 'mybot22' },
-      { id: '33', name: 'mybot33' }
-    ]
+    const response = await this.botsService.getAll();
     return response;
   }
 
@@ -182,10 +166,11 @@ export class GatewayController {
 
     const uid = this.decodeFromToken<{ user_id?: string }>(token, 'user_id');
 
-    // 1) GET profile, to get 'AccountType'
-    // 2) GET store/my-bots/:userId // retrieve bot purchased by a given user
-    // 3) Implement logic on gateway
-    return 2;
+    const profile = await this.profileService.getProfileByUid(uid);
+    const botIds = await this.purchaseService.getAll(uid);
+
+    const freeBotsAllowance = (profile.accountType == 'pro' ? 3 : 1) - botIds.length;
+    return freeBotsAllowance;
   }
 
   @Post('store/bots/:botId')
@@ -197,9 +182,13 @@ export class GatewayController {
 
     const uid = this.decodeFromToken<{ user_id?: string }>(token, 'user_id');
 
-    return {
-      success: true
-    };
+    try {
+      await this.purchaseService.purchase(uid, botId);
+      return { success: true };
+    }
+    catch {
+      return { success: false };
+    }
   }
 
   private decodeFromToken<T>(token: string, property: keyof T): T[keyof T] | null {

@@ -1,0 +1,20 @@
+Missing unit tests:
+	botService // admin gateway
+		getById
+		getByIds
+		
+	botService // user gateway
+		getByIds // no ids
+
+	gateway controller users
+		myBots
+		getAllBots
+		getFreeBotsAllowance
+		buyBot
+		
+	PurchaseService users gateway
+
+	UI users
+		BotsComponent
+		BotListComponent
+		MyBotsComponent

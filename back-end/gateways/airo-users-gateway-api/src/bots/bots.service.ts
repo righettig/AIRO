@@ -3,25 +3,30 @@ import { Injectable } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
 
 type BotDto = { id: string, name: string, price: string };
-type GetBotResponse = BotDto;
-type GetAllBotsResponse = BotDto[];
+type GetBotsResponse = BotDto[];
 
 @Injectable()
 export class BotsService {
-    private readonly authServiceUrl = process.env.BOTS_API_URL!;
+    private readonly serviceUrl = process.env.BOTS_API_URL!;
 
     constructor(private readonly httpService: HttpService) { }
 
-    async getById(id: string): Promise<GetBotResponse> {
+    async getByIds(ids: string[]): Promise<GetBotsResponse> {
+        if (!ids.length) {
+            return [];
+        }
+        
+        const queryString = ids.map(x => `ids=${x}`).join('&');
+
         const response = await firstValueFrom(
-            this.httpService.get(`${this.authServiceUrl}/api/bot/${id}`),
+            this.httpService.get(`${this.serviceUrl}/api/bot?${queryString}`),
         );
         return response.data;
     }
 
-    async getAll(): Promise<GetAllBotsResponse> {
+    async getAll(): Promise<GetBotsResponse> {
         const response = await firstValueFrom(
-            this.httpService.get(`${this.authServiceUrl}/api/bot`),
+            this.httpService.get(`${this.serviceUrl}/api/bot`),
         );
         return response.data;
     }

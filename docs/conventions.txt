@@ -8,6 +8,12 @@
 		airo-events-microservice
 		airo-users-frontend
 		
+	For testing:
+		Create project under the "Tests" solution folder and name the project according to the rule:
+			airo-<<PROJECT_NAME>>-tests
+		
+		for instance: airo-purchase-tests
+		
 2) All gateway-api(s) projects should be exposed in the 3000 range
 
 3) All microservice(s) projects should be exposed in the 4000 range

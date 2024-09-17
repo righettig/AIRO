@@ -4,7 +4,7 @@ import { firstValueFrom } from 'rxjs';
 
 type BotDto = { id: string, name: string, price: string };
 type GetBotResponse = BotDto;
-type GetAllBotsResponse = BotDto[];
+type GetBotsResponse = BotDto[];
 
 @Injectable()
 export class BotsService {
@@ -42,12 +42,21 @@ export class BotsService {
 
     async getById(id: string): Promise<GetBotResponse> {
         const response = await firstValueFrom(
-            this.httpService.get(`${this.serviceUrl}/api/bot/${id}`),
+            this.httpService.get(`${this.serviceUrl}/api/bot?ids=${id}`),
         );
         return response.data;
     }
 
-    async getAll(): Promise<GetAllBotsResponse> {
+    async getByIds(ids: string[]): Promise<GetBotsResponse> {
+        const queryString = ids.map(x => `ids=${x}`).join('&');
+
+        const response = await firstValueFrom(
+            this.httpService.get(`${this.serviceUrl}/api/bot?${queryString}`),
+        );
+        return response.data;
+    }
+
+    async getAll(): Promise<GetBotsResponse> {
         const response = await firstValueFrom(
             this.httpService.get(`${this.serviceUrl}/api/bot`),
         );

@@ -5,6 +5,7 @@ import { ProfileModule } from 'src/profile/profile.module';
 import { BillingModule } from 'src/billing/billing.module';
 import { InvoiceModule } from 'src/invoice/invoice.module';
 import { BotsModule } from 'src/bots/bots.module';
+import { PurchaseModule } from 'src/purchase/purchase.module';
 
 @Module({
   imports: [
@@ -12,7 +13,8 @@ import { BotsModule } from 'src/bots/bots.module';
     ProfileModule,
     BillingModule,
     InvoiceModule,
-    BotsModule
+    BotsModule,
+    PurchaseModule
   ],
   controllers: [GatewayController]
 })

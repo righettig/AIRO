@@ -10,4 +10,6 @@ public class PurchaseBotCommandHandler(AggregateRepository<PurchaseAggregate> ag
     {
         aggregate.PurchaseBot(command.UserId, command.BotId);
     }
+
+    protected override Guid GetAggregateId(PurchaseBotCommand command) => command.UserId;
 }

@@ -1,5 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { BotStoreService } from '../../services/bots-service';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Bot } from '../../models/bot.model';
 
 @Component({
@@ -9,25 +8,14 @@ import { Bot } from '../../models/bot.model';
   standalone: true,
   imports: []
 })
-export class BotListComponent implements OnInit {
+export class BotListComponent {
   @Input() canGetBotsForFree: boolean = false;
+  @Input() bots: Bot[] = [];
 
-  bots: Bot[] | undefined;
-
-  constructor(private botStoreService: BotStoreService) { }
-
-  async ngOnInit(): Promise<void> {
-    this.bots = await this.botStoreService.getAllBots();
-  }
+  @Output() onBuy = new EventEmitter<string>();
 
   async buy(botId: string) {
-    if (window.confirm('Are you sure you want to get this bot?')) {
-      try {
-        await this.botStoreService.purchaseBot(botId);
-      } catch (err) {
-        console.log("Error buying bot: " + botId);
-      }
-    }
+    this.onBuy.emit(botId);
   }
 
   upgrade(): void {

@@ -15,18 +15,18 @@ public class PurchaseReadRepository : IReadRepository<PurchaseReadModel>
 
     public PurchaseReadModel GetById(Guid id)
     {
-        return entities.FirstOrDefault(x => x.Id == id);
+        return entities.FirstOrDefault(x => x.UserId == id);
     }
 
     public void Update(PurchaseReadModel model)
     {
-        var index = entities.FindIndex(x => x.Id == model.Id);
+        var index = entities.FindIndex(x => x.UserId == model.UserId);
         entities[index] = model;
     }
 
     public void Remove(Guid id)
     {
-        var index = entities.FindIndex(x => x.Id == id);
+        var index = entities.FindIndex(x => x.UserId == id);
         entities.RemoveAt(index);
     }
 

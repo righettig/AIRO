@@ -1,3 +1,3 @@
 ﻿namespace airo_purchase_microservice.DTOs;
 
-public record PurchaseBotRequest(Guid UserId, Guid BotId);
+public record PurchaseBotRequest(string UserId, Guid BotId);

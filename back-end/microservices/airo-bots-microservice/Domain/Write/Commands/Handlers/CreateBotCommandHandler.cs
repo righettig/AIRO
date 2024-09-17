@@ -10,4 +10,6 @@ public class CreateBotCommandHandler(AggregateRepository<BotAggregate> aggregate
     {
         aggregate.CreateBot(command.Id, command.Name, command.Price);
     }
+
+    protected override Guid GetAggregateId(CreateBotCommand command) => command.Id;
 }
