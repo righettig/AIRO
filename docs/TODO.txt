@@ -1,20 +1,26 @@
-Missing unit tests:
-	botService // admin gateway
-		getById
-		getByIds
-		
-	botService // user gateway
-		getByIds // no ids
+BOTS
+	Missing unit tests:
+		botService // admin gateway
+			getById
+			getByIds
+			
+		botService // user gateway
+			getByIds // no ids
 
-	gateway controller users
-		myBots
-		getAllBots
-		getFreeBotsAllowance
-		buyBot
-		
-	PurchaseService users gateway
+		gateway controller users
+			myBots
+			getAllBots
+			getFreeBotsAllowance
+			buyBot
+			
+		PurchaseService users gateway
 
-	UI users
-		BotsComponent
-		BotListComponent
-		MyBotsComponent
+		UI users
+			BotsComponent
+			BotListComponent
+			MyBotsComponent
+
+EVENTS
+	Missing unit tests:(service, gateway)
+	Missing "Created At" property which should be added to domain model. 
+		The CQRS/EventSourcing framework should automatically capture createdAt/createdBy
