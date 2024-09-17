@@ -10,4 +10,6 @@ public class UpdateBotCommandHandler(AggregateRepository<BotAggregate> aggregate
     {
         aggregate.UpdateBot(command.Id, command.Name, command.Price);
     }
+
+    protected override Guid GetAggregateId(UpdateBotCommand command) => command.Id;
 }

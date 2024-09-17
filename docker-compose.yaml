@@ -46,6 +46,7 @@ services:
       - notifications-service
       - billing-service
       - bots-service
+      - purchase-service
     build:
       context: ./back-end/gateways/airo-users-gateway-api
     ports:
@@ -56,6 +57,7 @@ services:
       - BILLING_API_URL=${BILLING_API_URL}
       - INVOICE_API_URL=${INVOICE_API_URL}
       - BOTS_API_URL=${BOTS_API_URL}
+      - PURCHASE_API_URL=${PURCHASE_API_URL}
     develop:
       context: ./back-end/gateways/airo-users-gateway-api
       watch:
@@ -156,6 +158,15 @@ services:
       - EVENT_STORE_DB_URL=${EVENT_STORE_DB_URL}
     ports:
       - "4006:8080" # https not working so far!
+      
+  purchase-service:
+    build:
+      context: .
+      dockerfile: ./back-end/microservices/airo-purchase-microservice/Dockerfile
+    environment:
+      - EVENT_STORE_DB_URL=${EVENT_STORE_DB_URL}
+    ports:
+      - "4007:8080" # https not working so far!
 
   billing-service:
     build:

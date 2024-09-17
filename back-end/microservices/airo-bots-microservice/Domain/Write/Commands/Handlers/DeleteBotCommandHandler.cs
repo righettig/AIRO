@@ -10,4 +10,6 @@ public class DeleteBotCommandHandler(AggregateRepository<BotAggregate> aggregate
     {
         aggregate.DeleteBot(command.Id);
     }
+
+    protected override Guid GetAggregateId(DeleteBotCommand command) => command.Id;
 }

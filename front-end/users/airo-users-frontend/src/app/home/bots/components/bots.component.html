@@ -23,6 +23,6 @@
 </div>
 
 <div class="container">
-    <app-bot-list [canGetBotsForFree]="freeBotsCount > 0"></app-bot-list>
-    <app-my-bots></app-my-bots>
+    <app-bot-list [bots]="bots" [canGetBotsForFree]="freeBotsCount > 0" (onBuy)="onBuy($event)"></app-bot-list>
+    <app-my-bots [bots]="myBots"></app-my-bots>
 </div>
