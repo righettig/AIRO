@@ -106,6 +106,8 @@ services:
       context: ./back-end/gateways/airo-enterprise-gateway-api
     ports:
       - "3002:3000"
+    environment:
+      - ANYBOTICS_SERVICE_URL=${ANYBOTICS_SERVICE_URL}
     develop:
       context: ./back-end/gateways/airo-enterprise-gateway-api
       watch:
