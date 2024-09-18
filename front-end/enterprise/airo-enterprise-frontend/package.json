@@ -10,6 +10,12 @@
   },
   "private": true,
   "dependencies": {
+    "@babylonjs/core": "^7.21.4",
+    "@babylonjs/gui": "^7.21.4",
+    "@babylonjs/materials": "^7.21.4",
+    "@microsoft/signalr": "^8.0.7",
+    "babylonjs": "^7.21.4",
+    "jwt-decode": "^4.0.0",
     "@angular/animations": "^18.2.0",
     "@angular/cdk": "^18.2.4",
     "@angular/common": "^18.2.0",
