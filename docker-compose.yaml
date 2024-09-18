@@ -42,6 +42,26 @@ services:
         - action: rebuild
           path: ./front-end/users/airo-users-frontend/package.json
 
+  enterprise-app:
+    depends_on:
+      - enterprise-gateway-api
+    build:
+      context: ./front-end/enterprise/airo-enterprise-frontend
+    ports:
+      - "5002:4200"
+    environment:
+      - ENTERPRISE_GATEWAY_API_URL=${ENTERPRISE_GATEWAY_API_URL}
+    develop:
+      context: ./front-end/enterprise/airo-enterprise-frontend
+      watch:
+        - action: sync
+          path: ./front-end/enterprise/airo-enterprise-frontend
+          target: /app
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: ./front-end/enterprise/airo-enterprise-frontend/package.json
+
   #--------------#
   # Gateway APIs #
   #--------------#
