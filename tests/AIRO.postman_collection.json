@@ -547,6 +547,75 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "gateway - login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"admin@airo.com\",\r\n    \"password\": \"q1w2e3\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/gateway/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/gateway/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - refresh-token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/gateway/refresh-token",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"refresh-token"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -686,6 +755,28 @@
 					"response": []
 				},
 				{
+					"name": "gateway - agent execute command",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3002/gateway/agents/0b10f852-b457-419b-aa97-c15320a6885c/acousticMeasure",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"gateway",
+								"agents",
+								"0b10f852-b457-419b-aa97-c15320a6885c",
+								"acousticMeasure"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "gateway - mission execute",
 					"request": {
 						"method": "POST",
@@ -731,6 +822,75 @@
 								"gateway",
 								"missions",
 								"5aa23ce4-aad5-4f49-ac73-27ee614a6e3f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"enterprise@airo.com\",\r\n    \"password\": \"q1w2e3\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3002/gateway/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"gateway",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3002/gateway/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"gateway",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - refresh-token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3002/gateway/refresh-token",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"gateway",
+								"refresh-token"
 							]
 						}
 					},

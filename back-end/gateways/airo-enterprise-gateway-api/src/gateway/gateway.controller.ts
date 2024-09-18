@@ -4,16 +4,43 @@ import { CreateMissionDto } from "./models/create-mission.dto";
 import { ExecuteMissionDto } from "./models/execute-mission.dto";
 import { CommandsService } from "src/commands/commands.service";
 import { AgentsService } from "src/agents/agents.service";
+import { AuthService } from "src/auth/auth.service";
+import { LoginDto } from "./models/login.dto";
+import { LoginResponseDto } from "./models/login.response.dto";
 
 @Controller('gateway')
 export class GatewayController {
   private readonly logger = new Logger(GatewayController.name);
 
   constructor(
+    private readonly authService: AuthService,
     private readonly missionsService: MissionsService,
     private readonly commandsService: CommandsService,
     private readonly agentsService: AgentsService,
   ) { } 
+
+  @Post('login')
+  async login(@Body() loginDto: LoginDto) {
+    const loginResponse = await this.authService.login(loginDto.email, loginDto.password);
+
+    const response: LoginResponseDto = {
+      uid: loginResponse.uid,
+      token: loginResponse.token,
+    }
+
+    return response;
+  }
+
+  @Post('logout')
+  async logout() {
+    await this.authService.logout();
+  }
+
+  @Post('refresh-token')
+  async refreshToken() {
+    const response = await this.authService.refreshToken();
+    return response;
+  }
 
   @Get('agents/:agentId')
   async getAgent(@Param('agentId') agentId: string) {
@@ -21,12 +48,11 @@ export class GatewayController {
     return response;
   }
 
-  // TODO: check for clash with @All route
-  // @Get('agents/:agentId/commands')
-  // async getAgentCommands(@Param('agentId') agentId: string) {
-  //   const response = await this.agentsService.getCommandsHistoryByAgentId(agentId);
-  //   return response;
-  // }
+  @Get('agents/:agentId/commands')
+  async getAgentCommands(@Param('agentId') agentId: string) {
+    const response = await this.agentsService.getCommandsHistoryByAgentId(agentId);
+    return response;
+  }
 
   @Get('agents')
   async getAllAgents() {
