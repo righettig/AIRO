@@ -1,0 +1,142 @@
+<div *ngIf="agent" class="agent-details">
+  <div class="header">
+    <div>
+      <h2>{{ agent.name }} - Details</h2>
+    </div>
+    <div>
+      <button mat-raised-button color="primary" [routerLink]="['/agents']">
+        Back to Agents
+      </button>
+    </div>
+  </div>
+
+  <mat-tab-group animationDuration="0ms" (selectedTabChange)="onTabChanged($event)">
+    <!-- General Information Tab -->
+    <mat-tab label="General Information">
+      <mat-card>
+        <mat-card-content>
+          <mat-list>
+            <mat-list-item>
+              <span class="property-name">ID:</span> {{ agent.id }}
+            </mat-list-item>
+            <mat-list-item>
+              <span class="property-name">Battery Level:</span> {{ agent.batteryLevel }}%
+            </mat-list-item>
+            <mat-list-item>
+              <span class="property-name">Status:</span> {{ agent.status }}
+            </mat-list-item>
+            <mat-list-item>
+              <span class="property-name">Current Command:</span> {{ agent.general.currentCommand }}
+            </mat-list-item>
+            <mat-list-item>
+              <span class="property-name">Model:</span> {{ agent.general.model }}
+            </mat-list-item>
+            <mat-list-item>
+              <span class="property-name">Firmware Version:</span> {{ agent.general.firmwareVersion }}
+            </mat-list-item>
+            <mat-list-item>
+              <span class="property-name">Firmware Last Updated:</span> {{ agent.general.firmwareLastUpdated | date }}
+            </mat-list-item>
+            <mat-list-item>
+              <span class="property-name">Manual Mode:</span> {{ agent.general.manualModeOn ? 'On' : 'Off' }}
+            </mat-list-item>
+            <mat-list-item>
+              <span class="property-name">Location:</span> (x: {{ agent.general.location.x }}, y: {{ agent.general.location.y }}, z: {{ agent.general.location.z }})
+            </mat-list-item>
+            <mat-list-item>
+              <span class="property-name">Trekker Version:</span> {{ agent.general.trekkerVersion }}
+            </mat-list-item>
+            <mat-list-item>
+              <span class="property-name">Trekker Last Updated:</span> {{ agent.general.trekkerLastUpdated | date }}
+            </mat-list-item>
+          </mat-list>
+        </mat-card-content>
+      </mat-card>
+    </mat-tab>
+
+    <!-- Hardware Status Tab -->
+    <mat-tab label="Hardware Status">
+      <mat-card>
+        <mat-card-content>
+          <mat-list>
+            <mat-list-item *ngFor="let item of hardwareItems">
+              <span class="property-name">{{ item.name }}:</span> <span class="status" [ngClass]="item.status">{{ item.status }}</span>
+            </mat-list-item>
+          </mat-list>
+        </mat-card-content>
+      </mat-card>
+    </mat-tab>
+
+    <!-- Live Feed Tab -->
+    <mat-tab label="Live Feed">
+      <app-agent-live-feed #liveFeed [agentState]="agentState"></app-agent-live-feed>
+    </mat-tab>
+
+    <!-- Recent Images Tab -->
+    <mat-tab label="Recent Images">
+      <mat-card>
+        <mat-card-content>
+          <div class="image-gallery">
+            <img *ngFor="let image of agent.recentImages" [src]="image" alt="Recent Image">
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </mat-tab>
+
+    <!-- Command History Tab -->
+    <mat-tab label="Command History">
+      <mat-card>
+        <mat-card-content>
+          <table mat-table [dataSource]="commandHistoryDataSource" class="mat-elevation-z8">
+            <!-- Initiated By Column -->
+            <ng-container matColumnDef="initiatedBy">
+              <th mat-header-cell *matHeaderCellDef> Initiated By </th>
+              <td mat-cell *matCellDef="let command"> {{ command.initiatedBy }} </td>
+            </ng-container>
+
+            <!-- Timestamp Column -->
+            <ng-container matColumnDef="timestamp">
+              <th mat-header-cell *matHeaderCellDef> Timestamp </th>
+              <td mat-cell *matCellDef="let command"> 
+                {{ command.timestamp | date: 'yyyy-MM-dd HH:mm:ss.SSS' }}
+              </td>
+            </ng-container>
+
+            <!-- Description Column -->
+            <ng-container matColumnDef="description">
+              <th mat-header-cell *matHeaderCellDef> Command Description </th>
+              <td mat-cell *matCellDef="let command"> {{ command.description }} </td>
+            </ng-container>
+            
+            <tr mat-header-row *matHeaderRowDef="['initiatedBy', 'timestamp', 'description']"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['initiatedBy', 'timestamp', 'description'];"></tr>
+          </table>
+        </mat-card-content>
+      </mat-card>
+    </mat-tab>
+
+    <!-- Status History Tab -->
+    <mat-tab label="Status History">
+      <mat-card>
+        <mat-card-content>
+          <table mat-table [dataSource]="statusHistoryDataSource" class="mat-elevation-z8">
+            <!-- Timestamp Column -->
+            <ng-container matColumnDef="timestamp">
+              <th mat-header-cell *matHeaderCellDef> Timestamp </th>
+              <td mat-cell *matCellDef="let status"> {{ status.timestamp | date }} </td>
+            </ng-container>
+
+            <!-- Status Column -->
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef> Status </th>
+              <td mat-cell *matCellDef="let status"> {{ status.status }} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="['timestamp', 'status']"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['timestamp', 'status'];"></tr>
+          </table>
+        </mat-card-content>
+      </mat-card>
+    </mat-tab>
+  </mat-tab-group>
+</div>

@@ -1,0 +1,76 @@
+@if (isLoading) {
+<mat-progress-bar mode="indeterminate"></mat-progress-bar>
+}
+
+<app-page-header title="Anymal - Commands"></app-page-header>
+
+<div style="padding-left: 12px; padding-right: 12px;">
+  <!-- TODO: this UI should be auto-generated from command description (coming from back-end) -->
+  <h3>General</h3>
+  <mat-list>
+    <mat-list-item>
+      <button mat-button color="primary" (click)="recharge()">Recharge</button>
+    </mat-list-item>
+    <mat-list-item>
+      <button mat-button color="primary" (click)="shutdown()">Shutdown</button>
+    </mat-list-item>
+    <mat-list-item>
+      <button mat-button color="primary" (click)="wakeup()">Wakeup</button>
+    </mat-list-item>
+  </mat-list>
+
+  <h3>Drive</h3>
+  <mat-list>
+    <mat-list-item>
+      <button mat-button color="primary" (click)="setManualMode(true)">
+        SetManualMode On
+      </button>
+    </mat-list-item>
+    <mat-list-item>
+      <button mat-button color="primary" (click)="setManualMode(false)">
+        SetManualMode Off
+      </button>
+    </mat-list-item>
+    <mat-list-item>
+      <button mat-button color="primary" (click)="moveLeft()">Left</button>
+    </mat-list-item>
+    <mat-list-item>
+      <button mat-button color="primary" (click)="moveRight()">Right</button>
+    </mat-list-item>
+    <mat-list-item>
+      <button mat-button color="primary" (click)="moveForward()">
+        Forward
+      </button>
+    </mat-list-item>
+    <mat-list-item>
+      <button mat-button color="primary" (click)="moveBackward()">
+        Backward
+      </button>
+    </mat-list-item>
+  </mat-list>
+
+  <h3>Inspections</h3>
+  <mat-list>
+    <mat-list-item>
+      <button mat-button color="primary" (click)="thermalInspection()">
+        ThermalInspection
+      </button>
+    </mat-list-item>
+    <mat-list-item>
+      <button mat-button color="primary" (click)="combustibleInspection()">
+        CombustibleInspection
+      </button>
+    </mat-list-item>
+    <mat-list-item>
+      <button mat-button color="primary" (click)="gasInspection()">
+        GasInspection
+      </button>
+    </mat-list-item>
+    <mat-list-item>
+      <button mat-button color="primary" (click)="acousticMeasure()">
+        AcousticMeasure
+      </button>
+    </mat-list-item>
+    <mat-list-item></mat-list-item>
+  </mat-list>
+</div>

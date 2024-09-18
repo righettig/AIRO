@@ -2,19 +2,11 @@ const fs = require('fs');
 const path = require('path');
 
 // Environment variables
-const authApiUrl = process.env.AUTH_API_URL;
-const adminApiUrl = process.env.ADMIN_API_URL;
-const botsApiUrl = process.env.BOTS_API_URL;
-const behavioursApiUrl = process.env.BEHAVIOURS_API_URL;
-const anymalApiUrl = process.env.ANYMAL_API_URL;
+const gatewayApiUrl = process.env.ENTERPRISE_GATEWAY_API_URL;
 
 // JSON content
 const config = {
-  authApiUrl,
-  adminApiUrl,
-  botsApiUrl,
-  behavioursApiUrl,
-  anymalApiUrl
+  gatewayApiUrl
 };
 
 // Path to write the JSON file

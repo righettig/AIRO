@@ -1,0 +1,67 @@
+/* Style for the cards with spacing between them */
+.agent-card {
+  margin: 15px;
+  width: 400px;
+  transition: background-color 0.3s ease;
+  cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+/* Hover effect: Change background color */
+.agent-card:hover {
+  background-color: #e0f7fa; /* Light blue background on hover */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .agents-container {
+    padding: 10px;
+    max-width: 100%;
+  }
+
+  .agent-card {
+    width: 100%; /* Make cards take full width on smaller screens */
+    margin: 10px 0;
+  }
+}
+
+/* Style the agent ID to be less prominent */
+.agent-id {
+  display: flex;
+  align-items: center;
+  font-size: 0.7em; /* Smaller font size for ID */
+  color: gray; /* Less prominent color */
+}
+
+/* Style the copy button */
+.agent-id button {
+  margin-left: 8px; /* Space between ID and button */
+  color: gray; /* Match the button color with the ID text */
+}
+
+/* Copy button hover effect */
+.agent-id button:hover {
+  color: black; /* Darken the button on hover */
+}
+
+.mat-mdc-card-content:last-child {
+  padding-bottom: 0px;
+}
+
+/* Style for the action buttons section */
+mat-card-actions {
+  display: flex;
+  justify-content: space-between; /* Space out buttons evenly */
+  padding: 8px; /* Add padding to the button section */
+  border-top: 1px solid #e0e0e0; /* Optional: Add a border to separate the actions */
+}
+
+/* Additional styling for the buttons */
+mat-card-actions button {
+  flex: 1; /* Ensure buttons take equal space */
+  margin: 0 4px; /* Add margin between buttons */
+}
+
+.dog-robot-image {
+  background-image: url('../../../public/dog_robot_icon_48.png');
+  background-size: cover;
+}

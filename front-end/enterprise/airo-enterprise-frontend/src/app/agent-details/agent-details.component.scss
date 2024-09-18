@@ -1,0 +1,60 @@
+.agent-details {
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: lightgray;
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .mat-card {
+    margin: 20px 0;
+  }
+
+  .image-gallery {
+    display: flex;
+    flex-wrap: wrap;
+
+    img {
+      width: 150px;
+      height: auto;
+      margin: 5px;
+    }
+  }
+
+  .property-name {
+    font-weight: bold;
+    margin-right: 8px;
+  }
+   
+  .mat-list-item {
+    display: flex;
+    align-items: center;
+  }
+  
+  .mat-list-item span.property-name {
+    flex: 0 0 200px;
+  }
+  
+  .status {
+    &.Running {
+      color: green;
+    }
+    &.Failed {
+      color: red;
+    }
+    &.Anomaly_detected {
+      color: orange;
+    }
+  }
+
+  mat-list-item:not(:last-child) {
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 8px;
+  }
+
+  .mat-mdc-row:hover {
+    background-color: #f0f0f0;
+  }
+}

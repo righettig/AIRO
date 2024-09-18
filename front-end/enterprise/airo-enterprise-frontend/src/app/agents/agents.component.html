@@ -1,0 +1,11 @@
+<div class="container">
+  <div class="filter-info">
+    <p>{{ filteredAgents.length }} agent(s) found</p>
+  </div>
+
+  <div class="agents-container">
+    @for (agent of filteredAgents; track agent.id) {
+    <app-agent-card [agent]="agent"></app-agent-card>
+    }
+  </div>
+</div>

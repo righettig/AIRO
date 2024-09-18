@@ -1,0 +1,67 @@
+@if (isLoading) {
+<mat-progress-bar mode="indeterminate"></mat-progress-bar>
+} @else {
+
+<app-page-header title="Anymal - Missions"></app-page-header>
+
+<mat-card class="create-mission">
+  <mat-card-title>Create a Mission</mat-card-title>
+  <mat-card-content>
+    <form [formGroup]="form">
+      <mat-form-field>
+        <input matInput placeholder="Mission Name" formControlName="missionName" />
+        @if (form.get('missionName')?.hasError('required')) {
+        <mat-error> Mission name is required </mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field class="commands-dropdown">
+        <mat-select #matSelect placeholder="Add Command" (valueChange)="addCommand($event, matSelect)">
+          @for (command of availableCommands; track command) {
+          <mat-option [value]="command">
+            {{ command }}
+          </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <div class="selected-commands">
+        <mat-chip-set>
+          @for (c of selectedCommands; track c.id) {
+          <mat-chip (removed)="removeCommand(c.id)">
+            {{ c.command }}
+            <mat-icon matChipRemove>cancel</mat-icon>
+          </mat-chip>
+          } @empty {
+          <div>No commands selected</div>
+          }
+        </mat-chip-set>
+      </div>
+      <button mat-raised-button color="primary" (click)="saveMission()"
+        [disabled]="form.invalid || selectedCommands.length === 0">
+        Save Mission
+      </button>
+    </form>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="available-missions">
+  <mat-card-title>Available Missions</mat-card-title>
+  <mat-card-content>
+    <mat-list>
+      @for (mission of missions; track mission.id) {
+      <mat-list-item>
+        {{ mission.name }}
+        <button mat-raised-button color="accent" (click)="executeMission(mission.id!)">
+          Execute
+        </button>
+        <button mat-raised-button color="warn" (click)="deleteMission(mission.id!)">
+          Delete
+        </button>
+      </mat-list-item>
+      } @empty {
+      <h3>No missions found.</h3>
+      }
+    </mat-list>
+  </mat-card-content>
+</mat-card>
+}
