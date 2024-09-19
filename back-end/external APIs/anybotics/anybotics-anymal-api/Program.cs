@@ -1,6 +1,22 @@
 using anybotics_anymal_api.Extensions;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(5001, listenOptions =>
+    {
+        // Use HTTP/2 for gRPC on this port
+        listenOptions.Protocols = HttpProtocols.Http2;
+    });
+
+    options.ListenAnyIP(5002, listenOptions =>
+    {
+        // Use HTTP/1.1 for SignalR on this port
+        listenOptions.Protocols = HttpProtocols.Http1;
+    });
+});
 
 // Firebase project configuration
 var firebaseProjectName = builder.Configuration["FIREBASE_PROJECT_NAME"];

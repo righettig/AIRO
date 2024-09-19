@@ -14,7 +14,7 @@ class Program
         string agentName = args.Length > 0 ? args[0] : "Anymal";
 
         // Create a channel to the gRPC server
-        using var channel = GrpcChannel.ForAddress("http://localhost:4008", new GrpcChannelOptions
+        using var channel = GrpcChannel.ForAddress("http://localhost:4009", new GrpcChannelOptions
         {
             // This is required when trying to connect from host machine to a GRPC server running inside a docker container
             HttpHandler = new SocketsHttpHandler
