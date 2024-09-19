@@ -2,11 +2,10 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { AgentDto } from './models/agent-dto.model';
 import { AgentDetailsDto } from './models/agent-details-dto.model';
-// import { ConfigService } from './config.service';
 import { HttpService } from '../common/services/http.service';
+import { ConfigService } from '../common/services/config.service';
 
 import * as signalR from '@microsoft/signalr';
-import { ConfigService } from '../common/services/config.service';
 
 @Injectable({
   providedIn: 'root',
@@ -47,7 +46,7 @@ export class AgentService {
 
     this.initializingPromise = new Promise<void>((resolve, reject) => {
       this.hubConnection = new signalR.HubConnectionBuilder()
-        .withUrl(`${this.baseUrl}/agentsHub`, { withCredentials: false })
+        .withUrl(`http://localhost:4008/agentsHub`, { withCredentials: false }) // <-- this should go via gateway
         .withAutomaticReconnect()
         .configureLogging(signalR.LogLevel.Information)
         .build();

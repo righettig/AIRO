@@ -12,9 +12,23 @@ namespace anybotics_anymal_api.Extensions;
 // Extension methods to organize service registration and middleware configuration
 public static class ServiceCollectionExtensions
 {
+    public static void AddCors(this IServiceCollection services, string[] corsAllowedOrigins)
+    {
+        services.AddCors(options =>
+        {
+            options.AddPolicy("AllowLocalApps", policyBuilder =>
+            {
+                policyBuilder.WithOrigins(corsAllowedOrigins)
+                             .AllowAnyHeader()
+                             .AllowAnyMethod()
+                             .AllowCredentials();
+            });
+        });
+    }
+
     public static IServiceCollection AddCustomServices(this IServiceCollection services, string? firebaseConfigFile, string? firebaseProjectName)
     {
-        services.ConfigureCors();
+        //services.ConfigureCors();
         services.ConfigureAuthentication();
         services.AddGrpc();
         services.AddSignalR();
@@ -34,22 +48,22 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    private static IServiceCollection ConfigureCors(this IServiceCollection services)
-    {
-        services.AddCors(options =>
-        {
-            options.AddPolicy("AllowLocalApps", policyBuilder =>
-            {
-                // TODO
-                policyBuilder.WithOrigins("http://localhost:4200", "http://localhost:3000")
-                             .AllowAnyHeader()
-                             .AllowAnyMethod()
-                             .AllowCredentials();
-            });
-        });
+    //private static IServiceCollection ConfigureCors(this IServiceCollection services)
+    //{
+    //    services.AddCors(options =>
+    //    {
+    //        options.AddPolicy("AllowLocalApps", policyBuilder =>
+    //        {
+    //            // TODO
+    //            policyBuilder.WithOrigins("http://localhost:4200", "http://localhost:3000")
+    //                         .AllowAnyHeader()
+    //                         .AllowAnyMethod()
+    //                         .AllowCredentials();
+    //        });
+    //    });
 
-        return services;
-    }
+    //    return services;
+    //}
 
     private static IServiceCollection ConfigureAuthentication(this IServiceCollection services)
     {

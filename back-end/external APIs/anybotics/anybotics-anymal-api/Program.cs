@@ -9,6 +9,10 @@ var firebaseConfigFile = builder.Configuration["FIREBASE_CONFIG_FILE"];
 // Add services to the container.
 builder.Services.AddCustomServices(firebaseConfigFile, firebaseProjectName);
 
+var corsAllowedOrigins = builder.Configuration["CORS_ALLOWED_ORIGINS"]?.Split(',') ?? [];
+
+builder.Services.AddCors(corsAllowedOrigins);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
