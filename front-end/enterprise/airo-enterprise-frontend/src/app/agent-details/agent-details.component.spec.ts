@@ -1,14 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { AgentDetailsComponent } from './agent-details.component';
-import { AgentService } from '../services/agent.service';
-import { AgentBatteryLevelComponent } from '../agent-battery-level/agent-battery-level.component';
-import { AgentStatusComponent } from '../agent-status/agent-status.component';
+import { AgentService } from '../agents/agent.service';
+import { AgentBatteryLevelComponent } from '../agent-card/agent-battery-level/agent-battery-level.component';
+import { AgentStatusComponent } from '../agent-card/agent-status/agent-status.component';
 import { By } from '@angular/platform-browser';
-import { Status } from '../models/status.enum';
+import { Status } from '../agents/models/status.enum';
 import { RouterModule } from '@angular/router';
 import { AgentsComponent } from '../agents/agents.component';
-import { AgentDetailsDto } from '../models/agent-details-dto.model';
+import { AgentDetailsDto } from '../agents/models/agent-details-dto.model';
 
 describe('AgentDetailsComponent', () => {
   let component: AgentDetailsComponent;

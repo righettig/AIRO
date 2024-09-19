@@ -1,14 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AgentsComponent } from './agents.component';
-import { AgentService } from '../services/agent.service';
+import { AgentService } from './agent.service';
 import { SearchService } from '../services/search.service';
 import { SortingService, SortOption } from '../services/sorting.service';
 import { Subject } from 'rxjs';
-import { AgentDto } from '../models/agent-dto.model';
+import { AgentDto } from './models/agent-dto.model';
 import { AgentCardComponent } from '../agent-card/agent-card.component';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { Status } from '../models/status.enum';
+import { Status } from './models/status.enum';
 
 // TODO: seems like some of the unit tests are ordering-dependent
 describe('AgentsComponent', () => {

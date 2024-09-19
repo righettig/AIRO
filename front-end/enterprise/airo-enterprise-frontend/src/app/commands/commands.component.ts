@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AgentService } from '../services/agent.service';
+import { AgentService } from '../agents/agent.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { PageHeaderComponent } from '../page-header/page-header.component';
+import { PageHeaderComponent } from '../common/components/page-header/page-header.component';
 
 @Component({
   selector: 'app-commands',

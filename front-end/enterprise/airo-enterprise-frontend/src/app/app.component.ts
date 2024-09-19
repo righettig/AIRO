@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { AgentsComponent } from './agents/agents.component';
 import { LayoutComponent } from "./layout/layout.component";
-import { AgentService } from './services/agent.service';
-import { NotificationService } from './services/notification.service';
+import { AgentService } from './agents/agent.service';
+import { NotificationService } from './layout/navbar/notifications/notification.service';
 
 @Component({
   selector: 'app-root',
@@ -13,8 +13,6 @@ import { NotificationService } from './services/notification.service';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'airo-enterprise-frontend';
-
   constructor(
     private agentService: AgentService,
     private notificationService: NotificationService) {

@@ -1,11 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AgentService } from '../services/agent.service';
-import { AgentDto } from '../models/agent-dto.model';
-import { AgentCardComponent } from '../agent-card/agent-card.component';
+import { AgentService } from './agent.service';
+import { AgentDto } from './models/agent-dto.model';
 import { combineLatest, Subscription } from 'rxjs';
-import { SearchService } from '../services/search.service';
-import { SortingService, SortOption } from '../services/sorting.service';
 import { RouterModule } from '@angular/router';
+import { AgentCardComponent } from './agent-card/agent-card.component';
+import { SearchService } from '../layout/navbar/search/search.service';
+import { SortingService, SortOption } from '../layout/navbar/sorting/sorting.service';
 
 @Component({
   selector: 'app-agents',

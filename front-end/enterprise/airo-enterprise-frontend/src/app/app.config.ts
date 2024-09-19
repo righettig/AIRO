@@ -2,9 +2,9 @@ import { APP_INITIALIZER, ApplicationConfig, provideZoneChangeDetection } from '
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { AuthService } from './services/auth.service';
 import { provideHttpClient } from '@angular/common/http';
-import { ConfigService } from './services/config.service';
+import { AuthService } from './auth/services/auth.service';
+import { ConfigService } from './common/services/config.service';
 
 function initializeApp(configService: ConfigService, authService: AuthService) {
   return async () => {

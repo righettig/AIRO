@@ -1,33 +1,25 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { AgentService } from '../services/agent.service';
-import { AgentDetailsDto } from '../models/agent-details-dto.model';
-import { AgentBatteryLevelComponent } from '../agent-battery-level/agent-battery-level.component';
-import { AgentStatusComponent } from '../agent-status/agent-status.component';
+import { AgentService } from '../agents/agent.service';
+import { AgentDetailsDto } from '../agents/models/agent-details-dto.model';
 import { Subscription } from 'rxjs';
-import { CommonModule, DatePipe, NgFor, NgIf } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatListModule } from '@angular/material/list';
-import { AgentLiveFeedComponent } from "../agent-live-feed/agent-live-feed.component";
-import { Status } from '../models/status.enum';
+import { AgentLiveFeedComponent } from "./agent-live-feed/agent-live-feed.component";
+import { Status } from '../agents/models/status.enum';
 import { Vector3 } from '@babylonjs/core';
-
-export interface AgentState {
-  name: string;
-  position: Vector3;
-  batteryLevel: number;
-  status: Status;
-}
+import { AgentStatusComponent } from '../agents/agent-card/agent-status/agent-status.component';
+import { AgentBatteryLevelComponent } from '../agents/agent-card/agent-battery-level/agent-battery-level.component';
+import { AgentState } from './models/agent-state.model';
 
 @Component({
   selector: 'app-agent-details',
   standalone: true,
   imports: [
-    NgIf,
-    NgFor,
     DatePipe,
     MatCardModule,
     MatTabsModule,

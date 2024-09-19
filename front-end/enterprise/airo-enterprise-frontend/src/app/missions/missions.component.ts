@@ -9,10 +9,11 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ActivatedRoute } from '@angular/router';
-import { Mission, MissionsService } from '../services/missions.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-import { PageHeaderComponent } from "../page-header/page-header.component";
+import { PageHeaderComponent } from "../common/components/page-header/page-header.component";
+import { MissionsService } from './missions.service';
+import { Mission } from './models/mission.model';
 
 @Component({
   selector: 'app-missions',

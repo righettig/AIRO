@@ -1,0 +1,39 @@
+.container {
+  width: 400px;
+  margin: 0 auto;
+  padding-top: 40px;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .login-btn {
+    font-size: 1.1em;
+  }
+
+  .signup-cta-container {
+    margin-top: 22px;
+    text-align: center;
+
+    span {
+      font-size: 1.1em;
+      font-weight: 400;
+    }
+
+    .signup-link {
+      text-decoration: none;
+      color: #007bff; /* Blue color for the link */
+      font-size: 1.1em;
+    }
+
+    .signup-link:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .progress-bar-container {
+    margin-top: 18px;
+  }
+}

@@ -1,4 +1,5 @@
-<div *ngIf="agent" class="agent-details">
+@if (agent) {
+<div class="agent-details">
   <div class="header">
     <div>
       <h2>{{ agent.name }} - Details</h2>
@@ -59,9 +60,12 @@
       <mat-card>
         <mat-card-content>
           <mat-list>
-            <mat-list-item *ngFor="let item of hardwareItems">
-              <span class="property-name">{{ item.name }}:</span> <span class="status" [ngClass]="item.status">{{ item.status }}</span>
-            </mat-list-item>
+            @for (item of hardwareItems; track item.name) {
+              <mat-list-item>
+                <span class="property-name">{{ item.name }}:</span> <span class="status" [ngClass]="item.status">{{
+                  item.status }}</span>
+              </mat-list-item>
+            }
           </mat-list>
         </mat-card-content>
       </mat-card>
@@ -77,7 +81,9 @@
       <mat-card>
         <mat-card-content>
           <div class="image-gallery">
-            <img *ngFor="let image of agent.recentImages" [src]="image" alt="Recent Image">
+            @for (image of agent.recentImages; track image) {
+              <img [src]="image" alt="Recent Image">
+            }
           </div>
         </mat-card-content>
       </mat-card>
@@ -97,7 +103,7 @@
             <!-- Timestamp Column -->
             <ng-container matColumnDef="timestamp">
               <th mat-header-cell *matHeaderCellDef> Timestamp </th>
-              <td mat-cell *matCellDef="let command"> 
+              <td mat-cell *matCellDef="let command">
                 {{ command.timestamp | date: 'yyyy-MM-dd HH:mm:ss.SSS' }}
               </td>
             </ng-container>
@@ -107,7 +113,7 @@
               <th mat-header-cell *matHeaderCellDef> Command Description </th>
               <td mat-cell *matCellDef="let command"> {{ command.description }} </td>
             </ng-container>
-            
+
             <tr mat-header-row *matHeaderRowDef="['initiatedBy', 'timestamp', 'description']"></tr>
             <tr mat-row *matRowDef="let row; columns: ['initiatedBy', 'timestamp', 'description'];"></tr>
           </table>
@@ -140,3 +146,4 @@
     </mat-tab>
   </mat-tab-group>
 </div>
+}
