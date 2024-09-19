@@ -3,6 +3,7 @@ using anybotics_anymal_common.Domain;
 using AnymalGrpc;
 using Grpc.Core;
 using Grpc.Net.Client;
+using System.Net.Security;
 using System.Reflection;
 
 class Program
@@ -13,7 +14,19 @@ class Program
         string agentName = args.Length > 0 ? args[0] : "Anymal";
 
         // Create a channel to the gRPC server
-        using var channel = GrpcChannel.ForAddress("https://localhost:7272");
+        using var channel = GrpcChannel.ForAddress("http://localhost:4008", new GrpcChannelOptions
+        {
+            // This is required when trying to connect from host machine to a GRPC server running inside a docker container
+            HttpHandler = new SocketsHttpHandler
+            {
+                // Disable SSL certificate validation if needed
+                SslOptions = new SslClientAuthenticationOptions
+                {
+                    RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true
+                }
+            }
+        });
+
         var client = new AnymalService.AnymalServiceClient(channel);
 
         var agentId = Guid.NewGuid().ToString();
