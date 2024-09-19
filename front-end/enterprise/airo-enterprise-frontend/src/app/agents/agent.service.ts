@@ -24,8 +24,8 @@ export class AgentService {
     return `${this.configService.config.gatewayApiUrl}/gateway`;
   }
 
-  private get baseApiUrl(): string {
-    return `${this.baseUrl}/anymal`;
+  private commandUrl(agentId: string, command: string): string {
+    return `${this.baseUrl}/agents/${agentId}/${command}`;
   }
 
   agents$ = this.agentsSubject.asObservable();
@@ -142,45 +142,45 @@ export class AgentService {
   }
 
   async rechargeAgent(id: string): Promise<void> {
-    const url = `${this.baseApiUrl}/rechargeBattery`;
+    const url = this.commandUrl(id, 'recharge');
     await this.performAction(url, id);
   }
 
   async shutdownAgent(id: string): Promise<void> {
-    const url = `${this.baseApiUrl}/shutdown`;
+    const url = this.commandUrl(id, 'shutdown');
     await this.performAction(url, id);
   }
 
   async wakeupAgent(id: string): Promise<void> {
-    const url = `${this.baseApiUrl}/wakeup`;
+    const url = this.commandUrl(id, 'wakeup');
     await this.performAction(url, id);
   }
 
   async thermalInspection(id: string): Promise<void> {
-    const url = `${this.baseApiUrl}/thermalInspection`;
+    const url = this.commandUrl(id, 'thermalInspection');
     await this.performAction(url, id);
   }
 
   async combustibleInspection(id: string): Promise<void> {
-    const url = `${this.baseApiUrl}/combustibleInspection`;
+    const url = this.commandUrl(id, 'combustibleInspection');
     await this.performAction(url, id);
   }
 
   async gasInspection(id: string): Promise<void> {
-    const url = `${this.baseApiUrl}/gasInspection`;
+    const url = this.commandUrl(id, 'gasInspection');
     await this.performAction(url, id);
   }
 
   async acousticMeasure(id: string): Promise<void> {
-    const url = `${this.baseApiUrl}/acousticMeasure`;
+    const url = this.commandUrl(id, 'acousticMeasure');
     await this.performAction(url, id);
   }
 
   async setManualMode(id: string, manualMode: boolean): Promise<void> {
-    const url = `${this.baseApiUrl}/setManualMode`;
+    const url = this.commandUrl(id, 'setManualMode');
 
     try {
-      const response = await this.http.fetch(url, {
+      await this.http.fetch(url, {
         method: 'POST',
         body: JSON.stringify({
           id,
@@ -188,9 +188,6 @@ export class AgentService {
         }),
       });
 
-      // if (!response.ok) {
-      //   throw new Error(`HTTP error! Status: ${response.status}`);
-      // }
     } catch (error) {
       console.error('Error performing action:', error);
       throw error;
@@ -198,35 +195,31 @@ export class AgentService {
   }
 
   async moveLeft(id: string): Promise<void> {
-    const url = `${this.baseApiUrl}/moveLeft`;
+    const url = this.commandUrl(id, 'moveLeft');
     await this.performAction(url, id);
   }
 
   async moveRight(id: string): Promise<void> {
-    const url = `${this.baseApiUrl}/moveRight`;
+    const url = this.commandUrl(id, 'moveRight');
     await this.performAction(url, id);
   }
 
   async moveForward(id: string): Promise<void> {
-    const url = `${this.baseApiUrl}/moveForward`;
+    const url = this.commandUrl(id, 'moveForward');
     await this.performAction(url, id);
   }
 
   async moveBackward(id: string): Promise<void> {
-    const url = `${this.baseApiUrl}/moveBackward`;
+    const url = this.commandUrl(id, 'moveBackward');
     await this.performAction(url, id);
   }
 
   private async performAction(url: string, id: string): Promise<void> {
     try {
-      const response = await this.http.fetch(url, {
+      await this.http.fetch(url, {
         method: 'POST',
-        body: JSON.stringify(id),
       });
 
-      // if (!response.ok) {
-      //   throw new Error(`HTTP error! Status: ${response.status}`);
-      // }
     } catch (error) {
       console.error('Error performing action:', error);
       throw error;
