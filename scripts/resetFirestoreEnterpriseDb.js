@@ -16,6 +16,9 @@ const users = {
       firstName: 'John',
       lastName: 'Doe',
     },
+    userRole: {
+      role: 'standard'
+    }
   },
 };
 
@@ -43,6 +46,14 @@ async function resetFirestore() {
       await doc.ref.delete();
     });
 
+    // Delete all documents from userRoles
+    const userRolesRef = db.collection('userRoles');
+
+    const userRolesSnapshot = await userRolesRef.get();
+    userRolesSnapshot.forEach(async (doc) => {
+      await doc.ref.delete();
+    });
+
     // Create specified users
     for (const [email, userData] of Object.entries(users)) {
       // Create a user with a specified password and add to Firestore
@@ -55,6 +66,7 @@ async function resetFirestore() {
       // Update the user data in Firestore
       users[email].profile.uid = uid;
       await db.collection('profiles').doc(uid).set(userData.profile);
+      await db.collection('userRoles').doc(email).set(userData.userRole);
     }
 
     console.log('Firestore has been reset successfully.');
