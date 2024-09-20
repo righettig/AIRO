@@ -1,4 +1,4 @@
-// Usage: node add_command.js Foo [--skip-proto]
+// Usage: node add_command.js COMMAND_NAME [COMMAND_GROUP_NAME] [--skip-proto]
 
 const fs = require('fs');
 const path = require('path');
@@ -6,6 +6,7 @@ const path = require('path');
 // Get the command name from the command line arguments
 const args = process.argv.slice(2);
 const COMMAND_NAME = args.find(arg => !arg.startsWith('--'));
+const COMMAND_GROUP_NAME = args.find(arg => !arg.startsWith('--') && arg !== COMMAND_NAME);
 const SKIP_PROTO = args.includes('--skip-proto');
 
 if (!COMMAND_NAME) {
@@ -16,19 +17,20 @@ if (!COMMAND_NAME) {
 const COMMAND_NAME_CAMEL_CASE = COMMAND_NAME.charAt(0).toLowerCase() + COMMAND_NAME.slice(1);
 
 // File paths
-const commonProjectName = 'anybotics-anymal-common';
-const apiProjectName = 'anybotics-anymal-api';
-const consoleAppProjectName = 'anybotics-anymal';
-const frontendProjectName = 'anybotics-workforce-ng';
+const commonProjectRelPath = 'anybotics-anymal-common';
+const apiProjectRelPath = 'anybotics-anymal-api';
+const consoleAppRelPath = '../../../simulators/anybotics/anybotics-anymal';
+const frontendRelPath = '../../../front-end/enterprise/airo-enterprise-frontend';
 
-const protoFilePath            = path.join(__dirname, commonProjectName, 'Protos', 'anymal.proto');
-const commandFilePath          = path.join(__dirname, apiProjectName, 'Commands', `${COMMAND_NAME}Command.cs`);
-const commandHandlerFilePath   = path.join(__dirname, apiProjectName, 'Commands', 'CommandHandlers', `${COMMAND_NAME}CommandHandler.cs`);
-const controllerFilePath       = path.join(__dirname, apiProjectName, 'Commands', 'Controllers', `${COMMAND_NAME}Controller.cs`);
-const anymalServiceFilePath    = path.join(__dirname, apiProjectName, 'Services', `AnymalService.${COMMAND_NAME}.cs`);
-const commandProcessorFilePath = path.join(__dirname, consoleAppProjectName, 'CommandProcessors', `${COMMAND_NAME}CommandProcessor.cs`);
-const agentServiceFilePath     = path.join(__dirname, frontendProjectName, 'src', 'app', 'services', 'agent.service.ts');
-const commandsFilePath         = path.join(__dirname, frontendProjectName, 'src', 'app', 'commands', 'commands.component.ts');
+const protoFilePath            = path.join(__dirname, commonProjectRelPath, 'Protos', 'anymal.proto');
+const commandFilePath          = path.join(__dirname, apiProjectRelPath, 'Commands', `${COMMAND_NAME}Command.cs`);
+const commandHandlerFilePath   = path.join(__dirname, apiProjectRelPath, 'Commands', 'CommandHandlers', `${COMMAND_NAME}CommandHandler.cs`);
+const controllerFilePath       = path.join(__dirname, apiProjectRelPath, 'Commands', 'Controllers', `${COMMAND_NAME}Controller.cs`);
+const anymalServiceFilePath    = path.join(__dirname, apiProjectRelPath, 'Services', `AnymalService.${COMMAND_NAME}.cs`);
+const commandProcessorFilePath = path.join(__dirname, consoleAppRelPath, 'CommandProcessors', `${COMMAND_NAME}CommandProcessor.cs`);
+const agentServiceFilePath     = path.join(__dirname, frontendRelPath, 'src', 'app', 'agents', 'agent.service.ts');
+const commandsFilePath         = path.join(__dirname, frontendRelPath, 'src', 'app', 'commands', 'commands.component.ts');
+const commandsTemplateFilePath = path.join(__dirname, frontendRelPath, 'src', 'app', 'commands', 'commands.component.html');
 
 // Helper functions
 function addProtoMessage() {
@@ -164,7 +166,7 @@ function updateAgentServiceFile() {
 
     // Define the new method to be inserted
     const newMethodContent = `  async ${COMMAND_NAME_CAMEL_CASE}(id: string): Promise<void> {
-    const url = \`\${this.baseApiUrl}/${COMMAND_NAME_CAMEL_CASE}\`;
+    const url = this.commandUrl(id, '${COMMAND_NAME_CAMEL_CASE}');
     await this.performAction(url, id);
   }`;
 
@@ -226,6 +228,33 @@ function updateCommandsFile() {
     console.log(`Commands file updated with ${COMMAND_NAME_CAMEL_CASE} method.`);
 }
 
+function updateCommandsTemplateFile() {
+    // Read the existing content of the commands file
+    const commandsTemplateFileContent = fs.readFileSync(commandsTemplateFilePath, 'utf8');
+
+    // Define the new method to be inserted
+    const newHtmlContent = `  <mat-list-item>\r\t\t\t<button mat-button color="primary" (click)="${COMMAND_NAME_CAMEL_CASE}()">\r\t\t\t\t${COMMAND_NAME}\r\t\t\t</button>\r\t\t</mat-list-item>`;
+
+    // Find the last method's ending bracket
+    const commandGroupIndex = commandsTemplateFileContent.indexOf(`<h3>${COMMAND_GROUP_NAME}</h3>`);
+    const index = commandsTemplateFileContent.indexOf('</mat-list>', commandGroupIndex);
+
+    if (commandGroupIndex === -1) {
+        console.error('Unable to find the command group.');
+        return;
+    }
+
+    // Insert the new html content
+    const updatedContent =
+        commandsTemplateFileContent.slice(0, index) +
+        newHtmlContent + '\r\t' +
+        commandsTemplateFileContent.slice(index);
+
+    // Write the updated content back to the file
+    fs.writeFileSync(commandsTemplateFilePath, updatedContent, 'utf8');
+    console.log(`Commands template file updated.`);
+}
+
 // Main function
 function main() {
     if (!SKIP_PROTO) {
@@ -238,6 +267,10 @@ function main() {
     createCommandProcessorFile();
     updateAgentServiceFile();
     updateCommandsFile();
+
+    if (COMMAND_GROUP_NAME) {
+        updateCommandsTemplateFile();
+    }
 }
 
 // Execute script
