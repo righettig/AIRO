@@ -31,6 +31,7 @@ describe('BotsService', () => {
       jest.spyOn(httpService, 'post').mockReturnValue(of(mockResponse));
 
       const result = await service.create('TestBot', 100);
+      
       expect(result).toBe(botId);
       expect(httpService.post).toHaveBeenCalledWith(`${service['serviceUrl']}/api/bot`, {
         name: 'TestBot',
@@ -45,6 +46,7 @@ describe('BotsService', () => {
       jest.spyOn(httpService, 'put').mockReturnValue(of(mockResponse));
 
       await service.update('bot-123', 'UpdatedBot', 150);
+      
       expect(httpService.put).toHaveBeenCalledWith(`${service['serviceUrl']}/api/bot`, {
         id: 'bot-123',
         name: 'UpdatedBot',
@@ -59,6 +61,7 @@ describe('BotsService', () => {
       jest.spyOn(httpService, 'delete').mockReturnValue(of(mockResponse));
 
       await service.delete('bot-123');
+      
       expect(httpService.delete).toHaveBeenCalledWith(`${service['serviceUrl']}/api/bot/bot-123`);
     });
   });
@@ -71,8 +74,9 @@ describe('BotsService', () => {
       jest.spyOn(httpService, 'get').mockReturnValue(of(mockResponse));
 
       const result = await service.getById('bot-123');
+      
       expect(result).toEqual(bot);
-      expect(httpService.get).toHaveBeenCalledWith(`${service['serviceUrl']}/api/bot/bot-123`);
+      expect(httpService.get).toHaveBeenCalledWith(`${service['serviceUrl']}/api/bot?ids=bot-123`);
     });
   });
 
@@ -84,8 +88,9 @@ describe('BotsService', () => {
       jest.spyOn(httpService, 'get').mockReturnValue(of(mockResponse));
 
       const result = await service.getAll();
+      
       expect(result).toEqual(mockResponse.data);
-      expect(httpService.get).toHaveBeenCalledWith(`${process.env.AUTH_API_URL}/api/bot`);
+      expect(httpService.get).toHaveBeenCalledWith(`${service['serviceUrl']}/api/bot`);
     });
   });
 });
