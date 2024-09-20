@@ -16,14 +16,19 @@ if (!COMMAND_NAME) {
 const COMMAND_NAME_CAMEL_CASE = COMMAND_NAME.charAt(0).toLowerCase() + COMMAND_NAME.slice(1);
 
 // File paths
-const protoFilePath = path.join(__dirname, 'anybotics-anymal-common', 'Protos', 'anymal.proto');
-const commandFilePath = path.join(__dirname, 'anybotics-anymal-api', 'Commands', `${COMMAND_NAME}Command.cs`);
-const commandHandlerFilePath = path.join(__dirname, 'anybotics-anymal-api', 'Commands', 'CommandHandlers', `${COMMAND_NAME}CommandHandler.cs`);
-const controllerFilePath = path.join(__dirname, 'anybotics-anymal-api', 'Commands', 'Controllers', `${COMMAND_NAME}Controller.cs`);
-const anymalServiceFilePath = path.join(__dirname, 'anybotics-anymal-api', 'Services', `AnymalService.${COMMAND_NAME}.cs`);
-const commandProcessorFilePath = path.join(__dirname, 'anybotics-anymal', 'CommandProcessors', `${COMMAND_NAME}CommandProcessor.cs`);
-const agentServiceFilePath = path.join(__dirname, 'anybotics-workforce-ng', 'src', 'app', 'services', 'agent.service.ts');
-const commandsFilePath = path.join(__dirname, 'anybotics-workforce-ng', 'src', 'app', 'commands', 'commands.component.ts');
+const commonProjectName = 'anybotics-anymal-common';
+const apiProjectName = 'anybotics-anymal-api';
+const consoleAppProjectName = 'anybotics-anymal';
+const frontendProjectName = 'anybotics-workforce-ng';
+
+const protoFilePath            = path.join(__dirname, commonProjectName, 'Protos', 'anymal.proto');
+const commandFilePath          = path.join(__dirname, apiProjectName, 'Commands', `${COMMAND_NAME}Command.cs`);
+const commandHandlerFilePath   = path.join(__dirname, apiProjectName, 'Commands', 'CommandHandlers', `${COMMAND_NAME}CommandHandler.cs`);
+const controllerFilePath       = path.join(__dirname, apiProjectName, 'Commands', 'Controllers', `${COMMAND_NAME}Controller.cs`);
+const anymalServiceFilePath    = path.join(__dirname, apiProjectName, 'Services', `AnymalService.${COMMAND_NAME}.cs`);
+const commandProcessorFilePath = path.join(__dirname, consoleAppProjectName, 'CommandProcessors', `${COMMAND_NAME}CommandProcessor.cs`);
+const agentServiceFilePath     = path.join(__dirname, frontendProjectName, 'src', 'app', 'services', 'agent.service.ts');
+const commandsFilePath         = path.join(__dirname, frontendProjectName, 'src', 'app', 'commands', 'commands.component.ts');
 
 // Helper functions
 function addProtoMessage() {
