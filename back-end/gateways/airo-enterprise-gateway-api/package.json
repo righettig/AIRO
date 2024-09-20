@@ -27,7 +27,10 @@
     "@nestjs/core": "^10.0.0",
     "@nestjs/platform-express": "^10.0.0",
     "reflect-metadata": "^0.2.0",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "@microsoft/signalr": "^8.0.7",
+    "@nestjs/platform-socket.io": "^10.4.3",
+    "@nestjs/websockets": "^10.4.3"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",

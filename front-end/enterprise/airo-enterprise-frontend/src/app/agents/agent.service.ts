@@ -4,14 +4,12 @@ import { AgentDto } from './models/agent-dto.model';
 import { AgentDetailsDto } from './models/agent-details-dto.model';
 import { HttpService } from '../common/services/http.service';
 import { ConfigService } from '../common/services/config.service';
-
-import * as signalR from '@microsoft/signalr';
+import { Socket } from 'ngx-socket-io';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AgentService {
-  private hubConnection!: signalR.HubConnection;
   private initialized = false; // To track if the connection is initialized
   private initializingPromise: Promise<void> | null = null; // To prevent multiple initializations
 
@@ -19,7 +17,7 @@ export class AgentService {
   private agentSubject = new BehaviorSubject<AgentDetailsDto | null>(null);
   private anomalyDetectedSubject = new Subject<string>();
   private hardwareFailureSubject = new Subject<string>();
-  
+
   private get baseUrl(): string {
     return `${this.configService.config.gatewayApiUrl}/gateway`;
   }
@@ -33,6 +31,8 @@ export class AgentService {
   anomalyDetected$ = this.anomalyDetectedSubject.asObservable();
   hardwareFailure$ = this.hardwareFailureSubject.asObservable();
 
+  private socket!: Socket;
+
   constructor(private configService: ConfigService, private http: HttpService) { }
 
   private initialize(): Promise<void> {
@@ -44,101 +44,58 @@ export class AgentService {
       return this.initializingPromise; // If initialization is in progress, return the ongoing promise
     }
 
-    this.initializingPromise = new Promise<void>((resolve, reject) => {
-      this.hubConnection = new signalR.HubConnectionBuilder()
-        .withUrl(`http://localhost:4008/agentsHub`, { withCredentials: false }) // <-- this should go via gateway
-        .withAutomaticReconnect()
-        .configureLogging(signalR.LogLevel.Information)
-        .build();
+    this.initializingPromise = new Promise<void>((resolve) => {
+      this.socket = new Socket({
+        url: 'http://localhost:3003',
+        options: { transports: ['websocket'], withCredentials: false },
+      });
 
-      this.hubConnection.on('ReceiveAgentsData', (agents: AgentDto[]) => {
+      this.socket.fromEvent<AgentDto[]>('ReceiveAgentsData').subscribe((agents) => {
         this.agentsSubject.next(agents);
       });
 
-      this.hubConnection.on('ReceiveAgentData', (agent: AgentDetailsDto) => {
+      this.socket.fromEvent<AgentDetailsDto>('ReceiveAgentData').subscribe((agent) => {
         this.agentSubject.next(agent);
       });
 
-      this.hubConnection.on('AnomalyDetected', (data: string) => {
+      this.socket.fromEvent<string>('AnomalyDetected').subscribe((data) => {
         this.anomalyDetectedSubject.next(data);
       });
 
-      this.hubConnection.on('HardwareFailure', (data: string) => {
+      this.socket.fromEvent<string>('HardwareFailure').subscribe((data) => {
         this.hardwareFailureSubject.next(data);
       });
 
-      // Start the connection
-      this.hubConnection
-        .start()
-        .then(() => {
-          console.log('SignalR Connected');
-          this.initialized = true; // Set the initialized flag
-          resolve(); // Resolve the promise when done
-        })
-        .catch((err) => {
-          console.error('Error while starting connection: ' + err);
-          reject(err); // Reject the promise if there is an error
-        });
+      this.initialized = true;
+      resolve(); // Resolve the promise when done
     });
 
     return this.initializingPromise;
   }
 
   stopConnection() {
-    if (this.hubConnection) {
-      this.hubConnection
-        .stop()
-        .then(() => console.log('SignalR Disconnected'))
-        .catch((err) => console.log('Error while stopping connection: ' + err));
+    if (this.socket) {
+      this.socket.disconnect();
+      
+      this.initialized = false;
+      this.initializingPromise = null;
+
+      console.log('Socket.IO Disconnected');
     }
   }
 
   async startAgentsStreaming() {
-    await this.initialize(); // Ensure hubConnection is initialized
+    await this.initialize(); // Ensure socket connection is initialized
 
-    this.hubConnection
-      .start()
-      .then(() => {
-        console.log('SignalR Connected');
-
-        this.hubConnection
-          .invoke('StreamAgentsData')
-          .catch((err) =>
-            console.error('Error while starting the stream', err)
-          );
-      })
-      .catch((err) => console.log('Error while starting connection: ' + err));
-
-    this.hubConnection.onreconnected(() => {
-      this.hubConnection
-        .invoke('StreamAgentsData')
-        .catch((err) => console.error('Error while starting the stream', err));
-    });
+    this.socket.emit('StreamAgentsData'); // Emit event to start agents stream
+    console.log('Started agents streaming');
   }
 
   async startAgentStreaming(id: string) {
-    await this.initialize(); // Ensure hubConnection is initialized
+    await this.initialize(); // Ensure socket connection is initialized
 
-    this.hubConnection
-      .start()
-      .then(() => {
-        console.log('SignalR Connected');
-
-        this.hubConnection
-          .invoke('StreamAgentData', id)
-          .catch((err) =>
-            console.error('Error while starting the agent stream', err)
-          );
-      })
-      .catch((err) => console.log('Error while starting connection: ' + err));
-
-    this.hubConnection.onreconnected(() => {
-      this.hubConnection
-        .invoke('StreamAgentData', id)
-        .catch((err) =>
-          console.error('Error while starting the agent stream', err)
-        );
-    });
+    this.socket.emit('StreamAgentData', id); // Emit event to start a specific agent stream
+    console.log('Started agent streaming for id:', id);
   }
 
   async rechargeAgent(id: string): Promise<void> {
@@ -187,7 +144,6 @@ export class AgentService {
           manualMode,
         }),
       });
-
     } catch (error) {
       console.error('Error performing action:', error);
       throw error;
@@ -219,7 +175,6 @@ export class AgentService {
       await this.http.fetch(url, {
         method: 'POST',
       });
-
     } catch (error) {
       console.error('Error performing action:', error);
       throw error;

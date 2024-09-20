@@ -127,6 +127,7 @@ services:
       context: ./back-end/gateways/airo-enterprise-gateway-api
     ports:
       - "3002:3000"
+      - "3003:3001" # signalR gateway
     environment:
       - AUTH_API_URL=${ENTERPRISE_AUTH_API_URL}
       - ANYBOTICS_SERVICE_URL=${ANYBOTICS_SERVICE_URL}
