@@ -99,7 +99,7 @@ export class AgentService {
   }
 
   async rechargeAgent(id: string): Promise<void> {
-    const url = this.commandUrl(id, 'recharge');
+    const url = this.commandUrl(id, 'rechargeBattery');
     await this.performAction(url, id);
   }
 

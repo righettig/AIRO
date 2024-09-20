@@ -63,9 +63,10 @@ export class GatewayController {
   @All('agents/:agentId/:command')
   async executeCommand(
     @Param('agentId') agentId: string,
-    @Param('command') command: string
+    @Param('command') command: string,
+    @Body() data: any,
   ) {
-    const response = await this.agentsService.executeCommand(agentId, command);
+    const response = await this.agentsService.executeCommand(agentId, command, data);
     return response;
   }
 
