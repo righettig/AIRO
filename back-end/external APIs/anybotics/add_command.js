@@ -231,23 +231,31 @@ function updateCommandsFile() {
 function updateCommandsTemplateFile() {
     // Read the existing content of the commands file
     const commandsTemplateFileContent = fs.readFileSync(commandsTemplateFilePath, 'utf8');
-
-    // Define the new method to be inserted
-    const newHtmlContent = `  <mat-list-item>\r\t\t\t<button mat-button color="primary" (click)="${COMMAND_NAME_CAMEL_CASE}()">\r\t\t\t\t${COMMAND_NAME}\r\t\t\t</button>\r\t\t</mat-list-item>`;
-
+    
     // Find the last method's ending bracket
-    const commandGroupIndex = commandsTemplateFileContent.indexOf(`<h3>${COMMAND_GROUP_NAME}</h3>`);
-    const index = commandsTemplateFileContent.indexOf('</mat-list>', commandGroupIndex);
+    let commandGroupIndex = commandsTemplateFileContent.indexOf(`<h3>${COMMAND_GROUP_NAME}</h3>`);
+
+    let newHtmlContent = `<mat-list-item>\r\t\t\t<button mat-button color="primary" (click)="${COMMAND_NAME_CAMEL_CASE}()">\r\t\t\t\t${COMMAND_NAME}\r\t\t\t</button>\r\t\t</mat-list-item>`;
+    let index = -1;
 
     if (commandGroupIndex === -1) {
-        console.error('Unable to find the command group.');
-        return;
+        console.log('Unable to find the command group. Generating a new command group');
+        
+        commandGroupIndex = commandsTemplateFileContent.lastIndexOf('</mat-list>') + '</mat-list>'.length;
+        newHtmlContent = `\n\n\t<h3>${COMMAND_GROUP_NAME}</h3>\n\t<mat-list>\n\t\t` +  newHtmlContent + '\n\t</mat-list>';
+
+        index = commandGroupIndex;
+
+    } else {
+        newHtmlContent = '\t' + newHtmlContent + '\r\t';
+
+        index = commandsTemplateFileContent.indexOf('</mat-list>', commandGroupIndex);
     }
 
     // Insert the new html content
     const updatedContent =
         commandsTemplateFileContent.slice(0, index) +
-        newHtmlContent + '\r\t' +
+        newHtmlContent +
         commandsTemplateFileContent.slice(index);
 
     // Write the updated content back to the file
@@ -270,6 +278,8 @@ function main() {
 
     if (COMMAND_GROUP_NAME) {
         updateCommandsTemplateFile();
+    } else {
+        console.log("COMMAND_GROUP_NAME option not specified. Skipping updating commands template file.")
     }
 }
 
