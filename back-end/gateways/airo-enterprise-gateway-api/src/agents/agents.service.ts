@@ -33,7 +33,7 @@ export class AgentsService {
         return response.data;
     }
 
-    async executeCommand(agentId: string, command: string, data: any, token: string) {
+    async executeCommand(agentId: string, command: string, data: any) {
         if (isEmptyObject(data)) {
             data = JSON.stringify(agentId)
         }
@@ -41,12 +41,7 @@ export class AgentsService {
         const response = await firstValueFrom(
             this.httpService.post(`${this.serviceUrl}/anymal/${command}`,
                 data,
-                { 
-                    headers: { 
-                        "Authorization": token,
-                        "Content-Type": "application/json" 
-                    } 
-                }
+                { headers: { "Content-Type": "application/json" } }
             ));
 
         return response.data;

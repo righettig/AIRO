@@ -64,11 +64,9 @@ export class GatewayController {
   async executeCommand(
     @Param('agentId') agentId: string,
     @Param('command') command: string,
-    @Body() data: any,
-    @Req() request: Request
+    @Body() data: any
   ) {
-    const token = request.headers['authorization'];
-    const response = await this.agentsService.executeCommand(agentId, command, data, token);
+    const response = await this.agentsService.executeCommand(agentId, command, data);
     return response;
   }
 
