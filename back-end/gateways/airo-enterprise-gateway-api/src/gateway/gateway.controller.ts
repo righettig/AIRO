@@ -83,7 +83,7 @@ export class GatewayController {
   }
 
   @Post('missions')
-  async createBot(@Body() createMissionDto: CreateMissionDto) {
+  async createMission(@Body() createMissionDto: CreateMissionDto) {
     const response = await this.missionsService.create(createMissionDto.name, createMissionDto.commands);
     return response;
   }
