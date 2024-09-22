@@ -9,6 +9,7 @@ import { SignupDto } from './models/signup.dto';
 import { UpdateProfileDto } from 'src/profile/models/update-profile-dto';
 import { BotsService } from 'src/bots/bots.service';
 import { PurchaseService } from 'src/purchase/purchase.service';
+import { EventsService } from 'src/events/events.service';
 
 describe('GatewayController', () => {
   let controller: GatewayController;
@@ -18,6 +19,7 @@ describe('GatewayController', () => {
   let invoiceService: InvoiceService;
   let botsService: BotsService;
   let purchaseService: PurchaseService;
+  let eventsService: EventsService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -67,6 +69,13 @@ describe('GatewayController', () => {
             purchase: jest.fn()
           },
         },
+        {
+          provide: EventsService,
+          useValue: {
+            getAll: jest.fn(),
+            getById: jest.fn()
+          },
+        },
       ],
     }).compile();
 
@@ -77,6 +86,7 @@ describe('GatewayController', () => {
     invoiceService = module.get<InvoiceService>(InvoiceService);
     botsService = module.get<BotsService>(BotsService);
     purchaseService = module.get<PurchaseService>(PurchaseService);
+    eventsService = module.get<EventsService>(EventsService);
   });
 
   it('should be defined', () => {
@@ -355,6 +365,23 @@ describe('GatewayController', () => {
       const result = await controller.buyBot(mockRequest, botId);
 
       expect(result).toEqual({ success: false });
+    });
+  });
+
+  describe('getAllEvents', () => {
+    it('should return all events', async () => {
+      const mockRequest = { headers: { authorization: 'Bearer jwt-token' } } as any;
+      jest.spyOn(controller as any, 'decodeFromToken').mockReturnValue('123');
+      const response = [
+        { id: 'event1', name: "event 1", description: "this is the first event" }, 
+      ];
+
+      jest.spyOn(eventsService, 'getAll').mockResolvedValue(response);
+
+      const result = await controller.getAllEvents(mockRequest);
+
+      expect(eventsService.getAll).toHaveBeenCalled();
+      expect(result).toEqual(response);
     });
   });
 });
