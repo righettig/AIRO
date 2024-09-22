@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../../auth/services/auth.service';
 import { map, Observable } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { MyBotsComponent } from "./my-bots/my-bots.component";
 import { BotListComponent } from "./bot-list/bot-list.component";
-import { BotStoreService } from '../services/bots-service';
+import { BotStoreService } from '../services/bot-store.service';
 import { Bot } from '../models/bot.model';
+import { AuthService } from '../../../../auth/services/auth.service';
 
 @Component({
   selector: 'app-bots',

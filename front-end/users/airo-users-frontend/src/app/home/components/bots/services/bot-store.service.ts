@@ -1,9 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
-import { AuthService } from '../../../auth/services/auth.service';
-import { ConfigService } from '../../../common/services/config.service';
 import { Bot } from '../models/bot.model';
+import { AuthService } from '../../../../auth/services/auth.service';
+import { ConfigService } from '../../../../common/services/config.service';
 
 export type BotPurchaseResponse = { success: boolean };
 
