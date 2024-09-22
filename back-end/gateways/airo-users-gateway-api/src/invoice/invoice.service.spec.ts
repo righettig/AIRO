@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { HttpService } from '@nestjs/axios';
 import { InvoiceService } from './invoice.service';
 import { of } from 'rxjs';
-import { createMockResponse, HttpServiceMock } from 'test/test-utils';
+import { createMockResponse, createMockHttpService } from 'airo-gateways-common';
 
 describe('InvoiceService', () => {
   let service: InvoiceService;
@@ -10,7 +10,10 @@ describe('InvoiceService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [InvoiceService, HttpServiceMock],
+      providers: [
+        InvoiceService, 
+        createMockHttpService(HttpService)
+      ],
     }).compile();
 
     service = module.get<InvoiceService>(InvoiceService);

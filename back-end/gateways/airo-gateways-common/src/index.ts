@@ -10,11 +10,11 @@ let httpService: Partial<HttpService> = {
     delete: () => of(),
 };
 
-export let HttpServiceMock = {
-    provide: HttpService, useValue: httpService
+export let createMockHttpService = (service: any) => {
+    return { provide: service, useValue: httpService }
 }
 
-export let createMockResponse = (data): AxiosResponse<any> => {
+export let createMockResponse = (data: any): AxiosResponse<any> => {
     return {
         data,
         headers: {},

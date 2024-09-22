@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { HttpService } from '@nestjs/axios';
 import { of } from 'rxjs';
-import { createMockResponse, HttpServiceMock } from 'test/test-utils';
 import { PurchaseService } from './purchase.service';
+import { createMockResponse, createMockHttpService } from 'airo-gateways-common';
 
 describe('PurchaseService', () => {
   let service: PurchaseService;
@@ -12,7 +12,7 @@ describe('PurchaseService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         PurchaseService,
-        HttpServiceMock
+        createMockHttpService(HttpService)
       ],
     }).compile();
 
@@ -25,6 +25,17 @@ describe('PurchaseService', () => {
   });
 
   describe('purchase', () => {
+    it('should create a bot and return its id', async () => {
+      const mockResponse = createMockResponse({});
+      jest.spyOn(httpService, 'post').mockReturnValue(of(mockResponse));
+
+      const result = await service.purchase('user1', 'bot1');
+      
+      expect(httpService.post).toHaveBeenCalledWith(`${service['serviceUrl']}/api/purchase`, {
+        userId: 'user1',
+        botId: 'bot1',
+      });
+    });
   });
 
   describe('getAll', () => {

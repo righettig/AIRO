@@ -8,7 +8,6 @@ import { LoginDto } from './models/login.dto';
 import { SignupDto } from './models/signup.dto';
 import { UpdateProfileDto } from 'src/profile/models/update-profile-dto';
 import { BotsService } from 'src/bots/bots.service';
-import { createMock } from '@golevelup/ts-jest';
 import { PurchaseService } from 'src/purchase/purchase.service';
 
 describe('GatewayController', () => {
