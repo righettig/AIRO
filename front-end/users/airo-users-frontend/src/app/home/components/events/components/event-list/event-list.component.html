@@ -1,0 +1,12 @@
+<ul>
+    @for (event of events; track event.id) {
+        <li>
+            <div>
+                {{event.name}}
+            </div>
+            <div>
+                {{event.description}}
+            </div>
+        </li>
+    }
+</ul>

@@ -6,6 +6,7 @@ import { BillingModule } from 'src/billing/billing.module';
 import { InvoiceModule } from 'src/invoice/invoice.module';
 import { BotsModule } from 'src/bots/bots.module';
 import { PurchaseModule } from 'src/purchase/purchase.module';
+import { EventsModule } from 'src/events/events.module';
 
 @Module({
   imports: [
@@ -14,7 +15,8 @@ import { PurchaseModule } from 'src/purchase/purchase.module';
     BillingModule,
     InvoiceModule,
     BotsModule,
-    PurchaseModule
+    PurchaseModule,
+    EventsModule
   ],
   controllers: [GatewayController]
 })

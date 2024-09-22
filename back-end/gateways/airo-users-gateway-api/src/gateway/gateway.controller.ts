@@ -12,6 +12,7 @@ import { InvoiceDto } from 'src/invoice/models/invoice.dto';
 import { UpdateProfileDto } from 'src/profile/models/update-profile-dto';
 import { BotsService } from 'src/bots/bots.service';
 import { PurchaseService } from 'src/purchase/purchase.service';
+import { EventsService } from 'src/events/events.service';
 
 @Controller('gateway')
 export class GatewayController {
@@ -23,7 +24,8 @@ export class GatewayController {
     private readonly billingService: BillingService,
     private readonly invoiceService: InvoiceService,
     private readonly botsService: BotsService,
-    private readonly purchaseService: PurchaseService
+    private readonly purchaseService: PurchaseService,
+    private readonly eventsService: EventsService,
   ) { }
 
   @Post('signup')
@@ -125,6 +127,21 @@ export class GatewayController {
     const invoicesResponse = await this.invoiceService.getAllInvoicesByUid(uid);
 
     return invoicesResponse;
+  }
+
+  @Get('events')
+  async getAllEvents(@Req() request: Request) {
+    const token = request.headers['authorization'];
+    if (!token) {
+      throw new Error('Token is missing');
+    }
+
+    // TODO: userId could be used in future to get user-specific prices/promotions
+    // or it might not be needed! Please cleanup if that's the case!
+    const uid = this.decodeFromToken<{ user_id?: string }>(token, 'user_id');
+
+    const response = await this.eventsService.getAll();
+    return response;
   }
 
   @Get('store/my-bots')

@@ -302,6 +302,47 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "gateway - event get Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/gateway/events/8b4ddfb1-b050-43dc-80cf-49afa8c2c247",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"gateway",
+								"events",
+								"8b4ddfb1-b050-43dc-80cf-49afa8c2c247"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - event get all Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/gateway/events",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"gateway",
+								"events"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
