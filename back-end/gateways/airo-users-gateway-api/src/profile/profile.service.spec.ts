@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { HttpService } from '@nestjs/axios';
 import { ProfileService } from './profile.service';
 import { of } from 'rxjs';
-import { createMockResponse, HttpServiceMock } from 'test/test-utils';
+import { createMockResponse, createMockHttpService } from 'airo-gateways-common';
 
 describe('ProfileService', () => {
   let service: ProfileService;
@@ -10,7 +10,10 @@ describe('ProfileService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [ProfileService, HttpServiceMock],
+      providers: [
+        ProfileService, 
+        createMockHttpService(HttpService)
+      ],
     }).compile();
 
     service = module.get<ProfileService>(ProfileService);

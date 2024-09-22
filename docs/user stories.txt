@@ -210,35 +210,35 @@ Company registration
 	All my company users should be able to login with their email accounts.
 	
 
-Connect ANYmal agent(s)
+Connect ANYmal agent(s) [DONE]
 -----------------------
 	Run simulator
 
 
-List ANYmail agents
+List ANYmail agents [DONE]
 -------------------
 
 
-Show ANYmal agent details
+Show ANYmal agent details [DONE]
 -------------------------
 	General info, status
 	
 
-Execute command
+Execute command [DONE]
 ---------------
 
 
-Create mission
+Create mission [DONE]
 --------------
 
 
-Delete mission
+Delete mission [DONE]
 --------------
 
 
-Audit History
+Audit History [DONE]
 -------------
 
 
-Live feed
+Live feed [DONE]
 ---------

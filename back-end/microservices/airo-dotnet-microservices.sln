@@ -16,13 +16,16 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "airo-cqrs-eventsourcing-lib", "airo-cqrs-eventsourcing-lib\airo-cqrs-eventsourcing-lib.csproj", "{CF293D32-26AE-4D43-8340-C46D87EE8B00}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "airo-events-microservice", "airo-events-microservice\airo-events-microservice.csproj", "{AA946884-A05E-4244-872C-5802A15BEBF2}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "airo-purchase-microservice", "airo-purchase-microservice\airo-purchase-microservice.csproj", "{3763CB71-3D7B-44AF-B514-8F2B590C2F9F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{ECC6C50C-5E65-40CE-AE68-D39533E82357}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "airo-purchase-tests", "airo-purchase-tests\airo-purchase-tests.csproj", "{DE497E43-DA80-4D23-915F-8BA34FC1144F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "airo-purchase-tests", "airo-purchase-tests\airo-purchase-tests.csproj", "{DE497E43-DA80-4D23-915F-8BA34FC1144F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "airo-bots-tests", "airo-bots-tests\airo-bots-tests.csproj", "{636956AB-AD6F-4BBE-80F2-D945AF4DC8F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "airo-bots-tests", "airo-bots-tests\airo-bots-tests.csproj", "{636956AB-AD6F-4BBE-80F2-D945AF4DC8F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "airo-events-tests", "airo-events-tests\airo-events-tests.csproj", "{C8AD6178-1F06-49E6-AB25-2F6F7423C2C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -70,6 +73,10 @@ Global
 		{636956AB-AD6F-4BBE-80F2-D945AF4DC8F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{636956AB-AD6F-4BBE-80F2-D945AF4DC8F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{636956AB-AD6F-4BBE-80F2-D945AF4DC8F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8AD6178-1F06-49E6-AB25-2F6F7423C2C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8AD6178-1F06-49E6-AB25-2F6F7423C2C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8AD6178-1F06-49E6-AB25-2F6F7423C2C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8AD6178-1F06-49E6-AB25-2F6F7423C2C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -77,6 +84,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{DE497E43-DA80-4D23-915F-8BA34FC1144F} = {ECC6C50C-5E65-40CE-AE68-D39533E82357}
 		{636956AB-AD6F-4BBE-80F2-D945AF4DC8F1} = {ECC6C50C-5E65-40CE-AE68-D39533E82357}
+		{C8AD6178-1F06-49E6-AB25-2F6F7423C2C0} = {ECC6C50C-5E65-40CE-AE68-D39533E82357}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {919F5805-3223-46B9-8C08-BDC0559A7492}

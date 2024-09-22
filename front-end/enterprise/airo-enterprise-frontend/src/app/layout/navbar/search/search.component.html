@@ -1,0 +1,16 @@
+<div class="search-bar">
+  <input
+    matInput
+    placeholder="Search by ID or Name"
+    [(ngModel)]="searchTerm"
+    (keyup.enter)="onSearch()"
+  />
+
+  <button mat-raised-button color="primary" id="search-btn" (click)="onSearch()">Search</button>
+
+  @if (searchTerm) {
+  <button mat-raised-button color="primary" id="clear-search-btn" (click)="clearSearch()">
+    Clear Search
+  </button>
+  }
+</div>

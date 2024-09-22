@@ -1,0 +1,16 @@
+<p>
+  Battery Level: {{ batteryLevel }}% 
+  
+  @if (batteryLevel < 5) {
+    <mat-icon>battery_alert</mat-icon>
+  }
+  @else if (batteryLevel <= 10) {
+    <mat-icon>battery_2_bar</mat-icon>
+  }
+  @else if (batteryLevel <= 25) {
+    <mat-icon>battery_3_bar</mat-icon>
+  } 
+  @else if (batteryLevel <= 50) {
+    <mat-icon>battery_4_bar</mat-icon>
+  }
+</p>

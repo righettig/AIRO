@@ -1,0 +1,82 @@
+﻿syntax = "proto3";
+
+import "google/protobuf/any.proto";
+
+option csharp_namespace = "AnymalGrpc";
+
+service AnymalService {
+  rpc RegisterAgent (RegistrationRequest) returns (RegistrationResponse);
+  
+  rpc UpdateBattery (BatteryUpdate) returns (UpdateResponse);
+  rpc UpdateStatus (StatusUpdate) returns (UpdateResponse);
+
+  // Server-side streaming RPCs for the API to notify commands to ANYmal(s)
+  rpc StreamCommands(CommandListener) returns (stream Command);
+
+  // Unified RPC for reporting anomalies
+  rpc ReportAnomaly(AnomalyReport) returns (UpdateResponse);
+
+  // New RPCs for Hardware Failure
+  rpc ReportHardwareFailure(HardwareFailure) returns (UpdateResponse);
+}
+
+message RegistrationRequest {
+  string id = 1;
+  string name = 2;
+}
+
+message BatteryUpdate {
+  string id = 1;
+  int32 batteryLevel = 2;
+}
+
+message StatusUpdate {
+  string id = 1;
+  Status status = 2;
+}
+
+enum Status {
+  Unavailable = 0;
+  Active = 1;
+  Offline = 2;
+}
+
+message RegistrationResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message CommandListener {
+  string id = 1;
+}
+
+message UpdateResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message Command {
+  string id = 1;
+  string commandId = 2;
+  google.protobuf.Any payload = 3;
+}
+
+// Message for Hardware Failures
+message HardwareFailure {
+  string id = 1;
+  string hardwareItem = 2;
+  string failureType = 3;
+}
+
+// Generalized message for Anomalies
+message AnomalyReport {
+  string id = 1;
+  string anomalyType = 2; // e.g., "Thermal", "Acoustic", "Gas"
+  string room = 3;
+  string equipmentId = 4;
+}
+
+// add all command payload message here
+message SetManualModeRequest {
+  bool manualMode = 1;
+}

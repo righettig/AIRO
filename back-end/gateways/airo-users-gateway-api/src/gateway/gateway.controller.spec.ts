@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { GatewayController } from './gateway.controller';
-import { ProfileService } from '../profile/profile.service';
+import { ProfileGetProfileByUidResponse, ProfileService } from '../profile/profile.service';
 import { BillingService } from '../billing/billing.service';
 import { InvoiceService } from '../invoice/invoice.service';
 import { AuthService } from '../auth/auth.service';
@@ -8,6 +8,7 @@ import { LoginDto } from './models/login.dto';
 import { SignupDto } from './models/signup.dto';
 import { UpdateProfileDto } from 'src/profile/models/update-profile-dto';
 import { BotsService } from 'src/bots/bots.service';
+import { PurchaseService } from 'src/purchase/purchase.service';
 
 describe('GatewayController', () => {
   let controller: GatewayController;
@@ -16,6 +17,7 @@ describe('GatewayController', () => {
   let billingService: BillingService;
   let invoiceService: InvoiceService;
   let botsService: BotsService;
+  let purchaseService: PurchaseService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -54,8 +56,15 @@ describe('GatewayController', () => {
         {
           provide: BotsService,
           useValue: {
-            getById: jest.fn(),
+            getByIds: jest.fn(),
             getAll: jest.fn(),
+          },
+        },
+        {
+          provide: PurchaseService,
+          useValue: {
+            getAll: jest.fn(),
+            purchase: jest.fn()
           },
         },
       ],
@@ -67,6 +76,7 @@ describe('GatewayController', () => {
     billingService = module.get<BillingService>(BillingService);
     invoiceService = module.get<InvoiceService>(InvoiceService);
     botsService = module.get<BotsService>(BotsService);
+    purchaseService = module.get<PurchaseService>(PurchaseService);
   });
 
   it('should be defined', () => {
@@ -252,30 +262,99 @@ describe('GatewayController', () => {
     });
   });
 
-  describe('getBot', () => {
-    it('should call botsService.getById and return the bot data', async () => {
-      const botId = 'bot-123';
-      const bot = { id: botId, name: 'TestBot', price: '100' };
+  describe('myBots', () => {
+    it('should return the bots owned by the user', async () => {
+      const mockRequest = { headers: { authorization: 'Bearer jwt-token' } } as any;
+      jest.spyOn(controller as any, 'decodeFromToken').mockReturnValue('123');
 
-      jest.spyOn(botsService, 'getById').mockResolvedValue(bot);
+      const botIds = ['1', '2'];
+      const bots = [
+        { id: '1', name: 'Bot1', price: '100' }, 
+        { id: '2', name: 'Bot2', price: '200' }
+      ];
+      
+      jest.spyOn(purchaseService, 'getAll').mockResolvedValue(botIds);
+      jest.spyOn(botsService, 'getByIds').mockResolvedValue(bots);
 
-      const result = await controller.getBot(botId);
+      const result = await controller.myBots(mockRequest);
 
-      expect(botsService.getById).toHaveBeenCalledWith(botId);
-      expect(result).toEqual(bot);
+      expect(purchaseService.getAll).toHaveBeenCalledWith('123');
+      expect(botsService.getByIds).toHaveBeenCalledWith(botIds);
+      expect(result).toEqual(bots);
     });
   });
 
   describe('getAllBots', () => {
-    it('should call botsService.getAll and return the list of bots', async () => {
-      const bots = [{ id: 'bot-123', name: 'Bot1', price: '100' }];
-
+    it('should return all available bots', async () => {
+      const mockRequest = { headers: { authorization: 'Bearer jwt-token' } } as any;
+      jest.spyOn(controller as any, 'decodeFromToken').mockReturnValue('123');
+      
+      const bots = [
+        { id: '1', name: 'Bot1', price: '100' }, 
+        { id: '2', name: 'Bot2', price: '200' }
+      ];
+      
       jest.spyOn(botsService, 'getAll').mockResolvedValue(bots);
-
-      const result = await controller.getAllBots();
+      const result = await controller.getAllBots(mockRequest);
 
       expect(botsService.getAll).toHaveBeenCalled();
       expect(result).toEqual(bots);
+    });
+  });
+
+  describe('getFreeBotsAllowance', () => {
+    it('should return the remaining free bots allowance when account is pro', async () => {
+      const mockRequest = { headers: { authorization: 'Bearer jwt-token' } } as any;
+      jest.spyOn(controller as any, 'decodeFromToken').mockReturnValue('123');
+
+      const mockProfile = { accountType: 'pro' } as ProfileGetProfileByUidResponse;
+      const botIds = ['1'];
+      
+      jest.spyOn(profileService, 'getProfileByUid').mockResolvedValue(mockProfile);
+      jest.spyOn(purchaseService, 'getAll').mockResolvedValue(botIds);
+
+      const result = await controller.getFreeBotsAllowance(mockRequest);
+
+      expect(result).toEqual(2); // pro account type allows 3 bots, user owns 1
+    });
+
+    it('should return the remaining free bots allowance when account is free', async () => {
+      const mockRequest = { headers: { authorization: 'Bearer jwt-token' } } as any;
+      jest.spyOn(controller as any, 'decodeFromToken').mockReturnValue('123');
+
+      const mockProfile = { accountType: 'free' } as ProfileGetProfileByUidResponse;
+      const botIds = [];
+      
+      jest.spyOn(profileService, 'getProfileByUid').mockResolvedValue(mockProfile);
+      jest.spyOn(purchaseService, 'getAll').mockResolvedValue(botIds);
+
+      const result = await controller.getFreeBotsAllowance(mockRequest);
+
+      expect(result).toEqual(1); // pro account type allows 1 bots, user owns 0
+    });
+  });
+
+  describe('buyBot', () => {
+    it('should successfully buy a bot', async () => {
+      const mockRequest = { headers: { authorization: 'Bearer jwt-token' } } as any;
+      jest.spyOn(controller as any, 'decodeFromToken').mockReturnValue('123');
+      jest.spyOn(purchaseService, 'purchase').mockResolvedValue(true);
+      
+      const botId = 'bot-123';
+      const result = await controller.buyBot(mockRequest, botId);
+
+      expect(result).toEqual({ success: true });
+    });
+
+    it('should fail to buy a bot', async () => {
+      const mockRequest = { headers: { authorization: 'Bearer jwt-token' } } as any;
+      jest.spyOn(controller as any, 'decodeFromToken').mockReturnValue('123');
+      jest.spyOn(purchaseService, 'purchase').mockRejectedValue(new Error('Purchase failed'));
+      
+      const botId = 'bot-123';
+      const result = await controller.buyBot(mockRequest, botId);
+
+      expect(result).toEqual({ success: false });
     });
   });
 });

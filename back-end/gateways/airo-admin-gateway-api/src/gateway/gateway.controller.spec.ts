@@ -3,11 +3,13 @@ import { GatewayController } from './gateway.controller';
 import { AuthService } from '../auth/auth.service';
 import { LoginDto } from './models/login.dto';
 import { BotsService } from 'src/bots/bots.service';
+import { EventsService } from 'src/events/events.service';
 
 describe('GatewayController', () => {
   let controller: GatewayController;
   let authService: AuthService;
   let botsService: BotsService;
+  let eventsService: EventsService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -15,6 +17,16 @@ describe('GatewayController', () => {
       providers: [
         {
           provide: BotsService,
+          useValue: {
+            create: jest.fn(),
+            update: jest.fn(),
+            delete: jest.fn(),
+            getById: jest.fn(),
+            getAll: jest.fn(),
+          },
+        },
+        {
+          provide: EventsService,
           useValue: {
             create: jest.fn(),
             update: jest.fn(),
@@ -39,6 +51,7 @@ describe('GatewayController', () => {
     controller = module.get<GatewayController>(GatewayController);
     authService = module.get<AuthService>(AuthService);
     botsService = module.get<BotsService>(BotsService);
+    eventsService = module.get<EventsService>(EventsService);
   });
 
   it('should be defined', () => {
@@ -154,6 +167,75 @@ describe('GatewayController', () => {
 
         expect(botsService.getAll).toHaveBeenCalled();
         expect(result).toEqual(bots);
+      });
+    });
+  });
+
+  describe('events', () => {
+    describe('createEvent', () => {
+      it('should call eventsService.create and return the created event ID', async () => {
+        const createEventDto = { name: 'TestEvent', description: "description" };
+        const createdEventId = 'event-123';
+
+        jest.spyOn(eventsService, 'create').mockResolvedValue(createdEventId);
+
+        const result = await controller.createEvent(createEventDto);
+
+        expect(eventsService.create).toHaveBeenCalledWith(createEventDto.name, createEventDto.description);
+        expect(result).toEqual(createdEventId);
+      });
+    });
+
+    describe('updateEvent', () => {
+      it('should call eventsService.update with correct data', async () => {
+        const updateEventDto = { id: 'event-123', name: 'UpdatedEvent', description: "blabla" };
+
+        jest.spyOn(eventsService, 'update').mockResolvedValue(undefined);
+
+        const result = await controller.updateEvent(updateEventDto);
+
+        expect(eventsService.update).toHaveBeenCalledWith(updateEventDto.id, updateEventDto.name, updateEventDto.description);
+        expect(result).toBeUndefined();
+      });
+    });
+
+    describe('deleteEvent', () => {
+      it('should call eventsService.delete and return undefined', async () => {
+        const eventId = 'event-123';
+
+        jest.spyOn(eventsService, 'delete').mockResolvedValue(undefined);
+
+        const result = await controller.deleteEvent(eventId);
+
+        expect(eventsService.delete).toHaveBeenCalledWith(eventId);
+        expect(result).toBeUndefined();
+      });
+    });
+
+    describe('getEvent', () => {
+      it('should call eventsService.getById and return the bot data', async () => {
+        const eventId = 'event-123';
+        const event = { id: eventId, name: 'TestBot', description: 'foo bar' };
+
+        jest.spyOn(eventsService, 'getById').mockResolvedValue(event);
+
+        const result = await controller.getEvent(eventId);
+
+        expect(eventsService.getById).toHaveBeenCalledWith(eventId);
+        expect(result).toEqual(event);
+      });
+    });
+
+    describe('getAllEvents', () => {
+      it('should call eventsService.getAll and return the list of events', async () => {
+        const events = [{ id: 'event-123', name: 'Event1', description: 'foobar' }];
+
+        jest.spyOn(eventsService, 'getAll').mockResolvedValue(events);
+
+        const result = await controller.getAllEvents();
+
+        expect(eventsService.getAll).toHaveBeenCalled();
+        expect(result).toEqual(events);
       });
     });
   });

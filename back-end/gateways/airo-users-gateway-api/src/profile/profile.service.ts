@@ -2,7 +2,7 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
 
-type ProfileGetProfileByUidResponse = {
+export type ProfileGetProfileByUidResponse = {
     uid: string,
     firstName: string,
     lastName: string,

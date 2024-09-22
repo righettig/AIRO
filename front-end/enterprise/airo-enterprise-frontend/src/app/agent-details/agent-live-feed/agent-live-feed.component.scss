@@ -1,0 +1,19 @@
+.babylon-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000;
+}
+
+canvas {
+  // this works well when using browser at 90% zoom level
+  width: 990px;
+  
+  // width: 71%;
+  // height: 71%;
+
+  // width: 100%;
+  // height: 100%;
+}

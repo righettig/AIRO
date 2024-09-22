@@ -1,0 +1,14 @@
+{
+  "agents": [
+    { "name": "AgentAlpha" },
+    { "name": "AgentBravo" },
+    { "name": "AgentCharlie" },
+    { "name": "AgentDelta" },
+    { "name": "AgentEcho" },
+    { "name": "AgentFoxtrot" },
+    { "name": "AgentGolf" },
+    { "name": "AgentHotel" },
+    { "name": "AgentIndia" },
+    { "name": "AgentJuliet" }
+  ]
+}

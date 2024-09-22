@@ -549,13 +549,13 @@
 					"response": []
 				},
 				{
-					"name": "gateway - event create",
+					"name": "gateway - login",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"event4\",\r\n    \"description\": \"fourth\"\r\n}",
+							"raw": "{\r\n    \"email\": \"admin@airo.com\",\r\n    \"password\": \"q1w2e3\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -563,7 +563,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3001/gateway/events",
+							"raw": "http://localhost:3001/gateway/login",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -571,28 +571,19 @@
 							"port": "3001",
 							"path": [
 								"gateway",
-								"events"
+								"login"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "gateway - event update",
+					"name": "gateway - logout",
 					"request": {
-						"method": "PUT",
+						"method": "POST",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"id\": \"578ef806-c986-4608-adf2-f7e31a9dc1ae\",\r\n    \"name\": \"FOO\",\r\n    \"description\": \"new\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "http://localhost:3001/gateway/events",
+							"raw": "http://localhost:3001/gateway/logout",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -600,69 +591,306 @@
 							"port": "3001",
 							"path": [
 								"gateway",
-								"events"
+								"logout"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "gateway - event get",
+					"name": "gateway - refresh-token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/gateway/refresh-token",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"refresh-token"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Enterprice Gateway",
+			"item": [
+				{
+					"name": "gateway - agent get",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3001/gateway/events/8b4ddfb1-b050-43dc-80cf-49afa8c2c247",
+							"raw": "http://localhost:3002/gateway/agents/3d1b3170-48ec-466f-8b02-36d36801fd9a",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3001",
+							"port": "3002",
 							"path": [
 								"gateway",
-								"events",
-								"8b4ddfb1-b050-43dc-80cf-49afa8c2c247"
+								"agents",
+								"3d1b3170-48ec-466f-8b02-36d36801fd9a"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "gateway - event delete",
+					"name": "gateway - agent commands",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3002/gateway/agents/3d1b3170-48ec-466f-8b02-36d36801fd9a/commands",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"gateway",
+								"agents",
+								"3d1b3170-48ec-466f-8b02-36d36801fd9a",
+								"commands"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - agent get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3002/gateway/agents",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"gateway",
+								"agents"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - commands get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3002/gateway/commands",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"gateway",
+								"commands"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - missions get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3002/gateway/missions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"gateway",
+								"missions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - mission create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"mission1\",\r\n    \"commands\": [\r\n        \"command1\",\r\n        \"command2\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3002/gateway/missions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"gateway",
+								"missions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - agent execute command",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3002/gateway/agents/0b10f852-b457-419b-aa97-c15320a6885c/acousticMeasure",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"gateway",
+								"agents",
+								"0b10f852-b457-419b-aa97-c15320a6885c",
+								"acousticMeasure"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - mission execute",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"agentId\": \"agent1\",\r\n    \"missionId\": \"b8aa8332-7c20-46e7-a144-d98774f67d1a\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3002/gateway/missions/execute",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"gateway",
+								"missions",
+								"execute"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - mission delete",
 					"request": {
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3001/gateway/events/6160ef24-5025-429f-b12e-c4729fa5c9de",
+							"raw": "http://localhost:3002/gateway/missions/5aa23ce4-aad5-4f49-ac73-27ee614a6e3f",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3001",
+							"port": "3002",
 							"path": [
 								"gateway",
-								"events",
-								"6160ef24-5025-429f-b12e-c4729fa5c9de"
+								"missions",
+								"5aa23ce4-aad5-4f49-ac73-27ee614a6e3f"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "gateway - event get all",
+					"name": "gateway - login",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"enterprise@airo.com\",\r\n    \"password\": \"q1w2e3\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "http://localhost:3001/gateway/events",
+							"raw": "http://localhost:3002/gateway/login",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3001",
+							"port": "3002",
 							"path": [
 								"gateway",
-								"events"
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3002/gateway/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"gateway",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - refresh-token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3002/gateway/refresh-token",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3002",
+							"path": [
+								"gateway",
+								"refresh-token"
 							]
 						}
 					},

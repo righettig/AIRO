@@ -1,24 +1,7 @@
 services:
-  admin-app:
-    depends_on:
-      - admin-gateway-api
-    build:
-      context: ./front-end/admin/airo-admin-frontend
-    ports:
-      - "5001:3000"
-    environment:
-      - NEXT_PUBLIC_ADMIN_GATEWAY_API_URL=${ADMIN_GATEWAY_API_URL}
-    develop:
-      context: ./front-end/admin/airo-admin-frontend
-      watch:
-        - action: sync
-          path: ./front-end/admin/airo-admin-frontend
-          target: /app
-          ignore:
-            - node_modules/
-        - action: rebuild
-          path: ./front-end/admin/airo-admin-frontend/package.json
-
+  #------------#
+  # Front-ends #
+  #------------#
   users-app:
     depends_on:
       - users-gateway-api
@@ -39,6 +22,49 @@ services:
         - action: rebuild
           path: ./front-end/users/airo-users-frontend/package.json
 
+  admin-app:
+    depends_on:
+      - admin-gateway-api
+    build:
+      context: ./front-end/admin/airo-admin-frontend
+    ports:
+      - "5001:3000"
+    environment:
+      - NEXT_PUBLIC_ADMIN_GATEWAY_API_URL=${ADMIN_GATEWAY_API_URL}
+    develop:
+      context: ./front-end/admin/airo-admin-frontend
+      watch:
+        - action: sync
+          path: ./front-end/admin/airo-admin-frontend
+          target: /app
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: ./front-end/admin/airo-admin-frontend/package.json
+
+  enterprise-app:
+    depends_on:
+      - enterprise-gateway-api
+    build:
+      context: ./front-end/enterprise/airo-enterprise-frontend
+    ports:
+      - "5002:4200"
+    environment:
+      - ENTERPRISE_GATEWAY_API_URL=${ENTERPRISE_GATEWAY_API_URL}
+    develop:
+      context: ./front-end/enterprise/airo-enterprise-frontend
+      watch:
+        - action: sync
+          path: ./front-end/enterprise/airo-enterprise-frontend
+          target: /app
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: ./front-end/enterprise/airo-enterprise-frontend/package.json
+
+  #--------------#
+  # Gateway APIs #
+  #--------------#
   users-gateway-api:
     depends_on:
       - auth-service
@@ -71,7 +97,7 @@ services:
 
   admin-gateway-api:
     depends_on:
-      - auth-service
+      - admin-auth-service
       - bots-service
       - events-service
     build:
@@ -93,6 +119,32 @@ services:
         - action: rebuild
           path: ./back-end/gateways/airo-admin-gateway-api/package.json
 
+  enterprise-gateway-api:
+    depends_on:
+      - enterprise-auth-service
+      - anybotics-service
+    build:
+      context: ./back-end/gateways/airo-enterprise-gateway-api
+    ports:
+      - "3002:3000"
+      - "3003:3001" # signalR gateway
+    environment:
+      - AUTH_API_URL=${ENTERPRISE_AUTH_API_URL}
+      - ANYBOTICS_SERVICE_URL=${ANYBOTICS_SERVICE_URL}
+    develop:
+      context: ./back-end/gateways/airo-enterprise-gateway-api
+      watch:
+        - action: rebuild
+          path: ./back-end/gateways/airo-enterprise-gateway-api
+          target: /app
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: ./back-end/gateways/airo-enterprise-gateway-api/package.json
+
+  #---------------#
+  # Microservices #
+  #---------------#
   auth-service:
     build:
       context: .
@@ -125,6 +177,21 @@ services:
       - "4100:8080" # https not working so far!
     volumes:
       - airo-admin-config-volume:/app/config
+
+  enterprise-auth-service:
+    build:
+      context: .
+      dockerfile: ./back-end/microservices/airo-admin-auth-microservice/Dockerfile
+    environment:
+      - FIREBASE_PROJECT_NAME=${ENTERPRISE_FIREBASE_PROJECT_NAME}
+      - FIREBASE_API_KEY=${ENTERPRISE_FIREBASE_API_KEY}
+      - FIREBASE_CONFIG_FILE=${ENTERPRISE_FIREBASE_CONFIG_FILE}
+      - JWT_AUTHORITY=${ENTERPRISE_JWT_AUTHORITY}
+      - CORS_ALLOWED_ORIGINS=${ENTERPRISE_FRONT_END_URL}
+    ports:
+      - "4200:8080" # https not working so far!
+    volumes:
+      - airo-enterprise-config-volume:/app/config
 
   profile-service:
     build:
@@ -236,6 +303,28 @@ services:
         - action: rebuild
           path: ./back-end/microservices/airo-notifications-microservice/package.json
 
+  #---------------#
+  # External APIs #
+  #---------------#
+  anybotics-service:
+    build:
+      context: .
+      dockerfile: ./back-end/external APIs/anybotics/anybotics-anymal-api/Dockerfile
+    environment:
+      - FIREBASE_PROJECT_NAME=${ENTERPRISE_FIREBASE_PROJECT_NAME}
+      - FIREBASE_API_KEY=${ENTERPRISE_FIREBASE_API_KEY}
+      - FIREBASE_CONFIG_FILE=${ENTERPRISE_FIREBASE_CONFIG_FILE}
+      - JWT_AUTHORITY=${ENTERPRISE_JWT_AUTHORITY}
+      - CORS_ALLOWED_ORIGINS=${ENTERPRISE_FRONT_END_URL}
+    ports:
+      - "4008:5002" # HTTP/1.1 for SignalR on this port
+      - "4009:5001" # HTTP/2 for gRPC on this port
+    volumes:
+      - airo-enterprise-config-volume:/app/config
+
+  #----------------------#
+  # DBs & Message queues #
+  #----------------------#
   rabbitmq:
     image: "rabbitmq:3-management"
     container_name: rabbitmq
@@ -298,6 +387,9 @@ volumes:
     external: true
   
   airo-admin-config-volume:
+    external: true 
+
+  airo-enterprise-config-volume:
     external: true 
   
   mongo_data:
