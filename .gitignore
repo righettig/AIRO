@@ -56,3 +56,5 @@ back-end/microservices/airo-profile-microservice/airo-profile-microservice.cspro
 /simulators/anybotics/anybotics-anymal/obj
 /simulators/anybotics-agent-runner/bin
 /simulators/anybotics-agent-runner/obj
+/back-end/microservices/airo-events-tests/obj
+/back-end/microservices/airo-events-tests/bin
