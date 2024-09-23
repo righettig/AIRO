@@ -343,31 +343,20 @@ services:
 
   eventstore.db:
     image: eventstore/eventstore:lts
-    #image: eventstore/eventstore:latest
     environment:
-      - EVENTSTORE_INSECURE=true # let eventstore run without ceritficate
+      - EVENTSTORE_INSECURE=true # let eventstore run without certificate
       - EVENTSTORE_EXT_TCP_PORT=1113 # set internal tcp port
       - EVENTSTORE_HTTP_PORT=2113 # set internal admin ui port
       - EVENTSTORE_ENABLE_ATOM_PUB_OVER_HTTP=true
-      # - EVENTSTORE_INSECURE=true # let eventstore run without ceritficate
-      # - EVENTSTORE_CLUSTER_SIZE=1
-      # - EVENTSTORE_RUN_PROJECTIONS=All
-      # - EVENTSTORE_START_STANDARD_PROJECTIONS=True
-      # - EVENTSTORE_DB=/var/lib/eventstore-data
-      # - EVENTSTORE_INDEX=/var/lib/eventstore-index
-      # - EVENTSTORE_LOG=/var/log/eventstore
-      # - EVENTSTORE_EXT_TCP_PORT=1113
-      # - EVENTSTORE_HTTP_PORT=2113
+      - EVENTSTORE_RUN_PROJECTIONS=All
+      - EVENTSTORE_START_STANDARD_PROJECTIONS=true
     ports:
       - "1113:1113" # map internal tcp port
       - "2113:2113" # map internal admin ui port
     volumes:
       - type: volume
         source: eventstore-volume-data
-        target: /var/lib/eventstore-data
-      # - type: volume
-      #   source: eventstore-volume-index
-      #   target: /var/lib/eventstore-index
+        target: /var/lib/eventstore
       - type: volume
         source: eventstore-volume-logs
         target: /var/log/eventstore
@@ -397,5 +386,4 @@ volumes:
   mongo_data:
 
   eventstore-volume-data:
-  eventstore-volume-index:
   eventstore-volume-logs:
