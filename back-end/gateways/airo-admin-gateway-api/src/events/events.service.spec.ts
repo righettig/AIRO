@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { HttpService } from '@nestjs/axios';
-import { EventsService } from './events.service';
 import { of } from 'rxjs';
 import { createMockResponse, createMockHttpService } from 'airo-gateways-common';
+import { EventsService } from './events.service';
 
 describe('EventsService', () => {
   let service: EventsService;

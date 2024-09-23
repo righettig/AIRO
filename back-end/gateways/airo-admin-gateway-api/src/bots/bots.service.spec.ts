@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { HttpService } from '@nestjs/axios';
-import { BotsService } from './bots.service';
 import { of } from 'rxjs';
 import { createMockResponse, createMockHttpService } from 'airo-gateways-common';
+import { BotsService } from './bots.service';
 
 describe('BotsService', () => {
   let service: BotsService;

@@ -53,6 +53,11 @@
     "typescript": "^5.1.3"
   },
   "jest": {
+    "moduleNameMapper": {
+      "^@auth/(.*)$": "<rootDir>/src/auth/$1",
+      "^@bots/(.*)$": "<rootDir>/src/bots/$1",
+      "^@events/(.*)$": "<rootDir>/src/events/$1"
+    },
     "moduleFileExtensions": [
       "js",
       "json",

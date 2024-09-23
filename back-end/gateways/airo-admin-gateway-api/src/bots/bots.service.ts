@@ -1,10 +1,7 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
-
-type BotDto = { id: string, name: string, price: string };
-type GetBotResponse = BotDto;
-type GetBotsResponse = BotDto[];
+import { GetBotResponse, GetBotsResponse } from './models/bots.models';
 
 @Injectable()
 export class BotsService {

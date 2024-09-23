@@ -10,6 +10,12 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
+    "paths": {
+      "@auth/*": ["src/auth/*"],
+      "@bots/*": ["src/bots/*"],
+      "@events/*": ["src/events/*"],
+      "@models/*": ["src/models/*"]
+    },
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": false,

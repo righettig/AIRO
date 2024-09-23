@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { GatewayController } from './gateway.controller';
 import { AuthService } from '../auth/auth.service';
-import { LoginDto } from './models/login.dto';
 import { BotsService } from 'src/bots/bots.service';
 import { EventsService } from 'src/events/events.service';
+import { LoginDto } from '../auth/models/login.dto';
+import { GatewayController } from './gateway.controller';
 
 describe('GatewayController', () => {
   let controller: GatewayController;

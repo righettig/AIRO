@@ -1,13 +1,12 @@
 import { Body, Controller, Delete, Get, Logger, Param, Post, Put } from '@nestjs/common';
+
 import { AuthService } from 'src/auth/auth.service';
-import { LoginDto } from 'src/gateway/models/login.dto';
-import { LoginResponseDto } from './models/login.response.dto';
 import { BotsService } from 'src/bots/bots.service';
-import { CreateBotDto } from './models/create-bot.dto';
-import { UpdateBotDto } from './models/update-bot.dto';
-import { CreateEventDto } from './models/create-event.dto';
 import { EventsService } from 'src/events/events.service';
-import { UpdateEVentDto } from './models/update-event.dto';
+
+import { LoginDto, AuthLoginResponse, LoginResponseDto, AuthRefreshTokenResponse } from '@auth/models';
+import { CreateBotDto, UpdateBotDto, GetBotResponse, GetBotsResponse } from '@bots/models';
+import { CreateEventDto, UpdateEventDto, GetEventResponse, GetAllEventsResponse } from '@events/models';
 
 @Controller('gateway')
 export class GatewayController {
@@ -19,8 +18,9 @@ export class GatewayController {
     private readonly eventsService: EventsService,
   ) { }
 
+  // Auth
   @Post('login')
-  async login(@Body() loginDto: LoginDto) {
+  async login(@Body() loginDto: LoginDto): Promise<AuthLoginResponse> {
     const loginResponse = await this.authService.login(loginDto.email, loginDto.password);
 
     const response: LoginResponseDto = {
@@ -32,73 +32,64 @@ export class GatewayController {
   }
 
   @Post('logout')
-  async logout() {
+  async logout(): Promise<void> {
     await this.authService.logout();
   }
 
   @Post('refresh-token')
-  async refreshToken() {
-    const response = await this.authService.refreshToken();
-    return response;
+  async refreshToken(): Promise<AuthRefreshTokenResponse> {
+    return await this.authService.refreshToken();
   }
 
+  // Bots
   @Post('bot')
-  async createBot(@Body() createBotDto: CreateBotDto) {
-    const response = await this.botsService.create(createBotDto.name, createBotDto.price);
-    return response;
+  async createBot(@Body() createBotDto: CreateBotDto): Promise<string> {
+    return await this.botsService.create(createBotDto.name, createBotDto.price);
   }
 
   @Put('bot')
-  async updateBot(@Body() updateDtoBot: UpdateBotDto) {
-    const response = await this.botsService.update(updateDtoBot.id, updateDtoBot.name, updateDtoBot.price);
-    return response;
+  async updateBot(@Body() updateBotDto: UpdateBotDto): Promise<void> {
+    return await this.botsService.update(updateBotDto.id, updateBotDto.name, updateBotDto.price);
   }
 
   @Delete('bot/:botId')
-  async deleteBot(@Param('botId') botId: string) {
-    const response = await this.botsService.delete(botId);
-    return response;
+  async deleteBot(@Param('botId') botId: string): Promise<void> {
+    return await this.botsService.delete(botId);
   }
 
   @Get('bot/:botId')
-  async getBot(@Param('botId') botId: string) {;
-    const response = await this.botsService.getById(botId);
-    return response;
+  async getBot(@Param('botId') botId: string): Promise<GetBotResponse> {
+    return await this.botsService.getById(botId);
   }
 
   @Get('bot')
-  async getAllBots() {
-    const response = await this.botsService.getAll();
-    return response;
+  async getAllBots(): Promise<GetBotsResponse> {
+    return await this.botsService.getAll();
   }
 
+  // Events
   @Post('events')
-  async createEvent(@Body() createEventDto: CreateEventDto) {
-    const response = await this.eventsService.create(createEventDto.name, createEventDto.description);
-    return response;
+  async createEvent(@Body() createEventDto: CreateEventDto): Promise<string> {
+    return await this.eventsService.create(createEventDto.name, createEventDto.description);
   }
 
   @Put('events')
-  async updateEvent(@Body() updateEventDto: UpdateEVentDto) {
-    const response = await this.eventsService.update(updateEventDto.id, updateEventDto.name, updateEventDto.description);
-    return response;
+  async updateEvent(@Body() updateEventDto: UpdateEventDto): Promise<void> {
+    return await this.eventsService.update(updateEventDto.id, updateEventDto.name, updateEventDto.description);
   }
 
   @Delete('events/:eventId')
-  async deleteEvent(@Param('eventId') eventId: string) {
-    const response = await this.eventsService.delete(eventId);
-    return response;
+  async deleteEvent(@Param('eventId') eventId: string): Promise<void> {
+    return await this.eventsService.delete(eventId);
   }
 
   @Get('events/:eventId')
-  async getEvent(@Param('eventId') eventId: string) {;
-    const response = await this.eventsService.getById(eventId);
-    return response;
+  async getEvent(@Param('eventId') eventId: string): Promise<GetEventResponse> {
+    return await this.eventsService.getById(eventId);
   }
 
   @Get('events')
-  async getAllEvents() {
-    const response = await this.eventsService.getAll();
-    return response;
+  async getAllEvents(): Promise<GetAllEventsResponse> {
+    return await this.eventsService.getAll();
   }
 }

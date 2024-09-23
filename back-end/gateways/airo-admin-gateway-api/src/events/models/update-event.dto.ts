@@ -1,6 +1,6 @@
 import { IsNotEmpty } from 'class-validator';
 
-export class UpdateEVentDto {
+export class UpdateEventDto {
     @IsNotEmpty({ message: 'Id is required' })
     id: string;
 

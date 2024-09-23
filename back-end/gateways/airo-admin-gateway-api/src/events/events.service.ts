@@ -1,10 +1,7 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
-
-type EventDto = { id: string, name: string, description: string };
-type GetEventResponse = EventDto;
-type GetAllEventsResponse = EventDto[];
+import { GetEventResponse, GetAllEventsResponse } from './models/event.models';
 
 @Injectable()
 export class EventsService {

@@ -1,9 +1,7 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
-
-type AuthLoginResponse = {  uid: string, token: string };
-type AuthRefreshTokenResponse = { token: string };
+import { AuthLoginResponse, AuthRefreshTokenResponse } from './models/auth.models';
 
 @Injectable()
 export class AuthService {
@@ -21,7 +19,7 @@ export class AuthService {
         return response.data;
     }
 
-    async logout() {
+    async logout(): Promise<void> {
         await firstValueFrom(
             this.httpService.post(`${this.authServiceUrl}/api/auth/logout`),
         );
