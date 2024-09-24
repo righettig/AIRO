@@ -33,8 +33,31 @@ export const addBot = async (bot: BotDto) => {
     }
 }
 
-export const updateBot = (id: string, bot: BotDto) =>
-    botsService.request(`${id}`, 'PUT', bot);
+export const updateBot = async (id: string, bot: BotDto) => {
+    try {
+        const response = await fetch(BOTS_API_URL + '/gateway/bot', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token') || ''}`,
+            },
+            body: JSON.stringify({
+                id, 
+                ...bot
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        return {};
+        
+    } catch (error) {
+        console.error('API request failed:', error);
+        throw error;
+    }
+}
 
 export const deleteBot = (id: string) =>
     botsService.request(`${id}`, 'DELETE');
