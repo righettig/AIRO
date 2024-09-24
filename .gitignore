@@ -1,60 +1,15 @@
-.env
+# Ignore all .env files
+**/.env
 
-config/airo-44ca7-firebase-adminsdk-etd4u-7107dcb929.json
-config/airo-admin-firebase-adminsdk-a1emx-f61c9458c3.json
-config/airo-enterprise-firebase-adminsdk-crji5-0b56e538da.json
+# Ignore specific Firebase JSON config files
+config/*.json
 
-/back-end/microservices/airo-auth-microservice/.vs
-/back-end/microservices/airo-auth-microservice/bin
-/back-end/microservices/airo-auth-microservice/obj
-back-end/microservices/airo-auth-microservice/airo-auth-microservice.csproj.user
+# Ignore all .vs folders
+**/.vs
 
-/back-end/microservices/airo-profile-microservice/.vs
-/back-end/microservices/airo-profile-microservice/bin
-/back-end/microservices/airo-profile-microservice/obj
-back-end/microservices/airo-profile-microservice/airo-profile-microservice.csproj.user
+# Ignore all /bin and /obj folders no matter where they are
+**/bin/
+**/obj/
 
-/back-end/microservices/.vs
-
-/back-end/microservices/airo-common-lib/obj
-/back-end/microservices/airo-common-lib/bin
-
-/back-end/microservices/airo-admin-auth-microservice/.vs
-/back-end/microservices/airo-admin-auth-microservice/bin
-/back-end/microservices/airo-admin-auth-microservice/obj
-
-/back-end/microservices/airo-bots-microservice/bin
-/back-end/microservices/airo-bots-microservice/obj
-/back-end/microservices/airo-bots-tests/bin
-/back-end/microservices/airo-bots-tests/obj
-
-/back-end/microservices/airo-cqrs-eventsourcing-lib/bin
-/back-end/microservices/airo-cqrs-eventsourcing-lib/obj
-
-/back-end/microservices/airo-events-microservice/obj
-/back-end/microservices/airo-events-microservice/bin
-
-/back-end/microservices/airo-purchase-microservice/bin
-/back-end/microservices/airo-purchase-microservice/obj
-/back-end/microservices/airo-purchase-tests/bin
-/back-end/microservices/airo-purchase-tests/obj
-
-/back-end/external APIs/anybotics/.vs
-/back-end/external APIs/anybotics/anybotics-anymal-api/.vs
-/back-end/external APIs/anybotics/anybotics-anymal-api/bin
-/back-end/external APIs/anybotics/anybotics-anymal-api/obj
-/back-end/external APIs/anybotics/anybotics-anymal-common/obj
-/back-end/external APIs/anybotics/anybotics-anymal-common/bin
-/back-end/external APIs/anybotics/anybotics-unit-tests/bin
-/back-end/external APIs/anybotics/anybotics-unit-tests/obj
-
-/simulators/anybotics/anybotics-agent-runner/bin
-/simulators/anybotics/anybotics-agent-runner/obj
-/simulators/anybotics/.vs
-/simulators/anybotics/anybotics-anymal/.vs
-/simulators/anybotics/anybotics-anymal/bin
-/simulators/anybotics/anybotics-anymal/obj
-/simulators/anybotics-agent-runner/bin
-/simulators/anybotics-agent-runner/obj
-/back-end/microservices/airo-events-tests/obj
-/back-end/microservices/airo-events-tests/bin
+# Ignore specific project user files
+**/*.csproj.user
