@@ -1,7 +1,7 @@
 ﻿using airo_bots_microservice.Domain.Read;
 using airo_bots_microservice.Domain.Read.Queries;
 using airo_bots_microservice.Domain.Read.Queries.Handlers;
-using airo_cqrs_eventsourcing_lib.Core;
+using airo_cqrs_eventsourcing_lib.Core.Interfaces;
 using Moq;
 
 namespace airo_bots_tests;

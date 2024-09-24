@@ -1,7 +1,7 @@
-﻿namespace airo_cqrs_eventsourcing_lib.Core;
+﻿namespace airo_cqrs_eventsourcing_lib.Core.Interfaces;
 
 public interface IAggregateRepository<TAggregate> where TAggregate : IAggregateRoot
 {
-    TAggregate GetById(Guid id);
+    Task<TAggregate> GetById(Guid id);
     void Save(TAggregate aggregate);
 }

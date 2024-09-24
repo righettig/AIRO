@@ -1,7 +1,7 @@
-﻿using airo_cqrs_eventsourcing_lib.Core;
+﻿using airo_cqrs_eventsourcing_lib.Core.Interfaces;
 using System.Reflection;
 
-namespace airo_cqrs_eventsourcing_lib.Impl;
+namespace airo_cqrs_eventsourcing_lib.Core.Impl;
 
 public abstract class AggregateRoot : IAggregateRoot
 {

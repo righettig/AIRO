@@ -1,6 +1,6 @@
 ﻿using airo_bots_microservice.Domain.Write.Events;
-using airo_cqrs_eventsourcing_lib.Core;
-using airo_cqrs_eventsourcing_lib.Impl;
+using airo_cqrs_eventsourcing_lib.Core.Impl;
+using airo_cqrs_eventsourcing_lib.Core.Interfaces;
 
 namespace airo_bots_microservice.Domain.Aggregates;
 

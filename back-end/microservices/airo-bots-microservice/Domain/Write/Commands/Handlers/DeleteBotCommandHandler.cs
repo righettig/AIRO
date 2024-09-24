@@ -1,5 +1,5 @@
 ﻿using airo_bots_microservice.Domain.Aggregates;
-using airo_cqrs_eventsourcing_lib.Impl;
+using airo_cqrs_eventsourcing_lib.Core.Impl;
 
 namespace airo_bots_microservice.Domain.Write.Commands.Handlers;
 

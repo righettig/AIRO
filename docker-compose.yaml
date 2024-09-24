@@ -211,6 +211,8 @@ services:
       - airo-config-volume:/app/config
   
   bots-service:
+    depends_on:
+      - eventstore.db
     build:
       context: .
       dockerfile: ./back-end/microservices/airo-bots-microservice/Dockerfile
@@ -220,6 +222,8 @@ services:
       - "4005:8080" # https not working so far!
 
   events-service:
+    depends_on:
+      - eventstore.db
     build:
       context: .
       dockerfile: ./back-end/microservices/airo-events-microservice/Dockerfile
@@ -229,6 +233,8 @@ services:
       - "4006:8080" # https not working so far!
       
   purchase-service:
+    depends_on:
+      - eventstore.db
     build:
       context: .
       dockerfile: ./back-end/microservices/airo-purchase-microservice/Dockerfile
@@ -353,13 +359,16 @@ services:
     ports:
       - "1113:1113" # map internal tcp port
       - "2113:2113" # map internal admin ui port
-    volumes:
-      - type: volume
-        source: eventstore-volume-data
-        target: /var/lib/eventstore
-      - type: volume
-        source: eventstore-volume-logs
-        target: /var/log/eventstore
+
+    # While developing I can start with a fresh db by simply destroying the container.
+    # Uncomment these lines to be able to retain data across restarts.
+    # volumes:
+    #   - type: volume
+    #     source: eventstore-volume-data
+    #     target: /var/lib/eventstore
+    #   - type: volume
+    #     source: eventstore-volume-logs
+    #     target: /var/log/eventstore
 
   # When uncommenting to run e2e tests please update .env file with correct USERS_GATEWAY_API_URL for e2e
   # cypress:
