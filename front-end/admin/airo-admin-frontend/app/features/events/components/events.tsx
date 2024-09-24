@@ -27,10 +27,19 @@ const Events = () => {
         getEvents();
     }, []);
 
-    const handleAddEvent = async (newEvent: Event) => {
+    const handleAddEvent = async ({ name, description }: Event) => {
         try {
-            await addEvent(newEvent);
-            setEventList([...eventList, newEvent]);
+            const id = await addEvent({ name, description });
+            setEventList([...eventList, { 
+                id, 
+                name, 
+                description, 
+                // TODO: these should be set on the server -->
+                status: 'NotStarted', 
+                createdAt: new Date(), 
+                modifiedAt: new Date()
+                // <--
+            }]);
         } catch (err) {
             setError('Failed to add event.');
         }
