@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import Bot from '../types/bot'; '../types/bot';
+import Bot from '../types/bot';
 import BotCreator from './bot-creator';
 import BotList from './bot-list';
 
@@ -27,10 +27,10 @@ const Bots = () => {
         getBots();
     }, []);
 
-    const handleAddBot = async (newBot: Bot) => {
+    const handleAddBot = async ({ name, price }: Bot) => {
         try {
-            await addBot(newBot);
-            setBotList([...botList, newBot]);
+            const id = await addBot({ name, price });
+            setBotList([...botList, { id, name, price } ]);
         } catch (err) {
             setError('Failed to add bot.');
         }
