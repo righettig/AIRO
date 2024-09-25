@@ -1,4 +1,6 @@
-﻿using airo_cqrs_eventsourcing_lib.Core.Interfaces;
+﻿using airo_bots_microservice.Domain.Write.Events;
+using airo_cqrs_eventsourcing_lib.Core.Interfaces;
+using airo_events_microservice.Domain.Write.Events;
 using Microsoft.Extensions.Hosting;
 using RabbitMQ.Client;
 using System.Text;
@@ -39,25 +41,39 @@ public class WorkerService : BackgroundService
             {
                 Console.WriteLine($"Event Stream Id: {streamId}, Event: {@event.GetType()}");
 
-                // TODO: need to be able to get a ref to actual class
+                switch (@event)
+                {
+                    case BotCreatedEvent botCreatedEvent:
+                        byte[] messageBody = Encoding.UTF8.GetBytes($"BotCreatedEvent,{botCreatedEvent.Name}");
+                        PublishToRabbitMQ("BotCreatedEvent", messageBody);
+                        break;
 
-                //PublishToRabbitMQ(eventType, data);
+                    case EventCreatedEvent eventCreatedEvent:
+                        messageBody = Encoding.UTF8.GetBytes($"EventCreatedEvent,{eventCreatedEvent.Name}");
+                        PublishToRabbitMQ("EventCreatedEvent", messageBody);
+                        break;
+
+                    // Uncomment if needed in the future
+                    // case NewsCreatedEvent newsCreatedEvent:
+                    //    break;
+
+                    default:
+                        Console.WriteLine("Unknown event type.");
+                        break;
+                }
             }
         }, regex: @"BotCreated|EventCreated|NewsCreated");
     }
 
-    private void PublishToRabbitMQ(string eventType, string data)
+    private void PublishToRabbitMQ(string eventType, byte[] messageBody)
     {
-        //var messageBody = Encoding.UTF8.GetBytes($"EventType: {eventType}, Data: {data}");
-        var messageBody = Encoding.UTF8.GetBytes("TEST");
+        _rabbitMqChannel.BasicPublish(
+            exchange: "notifications-exchange",
+            routingKey: "ui-notifications-queue",
+            basicProperties: null,
+            body: messageBody);
 
-        //_rabbitMqChannel.BasicPublish(
-        //    exchange: "notifications-exchange",
-        //    routingKey: "ui-notifications-queue",
-        //    basicProperties: null,
-        //    body: messageBody);
-
-        //Console.WriteLine($"Published message to RabbitMQ: {eventType}");
+        Console.WriteLine($"Published message to RabbitMQ: {eventType}");
     }
 
     public override Task StopAsync(CancellationToken cancellationToken)
