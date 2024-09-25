@@ -2,10 +2,12 @@ using airo_bots_microservice.Domain.Aggregates;
 using airo_bots_microservice.Domain.Read;
 using airo_bots_microservice.Domain.Write.Events;
 using airo_bots_microservice.Domain.Write.Events.Handlers;
+
 using airo_cqrs_eventsourcing_lib.Core.Impl;
 using airo_cqrs_eventsourcing_lib.Core.Interfaces;
 using airo_cqrs_eventsourcing_lib.EventStore;
 using airo_cqrs_eventsourcing_lib.Web;
+
 using EventStore.Client;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -36,7 +38,6 @@ builder.Services.AddSingleton<IEventListener, EventListener<BotReadModel>>(provi
 {
     // Get the required services from the service provider
     var readRepository = provider.GetRequiredService<IReadRepository<BotReadModel>>();
-    var eventStore = provider.GetRequiredService<IEventStore>();
 
     // Create the EventListener instance
     var eventListener = new EventListener<BotReadModel>(readRepository);

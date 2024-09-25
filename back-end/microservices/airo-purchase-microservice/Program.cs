@@ -2,10 +2,12 @@ using airo_cqrs_eventsourcing_lib.Core.Impl;
 using airo_cqrs_eventsourcing_lib.Core.Interfaces;
 using airo_cqrs_eventsourcing_lib.EventStore;
 using airo_cqrs_eventsourcing_lib.Web;
+
 using airo_purchase_microservice.Domain.Aggregates;
 using airo_purchase_microservice.Domain.Read;
 using airo_purchase_microservice.Domain.Write.Events;
 using airo_purchase_microservice.Domain.Write.Events.Handlers;
+
 using EventStore.Client;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -36,7 +38,6 @@ builder.Services.AddSingleton<IEventListener, EventListener<PurchaseReadModel>>(
 {
     // Get the required services from the service provider
     var readRepository = provider.GetRequiredService<IReadRepository<PurchaseReadModel>>();
-    var eventStore = provider.GetRequiredService<IEventStore>();
 
     // Create the EventListener instance
     var eventListener = new EventListener<PurchaseReadModel>(readRepository);
