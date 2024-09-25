@@ -29,6 +29,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "airo-events-tests", "airo-e
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "airo-notification-processor-microservice", "airo-notification-processor-microservice\airo-notification-processor-microservice.csproj", "{91A03966-C628-40A5-94E2-546542B69102}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bots", "Bots", "{5AE1877B-3721-4FEC-85C5-0BBD3DD898FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "airo-bots-domain", "airo-bots-domain\airo-bots-domain.csproj", "{8C433D60-FBDD-4587-A870-6A41FC4D1C33}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Events", "Events", "{9D96AFA2-83E8-41B5-A567-C6E8B3809E24}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "airo-events-domain", "airo-events-domain\airo-events-domain.csproj", "{FA2A6195-0CB5-47F8-AF2B-26419CC7A0AB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,14 +91,26 @@ Global
 		{91A03966-C628-40A5-94E2-546542B69102}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91A03966-C628-40A5-94E2-546542B69102}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91A03966-C628-40A5-94E2-546542B69102}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C433D60-FBDD-4587-A870-6A41FC4D1C33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C433D60-FBDD-4587-A870-6A41FC4D1C33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C433D60-FBDD-4587-A870-6A41FC4D1C33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C433D60-FBDD-4587-A870-6A41FC4D1C33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA2A6195-0CB5-47F8-AF2B-26419CC7A0AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA2A6195-0CB5-47F8-AF2B-26419CC7A0AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA2A6195-0CB5-47F8-AF2B-26419CC7A0AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA2A6195-0CB5-47F8-AF2B-26419CC7A0AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{47E22FC6-2859-4867-9F47-7272CF907A9C} = {5AE1877B-3721-4FEC-85C5-0BBD3DD898FD}
+		{AA946884-A05E-4244-872C-5802A15BEBF2} = {9D96AFA2-83E8-41B5-A567-C6E8B3809E24}
 		{DE497E43-DA80-4D23-915F-8BA34FC1144F} = {ECC6C50C-5E65-40CE-AE68-D39533E82357}
 		{636956AB-AD6F-4BBE-80F2-D945AF4DC8F1} = {ECC6C50C-5E65-40CE-AE68-D39533E82357}
 		{C8AD6178-1F06-49E6-AB25-2F6F7423C2C0} = {ECC6C50C-5E65-40CE-AE68-D39533E82357}
+		{8C433D60-FBDD-4587-A870-6A41FC4D1C33} = {5AE1877B-3721-4FEC-85C5-0BBD3DD898FD}
+		{FA2A6195-0CB5-47F8-AF2B-26419CC7A0AB} = {9D96AFA2-83E8-41B5-A567-C6E8B3809E24}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {919F5805-3223-46B9-8C08-BDC0559A7492}

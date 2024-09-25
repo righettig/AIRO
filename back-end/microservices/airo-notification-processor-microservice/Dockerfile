@@ -16,7 +16,9 @@ RUN dotnet restore ${PROJECT_NAME}/${PROJECT_NAME}.csproj
 
 # Copy the rest of the source code
 COPY ${PROJECT_PATH}/ ${PROJECT_NAME}/
-#COPY ${BASE_PATH}/airo-cqrs-eventsourcing-lib/ airo-cqrs-eventsourcing-lib/
+COPY ${BASE_PATH}/airo-cqrs-eventsourcing-lib/ airo-cqrs-eventsourcing-lib/
+COPY ${BASE_PATH}/airo-bots-domain/ airo-bots-domain/
+COPY ${BASE_PATH}/airo-events-domain/ airo-events-domain/
 
 RUN dotnet build ${PROJECT_NAME}/${PROJECT_NAME}.csproj -c $BUILD_CONFIGURATION -o /app/build
 

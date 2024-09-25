@@ -310,7 +310,7 @@ services:
       eventstore.db:
         condition: service_healthy
       rabbitmq:
-        condition: service_started
+        condition: service_healthy
     build:
       context: .
       dockerfile: ./back-end/microservices/airo-notification-processor-microservice/Dockerfile
@@ -346,6 +346,11 @@ services:
     ports:
       - "5672:5672"    # RabbitMQ default port
       - "15672:15672"  # RabbitMQ management console port
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      retries: 3
 
   mongodb:
     image: mongo:6.0

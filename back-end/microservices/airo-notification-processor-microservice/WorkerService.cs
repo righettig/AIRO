@@ -1,57 +1,59 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using airo_cqrs_eventsourcing_lib.Core.Interfaces;
+using Microsoft.Extensions.Hosting;
+using RabbitMQ.Client;
+using System.Text;
 
 public class WorkerService : BackgroundService
 {
-    //private readonly EventStoreClient _eventStoreClient;
-    //private readonly IConnection _rabbitMqConnection;
-    //private readonly IModel _rabbitMqChannel;
+    private readonly IEventStore _eventStore;
+    private readonly string _rabbitMqUrl;
+
+    private IConnection _rabbitMqConnection;
+    private IModel _rabbitMqChannel;
+
+    public WorkerService(IEventStore eventStore, string rabbitMqUrl)
+    {
+        _eventStore = eventStore;
+        _rabbitMqUrl = rabbitMqUrl;
+    }
 
     public override Task StartAsync(CancellationToken cancellationToken)
     {
         Console.WriteLine("WorkerService is starting...");
 
-        //var factory = new ConnectionFactory() { HostName = "localhost" };
-        //_rabbitMqConnection = factory.CreateConnection();
-        //_rabbitMqChannel = _rabbitMqConnection.CreateModel();
-        //_rabbitMqChannel.QueueDeclare(queue: "my_queue",
-        //    durable: false,
-        //    exclusive: false,
-        //    autoDelete: false,
-        //    arguments: null);
+        var factory = new ConnectionFactory() { Uri = new Uri(_rabbitMqUrl) };
+        _rabbitMqConnection = factory.CreateConnection();
+        _rabbitMqChannel = _rabbitMqConnection.CreateModel();
+        _rabbitMqChannel.ExchangeDeclare(exchange: "notifications-exchange",
+                                         type: "direct",
+                                         durable: true);
 
         return base.StartAsync(cancellationToken);
     }
 
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
-        //await foreach (var resolvedEvent in _eventStoreClient.SubscribeToAllAsync(
-        //    start: StreamPosition.Start,
-        //    filterOptions: new SubscriptionFilterOptions(
-        //        EventTypeFilter.Prefix("airo_bots"), 
-        //        EventTypeFilter.Prefix("airo_events"), 
-        //        EventTypeFilter.Prefix("airo_news")
-        //    ),
-        //    cancellationToken: stoppingToken))
-        //{
-        //    var eventType = resolvedEvent.Event.EventType;
+        _eventStore.Subscribe(async (streamId, events) =>
+        {
+            foreach (var @event in events)
+            {
+                Console.WriteLine($"Event Stream Id: {streamId}, Event: {@event.GetType()}");
 
-        //    if (eventType == "BotCreatedEvent" || eventType == "EventCreatedEvent" || eventType == "NewsCreatedEvent")
-        //    {
-        //        var data = Encoding.UTF8.GetString(resolvedEvent.Event.Data.ToArray());
-        //        Console.WriteLine($"Received event {eventType}: {data}");
+                // TODO: need to be able to get a ref to actual class
 
-        //        PublishToRabbitMQ(eventType, data);
-        //    }
-        //}
+                //PublishToRabbitMQ(eventType, data);
+            }
+        }, regex: @"BotCreated|EventCreated|NewsCreated");
     }
 
     private void PublishToRabbitMQ(string eventType, string data)
     {
         //var messageBody = Encoding.UTF8.GetBytes($"EventType: {eventType}, Data: {data}");
+        var messageBody = Encoding.UTF8.GetBytes("TEST");
 
         //_rabbitMqChannel.BasicPublish(
-        //    exchange: "",
-        //    routingKey: "my_queue",
+        //    exchange: "notifications-exchange",
+        //    routingKey: "ui-notifications-queue",
         //    basicProperties: null,
         //    body: messageBody);
 
@@ -61,9 +63,9 @@ public class WorkerService : BackgroundService
     public override Task StopAsync(CancellationToken cancellationToken)
     {
         Console.WriteLine("WorkerService is stopping.");
-     
-        //_rabbitMqChannel.Close();
-        //_rabbitMqConnection.Close();
+
+        _rabbitMqChannel.Close();
+        _rabbitMqConnection.Close();
 
         return base.StopAsync(cancellationToken);
     }
