@@ -50,7 +50,16 @@ builder.Services.AddSingleton<IEventListener, EventListener<BotReadModel>>(provi
     return eventListener;
 });
 
-builder.Services.AddHostedService<EventListenerBackgroundService>();
+builder.Services.AddHostedService(provider => 
+{
+    var eventListener = provider.GetRequiredService<IEventListener>();
+    var eventStore = provider.GetRequiredService<IEventStore>();
+
+    // events that do NOT start with "airo_bots" will be ignored
+    var eventListenerBackgroundService = new EventListenerBackgroundService(eventListener, eventStore, "airo_bots");
+
+    return eventListenerBackgroundService;
+});
 
 var app = builder.Build();
 

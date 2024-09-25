@@ -48,7 +48,16 @@ builder.Services.AddSingleton<IEventListener, EventListener<PurchaseReadModel>>(
     return eventListener;
 });
 
-builder.Services.AddHostedService<EventListenerBackgroundService>();
+builder.Services.AddHostedService(provider =>
+{
+    var eventListener = provider.GetRequiredService<IEventListener>();
+    var eventStore = provider.GetRequiredService<IEventStore>();
+
+    // events that do NOT start with "airo_events" will be ignored
+    var eventListenerBackgroundService = new EventListenerBackgroundService(eventListener, eventStore, "airo_purchase");
+
+    return eventListenerBackgroundService;
+});
 
 var app = builder.Build();
 
