@@ -12,7 +12,6 @@ services:
     environment:
       - USERS_GATEWAY_API_URL=${USERS_GATEWAY_API_URL}
     develop:
-      context: ./front-end/users/airo-users-frontend
       watch:
         - action: sync
           path: ./front-end/users/airo-users-frontend
@@ -32,7 +31,6 @@ services:
     environment:
       - NEXT_PUBLIC_ADMIN_GATEWAY_API_URL=${ADMIN_GATEWAY_API_URL}
     develop:
-      context: ./front-end/admin/airo-admin-frontend
       watch:
         - action: sync
           path: ./front-end/admin/airo-admin-frontend
@@ -52,7 +50,6 @@ services:
     environment:
       - ENTERPRISE_GATEWAY_API_URL=${ENTERPRISE_GATEWAY_API_URL}
     develop:
-      context: ./front-end/enterprise/airo-enterprise-frontend
       watch:
         - action: sync
           path: ./front-end/enterprise/airo-enterprise-frontend
@@ -87,7 +84,6 @@ services:
       - PURCHASE_API_URL=${PURCHASE_API_URL}
       - EVENTS_API_URL=${EVENTS_API_URL}
     develop:
-      context: ./back-end/gateways/airo-users-gateway-api
       watch:
         - action: rebuild
           path: ./back-end/gateways/airo-users-gateway-api
@@ -111,7 +107,6 @@ services:
       - BOTS_API_URL=${BOTS_API_URL}
       - EVENTS_API_URL=${EVENTS_API_URL}
     develop:
-      context: ./back-end/gateways/airo-admin-gateway-api
       watch:
         - action: rebuild
           path: ./back-end/gateways/airo-admin-gateway-api
@@ -134,7 +129,6 @@ services:
       - AUTH_API_URL=${ENTERPRISE_AUTH_API_URL}
       - ANYBOTICS_SERVICE_URL=${ANYBOTICS_SERVICE_URL}
     develop:
-      context: ./back-end/gateways/airo-enterprise-gateway-api
       watch:
         - action: rebuild
           path: ./back-end/gateways/airo-enterprise-gateway-api
@@ -212,7 +206,8 @@ services:
   
   bots-service:
     depends_on:
-      - eventstore.db
+      eventstore.db:
+        condition: service_healthy
     build:
       context: .
       dockerfile: ./back-end/microservices/airo-bots-microservice/Dockerfile
@@ -223,7 +218,8 @@ services:
 
   events-service:
     depends_on:
-      - eventstore.db
+      eventstore.db:
+        condition: service_healthy
     build:
       context: .
       dockerfile: ./back-end/microservices/airo-events-microservice/Dockerfile
@@ -234,7 +230,8 @@ services:
       
   purchase-service:
     depends_on:
-      - eventstore.db
+      eventstore.db:
+        condition: service_healthy
     build:
       context: .
       dockerfile: ./back-end/microservices/airo-purchase-microservice/Dockerfile
@@ -255,7 +252,6 @@ services:
       - mongodb
       - rabbitmq
     develop:
-      context: ./back-end/microservices/airo-billing-microservice
       watch:
         - action: rebuild
           path: ./back-end/microservices/airo-billing-microservice
@@ -279,7 +275,6 @@ services:
       - mongodb
       - rabbitmq
     develop:
-      context: ./back-end/microservices/airo-invoicing-microservice
       watch:
         - action: rebuild
           path: ./back-end/microservices/airo-invoicing-microservice
@@ -301,7 +296,6 @@ services:
     depends_on:
       - rabbitmq
     develop:
-      context: ./back-end/microservices/airo-notifications-microservice
       watch:
         - action: rebuild
           path: ./back-end/microservices/airo-notifications-microservice
@@ -359,6 +353,11 @@ services:
     ports:
       - "1113:1113" # map internal tcp port
       - "2113:2113" # map internal admin ui port
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:2113/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
     # While developing I can start with a fresh db by simply destroying the container.
     # Uncomment these lines to be able to retain data across restarts.
