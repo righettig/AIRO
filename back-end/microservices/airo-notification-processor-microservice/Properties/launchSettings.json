@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "airo-notification-processor-microservice": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}

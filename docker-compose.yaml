@@ -305,6 +305,19 @@ services:
         - action: rebuild
           path: ./back-end/microservices/airo-notifications-microservice/package.json
 
+  notification-processor-service:
+    depends_on:
+      eventstore.db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_started
+    build:
+      context: .
+      dockerfile: ./back-end/microservices/airo-notification-processor-microservice/Dockerfile
+    environment:
+      - EVENT_STORE_DB_URL=${EVENT_STORE_DB_URL}
+      - RABBITMQ_URL=${RABBITMQ_URL}
+    
   #---------------#
   # External APIs #
   #---------------#
