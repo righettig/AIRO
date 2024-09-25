@@ -348,9 +348,10 @@ services:
       - "15672:15672"  # RabbitMQ management console port
     healthcheck:
       test: rabbitmq-diagnostics -q ping
-      interval: 30s
-      timeout: 30s
-      retries: 3
+      interval: 40s
+      timeout: 5s
+      retries: 5
+
 
   mongodb:
     image: mongo:6.0
