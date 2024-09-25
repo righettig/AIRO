@@ -1,7 +1,8 @@
-﻿using airo_cqrs_eventsourcing_lib.Core;
+﻿using airo_cqrs_eventsourcing_lib.Core.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
-namespace airo_events_microservice;
+namespace airo_cqrs_eventsourcing_lib.Web;
 
 public static class ServiceCollectionExtensions
 {

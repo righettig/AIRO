@@ -197,7 +197,7 @@ Bots mgmt WIP
 		User who already have selected the bot should see the changes
 	
 	List bots 
-		As an ADMIN user I should be able to see the full list of available bots
+		As an ADMIN user I should be able to see the full list of available bots [DONE]
 
 
 	

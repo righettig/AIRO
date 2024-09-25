@@ -1,4 +1,4 @@
-﻿using airo_cqrs_eventsourcing_lib.Core;
+﻿using airo_cqrs_eventsourcing_lib.Core.Interfaces;
 
 namespace airo_purchase_microservice.Domain.Read.Queries;
 

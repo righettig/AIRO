@@ -1,10 +1,14 @@
-using airo_bots_microservice;
 using airo_bots_microservice.Domain.Aggregates;
 using airo_bots_microservice.Domain.Read;
 using airo_bots_microservice.Domain.Write.Events;
 using airo_bots_microservice.Domain.Write.Events.Handlers;
-using airo_cqrs_eventsourcing_lib.Core;
-using airo_cqrs_eventsourcing_lib.Impl;
+
+using airo_cqrs_eventsourcing_lib.Core.Impl;
+using airo_cqrs_eventsourcing_lib.Core.Interfaces;
+using airo_cqrs_eventsourcing_lib.EventStore;
+using airo_cqrs_eventsourcing_lib.Web;
+
+using EventStore.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,24 +24,23 @@ builder.Services.AddMediatR(cfg =>
 });
 
 var eventStoreDbConnectionString = builder.Configuration["EVENT_STORE_DB_URL"];
-builder.Services.AddEventStoreClient(eventStoreDbConnectionString);
 
-builder.Services.AddSingleton<IEventStore, airo_cqrs_eventsourcing_lib.Impl.EventStore>();
+var settings = EventStoreClientSettings.Create(eventStoreDbConnectionString);
+var eventStoreClient = new EventStoreClient(settings);
+var eventStore = new EventStoreDb(eventStoreClient);
 
 builder.Services.RegisterHandlers(typeof(BotAggregate).Assembly);
 
+builder.Services.AddSingleton<IEventStore>(eventStore);
 builder.Services.AddSingleton<AggregateRepository<BotAggregate>>();
-
 builder.Services.AddSingleton<IReadRepository<BotReadModel>, BotReadRepository>();
-
 builder.Services.AddSingleton<IEventListener, EventListener<BotReadModel>>(provider =>
 {
     // Get the required services from the service provider
     var readRepository = provider.GetRequiredService<IReadRepository<BotReadModel>>();
-    var eventStore = provider.GetRequiredService<IEventStore>();
 
     // Create the EventListener instance
-    var eventListener = new EventListener<BotReadModel>(eventStore, readRepository);
+    var eventListener = new EventListener<BotReadModel>(readRepository);
 
     // Bind the event handlers
     eventListener.Bind<BotCreatedEvent, BotCreatedEventHandler>();
@@ -47,7 +50,16 @@ builder.Services.AddSingleton<IEventListener, EventListener<BotReadModel>>(provi
     return eventListener;
 });
 
-builder.Services.AddHostedService<EventListenerBackgroundService>();
+builder.Services.AddHostedService(provider => 
+{
+    var eventListener = provider.GetRequiredService<IEventListener>();
+    var eventStore = provider.GetRequiredService<IEventStore>();
+
+    // events that do NOT start with "airo_bots" will be ignored
+    var eventListenerBackgroundService = new EventListenerBackgroundService(eventListener, eventStore, "airo_bots");
+
+    return eventListenerBackgroundService;
+});
 
 var app = builder.Build();
 

@@ -9,11 +9,55 @@ const botsService = createApiService(BOTS_API_URL + '/gateway/bot');
 export const fetchBots = () =>
     botsService.request('', 'GET');
 
-export const addBot = (bot: BotDto) =>
-    botsService.request('', 'POST', bot);
+export const addBot = async (bot: BotDto) => {
+    try {
+        const response = await fetch(BOTS_API_URL + '/gateway/bot', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token') || ''}`,
+            },
+            body: JSON.stringify(bot),
+        });
 
-export const updateBot = (id: string, bot: BotDto) =>
-    botsService.request(`${id}`, 'PUT', bot);
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        // gateway returns a string so I cannot use .json()
+        return await response.text();
+        
+    } catch (error) {
+        console.error('API request failed:', error);
+        throw error;
+    }
+}
+
+export const updateBot = async (id: string, bot: BotDto) => {
+    try {
+        const response = await fetch(BOTS_API_URL + '/gateway/bot', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token') || ''}`,
+            },
+            body: JSON.stringify({
+                id, 
+                ...bot
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        return {};
+        
+    } catch (error) {
+        console.error('API request failed:', error);
+        throw error;
+    }
+}
 
 export const deleteBot = (id: string) =>
     botsService.request(`${id}`, 'DELETE');

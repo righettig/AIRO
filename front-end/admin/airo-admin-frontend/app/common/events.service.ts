@@ -9,11 +9,55 @@ const eventsService = createApiService(EVENTS_API_URL + '/gateway/events');
 export const fetchEvents = () =>
     eventsService.request('', 'GET');
 
-export const addEvent = (event: EventDto) =>
-    eventsService.request('', 'POST', event);
+export const addEvent = async (event: EventDto) => {
+    try {
+        const response = await fetch(EVENTS_API_URL + '/gateway/events', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token') || ''}`,
+            },
+            body: JSON.stringify(event),
+        });
 
-export const updateEvent = (id: string, event: EventDto) =>
-    eventsService.request(`${id}`, 'PUT', event);
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        // gateway returns a string so I cannot use .json()
+        return await response.text();
+        
+    } catch (error) {
+        console.error('API request failed:', error);
+        throw error;
+    }
+}
+
+export const updateEvent = async (id: string, event: EventDto) => {
+    try {
+        const response = await fetch(EVENTS_API_URL + '/gateway/events', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token') || ''}`,
+            },
+            body: JSON.stringify({
+                id, 
+                ...event
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        return {};
+        
+    } catch (error) {
+        console.error('API request failed:', error);
+        throw error;
+    }
+}
 
 export const deleteEvent = (id: string) =>
     eventsService.request(`${id}`, 'DELETE');

@@ -12,7 +12,6 @@ services:
     environment:
       - USERS_GATEWAY_API_URL=${USERS_GATEWAY_API_URL}
     develop:
-      context: ./front-end/users/airo-users-frontend
       watch:
         - action: sync
           path: ./front-end/users/airo-users-frontend
@@ -32,7 +31,6 @@ services:
     environment:
       - NEXT_PUBLIC_ADMIN_GATEWAY_API_URL=${ADMIN_GATEWAY_API_URL}
     develop:
-      context: ./front-end/admin/airo-admin-frontend
       watch:
         - action: sync
           path: ./front-end/admin/airo-admin-frontend
@@ -52,7 +50,6 @@ services:
     environment:
       - ENTERPRISE_GATEWAY_API_URL=${ENTERPRISE_GATEWAY_API_URL}
     develop:
-      context: ./front-end/enterprise/airo-enterprise-frontend
       watch:
         - action: sync
           path: ./front-end/enterprise/airo-enterprise-frontend
@@ -87,7 +84,6 @@ services:
       - PURCHASE_API_URL=${PURCHASE_API_URL}
       - EVENTS_API_URL=${EVENTS_API_URL}
     develop:
-      context: ./back-end/gateways/airo-users-gateway-api
       watch:
         - action: rebuild
           path: ./back-end/gateways/airo-users-gateway-api
@@ -111,7 +107,6 @@ services:
       - BOTS_API_URL=${BOTS_API_URL}
       - EVENTS_API_URL=${EVENTS_API_URL}
     develop:
-      context: ./back-end/gateways/airo-admin-gateway-api
       watch:
         - action: rebuild
           path: ./back-end/gateways/airo-admin-gateway-api
@@ -134,7 +129,6 @@ services:
       - AUTH_API_URL=${ENTERPRISE_AUTH_API_URL}
       - ANYBOTICS_SERVICE_URL=${ANYBOTICS_SERVICE_URL}
     develop:
-      context: ./back-end/gateways/airo-enterprise-gateway-api
       watch:
         - action: rebuild
           path: ./back-end/gateways/airo-enterprise-gateway-api
@@ -211,6 +205,9 @@ services:
       - airo-config-volume:/app/config
   
   bots-service:
+    depends_on:
+      eventstore.db:
+        condition: service_healthy
     build:
       context: .
       dockerfile: ./back-end/microservices/airo-bots-microservice/Dockerfile
@@ -220,6 +217,9 @@ services:
       - "4005:8080" # https not working so far!
 
   events-service:
+    depends_on:
+      eventstore.db:
+        condition: service_healthy
     build:
       context: .
       dockerfile: ./back-end/microservices/airo-events-microservice/Dockerfile
@@ -229,6 +229,9 @@ services:
       - "4006:8080" # https not working so far!
       
   purchase-service:
+    depends_on:
+      eventstore.db:
+        condition: service_healthy
     build:
       context: .
       dockerfile: ./back-end/microservices/airo-purchase-microservice/Dockerfile
@@ -249,7 +252,6 @@ services:
       - mongodb
       - rabbitmq
     develop:
-      context: ./back-end/microservices/airo-billing-microservice
       watch:
         - action: rebuild
           path: ./back-end/microservices/airo-billing-microservice
@@ -273,7 +275,6 @@ services:
       - mongodb
       - rabbitmq
     develop:
-      context: ./back-end/microservices/airo-invoicing-microservice
       watch:
         - action: rebuild
           path: ./back-end/microservices/airo-invoicing-microservice
@@ -295,7 +296,6 @@ services:
     depends_on:
       - rabbitmq
     develop:
-      context: ./back-end/microservices/airo-notifications-microservice
       watch:
         - action: rebuild
           path: ./back-end/microservices/airo-notifications-microservice
@@ -343,34 +343,31 @@ services:
 
   eventstore.db:
     image: eventstore/eventstore:lts
-    #image: eventstore/eventstore:latest
     environment:
-      - EVENTSTORE_INSECURE=true # let eventstore run without ceritficate
+      - EVENTSTORE_INSECURE=true # let eventstore run without certificate
       - EVENTSTORE_EXT_TCP_PORT=1113 # set internal tcp port
       - EVENTSTORE_HTTP_PORT=2113 # set internal admin ui port
       - EVENTSTORE_ENABLE_ATOM_PUB_OVER_HTTP=true
-      # - EVENTSTORE_INSECURE=true # let eventstore run without ceritficate
-      # - EVENTSTORE_CLUSTER_SIZE=1
-      # - EVENTSTORE_RUN_PROJECTIONS=All
-      # - EVENTSTORE_START_STANDARD_PROJECTIONS=True
-      # - EVENTSTORE_DB=/var/lib/eventstore-data
-      # - EVENTSTORE_INDEX=/var/lib/eventstore-index
-      # - EVENTSTORE_LOG=/var/log/eventstore
-      # - EVENTSTORE_EXT_TCP_PORT=1113
-      # - EVENTSTORE_HTTP_PORT=2113
+      - EVENTSTORE_RUN_PROJECTIONS=All
+      - EVENTSTORE_START_STANDARD_PROJECTIONS=true
     ports:
       - "1113:1113" # map internal tcp port
       - "2113:2113" # map internal admin ui port
-    volumes:
-      - type: volume
-        source: eventstore-volume-data
-        target: /var/lib/eventstore-data
-      # - type: volume
-      #   source: eventstore-volume-index
-      #   target: /var/lib/eventstore-index
-      - type: volume
-        source: eventstore-volume-logs
-        target: /var/log/eventstore
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:2113/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+    # While developing I can start with a fresh db by simply destroying the container.
+    # Uncomment these lines to be able to retain data across restarts.
+    # volumes:
+    #   - type: volume
+    #     source: eventstore-volume-data
+    #     target: /var/lib/eventstore
+    #   - type: volume
+    #     source: eventstore-volume-logs
+    #     target: /var/log/eventstore
 
   # When uncommenting to run e2e tests please update .env file with correct USERS_GATEWAY_API_URL for e2e
   # cypress:
@@ -397,5 +394,4 @@ volumes:
   mongo_data:
 
   eventstore-volume-data:
-  eventstore-volume-index:
   eventstore-volume-logs:

@@ -1,4 +1,4 @@
-﻿using airo_cqrs_eventsourcing_lib.Impl;
+﻿using airo_cqrs_eventsourcing_lib.Core.Impl;
 using airo_purchase_microservice.Domain.Aggregates;
 
 namespace airo_purchase_microservice.Domain.Write.Commands.Handlers;

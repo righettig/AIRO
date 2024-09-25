@@ -1,7 +1,7 @@
-﻿using airo_cqrs_eventsourcing_lib.Core;
+﻿using airo_cqrs_eventsourcing_lib.Core.Interfaces;
 using MediatR;
 
-namespace airo_cqrs_eventsourcing_lib.Impl;
+namespace airo_cqrs_eventsourcing_lib.Core.Impl;
 
 public abstract class CommandHandlerBase<TCommand, TAggregate> : IRequestHandler<TCommand>
     where TCommand : ICommand
@@ -14,17 +14,15 @@ public abstract class CommandHandlerBase<TCommand, TAggregate> : IRequestHandler
         this.aggregateRepository = aggregateRepository;
     }
 
-    public Task Handle(TCommand command, CancellationToken cancellationToken)
+    public async Task Handle(TCommand command, CancellationToken cancellationToken)
     {
-        var aggregateId = GetAggregateId(command);
+        Guid aggregateId = GetAggregateId(command);
 
-        var aggregate = aggregateRepository.GetById(aggregateId);
+        var aggregate = await aggregateRepository.GetById(aggregateId);
 
         ProcessCommand(command, aggregate);
 
         aggregateRepository.Save(aggregate);
-
-        return Task.CompletedTask;
     }
 
     /// <summary>
