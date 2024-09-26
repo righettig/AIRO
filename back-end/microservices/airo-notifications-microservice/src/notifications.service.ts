@@ -52,7 +52,6 @@ export class NotificationsService {
     @RabbitSubscribe({
         exchange: 'notifications-exchange',
         routingKey: 'notification.created',
-        //queue: 'notification.created-notifications-queue',
         queue: 'ui-notifications-queue',
     })
     public async notificationCreated(data: any, amqpMsg: ConsumeMessage) {
