@@ -44,13 +44,13 @@ public class WorkerService : BackgroundService
                 switch (@event)
                 {
                     case BotCreatedEvent botCreatedEvent:
-                        byte[] messageBody = Encoding.UTF8.GetBytes($"BotCreatedEvent,{botCreatedEvent.Name}");
-                        PublishToRabbitMQ("BotCreatedEvent", messageBody);
+                        string message = $"BotCreatedEvent,{botCreatedEvent.Name}";
+                        PublishToRabbitMQ("BotCreatedEvent", message);
                         break;
 
                     case EventCreatedEvent eventCreatedEvent:
-                        messageBody = Encoding.UTF8.GetBytes($"EventCreatedEvent,{eventCreatedEvent.Name}");
-                        PublishToRabbitMQ("EventCreatedEvent", messageBody);
+                        message = $"EventCreatedEvent,{eventCreatedEvent.Name}";
+                        PublishToRabbitMQ("EventCreatedEvent", message);
                         break;
 
                     // Uncomment if needed in the future
@@ -65,8 +65,11 @@ public class WorkerService : BackgroundService
         }, regex: @"BotCreated|EventCreated|NewsCreated");
     }
 
-    private void PublishToRabbitMQ(string eventType, byte[] messageBody)
+    private void PublishToRabbitMQ(string eventType, string message)
     {
+        var messageJson = System.Text.Json.JsonSerializer.Serialize(message);
+        var messageBody = Encoding.UTF8.GetBytes(messageJson);
+
         _rabbitMqChannel.BasicPublish(
             exchange: "notifications-exchange",
             routingKey: "notification.created",
