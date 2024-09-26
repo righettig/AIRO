@@ -69,8 +69,7 @@ public class WorkerService : BackgroundService
     {
         _rabbitMqChannel.BasicPublish(
             exchange: "notifications-exchange",
-            routingKey: "ui-notifications-queue",
-            basicProperties: null,
+            routingKey: "notification.created",
             body: messageBody);
 
         Console.WriteLine($"Published message to RabbitMQ: {eventType}");

@@ -48,4 +48,15 @@ export class NotificationsService {
             `You have been invoiced <strong>100</strong>. Have fun with AIRO!.`
         );
     }
+
+    @RabbitSubscribe({
+        exchange: 'notifications-exchange',
+        routingKey: 'notification.created',
+        //queue: 'notification.created-notifications-queue',
+        queue: 'ui-notifications-queue',
+    })
+    public async notificationCreated(data: any, amqpMsg: ConsumeMessage) {
+        console.log(`Correlation id: ${JSON.stringify(amqpMsg)}`);
+        this.logger.log(`data: ${JSON.stringify(data)}`);
+    }
 }
