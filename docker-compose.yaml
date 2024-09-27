@@ -317,7 +317,9 @@ services:
     environment:
       - EVENT_STORE_DB_URL=${EVENT_STORE_DB_URL}
       - RABBITMQ_URL=${RABBITMQ_URL}
-    
+    volumes:
+      - data-volume:/data
+
   #---------------#
   # External APIs #
   #---------------#
@@ -348,10 +350,9 @@ services:
       - "15672:15672"  # RabbitMQ management console port
     healthcheck:
       test: rabbitmq-diagnostics -q ping
-      interval: 40s
-      timeout: 5s
-      retries: 5
-
+      interval: 45s
+      timeout: 10s
+      retries: 10
 
   mongodb:
     image: mongo:6.0
@@ -409,6 +410,8 @@ volumes:
 
   airo-enterprise-config-volume:
     external: true 
+  
+  data-volume:
   
   mongo_data:
 

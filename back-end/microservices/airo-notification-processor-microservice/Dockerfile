@@ -32,6 +32,11 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 
+# Create the /data directory and set permissions
+# This ensures I can later write in the /data folder from the TimestampService
+USER root
+RUN mkdir -p /data && chown -R app:app /data
+
 # Set environment variable for project name
 ENV PROJECT_NAME=airo-notification-processor-microservice
 

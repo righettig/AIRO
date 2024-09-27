@@ -1,4 +1,5 @@
 ﻿using airo_cqrs_eventsourcing_lib.EventStore;
+using airo_notification_processor_microservice;
 using EventStore.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -19,7 +20,9 @@ var host = Host
         var eventStoreClient = new EventStoreClient(settings);
         var eventStore = new EventStoreDb(eventStoreClient);
 
-        services.AddHostedService(_ => new WorkerService(eventStore, rabbitMqUrl));
+        var timestampService = new TimestampService();
+
+        services.AddHostedService(_ => new WorkerService(eventStore, timestampService, rabbitMqUrl));
     })
     .Build();
 

@@ -5,23 +5,32 @@ using Microsoft.Extensions.Hosting;
 using RabbitMQ.Client;
 using System.Text;
 
+namespace airo_notification_processor_microservice;
+
 public class WorkerService : BackgroundService
 {
     private readonly IEventStore _eventStore;
+    private readonly ITimestampService _timestampService;
     private readonly string _rabbitMqUrl;
 
     private IConnection _rabbitMqConnection;
     private IModel _rabbitMqChannel;
 
-    public WorkerService(IEventStore eventStore, string rabbitMqUrl)
+    private DateTime _lastProcessedEventTimestamp;
+
+    public WorkerService(IEventStore eventStore, ITimestampService timestampService, string rabbitMqUrl)
     {
         _eventStore = eventStore;
+        _timestampService = timestampService;
         _rabbitMqUrl = rabbitMqUrl;
     }
 
     public override Task StartAsync(CancellationToken cancellationToken)
     {
         Console.WriteLine("WorkerService is starting...");
+
+        _lastProcessedEventTimestamp = _timestampService.LoadTimestamp();
+        Console.WriteLine("Reading last processed timestamp: " + _lastProcessedEventTimestamp);
 
         var factory = new ConnectionFactory() { Uri = new Uri(_rabbitMqUrl) };
         _rabbitMqConnection = factory.CreateConnection();
@@ -39,6 +48,13 @@ public class WorkerService : BackgroundService
         {
             foreach (var @event in events)
             {
+                // TODO: it would be better to be able to skip events natively but this would require more work at framework level
+                if (@event.CreatedAt <= _lastProcessedEventTimestamp)
+                {
+                    Console.WriteLine($"Skipping event from streamId {streamId}, Event: {@event.GetType()}, CreatedAt: {@event.CreatedAt}");
+                    continue;
+                }
+
                 Console.WriteLine($"Event Stream Id: {streamId}, Event: {@event.GetType()}");
 
                 switch (@event)
@@ -61,6 +77,10 @@ public class WorkerService : BackgroundService
                         Console.WriteLine("Unknown event type.");
                         break;
                 }
+
+                _lastProcessedEventTimestamp = @event.CreatedAt;
+
+                _timestampService.SaveTimestamp(_lastProcessedEventTimestamp);
             }
         }, regex: @"BotCreated|EventCreated|NewsCreated");
     }
@@ -84,6 +104,7 @@ public class WorkerService : BackgroundService
 
         _rabbitMqChannel.Close();
         _rabbitMqConnection.Close();
+        Console.WriteLine("Closed connection with RabbitMQ");
 
         return base.StopAsync(cancellationToken);
     }
