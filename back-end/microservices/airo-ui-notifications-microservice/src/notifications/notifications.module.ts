@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
-import { NotificationsService } from './notifications.service';
+import { ConfigService } from './services/config.service';
+import { NotificationsService } from './services/notifications.service';
+import { UiNotificationRepository } from './services/notifications-repository.service';
 
 @Module({
   imports: [
@@ -15,6 +17,10 @@ import { NotificationsService } from './notifications.service';
       connectionInitOptions: { wait: false },
     }),
   ],
-  providers: [NotificationsService]  
+  providers: [
+    NotificationsService, 
+    ConfigService,
+    UiNotificationRepository
+  ]
 })
 export class NotificationsModule {}
