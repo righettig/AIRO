@@ -291,10 +291,17 @@ services:
       - SENDGRID_API_KEY=${SENDGRID_API_KEY}
       - SENDGRID_FROM_EMAIL=${SENDGRID_FROM_EMAIL}
       - RABBITMQ_URL=${RABBITMQ_URL}
+      - COSMOSDB_ENDPOINT=${COSMOSDB_ENDPOINT}
+      - COSMOSDB_KEY=${COSMOSDB_KEY}
+      - COSMOSDB_DATABASE_ID=${COSMOSDB_DATABASE_ID}
+      - COSMOSDB_UI_NOTIFICATIONS_CONTAINER_ID=${COSMOSDB_UI_NOTIFICATIONS_CONTAINER_ID}
     ports:
       - "4004:3000"
     depends_on:
-      - rabbitmq
+      rabbitmq:
+        condition: service_healthy
+      cosmosdb:
+        condition: service_healthy
     develop:
       watch:
         - action: rebuild
@@ -361,6 +368,29 @@ services:
     volumes:
       - mongo_data:/data/db
 
+  cosmosdb:
+    # fix for: https://github.com/Azure/azure-cosmos-db-emulator-docker/issues/103
+    image: cosmos-emulator-wrapper
+    build:
+      dockerfile_inline: |
+        FROM mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:latest
+        RUN apt-get update && \
+            DEBIAN_FRONTEND=noninteractive apt-get install -y \
+            curl
+    environment:
+      - AZURE_COSMOS_EMULATOR_PARTITION_COUNT=3
+      - AZURE_COSMOS_EMULATOR_ENABLE_DATA_PERSISTENCE=true
+    ports:
+      - "8081:8081"
+    volumes:
+      - cosmos_data:/CosmosDB/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "-k", "https://localhost:8081/_explorer/emulator.pem"]
+      start_period: 30s
+      interval: 30s
+      timeout: 10s
+      retries: 10
+
   eventstore.db:
     image: eventstore/eventstore:lts
     environment:
@@ -414,6 +444,8 @@ volumes:
   data-volume:
   
   mongo_data:
+  
+  cosmos_data:
 
   eventstore-volume-data:
   eventstore-volume-logs:
