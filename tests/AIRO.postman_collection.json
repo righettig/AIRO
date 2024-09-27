@@ -1328,6 +1328,85 @@
 			]
 		},
 		{
+			"name": "UI Notifications",
+			"item": [
+				{
+					"name": "ui notifications - get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4010/api/ui-notifications/userId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4010",
+							"path": [
+								"api",
+								"ui-notifications",
+								"userId"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ui notifications - mark as read",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"notificationId\": \"6893c15b-bc30-4d7f-83fa-63c0e3dadb95\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4010/api/ui-notifications/userId/read",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4010",
+							"path": [
+								"api",
+								"ui-notifications",
+								"userId",
+								"read"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ui notifications - delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4010/api/ui-notifications/userId/22ff520d-1f10-4128-b91d-1aa4e28a7d78",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4010",
+							"path": [
+								"api",
+								"ui-notifications",
+								"userId",
+								"22ff520d-1f10-4128-b91d-1aa4e28a7d78"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Events",
 			"item": [
 				{

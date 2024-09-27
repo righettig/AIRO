@@ -3,7 +3,7 @@ export type TargetAudience = "all";
 export type UINotificationType = "bots" | "events" | "news" | "general";
 
 export interface UINotification {
-    notificationId: string;
+    id?: string;
     message: string;
     createdAt: Date;
     targetAudience: TargetAudience;

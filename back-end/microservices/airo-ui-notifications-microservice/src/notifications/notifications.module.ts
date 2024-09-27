@@ -3,6 +3,8 @@ import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
 import { ConfigService } from './services/config.service';
 import { NotificationsService } from './services/notifications.service';
 import { UiNotificationRepository } from './services/notifications-repository.service';
+import { UiNotificationStatusRepository } from './services/notifications-status.repository.service';
+import { UiNotificationController } from './controllers/ui-notifications.controller';
 
 @Module({
   imports: [
@@ -17,10 +19,14 @@ import { UiNotificationRepository } from './services/notifications-repository.se
       connectionInitOptions: { wait: false },
     }),
   ],
+  controllers: [
+    UiNotificationController
+  ],
   providers: [
     NotificationsService, 
     ConfigService,
-    UiNotificationRepository
+    UiNotificationRepository,
+    UiNotificationStatusRepository
   ]
 })
 export class NotificationsModule {}

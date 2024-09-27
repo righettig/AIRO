@@ -43,7 +43,6 @@ export class NotificationsService {
         }
 
         var notification: UINotification = {
-            notificationId: '',
             message,
             createdAt: new Date(), // TODO: create common service ITimeProvider
             targetAudience: 'all',

@@ -24,15 +24,15 @@ export class UiNotificationRepository implements OnModuleInit, OnModuleDestroy {
 
   async onModuleInit() {
     const { database } = await this.client.databases.createIfNotExists({
-      id: this.configService.databaseId,
+      id: 'airo',
       throughput: 400
     });
 
     const { container } = await database.containers.createIfNotExists({
-      id: this.configService.containerId,
+      id: 'notifications',
       partitionKey: {
         paths: [
-          '/notificationId'
+          '/id'
         ]
       }
     });
@@ -46,7 +46,7 @@ export class UiNotificationRepository implements OnModuleInit, OnModuleDestroy {
     return resource;
   }
 
-  async listNotifications(): Promise<UINotification[]> {
+  async findAll(): Promise<UINotification[]> {
     const { resources } = await this.container.items.query('SELECT * FROM c').fetchAll();
     return resources;
   }
