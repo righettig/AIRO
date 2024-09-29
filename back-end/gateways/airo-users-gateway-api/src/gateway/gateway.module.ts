@@ -7,6 +7,7 @@ import { InvoiceModule } from 'src/invoice/invoice.module';
 import { BotsModule } from 'src/bots/bots.module';
 import { PurchaseModule } from 'src/purchase/purchase.module';
 import { EventsModule } from 'src/events/events.module';
+import { UiNotificationsModule } from 'src/ui-notifications/ui-notifications.module';
 
 @Module({
   imports: [
@@ -16,7 +17,8 @@ import { EventsModule } from 'src/events/events.module';
     InvoiceModule,
     BotsModule,
     PurchaseModule,
-    EventsModule
+    EventsModule,
+    UiNotificationsModule
   ],
   controllers: [GatewayController]
 })

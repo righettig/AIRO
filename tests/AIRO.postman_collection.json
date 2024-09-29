@@ -304,28 +304,7 @@
 					"response": []
 				},
 				{
-					"name": "gateway - event get Copy",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:3000/gateway/events/8b4ddfb1-b050-43dc-80cf-49afa8c2c247",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"gateway",
-								"events",
-								"8b4ddfb1-b050-43dc-80cf-49afa8c2c247"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "gateway - event get all Copy",
+					"name": "gateway - event get all",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -339,6 +318,86 @@
 							"path": [
 								"gateway",
 								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - ui notifications get all",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjZjYzNmY2I2NDAzMjc2MGVlYjljMjZmNzdkNDA3YTY5NGM1MmIwZTMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWlyby00NGNhNyIsImF1ZCI6ImFpcm8tNDRjYTciLCJhdXRoX3RpbWUiOjE3Mjc0NDYyODEsInVzZXJfaWQiOiJUN0U2dFdwM3VQVG9Fb1pxcGFPVWQyZ1IzYnYxIiwic3ViIjoiVDdFNnRXcDN1UFRvRW9acXBhT1VkMmdSM2J2MSIsImlhdCI6MTcyNzQ0NjI4MSwiZXhwIjoxNzI3NDQ5ODgxLCJlbWFpbCI6ImdpYWNvbW9fZnJlZUBhaXJvLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJnaWFjb21vX2ZyZWVAYWlyby5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.OeMYPcetxNqkVPHu30SuhcADHg7MjWPyaPT-Ge-NuJKFOy-L7-yqFz2X2Vq_z-Cv8eyF9dUaQ8g45f0blN9EeA0O4pVvkxBz5ebf5RlDqpIkhEkEh0P66Gj5tc_HZy_1P5agu8pI_dVP8aSmbz4K9DtdDUEwEicLLxlkeLrXT-sd5QM6mIf_jVoSg4ofJwaPJlK-TWV3L-IsEv6PfC13Jv-5GDLTvIk-MsfgByMVqkjhdJzEgDuDO9-yAhciBaRn4epauI54nUutnBmlNT2P1ser4ITps9c33QQUpe2JW6ycobXT-Uohfy59vhfkuWTnNL1nfjEWoX2DOPDUGAns9w",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/gateway/ui-notifications",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"gateway",
+								"ui-notifications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - ui notifications - mark as read",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjZjYzNmY2I2NDAzMjc2MGVlYjljMjZmNzdkNDA3YTY5NGM1MmIwZTMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWlyby00NGNhNyIsImF1ZCI6ImFpcm8tNDRjYTciLCJhdXRoX3RpbWUiOjE3Mjc0NDYyODEsInVzZXJfaWQiOiJUN0U2dFdwM3VQVG9Fb1pxcGFPVWQyZ1IzYnYxIiwic3ViIjoiVDdFNnRXcDN1UFRvRW9acXBhT1VkMmdSM2J2MSIsImlhdCI6MTcyNzQ0NjI4MSwiZXhwIjoxNzI3NDQ5ODgxLCJlbWFpbCI6ImdpYWNvbW9fZnJlZUBhaXJvLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJnaWFjb21vX2ZyZWVAYWlyby5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.OeMYPcetxNqkVPHu30SuhcADHg7MjWPyaPT-Ge-NuJKFOy-L7-yqFz2X2Vq_z-Cv8eyF9dUaQ8g45f0blN9EeA0O4pVvkxBz5ebf5RlDqpIkhEkEh0P66Gj5tc_HZy_1P5agu8pI_dVP8aSmbz4K9DtdDUEwEicLLxlkeLrXT-sd5QM6mIf_jVoSg4ofJwaPJlK-TWV3L-IsEv6PfC13Jv-5GDLTvIk-MsfgByMVqkjhdJzEgDuDO9-yAhciBaRn4epauI54nUutnBmlNT2P1ser4ITps9c33QQUpe2JW6ycobXT-Uohfy59vhfkuWTnNL1nfjEWoX2DOPDUGAns9w",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/gateway/ui-notifications/9ff1356c-7ae4-4745-921a-cf4c1921c23f",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"gateway",
+								"ui-notifications",
+								"9ff1356c-7ae4-4745-921a-cf4c1921c23f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - ui notifications - delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjZjYzNmY2I2NDAzMjc2MGVlYjljMjZmNzdkNDA3YTY5NGM1MmIwZTMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWlyby00NGNhNyIsImF1ZCI6ImFpcm8tNDRjYTciLCJhdXRoX3RpbWUiOjE3Mjc0NDYyODEsInVzZXJfaWQiOiJUN0U2dFdwM3VQVG9Fb1pxcGFPVWQyZ1IzYnYxIiwic3ViIjoiVDdFNnRXcDN1UFRvRW9acXBhT1VkMmdSM2J2MSIsImlhdCI6MTcyNzQ0NjI4MSwiZXhwIjoxNzI3NDQ5ODgxLCJlbWFpbCI6ImdpYWNvbW9fZnJlZUBhaXJvLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJnaWFjb21vX2ZyZWVAYWlyby5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.OeMYPcetxNqkVPHu30SuhcADHg7MjWPyaPT-Ge-NuJKFOy-L7-yqFz2X2Vq_z-Cv8eyF9dUaQ8g45f0blN9EeA0O4pVvkxBz5ebf5RlDqpIkhEkEh0P66Gj5tc_HZy_1P5agu8pI_dVP8aSmbz4K9DtdDUEwEicLLxlkeLrXT-sd5QM6mIf_jVoSg4ofJwaPJlK-TWV3L-IsEv6PfC13Jv-5GDLTvIk-MsfgByMVqkjhdJzEgDuDO9-yAhciBaRn4epauI54nUutnBmlNT2P1ser4ITps9c33QQUpe2JW6ycobXT-Uohfy59vhfkuWTnNL1nfjEWoX2DOPDUGAns9w",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/gateway/ui-notifications/22ff520d-1f10-4128-b91d-1aa4e28a7d78",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"gateway",
+								"ui-notifications",
+								"22ff520d-1f10-4128-b91d-1aa4e28a7d78"
 							]
 						}
 					},
@@ -1320,6 +1379,85 @@
 							"path": [
 								"api",
 								"bot"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "UI Notifications",
+			"item": [
+				{
+					"name": "ui notifications - get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4010/api/ui-notifications/userId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4010",
+							"path": [
+								"api",
+								"ui-notifications",
+								"userId"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ui notifications - mark as read",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"notificationId\": \"6893c15b-bc30-4d7f-83fa-63c0e3dadb95\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4010/api/ui-notifications/userId/read",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4010",
+							"path": [
+								"api",
+								"ui-notifications",
+								"userId",
+								"read"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ui notifications - delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4010/api/ui-notifications/userId/22ff520d-1f10-4128-b91d-1aa4e28a7d78",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4010",
+							"path": [
+								"api",
+								"ui-notifications",
+								"userId",
+								"22ff520d-1f10-4128-b91d-1aa4e28a7d78"
 							]
 						}
 					},

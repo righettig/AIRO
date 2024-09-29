@@ -15,6 +15,25 @@
         margin-bottom: 10px;
         position: relative;
 
+        & > div {
+            display: flex;
+            align-items: center;
+        }
+
+        .bot-image {
+            flex: 1;
+
+            div {
+                padding: 20px; 
+                border:lightgray 3px solid;
+            }
+        }
+
+        .bot-content {
+            flex: 10;
+            padding-left: 14px;
+        }
+
         .bot-item-details {
             margin-bottom: 20px;
         }

@@ -14,7 +14,7 @@ import { NotificationsService } from './notifications.service';
         {
           name: 'invoice-exchange',
           type: 'direct',
-        },
+        }
       ],
       uri: process.env.RABBITMQ_URL,
       connectionInitOptions: { wait: false },

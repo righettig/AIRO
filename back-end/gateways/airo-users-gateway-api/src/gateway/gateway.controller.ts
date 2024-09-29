@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Logger, Param, Patch, Post, Req } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Logger, Param, Patch, Post, Req } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
 import { ProfileService } from 'src/profile/profile.service';
 import { LoginDto } from 'src/gateway/models/login.dto';
@@ -13,6 +13,7 @@ import { UpdateProfileDto } from 'src/profile/models/update-profile-dto';
 import { BotsService } from 'src/bots/bots.service';
 import { PurchaseService } from 'src/purchase/purchase.service';
 import { EventsService } from 'src/events/events.service';
+import { UiNotificationsService } from 'src/ui-notifications/ui-notifications.service';
 
 @Controller('gateway')
 export class GatewayController {
@@ -26,6 +27,7 @@ export class GatewayController {
     private readonly botsService: BotsService,
     private readonly purchaseService: PurchaseService,
     private readonly eventsService: EventsService,
+    private readonly uiNotificationsService: UiNotificationsService,
   ) { }
 
   @Post('signup')
@@ -206,6 +208,41 @@ export class GatewayController {
     catch {
       return { success: false };
     }
+  }
+
+  @Get('ui-notifications')
+  async getUiNotifications(@Req() request: Request) {
+    const token = request.headers['authorization'];
+    if (!token) {
+      throw new Error('Token is missing');
+    }
+
+    const uid = this.decodeFromToken<{ user_id?: string }>(token, 'user_id');
+    const response = await this.uiNotificationsService.getAll(uid);
+
+    return response;
+  }
+
+  @Patch('ui-notifications/:notificationId')
+  async markAsRead(@Req() request: Request, @Param('notificationId') notificationId: string): Promise<void> {
+    const token = request.headers['authorization'];
+    if (!token) {
+      throw new Error('Token is missing');
+    }
+
+    const uid = this.decodeFromToken<{ user_id?: string }>(token, 'user_id');
+    await this.uiNotificationsService.markAsRead(uid, notificationId);
+  }
+
+  @Delete('ui-notifications/:notificationId')
+  async deleteNotification(@Req() request: Request, @Param('notificationId') notificationId: string): Promise<void> {
+    const token = request.headers['authorization'];
+    if (!token) {
+      throw new Error('Token is missing');
+    }
+
+    const uid = this.decodeFromToken<{ user_id?: string }>(token, 'user_id');
+    await this.uiNotificationsService.delete(uid, notificationId);
   }
 
   private decodeFromToken<T>(token: string, property: keyof T): T[keyof T] | null {

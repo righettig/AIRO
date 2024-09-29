@@ -6,6 +6,10 @@
 mat-card {
     width: 90%;
 
+    mat-card-title {
+        padding: 0 16px;
+    }
+
     .content {
         display: inline-flex;
         gap: 60px;
