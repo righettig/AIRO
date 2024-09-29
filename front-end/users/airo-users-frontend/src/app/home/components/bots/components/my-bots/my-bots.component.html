@@ -6,13 +6,13 @@
     <ul>
         @for (bot of bots; track bot.id) {
         <li class="bot-item">
-            <div style="display: flex;align-items: center;">
-                <div style="flex: 1;">
-                    <div style="padding: 20px; border:lightgray 3px solid;">
+            <div>
+                <div class="bot-image">
+                    <div>
                         <img src="dog_robot_icon_48.png" alt="bot">
                     </div>
                 </div>
-                <div style="flex: 10;padding-left: 14px;">
+                <div class="bot-content">
                     <div class="bot-item-details">
                         <strong>{{bot.name}}</strong>
                         <p>{{bot.price}}</p>
