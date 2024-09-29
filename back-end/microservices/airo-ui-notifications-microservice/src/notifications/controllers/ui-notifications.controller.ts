@@ -19,9 +19,16 @@ export class UiNotificationController {
             this.uiNotificationStatusRepo.findByUserId(userId),
         ]);
 
+        // Sort notifications by descending 'createdAt' timestamp,
+        const sortedNotifications = notifications.sort((a, b) => {
+            const dateA = new Date(a.createdAt);
+            const dateB = new Date(b.createdAt);
+            return dateB.getTime() - dateA.getTime();
+        });
+
         // Map notifications and statuses while avoiding the need for a final filter
         return Promise.all(
-            notifications
+            sortedNotifications
                 .filter(notification => {
                     // Find status for the current notification
                     const notificationStatus = statuses.find(s => s.notificationId === notification.id);
@@ -39,7 +46,9 @@ export class UiNotificationController {
 
                     return {
                         notificationId: notification.id,
+                        type: notification.type,
                         message: notification.message,
+                        createdAt: notification.createdAt,
                         read: notificationStatus.status === 'read',
                     };
                 })

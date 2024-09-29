@@ -1,0 +1,25 @@
+<div class="container">
+  <div class="notifications-menu-container">
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>notifications</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      @for (notification of notifications; track notification.notificationId) {
+      <button mat-menu-item>
+        <div style="padding-top: 12px;">{{notification.message}}</div>
+        <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 2px;">
+          <div class="notification-time">{{ notification.createdAt | timeAgo }}</div>
+          <div>
+            <button mat-icon-button (click)="readNotification(notification.notificationId, $event)">
+              <mat-icon>{{notification.read ? 'done' : 'mail'}}</mat-icon>
+            </button>
+            <button mat-icon-button (click)="deleteNotification(notification.notificationId, $event)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
+      </button>
+      }
+    </mat-menu>
+  </div>
+</div>

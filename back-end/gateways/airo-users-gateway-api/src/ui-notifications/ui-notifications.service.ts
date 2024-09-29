@@ -5,6 +5,7 @@ import { firstValueFrom } from 'rxjs';
 type GetAllUiNotificationsResponse = {
     notificationId: string;
     message: string;
+    createdAt: Date;
     read: boolean;
 } [];
 

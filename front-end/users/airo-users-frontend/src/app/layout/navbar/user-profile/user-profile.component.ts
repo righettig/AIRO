@@ -5,6 +5,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { Router, RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { TitleCasePipe } from '@angular/common';
+import { NotificationsComponent } from './notifications/notifications.component';
 
 @Component({
   selector: 'app-user-profile',
@@ -15,7 +16,8 @@ import { TitleCasePipe } from '@angular/common';
     MatButtonModule,
     MatIconModule,
     RouterModule,
-    TitleCasePipe
+    TitleCasePipe,
+    NotificationsComponent
   ],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.scss',
