@@ -21,3 +21,14 @@ mat-list-item {
     color: gray;
     padding-left: 6px;
 }
+
+.notification-title {
+    padding-top: 12px;
+}
+
+.notification-content {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding-bottom: 2px;
+}
