@@ -37,7 +37,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Events", "Events", "{9D96AF
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "airo-events-domain", "airo-events-domain\airo-events-domain.csproj", "{FA2A6195-0CB5-47F8-AF2B-26419CC7A0AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "airo-event-simulation-microservice", "airo-event-simulation-microservice\airo-event-simulation-microservice.csproj", "{146F1B09-9D8C-475B-8455-C3A48DBBAC1D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "airo-event-simulation-microservice", "airo-event-simulation-microservice\airo-event-simulation-microservice.csproj", "{146F1B09-9D8C-475B-8455-C3A48DBBAC1D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Event Subscriptions", "Event Subscriptions", "{E699605B-ECD7-4C8C-AB8B-B0254597982D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "airo-event-subscriptions-domain", "airo-event-subscriptions-domain\airo-event-subscriptions-domain.csproj", "{ABB37F13-28CF-4979-A753-F1A780410FC1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -105,6 +109,10 @@ Global
 		{146F1B09-9D8C-475B-8455-C3A48DBBAC1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{146F1B09-9D8C-475B-8455-C3A48DBBAC1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{146F1B09-9D8C-475B-8455-C3A48DBBAC1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABB37F13-28CF-4979-A753-F1A780410FC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABB37F13-28CF-4979-A753-F1A780410FC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABB37F13-28CF-4979-A753-F1A780410FC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABB37F13-28CF-4979-A753-F1A780410FC1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -117,6 +125,7 @@ Global
 		{C8AD6178-1F06-49E6-AB25-2F6F7423C2C0} = {ECC6C50C-5E65-40CE-AE68-D39533E82357}
 		{8C433D60-FBDD-4587-A870-6A41FC4D1C33} = {5AE1877B-3721-4FEC-85C5-0BBD3DD898FD}
 		{FA2A6195-0CB5-47F8-AF2B-26419CC7A0AB} = {9D96AFA2-83E8-41B5-A567-C6E8B3809E24}
+		{ABB37F13-28CF-4979-A753-F1A780410FC1} = {E699605B-ECD7-4C8C-AB8B-B0254597982D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {919F5805-3223-46B9-8C08-BDC0559A7492}
