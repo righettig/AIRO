@@ -3,7 +3,7 @@
 public class EventSubscriptionReadModel
 {
     public Guid EventId { get; set; }
-    public List<(Guid, Guid)> Participants { get; set; }
+    public List<(Guid, Guid)> Participants { get; set; } = [];
 
     public override string? ToString()
     {

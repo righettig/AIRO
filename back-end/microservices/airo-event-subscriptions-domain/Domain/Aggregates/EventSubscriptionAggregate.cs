@@ -18,14 +18,14 @@ public class EventSubscriptionAggregate : AggregateRoot, IAggregateRoot
         RaiseEvent(new EventSubscribedEvent(userId, eventId, botId));
     }
 
-    public void UnsubscribeFromEvent(Guid userId, Guid eventId, Guid botId)
+    public void UnsubscribeFromEvent(Guid userId, Guid eventId)
     {
         if (!subscriptions[eventId].ContainsKey(userId))
         {
             throw new InvalidOperationException("The user is subscribed to the event.");
         }
 
-        RaiseEvent(new EventUnsubscribedEvent(userId, eventId, botId));
+        RaiseEvent(new EventUnsubscribedEvent(userId, eventId));
     }
 
     private void Apply(EventSubscribedEvent @event)
