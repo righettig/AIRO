@@ -434,7 +434,13 @@
 					"name": "gateway - get simulation status",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjZjYzNmY2I2NDAzMjc2MGVlYjljMjZmNzdkNDA3YTY5NGM1MmIwZTMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWlyby00NGNhNyIsImF1ZCI6ImFpcm8tNDRjYTciLCJhdXRoX3RpbWUiOjE3Mjc3MDU5NjAsInVzZXJfaWQiOiJUN0U2dFdwM3VQVG9Fb1pxcGFPVWQyZ1IzYnYxIiwic3ViIjoiVDdFNnRXcDN1UFRvRW9acXBhT1VkMmdSM2J2MSIsImlhdCI6MTcyNzcwNTk2MCwiZXhwIjoxNzI3NzA5NTYwLCJlbWFpbCI6ImdpYWNvbW9fZnJlZUBhaXJvLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJnaWFjb21vX2ZyZWVAYWlyby5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.U4rFRYh79tKKppqlj6bww93hIm08DzvJNYJHMAaszQzpWOUsmq55sv9ct86ejXSnH3FWEsaDKKn9o0Yr7JnPVNalGDd5T9_Gwa7OVXERpc4muDJB6z968ytSNZbdcydyaJ6XOMuMOvEK1MEmueuDdPR7Z1VsUeInZcCJQftC_EMIVrXIThJElmaOR83YmYPg_0Slj2hgaCFhruxUfuY1A0Ny_deXsZmW3jf8jNm22bmcE5PVcSSMvywgATQ6lNu7q3mGeHU5YmKvCJS0ExFufH4UqC9ncByC1R7tn2ZQdPKwfWamh-KzFtqZvBoFnZS1NG318oXkkeTOo0Jmnm98Mw",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "http://localhost:3000/gateway/simulation/simulationId",
 							"protocol": "http",
@@ -777,8 +783,8 @@
 							}
 						],
 						"url": {
-							"raw": "https://localhost:3001/gateway/simulation",
-							"protocol": "https",
+							"raw": "http://localhost:3001/gateway/simulation",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
@@ -797,8 +803,8 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:3001/gateway/simulation/simulationId",
-							"protocol": "https",
+							"raw": "http://localhost:3001/gateway/simulation/simulationId",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
@@ -1764,12 +1770,12 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:4010/simulate",
-							"protocol": "https",
+							"raw": "http://localhost:4011/simulate",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "4010",
+							"port": "4011",
 							"path": [
 								"simulate"
 							]
@@ -1783,12 +1789,12 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:4010/simulate/simulationId",
-							"protocol": "https",
+							"raw": "http://localhost:4011/simulate/simulationId",
+							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "4010",
+							"port": "4011",
 							"path": [
 								"simulate",
 								"simulationId"
@@ -1803,12 +1809,12 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:4010/simulate/simulationId/status",
+							"raw": "http://localhost:4011/simulate/simulationId/status",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "4010",
+							"port": "4011",
 							"path": [
 								"simulate",
 								"simulationId",
