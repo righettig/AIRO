@@ -7,6 +7,7 @@ import { DatePipe } from '@angular/common';
 import { MatListModule } from '@angular/material/list';
 import { NotificationDto } from './models/notification-dto';
 import { TimeAgoPipe } from '../../../../common/pipes/time-ago.pipe';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-notifications',
@@ -17,7 +18,8 @@ import { TimeAgoPipe } from '../../../../common/pipes/time-ago.pipe';
     MatIconModule,
     MatListModule,
     DatePipe,
-    TimeAgoPipe
+    TimeAgoPipe,
+    RouterModule
 ],
   templateUrl: './notifications.component.html',
   styleUrl: './notifications.component.scss'
@@ -25,7 +27,10 @@ import { TimeAgoPipe } from '../../../../common/pipes/time-ago.pipe';
 export class NotificationsComponent implements OnInit {
   public notifications: NotificationDto[] = [];
 
-  constructor(private notificationService: NotificationService) { }
+  constructor(
+    private readonly notificationService: NotificationService,
+    private readonly router: Router
+  ) { }
 
   async ngOnInit() {
     this.loadNotifications();
@@ -45,7 +50,11 @@ export class NotificationsComponent implements OnInit {
     event.stopPropagation();
   }
 
+  public async showAllNotifications() {
+    this.router.navigate(['/all-notifications']);
+  }
+
   private async loadNotifications() {
-    this.notifications = await this.notificationService.getAll();
+    this.notifications = await this.notificationService.getMostRecent();
   }
 }

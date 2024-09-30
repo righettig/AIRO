@@ -335,6 +335,33 @@
 							}
 						],
 						"url": {
+							"raw": "http://localhost:3000/gateway/ui-notifications/all",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"gateway",
+								"ui-notifications",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - ui notifications get most recent 5",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjZjYzNmY2I2NDAzMjc2MGVlYjljMjZmNzdkNDA3YTY5NGM1MmIwZTMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWlyby00NGNhNyIsImF1ZCI6ImFpcm8tNDRjYTciLCJhdXRoX3RpbWUiOjE3Mjc0NDYyODEsInVzZXJfaWQiOiJUN0U2dFdwM3VQVG9Fb1pxcGFPVWQyZ1IzYnYxIiwic3ViIjoiVDdFNnRXcDN1UFRvRW9acXBhT1VkMmdSM2J2MSIsImlhdCI6MTcyNzQ0NjI4MSwiZXhwIjoxNzI3NDQ5ODgxLCJlbWFpbCI6ImdpYWNvbW9fZnJlZUBhaXJvLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJnaWFjb21vX2ZyZWVAYWlyby5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.OeMYPcetxNqkVPHu30SuhcADHg7MjWPyaPT-Ge-NuJKFOy-L7-yqFz2X2Vq_z-Cv8eyF9dUaQ8g45f0blN9EeA0O4pVvkxBz5ebf5RlDqpIkhEkEh0P66Gj5tc_HZy_1P5agu8pI_dVP8aSmbz4K9DtdDUEwEicLLxlkeLrXT-sd5QM6mIf_jVoSg4ofJwaPJlK-TWV3L-IsEv6PfC13Jv-5GDLTvIk-MsfgByMVqkjhdJzEgDuDO9-yAhciBaRn4epauI54nUutnBmlNT2P1ser4ITps9c33QQUpe2JW6ycobXT-Uohfy59vhfkuWTnNL1nfjEWoX2DOPDUGAns9w",
+								"type": "text"
+							}
+						],
+						"url": {
 							"raw": "http://localhost:3000/gateway/ui-notifications",
 							"protocol": "http",
 							"host": [

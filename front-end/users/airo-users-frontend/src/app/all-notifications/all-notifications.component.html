@@ -1,0 +1,9 @@
+@for (notification of notifications; track notification.notificationId) {
+    <mat-card appearance="outlined">
+        <mat-card-header>
+            <mat-card-title>{{notification.type}}</mat-card-title>
+            <mat-card-subtitle>{{notification.createdAt | timeAgo }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>{{notification.message}}</mat-card-content>
+    </mat-card>
+}

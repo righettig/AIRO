@@ -2,8 +2,11 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
 
-type GetAllUiNotificationsResponse = {
+export type UINotificationType = "bots" | "events" | "news" | "general";
+
+export type GetAllUiNotificationsResponse = {
     notificationId: string;
+    type: UINotificationType;
     message: string;
     createdAt: Date;
     read: boolean;

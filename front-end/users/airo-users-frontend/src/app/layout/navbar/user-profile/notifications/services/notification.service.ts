@@ -18,13 +18,25 @@ export class NotificationService {
     private configService: ConfigService,
     private http: HttpClient) { }
 
-  async getAll(): Promise<NotificationDto[]> {
+  async getMostRecent(): Promise<NotificationDto[]> {
     const httpHeaders: HttpHeaders = new HttpHeaders({
       Authorization: this.authService.accessToken!
     });
 
     const response = await firstValueFrom(
       this.http.get<NotificationDto[]>(`${this.apiUrl}/ui-notifications`, { headers: httpHeaders })
+    );
+
+    return response;
+  }
+
+  async getAll(): Promise<NotificationDto[]> {
+    const httpHeaders: HttpHeaders = new HttpHeaders({
+      Authorization: this.authService.accessToken!
+    });
+
+    const response = await firstValueFrom(
+      this.http.get<NotificationDto[]>(`${this.apiUrl}/ui-notifications/all`, { headers: httpHeaders })
     );
 
     return response;

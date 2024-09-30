@@ -13,7 +13,7 @@ import { UpdateProfileDto } from 'src/profile/models/update-profile-dto';
 import { BotsService } from 'src/bots/bots.service';
 import { PurchaseService } from 'src/purchase/purchase.service';
 import { EventsService } from 'src/events/events.service';
-import { UiNotificationsService } from 'src/ui-notifications/ui-notifications.service';
+import { GetAllUiNotificationsResponse, UiNotificationsService } from 'src/ui-notifications/ui-notifications.service';
 
 @Controller('gateway')
 export class GatewayController {
@@ -211,7 +211,21 @@ export class GatewayController {
   }
 
   @Get('ui-notifications')
-  async getUiNotifications(@Req() request: Request) {
+  async getUiNotifications(@Req() request: Request): Promise<GetAllUiNotificationsResponse> {
+    const token = request.headers['authorization'];
+    if (!token) {
+      throw new Error('Token is missing');
+    }
+
+    const uid = this.decodeFromToken<{ user_id?: string }>(token, 'user_id');
+    const response = await this.uiNotificationsService.getAll(uid);
+
+    const last5Notifications = response.slice(0, 5);
+    return last5Notifications;
+  }
+
+  @Get('ui-notifications/all')
+  async getAllUiNotifications(@Req() request: Request): Promise<GetAllUiNotificationsResponse> {
     const token = request.headers['authorization'];
     if (!token) {
       throw new Error('Token is missing');
