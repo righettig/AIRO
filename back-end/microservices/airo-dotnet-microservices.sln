@@ -27,15 +27,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "airo-bots-tests", "airo-bot
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "airo-events-tests", "airo-events-tests\airo-events-tests.csproj", "{C8AD6178-1F06-49E6-AB25-2F6F7423C2C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "airo-notification-processor-microservice", "airo-notification-processor-microservice\airo-notification-processor-microservice.csproj", "{91A03966-C628-40A5-94E2-546542B69102}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "airo-notification-processor-microservice", "airo-notification-processor-microservice\airo-notification-processor-microservice.csproj", "{91A03966-C628-40A5-94E2-546542B69102}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bots", "Bots", "{5AE1877B-3721-4FEC-85C5-0BBD3DD898FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "airo-bots-domain", "airo-bots-domain\airo-bots-domain.csproj", "{8C433D60-FBDD-4587-A870-6A41FC4D1C33}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "airo-bots-domain", "airo-bots-domain\airo-bots-domain.csproj", "{8C433D60-FBDD-4587-A870-6A41FC4D1C33}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Events", "Events", "{9D96AFA2-83E8-41B5-A567-C6E8B3809E24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "airo-events-domain", "airo-events-domain\airo-events-domain.csproj", "{FA2A6195-0CB5-47F8-AF2B-26419CC7A0AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "airo-events-domain", "airo-events-domain\airo-events-domain.csproj", "{FA2A6195-0CB5-47F8-AF2B-26419CC7A0AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "airo-event-simulation-microservice", "airo-event-simulation-microservice\airo-event-simulation-microservice.csproj", "{146F1B09-9D8C-475B-8455-C3A48DBBAC1D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -99,6 +101,10 @@ Global
 		{FA2A6195-0CB5-47F8-AF2B-26419CC7A0AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA2A6195-0CB5-47F8-AF2B-26419CC7A0AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA2A6195-0CB5-47F8-AF2B-26419CC7A0AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{146F1B09-9D8C-475B-8455-C3A48DBBAC1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{146F1B09-9D8C-475B-8455-C3A48DBBAC1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{146F1B09-9D8C-475B-8455-C3A48DBBAC1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{146F1B09-9D8C-475B-8455-C3A48DBBAC1D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

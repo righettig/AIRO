@@ -100,6 +100,7 @@ services:
       - admin-auth-service
       - bots-service
       - events-service
+      - event-simulation-service
     build:
       context: ./back-end/gateways/airo-admin-gateway-api
     ports:
@@ -108,6 +109,7 @@ services:
       - ADMIN_AUTH_API_URL=${ADMIN_AUTH_API_URL}
       - BOTS_API_URL=${BOTS_API_URL}
       - EVENTS_API_URL=${EVENTS_API_URL}
+      - EVENT_SIMULATION_API_URL=${EVENT_SIMULATION_API_URL}
     develop:
       watch:
         - action: rebuild
@@ -229,7 +231,14 @@ services:
       - EVENT_STORE_DB_URL=${EVENT_STORE_DB_URL}
     ports:
       - "4006:8080" # https not working so far!
-      
+
+  event-simulation-service:
+    build:
+      context: .
+      dockerfile: ./back-end/microservices/airo-event-simulation-microservice/Dockerfile
+    ports:
+      - "4011:8080" # https not working so far!  
+
   purchase-service:
     depends_on:
       eventstore.db:
@@ -406,7 +415,7 @@ services:
       - cosmos_data:/CosmosDB/data
     healthcheck:
       test: ["CMD", "curl", "-f", "-k", "https://localhost:8081/_explorer/emulator.pem"]
-      start_period: 30s
+      start_period: 1m
       interval: 30s
       timeout: 10s
       retries: 10
