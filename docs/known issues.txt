@@ -1,0 +1,16 @@
+Improve "events" page
+
+Introduce realtime UI notifications (signalR/socket.io)
+
+Integrate missing code from anybotics Events: event-simulation
+
+Add common lib for message types
+
+Improve unit tests coverage	
+
+Cleanup codebase: external API to become a microservice
+	project paths, folder structure and namespaces will affect 'add_command.js'
+
+	simulators
+		agent (console app)
+		agent-runner	

@@ -1,0 +1,42 @@
+- Clone repo "AIRO" from Github. Please note down the root project path <<AIRO_PATH>> as it will be used in the rest of document
+	
+	For instance: /c/Users/Giacomo Righetti/source/repos/AIRO -> <<AIRO_PATH>> 
+
+- Download the Firebase config json files and add them to the <<AIRO_PATH>>/config folder
+	
+	<<ENTERPRISE_FIREBASE_CONFIG>>.json
+	<<ADMIN_FIREBASE_CONFIG>>.json
+	<<USERS_FIREBASE_CONFIG>>.json
+	
+- Create config volumes by running
+	
+	1) airo-enterprise-config-volume
+	
+		docker run --rm -v airo-enterprise-config-volume:/config -v "AIRO_PATH/config:/source" alpine cp /source/<<ENTERPRISE_FIREBASE_CONFIG>>.json /config/<<ENTERPRISE_FIREBASE_CONFIG>>.json
+	
+	2) 	airo-admin-config-volume
+	
+		docker run --rm -v airo-admin-config-volume:/config -v "AIRO_PATH/config:/source" alpine cp /source/<<ADMIN_FIREBASE_CONFIG>>.json /config/<<ADMIN_FIREBASE_CONFIG>>.json
+
+	3) airo-config-volume	
+	
+		docker run --rm -v airo-config-volume:/config -v "AIRO_PATH/config:/source" alpine cp /source/<<USERS_FIREBASE_CONFIG>>.json /config/<<USERS_FIREBASE_CONFIG>>.json
+
+- Create .env file and place it under <<AIRO_PATH>>. The files defines all the environment variables required by docker-compose.yaml
+
+- Link dev npm modules by running npm link
+	
+	npm link airo-gateways-common@1.0.0 // this is only needed for unit tests
+
+	TODO: I can check for all globally linked modules by running
+		npm ls -g --link
+		
+			-- airo-gateways-common@1.0.0 -> .\..\..\..\source\repos\AIRO\back-end\gateways\airo-gateways-common
+	
+- Run docker compose up --build
+
+- Initialise test data by running the scripts in the <<AIRO_PATH>>/scripts folder
+	
+	node resetFirestoreDb.js
+	node resetFirestoreAdminDb.js
+	node resetFirestoreEnterpriseDb.js
