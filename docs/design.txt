@@ -1,0 +1,10 @@
+mongodb
+	billing
+	invoicing
+
+cosmsmosdb
+	ui-notifications-service
+	
+bots/events
+	write: eventstore
+	read: inmemory

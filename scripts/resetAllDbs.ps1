@@ -1,0 +1,1 @@
+.\resetBotsDb.ps1; .\resetEventsDb.ps1
