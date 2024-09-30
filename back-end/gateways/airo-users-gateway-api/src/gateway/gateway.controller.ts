@@ -14,6 +14,7 @@ import { BotsService } from 'src/bots/bots.service';
 import { PurchaseService } from 'src/purchase/purchase.service';
 import { EventsService } from 'src/events/events.service';
 import { GetAllUiNotificationsResponse, UiNotificationsService } from 'src/ui-notifications/ui-notifications.service';
+import { EventSimulationService } from 'src/event-simulation/event-simulation.service';
 
 @Controller('gateway')
 export class GatewayController {
@@ -27,6 +28,7 @@ export class GatewayController {
     private readonly botsService: BotsService,
     private readonly purchaseService: PurchaseService,
     private readonly eventsService: EventsService,
+    private readonly eventSimulationservice: EventSimulationService,
     private readonly uiNotificationsService: UiNotificationsService,
   ) { }
 
@@ -257,6 +259,17 @@ export class GatewayController {
 
     const uid = this.decodeFromToken<{ user_id?: string }>(token, 'user_id');
     await this.uiNotificationsService.delete(uid, notificationId);
+  }
+
+  @Get('simulation/:simulationId')
+  async getSimulationStatus(@Req() request: Request, @Param('simulationId') simulationId: string) {
+    const token = request.headers['authorization'];
+    if (!token) {
+      throw new Error('Token is missing');
+    }
+
+    const response = await this.eventSimulationservice.getSimulationStatusById(simulationId);
+    return response;
   }
 
   private decodeFromToken<T>(token: string, property: keyof T): T[keyof T] | null {

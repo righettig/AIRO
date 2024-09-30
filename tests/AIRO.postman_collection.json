@@ -330,7 +330,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjZjYzNmY2I2NDAzMjc2MGVlYjljMjZmNzdkNDA3YTY5NGM1MmIwZTMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWlyby00NGNhNyIsImF1ZCI6ImFpcm8tNDRjYTciLCJhdXRoX3RpbWUiOjE3Mjc0NDYyODEsInVzZXJfaWQiOiJUN0U2dFdwM3VQVG9Fb1pxcGFPVWQyZ1IzYnYxIiwic3ViIjoiVDdFNnRXcDN1UFRvRW9acXBhT1VkMmdSM2J2MSIsImlhdCI6MTcyNzQ0NjI4MSwiZXhwIjoxNzI3NDQ5ODgxLCJlbWFpbCI6ImdpYWNvbW9fZnJlZUBhaXJvLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJnaWFjb21vX2ZyZWVAYWlyby5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.OeMYPcetxNqkVPHu30SuhcADHg7MjWPyaPT-Ge-NuJKFOy-L7-yqFz2X2Vq_z-Cv8eyF9dUaQ8g45f0blN9EeA0O4pVvkxBz5ebf5RlDqpIkhEkEh0P66Gj5tc_HZy_1P5agu8pI_dVP8aSmbz4K9DtdDUEwEicLLxlkeLrXT-sd5QM6mIf_jVoSg4ofJwaPJlK-TWV3L-IsEv6PfC13Jv-5GDLTvIk-MsfgByMVqkjhdJzEgDuDO9-yAhciBaRn4epauI54nUutnBmlNT2P1ser4ITps9c33QQUpe2JW6ycobXT-Uohfy59vhfkuWTnNL1nfjEWoX2DOPDUGAns9w",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjZjYzNmY2I2NDAzMjc2MGVlYjljMjZmNzdkNDA3YTY5NGM1MmIwZTMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWlyby00NGNhNyIsImF1ZCI6ImFpcm8tNDRjYTciLCJhdXRoX3RpbWUiOjE3Mjc2OTM2ODgsInVzZXJfaWQiOiJUN0U2dFdwM3VQVG9Fb1pxcGFPVWQyZ1IzYnYxIiwic3ViIjoiVDdFNnRXcDN1UFRvRW9acXBhT1VkMmdSM2J2MSIsImlhdCI6MTcyNzY5MzY4OCwiZXhwIjoxNzI3Njk3Mjg4LCJlbWFpbCI6ImdpYWNvbW9fZnJlZUBhaXJvLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJnaWFjb21vX2ZyZWVAYWlyby5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.Km32i3gS_LocV3oIy_SJJONSvKIEMp7pTczm5gs9Rszw7S0RZb1LLA6WoiGYDX7yWpATM9wgMQrg14E12ln5YxLyKpBvqBc34nygDlJZFJOoK-AET0p4qb4FW9Yqb11hU7O3TQzDjs2YfxoXkOkuKlf9bNQucBohy6rTitBJcbisqsVrF43839YR0wmcuMS5HvFMbUnlW-CuzrOiA2MXdzOXUTsL6V9sYj5sMXTrZTCuti954jm1XkjBFLmUjXGKjpWilmWFhZ3R8wfDPQXdHMKNWRcK1VxrXTVjTUekvaTUeOgFUNNKAPXMFydsy-9khqzT31XN_momB7qwXKY2iw",
 								"type": "text"
 							}
 						],
@@ -425,6 +425,27 @@
 								"gateway",
 								"ui-notifications",
 								"22ff520d-1f10-4128-b91d-1aa4e28a7d78"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - get simulation status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/gateway/simulation/simulationId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"gateway",
+								"simulation",
+								"simulationId"
 							]
 						}
 					},
@@ -739,6 +760,53 @@
 							"path": [
 								"gateway",
 								"refresh-token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - start simulation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://localhost:3001/gateway/simulation",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"simulation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - stop simulation",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:3001/gateway/simulation/simulationId",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"simulation",
+								"simulationId"
 							]
 						}
 					},
@@ -1665,6 +1733,86 @@
 								"api",
 								"purchase",
 								"71d484cc-c4a4-4376-bb2f-43e1465df028"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Event Simulation",
+			"item": [
+				{
+					"name": "event simulation - start simulation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"foo\": \"bar\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:4010/simulate",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "4010",
+							"path": [
+								"simulate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "event simulation - stop simulation",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:4010/simulate/simulationId",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "4010",
+							"path": [
+								"simulate",
+								"simulationId"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "event simulation - get simulation status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4010/simulate/simulationId/status",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4010",
+							"path": [
+								"simulate",
+								"simulationId",
+								"status"
 							]
 						}
 					},
