@@ -1,26 +1,37 @@
+using airo_event_simulation_microservice;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSingleton<IBackgroundTaskQueue, SimulationTaskQueue>();
+builder.Services.AddHostedService<SimulationHostedService>();
+builder.Services.AddTransient<GameSimulationEngine>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+app.MapPost("/simulate", (IBackgroundTaskQueue taskQueue,
+                          GameSimulationEngine engine,
+                          GameSimulationParameters parameters) =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    var simulationId = Guid.NewGuid().ToString();
 
-app.UseHttpsRedirection();
+    taskQueue.QueueBackgroundWorkItem(simulationId, async token =>
+    {
+        var result = await engine.RunSimulationAsync(parameters, token);
+        // Store result in the database
+    });
 
-app.MapGet("/foo", () =>
+    return Results.Accepted($"/simulate/{simulationId}/status", new { SimulationId = simulationId });
+});
+
+app.MapDelete("/simulate/{id}", (IBackgroundTaskQueue taskQueue, string id) =>
 {
-    return "foo";
-})
-.WithName("Foo")
-.WithOpenApi();
+    var wasCanceled = taskQueue.TryCancelSimulation(id);
+    return wasCanceled ? Results.Ok($"Simulation {id} canceled.") : Results.NotFound($"Simulation {id} not found.");
+});
+
+app.MapGet("/simulate/{id}/status", (string id) =>
+{
+    Results.Ok("Retrieving state for simulation: " + id);
+});
 
 app.Run();
