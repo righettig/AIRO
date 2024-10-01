@@ -236,6 +236,8 @@ services:
 
   event-subscription-service:
     depends_on:
+      purchase-service:
+        condition: service_started
       rabbitmq:
         condition: service_healthy
       eventstore.db:
@@ -244,6 +246,7 @@ services:
       context: .
       dockerfile: ./back-end/microservices/airo-event-subscriptions-microservice/Dockerfile
     environment:
+      - PURCHASE_API_URL=${PURCHASE_API_URL}
       - EVENT_STORE_DB_URL=${EVENT_STORE_DB_URL}
       - RABBITMQ_URL=${RABBITMQ_URL}
     ports:

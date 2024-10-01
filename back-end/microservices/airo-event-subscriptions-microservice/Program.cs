@@ -7,6 +7,8 @@ using airo_event_subscriptions_domain.Domain.Aggregates;
 using airo_event_subscriptions_domain.Domain.Read;
 using airo_event_subscriptions_domain.Domain.Write.Events;
 using airo_event_subscriptions_domain.Domain.Write.Events.Handlers;
+using airo_event_subscriptions_microservice.Services.Impl;
+using airo_event_subscriptions_microservice.Services.Interfaces;
 
 using EventStore.Client;
 
@@ -22,6 +24,16 @@ builder.Services.AddMediatR(cfg =>
     // Register all handlers from the assembly where your command/query handlers are defined
     cfg.RegisterServicesFromAssemblyContaining<EventSubscriptionAggregate>();
 });
+
+var purchaseApiUrl = builder.Configuration["PURCHASE_API_URL"];
+builder.Services.AddHttpClient<IPurchaseService>(client =>
+{
+    client.BaseAddress = new Uri(purchaseApiUrl);
+    //client.DefaultRequestHeaders.Add("Accept", "application/json");
+});
+
+var rabbitMqUrl = builder.Configuration["RABBITMQ_URL"];
+builder.Services.AddSingleton<IRabbitMQPublisherService>(sp => new RabbitMQPublisherService(rabbitMqUrl));
 
 var eventStoreDbConnectionString = builder.Configuration["EVENT_STORE_DB_URL"];
 
