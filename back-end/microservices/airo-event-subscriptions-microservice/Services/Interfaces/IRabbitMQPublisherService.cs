@@ -2,6 +2,6 @@
 
 public interface IRabbitMQPublisherService
 {
-    void OnEventSubscribed(Guid userId, Guid eventId);
-    void OnEventUnsubscribed(Guid userId, Guid eventId);
+    void OnEventSubscribed(string userId, Guid eventId);
+    void OnEventUnsubscribed(string userId, Guid eventId);
 }

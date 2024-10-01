@@ -25,10 +25,13 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssemblyContaining<EventSubscriptionAggregate>();
 });
 
-var purchaseApiUrl = builder.Configuration["PURCHASE_API_URL"];
-builder.Services.AddHttpClient<IPurchaseService>(client =>
+builder.Services.AddSingleton<IPurchaseService, PurchaseService>();
+
+builder.Services.AddHttpClient<IPurchaseService, PurchaseService>(client =>
 {
-    client.BaseAddress = new Uri(purchaseApiUrl);
+    var purchaseApiUrl = builder.Configuration["PURCHASE_API_URL"];
+
+    client.BaseAddress = new Uri(purchaseApiUrl + "/api/");
     //client.DefaultRequestHeaders.Add("Accept", "application/json");
 });
 

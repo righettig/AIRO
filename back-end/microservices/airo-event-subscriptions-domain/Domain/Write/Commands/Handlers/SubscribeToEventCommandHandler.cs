@@ -8,7 +8,7 @@ public class SubscribeToEventCommandHandler(AggregateRepository<EventSubscriptio
 {
     protected override void ProcessCommand(SubscribeToEventCommand command, EventSubscriptionAggregate aggregate)
     {
-        aggregate.SubscribeToEvent(command.EventId, command.UserId, command.BotId);
+        aggregate.SubscribeToEvent(command.UserId, command.EventId, command.BotId);
     }
 
     protected override Guid GetAggregateId(SubscribeToEventCommand command) => command.EventId;

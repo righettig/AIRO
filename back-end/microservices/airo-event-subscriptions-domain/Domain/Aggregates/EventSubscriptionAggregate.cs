@@ -6,11 +6,17 @@ namespace airo_event_subscriptions_domain.Domain.Aggregates;
 
 public class EventSubscriptionAggregate : AggregateRoot, IAggregateRoot
 {
-    private readonly Dictionary<Guid, Dictionary<Guid, Guid>> subscriptions = [];
+    private readonly Dictionary<Guid, Dictionary<string, Guid>> subscriptions = [];
 
-    public void SubscribeToEvent(Guid userId, Guid eventId, Guid botId)
+    public void SubscribeToEvent(string userId, Guid eventId, Guid botId)
     {
-        if (subscriptions[eventId].ContainsKey(userId)) 
+        if (!subscriptions.TryGetValue(eventId, out Dictionary<string, Guid>? value)) 
+        {
+            value = ([]);
+            subscriptions.Add(eventId, value);
+        }
+
+        if (value.ContainsKey(userId)) 
         {
             throw new InvalidOperationException("The user is already subscribed to the event.");
         }
@@ -18,11 +24,16 @@ public class EventSubscriptionAggregate : AggregateRoot, IAggregateRoot
         RaiseEvent(new EventSubscribedEvent(userId, eventId, botId));
     }
 
-    public void UnsubscribeFromEvent(Guid userId, Guid eventId)
+    public void UnsubscribeFromEvent(string userId, Guid eventId)
     {
-        if (!subscriptions[eventId].ContainsKey(userId))
+        if (!subscriptions.TryGetValue(eventId, out Dictionary<string, Guid>? value)) 
         {
-            throw new InvalidOperationException("The user is subscribed to the event.");
+            throw new InvalidOperationException("The event has no subscribers.");
+        }
+
+        if (!value.ContainsKey(userId))
+        {
+            throw new InvalidOperationException("The user is not subscribed to the event.");
         }
 
         RaiseEvent(new EventUnsubscribedEvent(userId, eventId));

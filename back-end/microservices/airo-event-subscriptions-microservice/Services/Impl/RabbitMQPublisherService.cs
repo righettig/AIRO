@@ -19,7 +19,7 @@ public class RabbitMQPublisherService : IRabbitMQPublisherService
                                  durable: true);
     }
 
-    public void OnEventSubscribed(Guid userId, Guid eventId)
+    public void OnEventSubscribed(string userId, Guid eventId)
     {
         var messageJson = System.Text.Json.JsonSerializer.Serialize(new { userId, eventId });
         var body = Encoding.UTF8.GetBytes(messageJson);
@@ -28,7 +28,7 @@ public class RabbitMQPublisherService : IRabbitMQPublisherService
                               body: body);
     }
 
-    public void OnEventUnsubscribed(Guid userId, Guid eventId)
+    public void OnEventUnsubscribed(string userId, Guid eventId)
     {
         var messageJson = System.Text.Json.JsonSerializer.Serialize(new { userId, eventId });
         var body = Encoding.UTF8.GetBytes(messageJson);

@@ -2,5 +2,5 @@
 
 public interface IPurchaseService
 {
-    Task<bool> OwnsBot(Guid userId, Guid botId);
+    Task<bool> OwnsBot(string userId, Guid botId);
 }

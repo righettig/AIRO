@@ -1139,7 +1139,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"giacomo@airo.com\",\r\n    \"password\": \"q1w2e3\"\r\n}",
+							"raw": "{\r\n    \"email\": \"giacomo_free@airo.com\",\r\n    \"password\": \"q1w2e3\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1300,7 +1300,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:4001/api/profile?uid=9HofO6GWYrOxfE6QAd8ztPJu43j1",
+							"raw": "http://localhost:4001/api/profile?uid=T7E6tWp3uPToEoZqpaOUd2gR3bv1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1313,7 +1313,7 @@
 							"query": [
 								{
 									"key": "uid",
-									"value": "9HofO6GWYrOxfE6QAd8ztPJu43j1"
+									"value": "T7E6tWp3uPToEoZqpaOUd2gR3bv1"
 								}
 							]
 						}
@@ -1819,6 +1819,101 @@
 								"simulate",
 								"simulationId",
 								"status"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Event Subscription",
+			"item": [
+				{
+					"name": "event subscription - add",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": \"T7E6tWp3uPToEoZqpaOUd2gR3bv1\",\r\n\t\"eventId\": \"cca36ae4-eb1d-455a-aca0-eb24c9727ddc\",\r\n\t\"botId\": \"b28192ca-d167-4471-9997-2dcd370f6df4\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4012/api/eventsubscriptions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4012",
+							"path": [
+								"api",
+								"eventsubscriptions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "event subscription - remove",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": \"T7E6tWp3uPToEoZqpaOUd2gR3bv1\",\r\n    \"eventId\": \"cca36ae4-eb1d-455a-aca0-eb24c9727ddc\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4012/api/eventsubscriptions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4012",
+							"path": [
+								"api",
+								"eventsubscriptions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "event subscription - get participants",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4012/api/eventsubscriptions?eventId=cca36ae4-eb1d-455a-aca0-eb24c9727ddc",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4012",
+							"path": [
+								"api",
+								"eventsubscriptions"
+							],
+							"query": [
+								{
+									"key": "eventId",
+									"value": "cca36ae4-eb1d-455a-aca0-eb24c9727ddc"
+								}
 							]
 						}
 					},

@@ -8,7 +8,7 @@ public class UnsubscribeFromEventCommandHandler(AggregateRepository<EventSubscri
 {
     protected override void ProcessCommand(UnsubscribeFromEventCommand command, EventSubscriptionAggregate aggregate)
     {
-        aggregate.UnsubscribeFromEvent(command.EventId, command.UserId);
+        aggregate.UnsubscribeFromEvent(command.UserId, command.EventId);
     }
 
     protected override Guid GetAggregateId(UnsubscribeFromEventCommand command) => command.EventId;

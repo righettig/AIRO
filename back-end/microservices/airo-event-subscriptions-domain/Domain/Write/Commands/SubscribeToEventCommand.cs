@@ -2,9 +2,9 @@
 
 namespace airo_event_subscriptions_domain.Domain.Write.Commands;
 
-public class SubscribeToEventCommand(Guid userId, Guid eventId, Guid botId) : ICommand
+public class SubscribeToEventCommand(string userId, Guid eventId, Guid botId) : ICommand
 {
-    public Guid UserId { get; } = userId;
+    public string UserId { get; } = userId;
     public Guid EventId { get; } = eventId;
     public Guid BotId { get; } = botId;
 }

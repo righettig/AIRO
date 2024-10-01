@@ -2,8 +2,8 @@
 
 namespace airo_event_subscriptions_domain.Domain.Write.Events;
 
-public class EventUnsubscribedEvent(Guid userId, Guid eventId) : Event
+public class EventUnsubscribedEvent(string userId, Guid eventId) : Event
 {
-    public Guid UserId { get; } = userId;
+    public string UserId { get; } = userId;
     public Guid EventId { get; } = eventId;
 }
