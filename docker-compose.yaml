@@ -71,6 +71,7 @@ services:
       - bots-service
       - purchase-service
       - events-service
+      - event-subscription-service
       - event-simulation-service
       - ui-notifications-service
     build:
@@ -85,6 +86,7 @@ services:
       - BOTS_API_URL=${BOTS_API_URL}
       - PURCHASE_API_URL=${PURCHASE_API_URL}
       - EVENTS_API_URL=${EVENTS_API_URL}
+      - EVENT_SUBSCRIPTION_API_URL=${EVENT_SUBSCRIPTION_API_URL}
       - EVENT_SIMULATION_API_URL=${EVENT_SIMULATION_API_URL}
       - UI_NOTIFICATIONS_API_URL=${UI_NOTIFICATIONS_API_URL}
     develop:
