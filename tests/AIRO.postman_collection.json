@@ -456,6 +456,81 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "gateway - event subscription - add",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjZjYzNmY2I2NDAzMjc2MGVlYjljMjZmNzdkNDA3YTY5NGM1MmIwZTMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWlyby00NGNhNyIsImF1ZCI6ImFpcm8tNDRjYTciLCJhdXRoX3RpbWUiOjE3Mjc3OTAwNjAsInVzZXJfaWQiOiJUN0U2dFdwM3VQVG9Fb1pxcGFPVWQyZ1IzYnYxIiwic3ViIjoiVDdFNnRXcDN1UFRvRW9acXBhT1VkMmdSM2J2MSIsImlhdCI6MTcyNzc5MDA2MCwiZXhwIjoxNzI3NzkzNjYwLCJlbWFpbCI6ImdpYWNvbW9fZnJlZUBhaXJvLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJnaWFjb21vX2ZyZWVAYWlyby5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.ewpYAQ81gMtwF6L6UEqnYVSrZTFOn5TpoIknt7dxGfM7ZX2MqQsxXs9Q5KunEKC9B8tRz1BOVoenTrl2SgSbmCTib-5JvC6mkZVRtgl4SwzdBZ7bcQSsHcvHzbJ4sAShyRh7HfBcvwuhGSae21q0OhD7a14qDRQH49EV-mJT75rTZvrWRE9oJoR-Y_HM9dW_WeHV870Hhrs4-xlMNnt5c2wmWpWwRUtu11HxjZHiZKXyTDVCvqJf08xaEaicJjpEdglVpSG0klXJXQPs0jqRdk9Ie4R42yEqim2evnj6B8-fII6BQps9_MtBPFSAqnKiAUsj66Ia2sG075UcvXrD2g",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"eventId\": \"cca36ae4-eb1d-455a-aca0-eb24c9727ddc\",\r\n\t\"botId\": \"b28192ca-d167-4471-9997-2dcd370f6df4\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/gateway/event-subscription",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"gateway",
+								"event-subscription"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - event subscription - remove",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjZjYzNmY2I2NDAzMjc2MGVlYjljMjZmNzdkNDA3YTY5NGM1MmIwZTMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWlyby00NGNhNyIsImF1ZCI6ImFpcm8tNDRjYTciLCJhdXRoX3RpbWUiOjE3Mjc3OTAwNjAsInVzZXJfaWQiOiJUN0U2dFdwM3VQVG9Fb1pxcGFPVWQyZ1IzYnYxIiwic3ViIjoiVDdFNnRXcDN1UFRvRW9acXBhT1VkMmdSM2J2MSIsImlhdCI6MTcyNzc5MDA2MCwiZXhwIjoxNzI3NzkzNjYwLCJlbWFpbCI6ImdpYWNvbW9fZnJlZUBhaXJvLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJnaWFjb21vX2ZyZWVAYWlyby5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.ewpYAQ81gMtwF6L6UEqnYVSrZTFOn5TpoIknt7dxGfM7ZX2MqQsxXs9Q5KunEKC9B8tRz1BOVoenTrl2SgSbmCTib-5JvC6mkZVRtgl4SwzdBZ7bcQSsHcvHzbJ4sAShyRh7HfBcvwuhGSae21q0OhD7a14qDRQH49EV-mJT75rTZvrWRE9oJoR-Y_HM9dW_WeHV870Hhrs4-xlMNnt5c2wmWpWwRUtu11HxjZHiZKXyTDVCvqJf08xaEaicJjpEdglVpSG0klXJXQPs0jqRdk9Ie4R42yEqim2evnj6B8-fII6BQps9_MtBPFSAqnKiAUsj66Ia2sG075UcvXrD2g",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"eventId\": \"cca36ae4-eb1d-455a-aca0-eb24c9727ddc\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/gateway/event-subscription",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"gateway",
+								"event-subscription"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -656,6 +731,32 @@
 								"gateway",
 								"bot",
 								"3d1b3170-48ec-466f-8b02-36d36801fd9a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - event subscription get participants",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/gateway/event-subscription?eventId=cca36ae4-eb1d-455a-aca0-eb24c9727ddc",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"event-subscription"
+							],
+							"query": [
+								{
+									"key": "eventId",
+									"value": "cca36ae4-eb1d-455a-aca0-eb24c9727ddc"
+								}
 							]
 						}
 					},

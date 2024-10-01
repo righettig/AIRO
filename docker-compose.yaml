@@ -104,6 +104,7 @@ services:
       - admin-auth-service
       - bots-service
       - events-service
+      - event-subscription-service
       - event-simulation-service
     build:
       context: ./back-end/gateways/airo-admin-gateway-api
@@ -113,6 +114,7 @@ services:
       - ADMIN_AUTH_API_URL=${ADMIN_AUTH_API_URL}
       - BOTS_API_URL=${BOTS_API_URL}
       - EVENTS_API_URL=${EVENTS_API_URL}
+      - EVENT_SUBSCRIPTION_API_URL=${EVENT_SUBSCRIPTION_API_URL}
       - EVENT_SIMULATION_API_URL=${EVENT_SIMULATION_API_URL}
     develop:
       watch:

@@ -30,9 +30,7 @@ builder.Services.AddSingleton<IPurchaseService, PurchaseService>();
 builder.Services.AddHttpClient<IPurchaseService, PurchaseService>(client =>
 {
     var purchaseApiUrl = builder.Configuration["PURCHASE_API_URL"];
-
     client.BaseAddress = new Uri(purchaseApiUrl + "/api/");
-    //client.DefaultRequestHeaders.Add("Accept", "application/json");
 });
 
 var rabbitMqUrl = builder.Configuration["RABBITMQ_URL"];

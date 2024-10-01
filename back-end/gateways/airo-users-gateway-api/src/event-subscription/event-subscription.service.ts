@@ -4,7 +4,8 @@ import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class EventSubscriptionService {
-    private readonly serviceUrl = process.env.EVENT_SUBSCRIPTION_API_URL!;
+    private readonly serviceUrl = 
+        process.env.EVENT_SUBSCRIPTION_API_URL! + "/api/eventsubscriptions";
 
     constructor(private readonly httpService: HttpService) { }
 
