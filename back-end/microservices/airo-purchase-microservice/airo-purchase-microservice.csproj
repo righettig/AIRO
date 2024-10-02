@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\airo-cqrs-eventsourcing-lib\airo-cqrs-eventsourcing-lib.csproj" />
+    <ProjectReference Include="..\airo-purchase-domain\airo-purchase-domain.csproj" />
   </ItemGroup>
 
 </Project>
