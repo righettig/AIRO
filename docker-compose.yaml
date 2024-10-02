@@ -326,9 +326,15 @@ services:
       - RABBITMQ_URL=${RABBITMQ_URL}
       - SENDGRID_API_KEY=${SENDGRID_API_KEY}
       - SENDGRID_FROM_EMAIL=${SENDGRID_FROM_EMAIL}
+      - PROFILE_API_URL=${PROFILE_API_URL}
+      - EVENTS_API_URL=${EVENTS_API_URL}
     ports:
       - "4004:3000"
     depends_on:
+      profile-service:
+        condition: service_started
+      events-service:
+        condition: service_started
       rabbitmq:
         condition: service_healthy
     develop:

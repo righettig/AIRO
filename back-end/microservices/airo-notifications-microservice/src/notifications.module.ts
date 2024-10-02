@@ -2,6 +2,8 @@ import { Module } from '@nestjs/common';
 import { EmailService } from './email/email.service';
 import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
 import { NotificationsService } from './notifications.service';
+import { EventsService } from './events/events.service';
+import { ProfileService } from './profile/profile.service';
 
 @Module({
   imports: [
@@ -24,6 +26,11 @@ import { NotificationsService } from './notifications.service';
       connectionInitOptions: { wait: false },
     }),
   ],
-  providers: [NotificationsService, EmailService]  
+  providers: [
+    NotificationsService, 
+    EmailService, 
+    EventsService,
+    ProfileService
+  ]  
 })
 export class NotificationsModule {}
