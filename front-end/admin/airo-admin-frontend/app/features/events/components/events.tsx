@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
 
-import Event from '../types/event';
+import { EventListItem } from '../types/event';
+
 import EventCreator from './event-creator';
 import EventList from './event-list';
 
 import { fetchEvents, addEvent, updateEvent, deleteEvent, startEvent } from '@/app/common/events.service';
 
 const Events = () => {
-    const [eventList, setEventList] = useState<Event[]>([]);
-    const [eventToEdit, setEventToEdit] = useState<Event | null>(null);
+    const [eventList, setEventList] = useState<EventListItem[]>([]);
+    const [eventToEdit, setEventToEdit] = useState<EventListItem | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
@@ -27,7 +28,7 @@ const Events = () => {
         getEvents();
     }, []);
 
-    const handleAddEvent = async ({ name, description }: Event) => {
+    const handleAddEvent = async ({ name, description }: EventListItem) => {
         try {
             const id = await addEvent({ name, description });
             setEventList([...eventList, { 
@@ -35,9 +36,9 @@ const Events = () => {
                 name, 
                 description, 
                 // TODO: these should be set on the server -->
+                participants: 0,
                 status: 'NotStarted', 
                 createdAt: new Date(), 
-                modifiedAt: new Date()
                 // <--
             }]);
         } catch (err) {
@@ -45,7 +46,7 @@ const Events = () => {
         }
     };
 
-    const handleUpdateEvent = async (updatedEvent: Event) => {
+    const handleUpdateEvent = async (updatedEvent: EventListItem) => {
         try {
             await updateEvent(updatedEvent.id, updatedEvent);
             setEventList(eventList.map(event =>
@@ -68,16 +69,20 @@ const Events = () => {
         }
     };
 
-    const handleStartEvent = (event: Event) => {
-        const updatedEvent = { ...event, status: 'Running', modifiedAt: new Date() } as Event;
+    const handleStartEvent = (event: EventListItem) => {
+        const updatedEvent = { ...event, status: 'Running', modifiedAt: new Date() } as EventListItem;
 
         setEventList(eventList.map(event =>
             event.id === updatedEvent.id ? updatedEvent : event
         ));
     };
 
-    const handleEditEvent = (event: Event) => {
+    const handleEditEvent = (event: EventListItem) => {
         setEventToEdit(event);
+    };
+
+    const handleDetailsEvent = (id: string) => {
+        // TODO
     };
 
     if (loading) return <div>Loading...</div>;
@@ -96,6 +101,7 @@ const Events = () => {
                 onDelete={handleDeleteEvent}
                 onEdit={handleEditEvent}
                 onStart={handleStartEvent}
+                onDetails={handleDetailsEvent}
             />}
         </div>
     );

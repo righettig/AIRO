@@ -10,8 +10,11 @@ public class EventSubscriptionsQueryHandler(IReadRepository<EventSubscriptionRea
 
     public Task<string[]> Handle(GetEventParticipants query, CancellationToken cancellationToken)
     {
-        var @event = readRepository.GetById(query.EventId);
-        var participants = @event.Participants.Select(x => x.Item1).ToArray();
+        var eventSubscription = readRepository.GetById(query.EventId);
+
+        if (eventSubscription is null) return Task.FromResult<string[]>([]);
+
+        var participants = eventSubscription.Participants.Select(x => x.Item1).ToArray();
         return Task.FromResult(participants);
     }
 }
