@@ -4,9 +4,11 @@ import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
 import { NotificationsService } from './notifications.service';
 import { EventsService } from './events/events.service';
 import { ProfileService } from './profile/profile.service';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
+    HttpModule,
     RabbitMQModule.forRoot(RabbitMQModule, {
       exchanges: [
         {
