@@ -24,7 +24,19 @@ const fetchEventsWithParticipants = async (events: EventBase[]) => {
 };
 
 // Fetch event details with participants
-export const fetchEventWithDetails = async () => {
+export const fetchEventWithDetails = async (eventId: string) => {
+    try {
+        const response = await eventsService.request(`${eventId}`, 'GET');
+        const event = await fetchEventsWithParticipants([response]);
+        return event[0]; // Since it's a single event
+    } catch (error) {
+        console.error('Failed to fetch event details:', error);
+        throw error;
+    }
+};
+
+// Fetch all event details with participants
+const fetchEventsWithDetails = async () => {
     try {
         const events = await eventsService.request('', 'GET');
         return await fetchEventsWithParticipants(events);
@@ -37,7 +49,7 @@ export const fetchEventWithDetails = async () => {
 // Fetch events with participant counts
 export const fetchEvents = async () => {
     try {
-        var events = (await fetchEventWithDetails()).map(event => ({
+        var events = (await fetchEventsWithDetails()).map(event => ({
             ...event,
             participants: event.participants? event.participants.length : 0
         }));

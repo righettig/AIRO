@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 import { EventListItem } from '../types/event';
 
@@ -12,6 +13,8 @@ const Events = () => {
     const [eventToEdit, setEventToEdit] = useState<EventListItem | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+
+    const router = useRouter();
 
     useEffect(() => {
         const getEvents = async () => {
@@ -82,7 +85,7 @@ const Events = () => {
     };
 
     const handleDetailsEvent = (id: string) => {
-        // TODO
+        router.push(`/event-details/${id}`);
     };
 
     if (loading) return <div>Loading...</div>;
