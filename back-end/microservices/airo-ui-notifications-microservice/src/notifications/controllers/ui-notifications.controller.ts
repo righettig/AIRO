@@ -18,32 +18,38 @@ export class UiNotificationController {
             this.uiNotificationRepo.findAll(),
             this.uiNotificationStatusRepo.findByUserId(userId),
         ]);
-
+    
         // Sort notifications by descending 'createdAt' timestamp,
         const sortedNotifications = notifications.sort((a, b) => {
             const dateA = new Date(a.createdAt);
             const dateB = new Date(b.createdAt);
             return dateB.getTime() - dateA.getTime();
         });
-
-        // Map notifications and statuses while avoiding the need for a final filter
+    
+        // Map notifications and statuses while filtering based on targetAudience
         return Promise.all(
             sortedNotifications
                 .filter(notification => {
-                    // Find status for the current notification
-                    const notificationStatus = statuses.find(s => s.notificationId === notification.id);
-
-                    // Exclude notifications if their status is 'deleted'
-                    return !(notificationStatus && notificationStatus.status === 'deleted');
+                    // Check if the notification is meant for 'all' or for the specific user
+                    if (notification.targetAudience === 'all' || notification.targetAudience === userId) {
+                        // Find status for the current notification
+                        const notificationStatus = statuses.find(s => s.notificationId === notification.id);
+    
+                        // Exclude notifications if their status is 'deleted'
+                        return !(notificationStatus && notificationStatus.status === 'deleted');
+                    }
+    
+                    // Exclude if the user is not the target audience
+                    return false;
                 })
                 .map(async (notification) => {
                     let notificationStatus = statuses.find(s => s.notificationId === notification.id);
-
+    
                     // If no status exists, create a "new" (unread) status
                     if (!notificationStatus) {
                         notificationStatus = await this.uiNotificationStatusRepo.markAsNew(userId, notification.id);
                     }
-
+    
                     return {
                         notificationId: notification.id,
                         type: notification.type,
@@ -53,7 +59,7 @@ export class UiNotificationController {
                     };
                 })
         );
-    }
+    }    
 
     @Patch(':userId/read')
     async markAsRead(

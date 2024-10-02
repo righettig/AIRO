@@ -1,4 +1,4 @@
-export type TargetAudience = "all";
+export type TargetAudience = "all" | string;
 
 export type UINotificationType = "bots" | "events" | "news" | "general";
 

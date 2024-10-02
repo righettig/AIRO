@@ -48,4 +48,24 @@ export class NotificationsService {
             `You have been invoiced <strong>100</strong>. Have fun with AIRO!.`
         );
     }
+
+    @RabbitSubscribe({
+        exchange: 'event-subscriptions-exchange',
+        routingKey: 'event.subscribed',
+        queue: 'event-subscribed-notifications-queue',
+    })
+    public async eventSubscribed(data, amqpMsg: ConsumeMessage) { // TODO: ideally I should keep message types centralised
+        console.log(`Correlation id: ${JSON.stringify(amqpMsg)}`);
+        this.logger.log(`event.subscribed: ${JSON.stringify(data)}`);
+    }
+
+    @RabbitSubscribe({
+        exchange: 'event-subscriptions-exchange',
+        routingKey: 'event.unsubscribed',
+        queue: 'event-subscribed-notifications-queue',
+    })
+    public async eventUnsubscribed(data, amqpMsg: ConsumeMessage) { // TODO: ideally I should keep message types centralised
+        console.log(`Correlation id: ${JSON.stringify(amqpMsg)}`);
+        this.logger.log(`event.unsubscribed: ${JSON.stringify(data)}`);
+    }
 }

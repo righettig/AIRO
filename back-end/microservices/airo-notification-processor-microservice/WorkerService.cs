@@ -1,6 +1,4 @@
-﻿using airo_bots_microservice.Domain.Write.Events;
-using airo_cqrs_eventsourcing_lib.Core.Interfaces;
-using airo_events_microservice.Domain.Write.Events;
+﻿using airo_cqrs_eventsourcing_lib.Core.Interfaces;
 using Microsoft.Extensions.Hosting;
 using RabbitMQ.Client;
 using System.Text;
@@ -57,36 +55,17 @@ public class WorkerService : BackgroundService
 
                 Console.WriteLine($"Event Stream Id: {streamId}, Event: {@event.GetType()}");
 
-                switch (@event)
-                {
-                    case BotCreatedEvent botCreatedEvent:
-                        string message = $"BotCreatedEvent,{botCreatedEvent.Name}";
-                        PublishToRabbitMQ("BotCreatedEvent", message);
-                        break;
-
-                    case EventCreatedEvent eventCreatedEvent:
-                        message = $"EventCreatedEvent,{eventCreatedEvent.Name}";
-                        PublishToRabbitMQ("EventCreatedEvent", message);
-                        break;
-
-                    // Uncomment if needed in the future
-                    // case NewsCreatedEvent newsCreatedEvent:
-                    //    break;
-
-                    default:
-                        Console.WriteLine("Unknown event type.");
-                        break;
-                }
+                PublishToRabbitMQ(@event.GetType().Name, @event);
 
                 _lastProcessedEventTimestamp = @event.CreatedAt;
-
                 _timestampService.SaveTimestamp(_lastProcessedEventTimestamp);
             }
-        }, regex: @"BotCreated|EventCreated|NewsCreated");
+        }, regex: @"BotCreated|EventCreated|NewsCreated|EventSubscribed|EventUnsubscribed");
     }
 
-    private void PublishToRabbitMQ(string eventType, string message)
+    private void PublishToRabbitMQ(string eventType, object payload)
     {
+        var message = new { eventType, payload };
         var messageJson = System.Text.Json.JsonSerializer.Serialize(message);
         var messageBody = Encoding.UTF8.GetBytes(messageJson);
 
@@ -104,6 +83,7 @@ public class WorkerService : BackgroundService
 
         _rabbitMqChannel.Close();
         _rabbitMqConnection.Close();
+
         Console.WriteLine("Closed connection with RabbitMQ");
 
         return base.StopAsync(cancellationToken);

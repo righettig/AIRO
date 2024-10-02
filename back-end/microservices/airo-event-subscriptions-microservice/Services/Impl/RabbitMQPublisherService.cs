@@ -15,7 +15,7 @@ public class RabbitMQPublisherService : IRabbitMQPublisherService
         _connection = factory.CreateConnection();
         _channel = _connection.CreateModel();
         _channel.ExchangeDeclare(exchange: "event-subscriptions-exchange",
-                                 type: "fanout",
+                                 type: "direct",
                                  durable: true);
     }
 
