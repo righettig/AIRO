@@ -4,7 +4,7 @@ import { IEventHandler } from './event-handler-factory';
 
 @Injectable()
 export class EventCreatedEventHandler implements IEventHandler  {
-    handle({ Name }): UINotification {
+    async handle({ Name }): Promise<UINotification> {
         return {
             message: `There is a new event available '${Name}'`,
             createdAt: new Date(),

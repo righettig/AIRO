@@ -348,9 +348,12 @@ services:
       - RABBITMQ_URL=${RABBITMQ_URL}
       - COSMOSDB_ENDPOINT=${COSMOSDB_ENDPOINT}
       - COSMOSDB_KEY=${COSMOSDB_KEY}
+      - EVENTS_API_URL=${EVENTS_API_URL}
     ports:
       - "4010:3000"
     depends_on:
+      events-service:
+        condition: service_started
       rabbitmq:
         condition: service_healthy
       cosmosdb:

@@ -27,14 +27,14 @@ export class NotificationsService {
     public async notificationCreated(data: UiNotificationCreatedMessage, amqpMsg: ConsumeMessage) {
         this.logger.log(`data: ${JSON.stringify(data)}`);
 
-        const notification = this.handleEvent(data);
+        const notification = await this.handleEvent(data);
 
         if (notification) {
             await this.repository.createUiNotification(notification);
         }
     }
 
-    private handleEvent(data: UiNotificationCreatedMessage): UINotification | null {
+    private async handleEvent(data: UiNotificationCreatedMessage): Promise<UINotification> | null {
         const handler = this.eventHandlerFactory.get(data.eventType);
 
         if (!handler) {
@@ -42,6 +42,6 @@ export class NotificationsService {
             return null;
         }
 
-        return handler.handle(data.payload);
+        return await handler.handle(data.payload);
     }
 }

@@ -10,9 +10,12 @@ import { EventCreatedEventHandler } from './handlers/event-created-event.handler
 import { EventSubscribedEventHandler } from './handlers/event-subscribed-event.handler';
 import { EventUnsubscribedEventHandler } from './handlers/event-unsubscribed-event.handler';
 import { EventHandlerFactory } from './handlers/event-handler-factory';
+import { HttpModule } from '@nestjs/axios';
+import { EventsService } from './services/events.service';
 
 @Module({
   imports: [
+    HttpModule,
     RabbitMQModule.forRoot(RabbitMQModule, {
       exchanges: [
         {
@@ -37,6 +40,7 @@ import { EventHandlerFactory } from './handlers/event-handler-factory';
     EventCreatedEventHandler,
     EventSubscribedEventHandler,
     EventUnsubscribedEventHandler,
+    EventsService
   ]
 })
 export class NotificationsModule {}

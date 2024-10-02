@@ -7,7 +7,7 @@ import { UINotification } from '../models/ui-notification.interface';
 import { ModuleRef } from '@nestjs/core';
 
 export interface IEventHandler {
-  handle(payload: any): UINotification
+  handle(payload: any): Promise<UINotification>
 }
 
 @Injectable()
