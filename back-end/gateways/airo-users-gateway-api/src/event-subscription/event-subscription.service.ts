@@ -31,4 +31,11 @@ export class EventSubscriptionService {
         );
         return response.data;
     }
+
+    async getSubscribedEventsByUserId(userId: string) {
+        const response = await firstValueFrom(
+            this.httpService.get(`${this.serviceUrl}/${userId}`)
+        );
+        return response.data;
+    }
 }

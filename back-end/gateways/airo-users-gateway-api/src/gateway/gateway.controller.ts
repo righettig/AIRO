@@ -291,6 +291,19 @@ export class GatewayController {
     return response;
   }
 
+  @Get('event-subscription')
+  async getSubscribedEventsByUserId(@Req() request: Request) {
+    const token = request.headers['authorization'];
+    if (!token) {
+      throw new Error('Token is missing');
+    }
+
+    const uid = this.decodeFromToken<{ user_id?: string }>(token, 'user_id');
+    const response = await this.eventSubscriptionService.getSubscribedEventsByUserId(uid);
+
+    return response;
+  }
+
   @Get('simulation/:simulationId')
   async getSimulationStatus(@Req() request: Request, @Param('simulationId') simulationId: string) {
     const token = request.headers['authorization'];

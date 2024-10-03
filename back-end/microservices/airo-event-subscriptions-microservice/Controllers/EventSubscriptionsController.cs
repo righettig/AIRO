@@ -59,4 +59,12 @@ public class EventSubscriptionsController : ControllerBase
 
         return Ok(participants);
     }
+
+    [HttpGet("{userId}")]
+    public async Task<IActionResult> GetSubscribedEventsByUserId(string userId)
+    {
+        var subscribedEvents = await _mediator.Send(new GetSubscribedEventsByUserId(userId));
+
+        return Ok(subscribedEvents);
+    }
 }

@@ -1,3 +1,9 @@
-<app-event-list [events]="events"></app-event-list>
+<app-event-list 
+    [events]="events" 
+    [myEvents]="myEvents"
+    [myBots]="myBots" (onEventSubscribed)="onEventSubscribed($event)">
+</app-event-list>
 
-<app-my-events></app-my-events>
+<app-my-events 
+    [myEvents]="myEvents" (onEventUnsubscribed)="onEventUnsubscribed($event)">
+</app-my-events>

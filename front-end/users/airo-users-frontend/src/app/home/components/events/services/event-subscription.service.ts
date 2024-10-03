@@ -44,4 +44,18 @@ export class EventSubscriptionService {
             }),
         );
     }
+
+    async getSubscribedEvents(): Promise<string[]> {
+        const httpHeaders: HttpHeaders = new HttpHeaders({
+            Authorization: this.authService.accessToken!
+        });
+
+        const response = await firstValueFrom(
+            this.http.get<string[]>(`${this.apiUrl}/event-subscription`, { 
+                headers: httpHeaders
+            }),
+        );
+
+        return response;
+    }
 }
