@@ -1,12 +1,33 @@
 <ul>
     @for (event of events; track event.id) {
-        <li>
-            <div>
-                {{event.name}}
-            </div>
-            <div>
-                {{event.description}}
-            </div>
-        </li>
+    <li>
+        <div>
+            {{event.name}}
+        </div>
+        <div>
+            {{event.description}}
+        </div>
+        <div>
+            <!-- TODO: cannot subscribe if already subscribed -->
+            <button (click)="subscribe(event.id)">Subscribe</button>
+
+            <!-- TODO: show only if already subscribe -->
+            <button (click)="unsubscribe(event.id)">Unsubscribe</button>
+        </div>
+    </li>
     }
 </ul>
+
+
+@if (subscribing)
+{
+    <p>Which bot would you like to use for the event?</p>
+    <mat-select (valueChange)="onBotChange($event)">
+        @for (bot of myBots; track bot.id) {
+            <mat-option [value]="bot.id">{{bot.name}}</mat-option>
+        }
+    </mat-select>
+
+    <!-- TODO: cannot subscribe if already subscribed -->
+    <button (click)="confirmSubscription()">Confirm</button>
+}
