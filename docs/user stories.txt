@@ -120,7 +120,7 @@ Update payment details
 	Save. Changes persisted.
 
 
-Subscribe to an event [WIP]
+Subscribe to an event [DONE]
 ----------------------
 	See list of events
 	I should be able to subscribe selecting the desired bot (if I have more than 1 bot) and behaviour
@@ -128,7 +128,7 @@ Subscribe to an event [WIP]
 	I should be receiving an email 
 	
 	
-Unsubscribe from event [WIP]
+Unsubscribe from event [DONE]
 ----------------------
 	As a user who has successfully subscribed to an event
 	I should be able to unsubscribe from an event. 
