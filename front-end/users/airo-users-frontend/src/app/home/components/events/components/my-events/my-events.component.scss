@@ -1,22 +1,4 @@
 .container {
     display: flex;
     gap: 12px;
-
-    div {
-        padding: 0 10px;
-    }
-
-    .content {
-        max-width: 300px;
-        max-height: 300px;
-
-        p {
-            padding: 0 10px;
-        }
-    }
-
-    .footer {
-        padding-bottom: 10px;
-        padding-top: 10px;
-    }
 }

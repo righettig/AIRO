@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Event } from '../../models/event.model';
 import { MatButton } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { EventItemComponent } from "../event-item/event-item.component";
 
 @Component({
   selector: 'app-my-events',
@@ -10,8 +11,9 @@ import { MatCardModule } from '@angular/material/card';
   standalone: true,
   imports: [
     MatCardModule,
-    MatButton
-  ]
+    MatButton,
+    EventItemComponent
+]
 })
 export class MyEventsComponent {
   @Input() myEvents: Event[] = [];

@@ -14,6 +14,7 @@ import {
 import { MatButton, MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
+import { EventItemComponent } from "../event-item/event-item.component";
 
 @Component({
   selector: 'app-event-list',
@@ -24,7 +25,8 @@ import { MatCardModule } from '@angular/material/card';
     MatSelectModule,
     MatCardModule,
     MatButton,
-  ]
+    EventItemComponent
+]
 })
 export class EventListComponent {
   @Input() events: Event[] = [];

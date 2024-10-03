@@ -4,17 +4,9 @@
 
 <div class="container" style="margin-bottom: 20px;">
     @for (event of myEvents; track event.id) {
-        <mat-card class="content" appearance="outlined">
-            <mat-card-header>
-              <mat-card-title>{{event.name}}</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-              <p>{{event.description}}</p>
-            </mat-card-content>
-            <mat-card-footer class="footer" style="margin: auto;">
-                <button mat-raised-button (click)="unsubscribe(event.id)">Unsubscribe</button>
-            </mat-card-footer>
-        </mat-card>  
+        <app-event-item [event]="event">
+            <button mat-raised-button (click)="unsubscribe(event.id)">Unsubscribe</button>
+        </app-event-item>
     } 
     @empty {
         You are not subscribed to any event yet

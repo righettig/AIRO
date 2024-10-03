@@ -7,21 +7,13 @@
 
 <div class="container" style="margin-bottom: 20px;">
     @for (event of events; track event.id) {
-        <mat-card class="content" appearance="outlined">
-            <mat-card-header>
-              <mat-card-title>{{event.name}}</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-              <p>{{event.description}}</p>
-            </mat-card-content>
-            <mat-card-footer class="footer" style="margin: auto;">
-                @if (!myEvents.includes(event)) {
-                    <button mat-raised-button (click)="subscribe(event.id)">Subscribe</button>
-                } @else {
-                    <p style="color: red;">Already subscribed</p>
-                }
-            </mat-card-footer>
-        </mat-card>
+        <app-event-item [event]="event">
+            @if (!myEvents.includes(event)) {
+                <button mat-raised-button (click)="subscribe(event.id)">Subscribe</button>
+            } @else {
+                <p style="color: red;">Already subscribed</p>
+            }
+        </app-event-item>
     } 
     @empty {
         There are no events available
