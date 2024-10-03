@@ -37,7 +37,11 @@ const EventDetails = () => {
             <p><strong>ID:</strong> {event.id}</p>
             <p><strong>Name:</strong> {event.name}</p>
             <p><strong>Description:</strong> {event.description}</p>
-            <p><strong>Participants:</strong> {event.participants}</p>
+            <p><strong>Participants:</strong>
+                <ul>
+                    {event.participants.map((userId: string) => <li>{userId}</li>)}
+                </ul>
+            </p>
             <p><strong>Status:</strong> {event.status}</p>
             <p><strong>Created At:</strong> {new Date(event.createdAt).toLocaleString()}</p>
         </div>
