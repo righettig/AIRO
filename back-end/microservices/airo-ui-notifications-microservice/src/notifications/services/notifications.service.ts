@@ -2,53 +2,46 @@ import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
 import { Injectable, Logger } from '@nestjs/common';
 import { ConsumeMessage } from 'amqplib';
 import { UiNotificationRepository } from './notifications-repository.service';
-import { UINotification, UINotificationType } from '../models/ui-notification.interface';
+import { UINotification } from '../models/ui-notification.interface';
+import { EventHandlerFactory } from '../handlers/event-handler-factory';
+
+type UiNotificationCreatedMessage = {
+    eventType: string,
+    payload: any
+}
 
 @Injectable()
 export class NotificationsService {
     private readonly logger = new Logger(NotificationsService.name);
 
-    constructor(private readonly repository: UiNotificationRepository) { }
+    constructor(
+        private readonly repository: UiNotificationRepository,
+        private readonly eventHandlerFactory: EventHandlerFactory,
+    ) { }
 
     @RabbitSubscribe({
         exchange: 'notifications-exchange',
         routingKey: 'ui.notification.created',
         queue: 'ui-notifications-queue',
     })
-    public async notificationCreated(data: string, amqpMsg: ConsumeMessage) {
-        //console.log(`Correlation id: ${JSON.stringify(amqpMsg)}`);
+    public async notificationCreated(data: UiNotificationCreatedMessage, amqpMsg: ConsumeMessage) {
         this.logger.log(`data: ${JSON.stringify(data)}`);
 
-        var tokens = data.split(',');
-        var eventType = tokens[0];
-        var payload = tokens[1];
+        const notification = await this.handleEvent(data);
 
-        var message = '';
-        var type: UINotificationType  = 'general';
+        if (notification) {
+            await this.repository.createUiNotification(notification);
+        }
+    }
 
-        switch (eventType) {
-            case 'BotCreatedEvent': 
-                message = `There is a a new bot available '${payload}'`;
-                type = 'bots';
-                break;
+    private async handleEvent(data: UiNotificationCreatedMessage): Promise<UINotification> | null {
+        const handler = this.eventHandlerFactory.get(data.eventType);
 
-            case 'EventCreatedEvent':
-                message = `There is a new event available '${payload}'`;
-                type = 'events';
-                break;
-
-            default: 
-                this.logger.log("Unknown event: " + eventType);
-                break;
+        if (!handler) {
+            this.logger.warn(`Unknown event type: ${data.eventType}`);
+            return null;
         }
 
-        var notification: UINotification = {
-            message,
-            createdAt: new Date(), // TODO: create common service ITimeProvider
-            targetAudience: 'all',
-            type,
-        }
-
-        this.repository.createUiNotification(notification);
+        return await handler.handle(data.payload);
     }
 }

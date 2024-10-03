@@ -5,11 +5,23 @@ export interface EventDto {
     description: string;
 }
 
-export default interface Event {
+export interface EventBase {
     id: string;
     name: string;
     description: string;
     createdAt: Date;
-    modifiedAt: Date;
     status: EventStatus;
+}
+
+export interface EventListItem extends EventBase {
+    participants: number;
+}
+
+export interface ParticipantDetails {
+    uid: string;
+    botId: string;
+}
+
+export interface EventDetailsItem extends EventBase {
+    participants: ParticipantDetails[];
 }

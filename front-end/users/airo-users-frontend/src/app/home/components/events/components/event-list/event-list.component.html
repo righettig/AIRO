@@ -1,12 +1,21 @@
-<ul>
+<div>
+    <h2>Available events</h2>
+    <!-- TODO: filter by name, etc. -->
+    <!-- TODO: "hide finished?" checkbox -->
+    <!-- TODO: sort by participants, name, createdAt; asc, desc -->
+</div>
+
+<div class="container" style="margin-bottom: 20px;">
     @for (event of events; track event.id) {
-        <li>
-            <div>
-                {{event.name}}
-            </div>
-            <div>
-                {{event.description}}
-            </div>
-        </li>
+        <app-event-item [event]="event">
+            @if (!myEvents.includes(event)) {
+                <button mat-raised-button (click)="subscribe(event.id)">Subscribe</button>
+            } @else {
+                <p style="color: red;">Already subscribed</p>
+            }
+        </app-event-item>
+    } 
+    @empty {
+        There are no events available
     }
-</ul>
+</div>

@@ -8,6 +8,8 @@ import { BotsModule } from 'src/bots/bots.module';
 import { PurchaseModule } from 'src/purchase/purchase.module';
 import { EventsModule } from 'src/events/events.module';
 import { UiNotificationsModule } from 'src/ui-notifications/ui-notifications.module';
+import { EventSimulationModule } from 'src/event-simulation/event-simulation.module';
+import { EventSubscriptionModule } from 'src/event-subscription/event-subscription.module';
 
 @Module({
   imports: [
@@ -18,6 +20,8 @@ import { UiNotificationsModule } from 'src/ui-notifications/ui-notifications.mod
     BotsModule,
     PurchaseModule,
     EventsModule,
+    EventSubscriptionModule,
+    EventSimulationModule,
     UiNotificationsModule
   ],
   controllers: [GatewayController]

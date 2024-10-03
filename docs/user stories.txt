@@ -120,15 +120,15 @@ Update payment details
 	Save. Changes persisted.
 
 
-Subscribe to an event
+Subscribe to an event [DONE]
 ----------------------
 	See list of events
-	I should be able to subscribe selecting the desired bot (if I have more than 1 bot) and behaiour
+	I should be able to subscribe selecting the desired bot (if I have more than 1 bot) and behaviour
 	I should be listed as a participant for the event. 
 	I should be receiving an email 
 	
 	
-Unsubscribe from event
+Unsubscribe from event [DONE]
 ----------------------
 	As a user who has successfully subscribed to an event
 	I should be able to unsubscribe from an event. 

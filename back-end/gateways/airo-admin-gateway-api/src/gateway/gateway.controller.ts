@@ -1,8 +1,10 @@
-import { Body, Controller, Delete, Get, Logger, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Logger, Param, Post, Put, Query } from '@nestjs/common';
 
 import { AuthService } from 'src/auth/auth.service';
 import { BotsService } from 'src/bots/bots.service';
 import { EventsService } from 'src/events/events.service';
+import { EventSubscriptionService } from 'src/event-subscription/event-subscription.service';
+import { EventSimulationService } from 'src/event-simulation/event-simulation.service';
 
 import { LoginDto, AuthLoginResponse, LoginResponseDto, AuthRefreshTokenResponse } from '@auth/models';
 import { CreateBotDto, UpdateBotDto, GetBotResponse, GetBotsResponse } from '@bots/models';
@@ -16,6 +18,8 @@ export class GatewayController {
     private readonly authService: AuthService,
     private readonly botsService: BotsService,
     private readonly eventsService: EventsService,
+    private readonly eventSubscriptionService: EventSubscriptionService,
+    private readonly eventSimulationService: EventSimulationService
   ) { }
 
   // Auth
@@ -91,5 +95,23 @@ export class GatewayController {
   @Get('events')
   async getAllEvents(): Promise<GetAllEventsResponse> {
     return await this.eventsService.getAll();
+  }
+
+  // Event Subscription
+  @Get('event-subscription')
+  async getParticipants(@Query('eventId') eventId: string) {
+    const response = await this.eventSubscriptionService.getParticipants(eventId);
+    return response;
+  }
+
+  // Event Simulation
+  @Post('simulation')
+  async startSimulation() {
+    return await this.eventSimulationService.startSimulation();
+  }
+
+  @Delete('simulation/:simulationId')
+  async stopSimulation(@Param('simulationId') simulationId: string) {
+    return await this.eventSimulationService.stopSimulation(simulationId);
   }
 }

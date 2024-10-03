@@ -1,0 +1,14 @@
+<div>
+    <h2>My events</h2>
+</div>
+
+<div class="container" style="margin-bottom: 20px;">
+    @for (event of myEvents; track event.id) {
+        <app-event-item [event]="event">
+            <button mat-raised-button (click)="unsubscribe(event.id)">Unsubscribe</button>
+        </app-event-item>
+    } 
+    @empty {
+        You are not subscribed to any event yet
+    }
+</div>

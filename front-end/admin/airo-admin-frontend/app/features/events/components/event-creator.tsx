@@ -1,13 +1,13 @@
 import { FC, useState, useEffect } from 'react';
 
-import Event from '../types/event';
+import { EventListItem } from '../types/event';
 
 import styles from './event-creator.module.css';
 
 interface EventCreatorProps {
-    onAdd: (event: Event) => void;
-    onUpdate: (event: Event) => void;
-    eventToEdit?: Event | null;
+    onAdd: (event: EventListItem) => void;
+    onUpdate: (event: EventListItem) => void;
+    eventToEdit?: EventListItem | null;
 }
 
 const EventCreator: FC<EventCreatorProps> = ({ onAdd, onUpdate, eventToEdit }) => {
@@ -26,13 +26,13 @@ const EventCreator: FC<EventCreatorProps> = ({ onAdd, onUpdate, eventToEdit }) =
             return;
         }
 
-        const event: Event = {
+        const event: EventListItem = {
             id: eventToEdit ? eventToEdit.id : (Math.random() * 1000).toString(),
             name: eventName,
             description: eventDescription,
             createdAt: eventToEdit ? eventToEdit.createdAt : new Date(),
-            modifiedAt: new Date(),
             status: eventToEdit ? eventToEdit.status : 'NotStarted',
+            participants: 0
         };
 
         if (eventToEdit) {

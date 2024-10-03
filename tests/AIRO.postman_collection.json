@@ -330,7 +330,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjZjYzNmY2I2NDAzMjc2MGVlYjljMjZmNzdkNDA3YTY5NGM1MmIwZTMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWlyby00NGNhNyIsImF1ZCI6ImFpcm8tNDRjYTciLCJhdXRoX3RpbWUiOjE3Mjc0NDYyODEsInVzZXJfaWQiOiJUN0U2dFdwM3VQVG9Fb1pxcGFPVWQyZ1IzYnYxIiwic3ViIjoiVDdFNnRXcDN1UFRvRW9acXBhT1VkMmdSM2J2MSIsImlhdCI6MTcyNzQ0NjI4MSwiZXhwIjoxNzI3NDQ5ODgxLCJlbWFpbCI6ImdpYWNvbW9fZnJlZUBhaXJvLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJnaWFjb21vX2ZyZWVAYWlyby5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.OeMYPcetxNqkVPHu30SuhcADHg7MjWPyaPT-Ge-NuJKFOy-L7-yqFz2X2Vq_z-Cv8eyF9dUaQ8g45f0blN9EeA0O4pVvkxBz5ebf5RlDqpIkhEkEh0P66Gj5tc_HZy_1P5agu8pI_dVP8aSmbz4K9DtdDUEwEicLLxlkeLrXT-sd5QM6mIf_jVoSg4ofJwaPJlK-TWV3L-IsEv6PfC13Jv-5GDLTvIk-MsfgByMVqkjhdJzEgDuDO9-yAhciBaRn4epauI54nUutnBmlNT2P1ser4ITps9c33QQUpe2JW6ycobXT-Uohfy59vhfkuWTnNL1nfjEWoX2DOPDUGAns9w",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjZjYzNmY2I2NDAzMjc2MGVlYjljMjZmNzdkNDA3YTY5NGM1MmIwZTMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWlyby00NGNhNyIsImF1ZCI6ImFpcm8tNDRjYTciLCJhdXRoX3RpbWUiOjE3Mjc2OTM2ODgsInVzZXJfaWQiOiJUN0U2dFdwM3VQVG9Fb1pxcGFPVWQyZ1IzYnYxIiwic3ViIjoiVDdFNnRXcDN1UFRvRW9acXBhT1VkMmdSM2J2MSIsImlhdCI6MTcyNzY5MzY4OCwiZXhwIjoxNzI3Njk3Mjg4LCJlbWFpbCI6ImdpYWNvbW9fZnJlZUBhaXJvLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJnaWFjb21vX2ZyZWVAYWlyby5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.Km32i3gS_LocV3oIy_SJJONSvKIEMp7pTczm5gs9Rszw7S0RZb1LLA6WoiGYDX7yWpATM9wgMQrg14E12ln5YxLyKpBvqBc34nygDlJZFJOoK-AET0p4qb4FW9Yqb11hU7O3TQzDjs2YfxoXkOkuKlf9bNQucBohy6rTitBJcbisqsVrF43839YR0wmcuMS5HvFMbUnlW-CuzrOiA2MXdzOXUTsL6V9sYj5sMXTrZTCuti954jm1XkjBFLmUjXGKjpWilmWFhZ3R8wfDPQXdHMKNWRcK1VxrXTVjTUekvaTUeOgFUNNKAPXMFydsy-9khqzT31XN_momB7qwXKY2iw",
 								"type": "text"
 							}
 						],
@@ -425,6 +425,108 @@
 								"gateway",
 								"ui-notifications",
 								"22ff520d-1f10-4128-b91d-1aa4e28a7d78"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - get simulation status",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjZjYzNmY2I2NDAzMjc2MGVlYjljMjZmNzdkNDA3YTY5NGM1MmIwZTMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWlyby00NGNhNyIsImF1ZCI6ImFpcm8tNDRjYTciLCJhdXRoX3RpbWUiOjE3Mjc3MDU5NjAsInVzZXJfaWQiOiJUN0U2dFdwM3VQVG9Fb1pxcGFPVWQyZ1IzYnYxIiwic3ViIjoiVDdFNnRXcDN1UFRvRW9acXBhT1VkMmdSM2J2MSIsImlhdCI6MTcyNzcwNTk2MCwiZXhwIjoxNzI3NzA5NTYwLCJlbWFpbCI6ImdpYWNvbW9fZnJlZUBhaXJvLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJnaWFjb21vX2ZyZWVAYWlyby5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.U4rFRYh79tKKppqlj6bww93hIm08DzvJNYJHMAaszQzpWOUsmq55sv9ct86ejXSnH3FWEsaDKKn9o0Yr7JnPVNalGDd5T9_Gwa7OVXERpc4muDJB6z968ytSNZbdcydyaJ6XOMuMOvEK1MEmueuDdPR7Z1VsUeInZcCJQftC_EMIVrXIThJElmaOR83YmYPg_0Slj2hgaCFhruxUfuY1A0Ny_deXsZmW3jf8jNm22bmcE5PVcSSMvywgATQ6lNu7q3mGeHU5YmKvCJS0ExFufH4UqC9ncByC1R7tn2ZQdPKwfWamh-KzFtqZvBoFnZS1NG318oXkkeTOo0Jmnm98Mw",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/gateway/simulation/simulationId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"gateway",
+								"simulation",
+								"simulationId"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - event subscription - add",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjZjYzNmY2I2NDAzMjc2MGVlYjljMjZmNzdkNDA3YTY5NGM1MmIwZTMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWlyby00NGNhNyIsImF1ZCI6ImFpcm8tNDRjYTciLCJhdXRoX3RpbWUiOjE3Mjc3OTAwNjAsInVzZXJfaWQiOiJUN0U2dFdwM3VQVG9Fb1pxcGFPVWQyZ1IzYnYxIiwic3ViIjoiVDdFNnRXcDN1UFRvRW9acXBhT1VkMmdSM2J2MSIsImlhdCI6MTcyNzc5MDA2MCwiZXhwIjoxNzI3NzkzNjYwLCJlbWFpbCI6ImdpYWNvbW9fZnJlZUBhaXJvLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJnaWFjb21vX2ZyZWVAYWlyby5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.ewpYAQ81gMtwF6L6UEqnYVSrZTFOn5TpoIknt7dxGfM7ZX2MqQsxXs9Q5KunEKC9B8tRz1BOVoenTrl2SgSbmCTib-5JvC6mkZVRtgl4SwzdBZ7bcQSsHcvHzbJ4sAShyRh7HfBcvwuhGSae21q0OhD7a14qDRQH49EV-mJT75rTZvrWRE9oJoR-Y_HM9dW_WeHV870Hhrs4-xlMNnt5c2wmWpWwRUtu11HxjZHiZKXyTDVCvqJf08xaEaicJjpEdglVpSG0klXJXQPs0jqRdk9Ie4R42yEqim2evnj6B8-fII6BQps9_MtBPFSAqnKiAUsj66Ia2sG075UcvXrD2g",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"eventId\": \"cca36ae4-eb1d-455a-aca0-eb24c9727ddc\",\r\n\t\"botId\": \"b28192ca-d167-4471-9997-2dcd370f6df4\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/gateway/event-subscription",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"gateway",
+								"event-subscription"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - event subscription - remove",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjZjYzNmY2I2NDAzMjc2MGVlYjljMjZmNzdkNDA3YTY5NGM1MmIwZTMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWlyby00NGNhNyIsImF1ZCI6ImFpcm8tNDRjYTciLCJhdXRoX3RpbWUiOjE3Mjc3OTAwNjAsInVzZXJfaWQiOiJUN0U2dFdwM3VQVG9Fb1pxcGFPVWQyZ1IzYnYxIiwic3ViIjoiVDdFNnRXcDN1UFRvRW9acXBhT1VkMmdSM2J2MSIsImlhdCI6MTcyNzc5MDA2MCwiZXhwIjoxNzI3NzkzNjYwLCJlbWFpbCI6ImdpYWNvbW9fZnJlZUBhaXJvLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJnaWFjb21vX2ZyZWVAYWlyby5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.ewpYAQ81gMtwF6L6UEqnYVSrZTFOn5TpoIknt7dxGfM7ZX2MqQsxXs9Q5KunEKC9B8tRz1BOVoenTrl2SgSbmCTib-5JvC6mkZVRtgl4SwzdBZ7bcQSsHcvHzbJ4sAShyRh7HfBcvwuhGSae21q0OhD7a14qDRQH49EV-mJT75rTZvrWRE9oJoR-Y_HM9dW_WeHV870Hhrs4-xlMNnt5c2wmWpWwRUtu11HxjZHiZKXyTDVCvqJf08xaEaicJjpEdglVpSG0klXJXQPs0jqRdk9Ie4R42yEqim2evnj6B8-fII6BQps9_MtBPFSAqnKiAUsj66Ia2sG075UcvXrD2g",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"eventId\": \"cca36ae4-eb1d-455a-aca0-eb24c9727ddc\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/gateway/event-subscription",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"gateway",
+								"event-subscription"
 							]
 						}
 					},
@@ -635,6 +737,32 @@
 					"response": []
 				},
 				{
+					"name": "gateway - event subscription get participants",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/gateway/event-subscription?eventId=cca36ae4-eb1d-455a-aca0-eb24c9727ddc",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"event-subscription"
+							],
+							"query": [
+								{
+									"key": "eventId",
+									"value": "cca36ae4-eb1d-455a-aca0-eb24c9727ddc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "gateway - bot delete",
 					"request": {
 						"method": "DELETE",
@@ -739,6 +867,53 @@
 							"path": [
 								"gateway",
 								"refresh-token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - start simulation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3001/gateway/simulation",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"simulation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - stop simulation",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/gateway/simulation/simulationId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"simulation",
+								"simulationId"
 							]
 						}
 					},
@@ -1065,7 +1240,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"giacomo@airo.com\",\r\n    \"password\": \"q1w2e3\"\r\n}",
+							"raw": "{\r\n    \"email\": \"giacomo_free@airo.com\",\r\n    \"password\": \"q1w2e3\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1226,7 +1401,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:4001/api/profile?uid=9HofO6GWYrOxfE6QAd8ztPJu43j1",
+							"raw": "http://localhost:4001/api/profile?uid=T7E6tWp3uPToEoZqpaOUd2gR3bv1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1239,7 +1414,7 @@
 							"query": [
 								{
 									"key": "uid",
-									"value": "9HofO6GWYrOxfE6QAd8ztPJu43j1"
+									"value": "T7E6tWp3uPToEoZqpaOUd2gR3bv1"
 								}
 							]
 						}
@@ -1665,6 +1840,181 @@
 								"api",
 								"purchase",
 								"71d484cc-c4a4-4376-bb2f-43e1465df028"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Event Simulation",
+			"item": [
+				{
+					"name": "event simulation - start simulation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"foo\": \"bar\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4011/simulate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4011",
+							"path": [
+								"simulate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "event simulation - stop simulation",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4011/simulate/simulationId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4011",
+							"path": [
+								"simulate",
+								"simulationId"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "event simulation - get simulation status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4011/simulate/simulationId/status",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4011",
+							"path": [
+								"simulate",
+								"simulationId",
+								"status"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Event Subscription",
+			"item": [
+				{
+					"name": "event subscription - add",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": \"T7E6tWp3uPToEoZqpaOUd2gR3bv1\",\r\n\t\"eventId\": \"cca36ae4-eb1d-455a-aca0-eb24c9727ddc\",\r\n\t\"botId\": \"b28192ca-d167-4471-9997-2dcd370f6df4\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4012/api/eventsubscriptions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4012",
+							"path": [
+								"api",
+								"eventsubscriptions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "event subscription - remove",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": \"T7E6tWp3uPToEoZqpaOUd2gR3bv1\",\r\n    \"eventId\": \"cca36ae4-eb1d-455a-aca0-eb24c9727ddc\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4012/api/eventsubscriptions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4012",
+							"path": [
+								"api",
+								"eventsubscriptions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "event subscription - get participants",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4012/api/eventsubscriptions?eventId=cca36ae4-eb1d-455a-aca0-eb24c9727ddc",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4012",
+							"path": [
+								"api",
+								"eventsubscriptions"
+							],
+							"query": [
+								{
+									"key": "eventId",
+									"value": "cca36ae4-eb1d-455a-aca0-eb24c9727ddc"
+								}
 							]
 						}
 					},
