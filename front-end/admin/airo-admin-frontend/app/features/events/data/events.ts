@@ -14,7 +14,7 @@ const mockEvents: EventListItem[] = [
         name: 'Event 2',
         description: 'Description for Event 2',
         createdAt: new Date('2024-08-15T15:00:00Z'),
-        status: 'Running',
+        status: 'Started',
         participants: 1
     },
 ];

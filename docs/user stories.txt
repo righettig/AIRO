@@ -136,11 +136,11 @@ Unsubscribe from event [DONE]
 	I should be receiving an email 
 
 
-Event live feed
+Event live feed [DONE]
 ---------------
 	As a user who has successfully subscribed to an event
 	I should be able to see the event in real-time with info/stats being displayed
-	TODO: design how the event takes place
+	DONE: design how the event takes place
 
 
 Define bot behaviour
@@ -184,7 +184,7 @@ Events mgmt [DONE]
 	Delete event
 	Update event 
 	List events
-	Start event [Not Done]
+	Start event
 	
 	
 	

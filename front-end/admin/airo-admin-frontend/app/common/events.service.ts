@@ -2,7 +2,9 @@ import { createApiService } from './api.service';
 import { EventBase, EventDto } from '@/app/features/events/types/event';
 
 const BASE_API_URL = process.env.NEXT_PUBLIC_ADMIN_GATEWAY_API_URL!;
+
 const eventsService = createApiService(BASE_API_URL + '/gateway/events');
+const simulationService = createApiService(BASE_API_URL + '/gateway/simulation');
 
 // Reusable function to fetch event subscriptions
 const getEventSubscriptions = async (eventId: string): Promise<string[]> => {
@@ -112,4 +114,4 @@ export const deleteEvent = (id: string) =>
 
 // Start an event by ID
 export const startEvent = (id: string) =>
-    eventsService.request(`${id}`, 'POST');
+    simulationService.request(`${id}`, 'POST');

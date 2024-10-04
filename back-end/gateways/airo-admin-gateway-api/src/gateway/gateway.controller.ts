@@ -105,13 +105,13 @@ export class GatewayController {
   }
 
   // Event Simulation
-  @Post('simulation')
-  async startSimulation() {
-    return await this.eventSimulationService.startSimulation();
+  @Post('simulation/:eventId')
+  async startSimulation(@Param('eventId') eventId: string) {
+    return await this.eventSimulationService.startSimulation(eventId);
   }
 
-  @Delete('simulation/:simulationId')
-  async stopSimulation(@Param('simulationId') simulationId: string) {
-    return await this.eventSimulationService.stopSimulation(simulationId);
+  @Delete('simulation/:eventId')
+  async stopSimulation(@Param('eventId') eventId: string) {
+    return await this.eventSimulationService.stopSimulation(eventId);
   }
 }

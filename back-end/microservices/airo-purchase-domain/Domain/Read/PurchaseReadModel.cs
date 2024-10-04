@@ -1,6 +1,8 @@
-﻿namespace airo_purchase_microservice.Domain.Read;
+﻿using airo_cqrs_eventsourcing_lib.Core.Interfaces;
 
-public class PurchaseReadModel
+namespace airo_purchase_microservice.Domain.Read;
+
+public class PurchaseReadModel : IReadModel
 {
     public Guid UserId { get; set; }
     public Guid BotId { get; set; }

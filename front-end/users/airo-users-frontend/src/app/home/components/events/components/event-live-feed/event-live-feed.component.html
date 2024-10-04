@@ -1,0 +1,10 @@
+<h1>{{eventName}} - Live Feed</h1>
+<h3>{{eventDescription}}</h3>
+
+@if (eventLiveFeed) {
+    <ul>
+        @for (log of eventLiveFeed.logs; track log) {
+            <li>{{log}}</li>
+        }
+    </ul>
+}

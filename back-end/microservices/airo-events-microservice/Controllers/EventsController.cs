@@ -41,6 +41,20 @@ public class EventsController : ControllerBase
         return Ok();
     }
 
+    [HttpPost("{id}/start")]
+    public async Task<IActionResult> StartEvent(Guid id)
+    {
+        await _mediator.Send(new StartEventCommand(id));
+        return Ok();
+    }
+
+    [HttpPost("{id}/complete")]
+    public async Task<IActionResult> CompleteEvent(Guid id)
+    {
+        await _mediator.Send(new CompleteEventCommand(id));
+        return Ok();
+    }
+
     [HttpGet]
     public async Task<IActionResult> GetEvents()
     {

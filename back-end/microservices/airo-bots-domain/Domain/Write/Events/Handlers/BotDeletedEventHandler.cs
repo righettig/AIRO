@@ -4,7 +4,7 @@ using airo_cqrs_eventsourcing_lib.Core.Interfaces;
 
 namespace airo_bots_microservice.Domain.Write.Events.Handlers;
 
-public class BotDeleteEventHandler(IReadRepository<BotReadModel> readRepository) :
+public class BotDeletedEventHandler(IReadRepository<BotReadModel> readRepository) :
     EventHandlerBase<BotDeletedEvent, BotReadModel>(readRepository), IEventHandler<BotDeletedEvent>
 {
     public override void Handle(BotDeletedEvent @event)

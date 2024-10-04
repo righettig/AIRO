@@ -1,37 +1,75 @@
-using airo_event_simulation_microservice;
+using airo_event_simulation_microservice.Impl;
+using airo_event_simulation_microservice.Interfaces;
+using airo_event_simulation_microservice.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddSingleton<IBackgroundTaskQueue, SimulationTaskQueue>();
 builder.Services.AddHostedService<SimulationHostedService>();
-builder.Services.AddTransient<GameSimulationEngine>();
+
+builder.Services.AddSingleton<IBackgroundTaskQueue, SimulationTaskQueue>();
+builder.Services.AddSingleton<ISimulationStatusTracker, SimulationStatusTracker>();
+builder.Services.AddSingleton<IEventsService, EventsService>();
+
+builder.Services.AddHttpClient<IEventsService, EventsService>(client =>
+{
+    var purchaseApiUrl = builder.Configuration["EVENTS_API_URL"];
+    client.BaseAddress = new Uri(purchaseApiUrl + "/api/");
+});
+
+builder.Services.AddTransient<IGameSimulationEngine, GameSimulationEngine>();
 
 var app = builder.Build();
 
-app.MapPost("/simulate", (IBackgroundTaskQueue taskQueue,
-                          GameSimulationEngine engine,
-                          GameSimulationParameters parameters) =>
+app.MapPost("/simulate/{eventId}", (Guid eventId,
+                                    ISimulationStatusTracker statusTracker,
+                                    IBackgroundTaskQueue taskQueue,
+                                    IGameSimulationEngine engine,
+                                    GameSimulationParameters parameters,
+                                    IEventsService eventsService) =>
 {
-    var simulationId = Guid.NewGuid().ToString();
+    statusTracker.AddLog(eventId, "Simulation created");
 
-    taskQueue.QueueBackgroundWorkItem(simulationId, async token =>
+    taskQueue.QueueBackgroundWorkItem(eventId, async token =>
     {
-        var result = await engine.RunSimulationAsync(parameters, token);
-        // Store result in the database
+        await eventsService.MarkEventAsStartedAsync(eventId);
+        statusTracker.AddLog(eventId, "Simulation started");
+
+        var result = await engine.RunSimulationAsync(parameters, eventId, token);
+
+        await eventsService.MarkEventAsCompletedAsync(eventId);
+        statusTracker.AddLog(eventId, "Simulation marked as completed");
+
+        // TODO Store result in the database
     });
 
-    return Results.Accepted($"/simulate/{simulationId}/status", new { SimulationId = simulationId });
+    return Results.Accepted($"/simulate/{eventId}/status", new { EventId = eventId });
 });
 
-app.MapDelete("/simulate/{id}", (IBackgroundTaskQueue taskQueue, string id) =>
+app.MapDelete("/simulate/{eventId}", (ISimulationStatusTracker statusTracker,
+                                      IBackgroundTaskQueue taskQueue,
+                                      Guid eventId) =>
 {
-    var wasCanceled = taskQueue.TryCancelSimulation(id);
-    return wasCanceled ? Results.Ok($"Simulation {id} canceled.") : Results.NotFound($"Simulation {id} not found.");
+    var wasCanceled = taskQueue.TryCancelSimulation(eventId);
+    if (wasCanceled)
+    {
+        statusTracker.AddLog(eventId, $"Simulation {eventId} canceled.");
+        return Results.Ok($"Simulation {eventId} canceled.");
+    }
+    return Results.NotFound($"Simulation {eventId} not found.");
 });
 
-app.MapGet("/simulate/{id}/status", (string id) =>
+app.MapGet("/simulate/{eventId}/status", (ISimulationStatusTracker statusTracker, Guid eventId) =>
 {
-    Results.Ok("Retrieving state for simulation: " + id);
+    var status = statusTracker.GetSimulationStatus(eventId);
+    if (status != null)
+    {
+        return Results.Ok(new
+        {
+            status.EventId,
+            status.Logs
+        });
+    }
+    return Results.NotFound($"Simulation {eventId} not found.");
 });
 
 app.Run();
