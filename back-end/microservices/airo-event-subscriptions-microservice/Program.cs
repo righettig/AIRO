@@ -1,14 +1,11 @@
 using airo_cqrs_eventsourcing_lib.Core.Impl;
 using airo_cqrs_eventsourcing_lib.Core.Interfaces;
-using airo_cqrs_eventsourcing_lib.EventStore;
 using airo_cqrs_eventsourcing_lib.Web;
 
 using airo_event_subscriptions_domain.Domain.Aggregates;
 using airo_event_subscriptions_domain.Domain.Read;
 using airo_event_subscriptions_microservice.Services.Impl;
 using airo_event_subscriptions_microservice.Services.Interfaces;
-
-using EventStore.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,29 +33,16 @@ builder.Services.AddSingleton<IRabbitMQPublisherService>(sp => new RabbitMQPubli
 
 var eventStoreDbConnectionString = builder.Configuration["EVENT_STORE_DB_URL"];
 
-var settings = EventStoreClientSettings.Create(eventStoreDbConnectionString);
-var eventStoreClient = new EventStoreClient(settings);
-var eventStore = new EventStoreDb(eventStoreClient);
+builder.Services.AddEventStore(eventStoreDbConnectionString);
 
 builder.Services.RegisterHandlers(typeof(EventSubscriptionAggregate).Assembly);
 
-builder.Services.AddSingleton<IEventStore>(eventStore);
 builder.Services.AddSingleton<AggregateRepository<EventSubscriptionAggregate>>();
 builder.Services.AddSingleton<IReadRepository<EventSubscriptionReadModel>, EventSubscriptionReadRepository>();
 
 builder.Services.AddEventListener<EventSubscriptionReadModel>(typeof(EventSubscriptionReadModel).Assembly);
 
-// TODO: create extension method that accepts "airo_event_subscriptions" as parameter
-builder.Services.AddHostedService(provider =>
-{
-    var eventListener = provider.GetRequiredService<IEventListener>();
-    var eventStore = provider.GetRequiredService<IEventStore>();
-
-    // events that do NOT start with "airo_event_subscriptions" will be ignored
-    var eventListenerBackgroundService = new EventListenerBackgroundService(eventListener, eventStore, "airo_event_subscriptions");
-
-    return eventListenerBackgroundService;
-});
+builder.Services.AddEventListenerBackgroundService("airo_event_subscriptions");
 
 var app = builder.Build();
 

@@ -77,6 +77,10 @@ public static class EventListenerExtensions
 
                 bindMethod?.Invoke(eventListener, null);
             }
+            else 
+            {
+                Console.WriteLine($"Cannot find {handlerName}.");
+            }
         }
     }
 }

@@ -1,12 +1,9 @@
 using airo_cqrs_eventsourcing_lib.Core.Impl;
 using airo_cqrs_eventsourcing_lib.Core.Interfaces;
-using airo_cqrs_eventsourcing_lib.EventStore;
 using airo_cqrs_eventsourcing_lib.Web;
 
 using airo_purchase_microservice.Domain.Aggregates;
 using airo_purchase_microservice.Domain.Read;
-
-using EventStore.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,29 +20,16 @@ builder.Services.AddMediatR(cfg =>
 
 var eventStoreDbConnectionString = builder.Configuration["EVENT_STORE_DB_URL"];
 
-var settings = EventStoreClientSettings.Create(eventStoreDbConnectionString);
-var eventStoreClient = new EventStoreClient(settings);
-var eventStore = new EventStoreDb(eventStoreClient);
+builder.Services.AddEventStore(eventStoreDbConnectionString);
 
 builder.Services.RegisterHandlers(typeof(PurchaseAggregate).Assembly);
 
-builder.Services.AddSingleton<IEventStore>(eventStore);
 builder.Services.AddSingleton<AggregateRepository<PurchaseAggregate>>();
 builder.Services.AddSingleton<IReadRepository<PurchaseReadModel>, PurchaseReadRepository>();
 
 builder.Services.AddEventListener<PurchaseReadModel>(typeof(PurchaseReadModel).Assembly);
 
-// TODO: create extension method that accepts "airo_purchase" as parameter
-builder.Services.AddHostedService(provider =>
-{
-    var eventListener = provider.GetRequiredService<IEventListener>();
-    var eventStore = provider.GetRequiredService<IEventStore>();
-
-    // events that do NOT start with "airo_events" will be ignored
-    var eventListenerBackgroundService = new EventListenerBackgroundService(eventListener, eventStore, "airo_purchase");
-
-    return eventListenerBackgroundService;
-});
+builder.Services.AddEventListenerBackgroundService("airo_purchase");
 
 var app = builder.Build();
 

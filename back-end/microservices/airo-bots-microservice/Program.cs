@@ -3,10 +3,7 @@ using airo_bots_microservice.Domain.Read;
 
 using airo_cqrs_eventsourcing_lib.Core.Impl;
 using airo_cqrs_eventsourcing_lib.Core.Interfaces;
-using airo_cqrs_eventsourcing_lib.EventStore;
 using airo_cqrs_eventsourcing_lib.Web;
-
-using EventStore.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,29 +20,16 @@ builder.Services.AddMediatR(cfg =>
 
 var eventStoreDbConnectionString = builder.Configuration["EVENT_STORE_DB_URL"];
 
-var settings = EventStoreClientSettings.Create(eventStoreDbConnectionString);
-var eventStoreClient = new EventStoreClient(settings);
-var eventStore = new EventStoreDb(eventStoreClient);
+builder.Services.AddEventStore(eventStoreDbConnectionString);
 
 builder.Services.RegisterHandlers(typeof(BotAggregate).Assembly);
 
-builder.Services.AddSingleton<IEventStore>(eventStore);
 builder.Services.AddSingleton<AggregateRepository<BotAggregate>>();
 builder.Services.AddSingleton<IReadRepository<BotReadModel>, BotReadRepository>();
 
 builder.Services.AddEventListener<BotReadModel>(typeof(BotReadModel).Assembly);
 
-// TODO: create extension method that accepts "airo_bots" as parameter
-builder.Services.AddHostedService(provider => 
-{
-    var eventListener = provider.GetRequiredService<IEventListener>();
-    var eventStore = provider.GetRequiredService<IEventStore>();
-
-    // events that do NOT start with "airo_bots" will be ignored
-    var eventListenerBackgroundService = new EventListenerBackgroundService(eventListener, eventStore, "airo_bots");
-
-    return eventListenerBackgroundService;
-});
+builder.Services.AddEventListenerBackgroundService("airo_bots");
 
 var app = builder.Build();
 
