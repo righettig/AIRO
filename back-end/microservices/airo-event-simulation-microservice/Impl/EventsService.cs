@@ -2,14 +2,9 @@
 
 namespace airo_event_simulation_microservice.Impl;
 
-public class EventsService : IEventsService
+public class EventsService(HttpClient httpClient) : IEventsService
 {
-    private readonly HttpClient _httpClient;
-
-    public EventsService(HttpClient httpClient)
-    {
-        _httpClient = httpClient;
-    }
+    private readonly HttpClient _httpClient = httpClient;
 
     public async Task MarkEventAsStartedAsync(Guid eventId)
     {

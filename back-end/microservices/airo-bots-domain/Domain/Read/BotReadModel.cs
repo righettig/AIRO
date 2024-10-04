@@ -1,6 +1,8 @@
-﻿namespace airo_bots_microservice.Domain.Read;
+﻿using airo_cqrs_eventsourcing_lib.Core.Interfaces;
 
-public class BotReadModel
+namespace airo_bots_microservice.Domain.Read;
+
+public class BotReadModel : IReadModel
 {
     public Guid Id { get; set; }
     public string Name { get; set; }

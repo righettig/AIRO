@@ -1,6 +1,8 @@
-﻿namespace airo_events_microservice.Domain.Read;
+﻿using airo_cqrs_eventsourcing_lib.Core.Interfaces;
 
-public class EventReadModel
+namespace airo_events_microservice.Domain.Read;
+
+public class EventReadModel : IReadModel
 {
     public Guid Id { get; set; }
     public string Name { get; set; }

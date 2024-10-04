@@ -1,9 +1,6 @@
-using airo_cqrs_eventsourcing_lib.Core.Impl;
-using airo_cqrs_eventsourcing_lib.Core.Interfaces;
 using airo_cqrs_eventsourcing_lib.Web;
 
 using airo_event_subscriptions_domain.Domain.Aggregates;
-using airo_event_subscriptions_domain.Domain.Read;
 using airo_event_subscriptions_microservice.Services.Impl;
 using airo_event_subscriptions_microservice.Services.Interfaces;
 
@@ -12,13 +9,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-// CQRS - Event Sourcing Framework
-builder.Services.AddMediatR(cfg =>
-{
-    // Register all handlers from the assembly where your command/query handlers are defined
-    cfg.RegisterServicesFromAssemblyContaining<EventSubscriptionAggregate>();
-});
 
 builder.Services.AddSingleton<IPurchaseService, PurchaseService>();
 
@@ -33,16 +23,10 @@ builder.Services.AddSingleton<IRabbitMQPublisherService>(sp => new RabbitMQPubli
 
 var eventStoreDbConnectionString = builder.Configuration["EVENT_STORE_DB_URL"];
 
-builder.Services.AddEventStore(eventStoreDbConnectionString);
-
-builder.Services.RegisterHandlers(typeof(EventSubscriptionAggregate).Assembly);
-
-builder.Services.AddSingleton<AggregateRepository<EventSubscriptionAggregate>>();
-builder.Services.AddSingleton<IReadRepository<EventSubscriptionReadModel>, EventSubscriptionReadRepository>();
-
-builder.Services.AddEventListener<EventSubscriptionReadModel>(typeof(EventSubscriptionReadModel).Assembly);
-
-builder.Services.AddEventListenerBackgroundService("airo_event_subscriptions");
+builder.Services
+    .AddEventStore(eventStoreDbConnectionString)
+    .AddCQRS(typeof(EventSubscriptionAggregate))
+    .WithEvents("airo_event_subscriptions");
 
 var app = builder.Build();
 

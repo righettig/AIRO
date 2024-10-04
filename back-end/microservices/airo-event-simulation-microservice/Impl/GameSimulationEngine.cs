@@ -3,14 +3,9 @@ using airo_event_simulation_microservice.Models;
 
 namespace airo_event_simulation_microservice.Impl;
 
-public class GameSimulationEngine : IGameSimulationEngine
+public class GameSimulationEngine(ISimulationStatusTracker statusTracker) : IGameSimulationEngine
 {
-    private readonly ISimulationStatusTracker _statusTracker;
-
-    public GameSimulationEngine(ISimulationStatusTracker statusTracker)
-    {
-        _statusTracker = statusTracker;
-    }
+    private readonly ISimulationStatusTracker _statusTracker = statusTracker;
 
     public async Task<SimulationResult> RunSimulationAsync(GameSimulationParameters parameters,
                                                            Guid eventId,

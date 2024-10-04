@@ -1,6 +1,8 @@
-﻿namespace airo_event_subscriptions_domain.Domain.Read;
+﻿using airo_cqrs_eventsourcing_lib.Core.Interfaces;
 
-public class EventSubscriptionReadModel
+namespace airo_event_subscriptions_domain.Domain.Read;
+
+public class EventSubscriptionReadModel : IReadModel
 {
     public Guid EventId { get; set; }
     public List<(string, Guid)> Participants { get; set; } = [];
