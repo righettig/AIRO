@@ -18,6 +18,8 @@ builder.Services.AddHttpClient<IEventsService, EventsService>(client =>
 
 builder.Services.AddTransient<IGameSimulationEngine, GameSimulationEngine>();
 
+builder.Services.AddSignalR();
+
 var app = builder.Build();
 
 app.MapPost("/simulate/{eventId}", (Guid eventId,
@@ -71,5 +73,7 @@ app.MapGet("/simulate/{eventId}/status", (ISimulationStatusTracker statusTracker
     }
     return Results.NotFound($"Simulation {eventId} not found.");
 });
+
+app.MapHub<SimulationHub>("/hubs/simulation");
 
 app.Run();
