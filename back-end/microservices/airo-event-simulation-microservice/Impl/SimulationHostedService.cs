@@ -1,4 +1,6 @@
-﻿namespace airo_event_simulation_microservice;
+﻿using airo_event_simulation_microservice.Interfaces;
+
+namespace airo_event_simulation_microservice.Impl;
 
 public class SimulationHostedService : BackgroundService
 {

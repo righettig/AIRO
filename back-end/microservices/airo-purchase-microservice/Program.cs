@@ -5,8 +5,6 @@ using airo_cqrs_eventsourcing_lib.Web;
 
 using airo_purchase_microservice.Domain.Aggregates;
 using airo_purchase_microservice.Domain.Read;
-using airo_purchase_microservice.Domain.Write.Events;
-using airo_purchase_microservice.Domain.Write.Events.Handlers;
 
 using EventStore.Client;
 
@@ -34,20 +32,10 @@ builder.Services.RegisterHandlers(typeof(PurchaseAggregate).Assembly);
 builder.Services.AddSingleton<IEventStore>(eventStore);
 builder.Services.AddSingleton<AggregateRepository<PurchaseAggregate>>();
 builder.Services.AddSingleton<IReadRepository<PurchaseReadModel>, PurchaseReadRepository>();
-builder.Services.AddSingleton<IEventListener, EventListener<PurchaseReadModel>>(provider =>
-{
-    // Get the required services from the service provider
-    var readRepository = provider.GetRequiredService<IReadRepository<PurchaseReadModel>>();
 
-    // Create the EventListener instance
-    var eventListener = new EventListener<PurchaseReadModel>(readRepository);
+builder.Services.AddEventListener<PurchaseReadModel>(typeof(PurchaseReadModel).Assembly);
 
-    // Bind the event handlers
-    eventListener.Bind<BotPurchasedEvent, BotPurchasedEventHandler>();
-
-    return eventListener;
-});
-
+// TODO: create extension method that accepts "airo_purchase" as parameter
 builder.Services.AddHostedService(provider =>
 {
     var eventListener = provider.GetRequiredService<IEventListener>();

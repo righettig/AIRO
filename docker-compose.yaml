@@ -152,6 +152,8 @@ services:
   # Microservices #
   #---------------#
   auth-service:
+    depends_on:
+      - rabbitmq
     build:
       context: .
       dockerfile: ./back-end/microservices/airo-auth-microservice/Dockerfile
@@ -166,8 +168,6 @@ services:
       - "4000:8080" # https not working so far!
     volumes:
       - airo-config-volume:/app/config
-    depends_on:
-      - rabbitmq
   
   admin-auth-service:
     build:
@@ -257,9 +257,13 @@ services:
       - "4012:8080" # https not working so far!
 
   event-simulation-service:
+    depends_on:
+      - events-service
     build:
       context: .
       dockerfile: ./back-end/microservices/airo-event-simulation-microservice/Dockerfile
+    environment:
+      - EVENTS_API_URL=${EVENTS_API_URL}
     ports:
       - "4011:8080" # https not working so far!  
 
@@ -276,6 +280,9 @@ services:
       - "4007:8080" # https not working so far!
 
   billing-service:
+    depends_on:
+      - mongodb
+      - rabbitmq
     build:
       context: ./back-end/microservices/airo-billing-microservice
     environment:
@@ -283,9 +290,6 @@ services:
       - RABBITMQ_URL=${RABBITMQ_URL}
     ports:
       - "4002:3000"
-    depends_on:
-      - mongodb
-      - rabbitmq
     develop:
       watch:
         - action: rebuild
@@ -297,6 +301,10 @@ services:
           path: ./back-end/microservices/airo-billing-microservice/package.json
 
   invoicing-service:
+    depends_on:
+      - profile-service
+      - mongodb
+      - rabbitmq
     build:
       context: ./back-end/microservices/airo-invoicing-microservice
     environment:
@@ -305,10 +313,6 @@ services:
       - RABBITMQ_URL=${RABBITMQ_URL}
     ports:
       - "4003:3000"
-    depends_on:
-      - profile-service
-      - mongodb
-      - rabbitmq
     develop:
       watch:
         - action: rebuild
@@ -320,6 +324,13 @@ services:
           path: ./back-end/microservices/airo-invoicing-microservice/package.json
 
   notifications-service:
+    depends_on:
+      profile-service:
+        condition: service_started
+      events-service:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
     build:
       context: ./back-end/microservices/airo-notifications-microservice
     environment:
@@ -330,13 +341,6 @@ services:
       - EVENTS_API_URL=${EVENTS_API_URL}
     ports:
       - "4004:3000"
-    depends_on:
-      profile-service:
-        condition: service_started
-      events-service:
-        condition: service_started
-      rabbitmq:
-        condition: service_healthy
     develop:
       watch:
         - action: rebuild
@@ -348,6 +352,13 @@ services:
           path: ./back-end/microservices/airo-notifications-microservice/package.json
 
   ui-notifications-service:
+    depends_on:
+      events-service:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
+      cosmosdb:
+        condition: service_healthy
     build:
       context: ./back-end/microservices/airo-ui-notifications-microservice
     environment:
@@ -357,13 +368,6 @@ services:
       - EVENTS_API_URL=${EVENTS_API_URL}
     ports:
       - "4010:3000"
-    depends_on:
-      events-service:
-        condition: service_started
-      rabbitmq:
-        condition: service_healthy
-      cosmosdb:
-        condition: service_healthy
     develop:
       watch:
         - action: rebuild

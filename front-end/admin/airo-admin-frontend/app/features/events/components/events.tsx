@@ -34,14 +34,14 @@ const Events = () => {
     const handleAddEvent = async ({ name, description }: EventListItem) => {
         try {
             const id = await addEvent({ name, description });
-            setEventList([...eventList, { 
-                id, 
-                name, 
-                description, 
+            setEventList([...eventList, {
+                id,
+                name,
+                description,
                 // TODO: these should be set on the server -->
                 participants: 0,
-                status: 'NotStarted', 
-                createdAt: new Date(), 
+                status: 'NotStarted',
+                createdAt: new Date(),
                 // <--
             }]);
         } catch (err) {
@@ -72,12 +72,19 @@ const Events = () => {
         }
     };
 
-    const handleStartEvent = (event: EventListItem) => {
-        const updatedEvent = { ...event, status: 'Running', modifiedAt: new Date() } as EventListItem;
+    const handleStartEvent = async (event: EventListItem) => {
+        if (window.confirm('Are you sure you want to start this event?')) {
+            try {
+                await startEvent(event.id);
+                const updatedEvent = { ...event, status: 'Running', modifiedAt: new Date() } as EventListItem;
 
-        setEventList(eventList.map(event =>
-            event.id === updatedEvent.id ? updatedEvent : event
-        ));
+                setEventList(eventList.map(event =>
+                    event.id === updatedEvent.id ? updatedEvent : event
+                ));
+            } catch (err) {
+                setError('Failed to start event.');
+            }
+        }
     };
 
     const handleEditEvent = (event: EventListItem) => {

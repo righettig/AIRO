@@ -8,18 +8,18 @@ export class EventSimulationService {
 
     constructor(private readonly httpService: HttpService) { }
 
-    async startSimulation() {
+    async startSimulation(eventId: string) {
         const response = await firstValueFrom(
-            this.httpService.post(`${this.serviceUrl}/simulate`, {
+            this.httpService.post(`${this.serviceUrl}/simulate/${eventId}`, {
                 foo: 'param1'
             }),
         );
         return response.data;
     }
 
-    async stopSimulation(simulationId: string) {
+    async stopSimulation(eventId: string) {
         const response = await firstValueFrom(
-            this.httpService.delete(`${this.serviceUrl}/simulate/${simulationId}`),
+            this.httpService.delete(`${this.serviceUrl}/simulate/${eventId}`),
         );
         return response.data;
     }

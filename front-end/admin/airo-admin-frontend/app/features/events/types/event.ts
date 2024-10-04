@@ -1,4 +1,4 @@
-export type EventStatus = 'NotStarted' | 'Running' | 'Finished';
+export type EventStatus = 'NotStarted' | 'Started' | 'Completed';
 
 export interface EventDto {
     name: string;

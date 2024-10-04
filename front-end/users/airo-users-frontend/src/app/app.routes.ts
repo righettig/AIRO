@@ -7,6 +7,7 @@ import { LoginComponent } from './auth/components/login/login.component';
 import { ProfileComponent } from './profile/components/profile.component';
 import { EventsComponent } from './home/components/events/events.component';
 import { AllNotificationsComponent } from './all-notifications/all-notifications.component';
+import { EventLiveFeedComponent } from './home/components/events/components/event-live-feed/event-live-feed.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -16,5 +17,6 @@ export const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'events', component: EventsComponent, canActivate: [AuthGuard] },
+  { path: 'event-live-feed/:eventId', component: EventLiveFeedComponent, canActivate: [AuthGuard] },
   { path: 'all-notifications', component: AllNotificationsComponent, canActivate: [AuthGuard] },
 ];

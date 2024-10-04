@@ -8,11 +8,13 @@
 <div class="container" style="margin-bottom: 20px;">
     @for (event of events; track event.id) {
         <app-event-item [event]="event">
-            @if (!myEvents.includes(event)) {
+            @if (event.status === 'Completed') {
+                <span>Completed</span>
+            } @else if (!myEvents.includes(event)) {
                 <button mat-raised-button (click)="subscribe(event.id)">Subscribe</button>
             } @else {
                 <p style="color: red;">Already subscribed</p>
-            }
+            } 
         </app-event-item>
     } 
     @empty {

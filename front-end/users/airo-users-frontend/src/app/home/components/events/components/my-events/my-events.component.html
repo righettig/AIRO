@@ -5,7 +5,13 @@
 <div class="container" style="margin-bottom: 20px;">
     @for (event of myEvents; track event.id) {
         <app-event-item [event]="event">
-            <button mat-raised-button (click)="unsubscribe(event.id)">Unsubscribe</button>
+            @if (event.status === 'NotStarted') {
+                <button mat-raised-button (click)="unsubscribe(event.id)">Unsubscribe</button>
+            } @else if (event.status === 'Started') {
+                <button mat-raised-button (click)="gotoLiveFeed(event)">Live Feed</button>
+            } @else if (event.status === 'Completed') {
+                <span>Completed</span>
+            }
         </app-event-item>
     } 
     @empty {

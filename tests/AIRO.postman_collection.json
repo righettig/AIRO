@@ -442,7 +442,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:3000/gateway/simulation/simulationId",
+							"raw": "http://localhost:3000/gateway/simulation/eventId",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -451,7 +451,7 @@
 							"path": [
 								"gateway",
 								"simulation",
-								"simulationId"
+								"eventId"
 							]
 						}
 					},
@@ -884,7 +884,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:3001/gateway/simulation",
+							"raw": "http://localhost:3001/gateway/simulation/eventId",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -892,7 +892,8 @@
 							"port": "3001",
 							"path": [
 								"gateway",
-								"simulation"
+								"simulation",
+								"eventId"
 							]
 						}
 					},
@@ -904,7 +905,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3001/gateway/simulation/simulationId",
+							"raw": "http://localhost:3001/gateway/simulation/eventId",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -913,7 +914,7 @@
 							"path": [
 								"gateway",
 								"simulation",
-								"simulationId"
+								"eventId"
 							]
 						}
 					},
@@ -1700,6 +1701,50 @@
 					"response": []
 				},
 				{
+					"name": "events - start",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4006/api/events/eventId/start",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4006",
+							"path": [
+								"api",
+								"events",
+								"eventId",
+								"start"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "events - complete",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4006/api/events/eventId/complete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4006",
+							"path": [
+								"api",
+								"events",
+								"eventId",
+								"complete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "events - update",
 					"request": {
 						"method": "PUT",
@@ -1802,7 +1847,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"userId\": \"IPEBhl2h36dchNVY2Cx7SJwlJMD3\",\r\n    \"botId\": \"e844da5f-1915-43ab-81f1-24d37cb7ccb5\"\r\n}",
+							"raw": "{\r\n    \"userId\": \"T7E6tWp3uPToEoZqpaOUd2gR3bv1\",\r\n    \"botId\": \"9d2491ce-8794-47ef-98e2-f544fbe52892\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1871,14 +1916,15 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:4011/simulate",
+							"raw": "http://localhost:4011/simulate/eventId",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "4011",
 							"path": [
-								"simulate"
+								"simulate",
+								"eventId"
 							]
 						}
 					},
@@ -1890,7 +1936,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:4011/simulate/simulationId",
+							"raw": "http://localhost:4011/simulate/eventId",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1898,7 +1944,7 @@
 							"port": "4011",
 							"path": [
 								"simulate",
-								"simulationId"
+								"eventId"
 							]
 						}
 					},
@@ -1910,7 +1956,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:4011/simulate/simulationId/status",
+							"raw": "http://localhost:4011/simulate/eventId/status",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1918,7 +1964,7 @@
 							"port": "4011",
 							"path": [
 								"simulate",
-								"simulationId",
+								"eventId",
 								"status"
 							]
 						}
@@ -1943,7 +1989,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"userId\": \"T7E6tWp3uPToEoZqpaOUd2gR3bv1\",\r\n\t\"eventId\": \"cca36ae4-eb1d-455a-aca0-eb24c9727ddc\",\r\n\t\"botId\": \"b28192ca-d167-4471-9997-2dcd370f6df4\"\r\n}",
+							"raw": "{\r\n    \"userId\": \"T7E6tWp3uPToEoZqpaOUd2gR3bv1\",\r\n\t\"eventId\": \"d6fd7924-952c-4928-a158-712f5617b930\",\r\n\t\"botId\": \"9d2491ce-8794-47ef-98e2-f544fbe52892\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

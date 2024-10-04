@@ -5,8 +5,6 @@ using airo_cqrs_eventsourcing_lib.Web;
 
 using airo_event_subscriptions_domain.Domain.Aggregates;
 using airo_event_subscriptions_domain.Domain.Read;
-using airo_event_subscriptions_domain.Domain.Write.Events;
-using airo_event_subscriptions_domain.Domain.Write.Events.Handlers;
 using airo_event_subscriptions_microservice.Services.Impl;
 using airo_event_subscriptions_microservice.Services.Interfaces;
 
@@ -47,21 +45,10 @@ builder.Services.RegisterHandlers(typeof(EventSubscriptionAggregate).Assembly);
 builder.Services.AddSingleton<IEventStore>(eventStore);
 builder.Services.AddSingleton<AggregateRepository<EventSubscriptionAggregate>>();
 builder.Services.AddSingleton<IReadRepository<EventSubscriptionReadModel>, EventSubscriptionReadRepository>();
-builder.Services.AddSingleton<IEventListener, EventListener<EventSubscriptionReadModel>>(provider =>
-{
-    // Get the required services from the service provider
-    var readRepository = provider.GetRequiredService<IReadRepository<EventSubscriptionReadModel>>();
 
-    // Create the EventListener instance
-    var eventListener = new EventListener<EventSubscriptionReadModel>(readRepository);
+builder.Services.AddEventListener<EventSubscriptionReadModel>(typeof(EventSubscriptionReadModel).Assembly);
 
-    // Bind the event handlers
-    eventListener.Bind<EventSubscribedEvent, EventSubscribedEventHandler>();
-    eventListener.Bind<EventUnsubscribedEvent, EventUnsubscribedEventHandler>();
-
-    return eventListener;
-});
-
+// TODO: create extension method that accepts "airo_event_subscriptions" as parameter
 builder.Services.AddHostedService(provider =>
 {
     var eventListener = provider.GetRequiredService<IEventListener>();

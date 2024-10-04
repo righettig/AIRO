@@ -1,7 +1,5 @@
 using airo_bots_microservice.Domain.Aggregates;
 using airo_bots_microservice.Domain.Read;
-using airo_bots_microservice.Domain.Write.Events;
-using airo_bots_microservice.Domain.Write.Events.Handlers;
 
 using airo_cqrs_eventsourcing_lib.Core.Impl;
 using airo_cqrs_eventsourcing_lib.Core.Interfaces;
@@ -34,22 +32,10 @@ builder.Services.RegisterHandlers(typeof(BotAggregate).Assembly);
 builder.Services.AddSingleton<IEventStore>(eventStore);
 builder.Services.AddSingleton<AggregateRepository<BotAggregate>>();
 builder.Services.AddSingleton<IReadRepository<BotReadModel>, BotReadRepository>();
-builder.Services.AddSingleton<IEventListener, EventListener<BotReadModel>>(provider =>
-{
-    // Get the required services from the service provider
-    var readRepository = provider.GetRequiredService<IReadRepository<BotReadModel>>();
 
-    // Create the EventListener instance
-    var eventListener = new EventListener<BotReadModel>(readRepository);
+builder.Services.AddEventListener<BotReadModel>(typeof(BotReadModel).Assembly);
 
-    // Bind the event handlers
-    eventListener.Bind<BotCreatedEvent, BotCreatedEventHandler>();
-    eventListener.Bind<BotDeletedEvent, BotDeleteEventHandler>();
-    eventListener.Bind<BotUpdatedEvent, BotUpdatedEventHandler>();
-
-    return eventListener;
-});
-
+// TODO: create extension method that accepts "airo_bots" as parameter
 builder.Services.AddHostedService(provider => 
 {
     var eventListener = provider.GetRequiredService<IEventListener>();

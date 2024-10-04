@@ -304,14 +304,14 @@ export class GatewayController {
     return response;
   }
 
-  @Get('simulation/:simulationId')
-  async getSimulationStatus(@Req() request: Request, @Param('simulationId') simulationId: string) {
+  @Get('simulation/:eventId')
+  async getSimulationStatus(@Req() request: Request, @Param('eventId') eventId: string) {
     const token = request.headers['authorization'];
     if (!token) {
       throw new Error('Token is missing');
     }
 
-    const response = await this.eventSimulationservice.getSimulationStatusById(simulationId);
+    const response = await this.eventSimulationservice.getSimulationStatusById(eventId);
     return response;
   }
 
