@@ -78,6 +78,7 @@ services:
       context: ./back-end/gateways/airo-users-gateway-api
     ports:
       - "3000:3000"
+      - "3001:3001" # signalR gateway
     environment:
       - AUTH_API_URL=${AUTH_API_URL}
       - PROFILE_API_URL=${PROFILE_API_URL}
