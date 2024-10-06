@@ -1,4 +1,4 @@
-﻿namespace airo_event_simulation_microservice.Interfaces;
+﻿namespace airo_event_simulation_microservice;
 
 public interface IBackgroundTaskQueue
 {

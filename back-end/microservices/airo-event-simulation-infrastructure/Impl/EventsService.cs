@@ -1,6 +1,6 @@
-﻿using airo_event_simulation_microservice.Interfaces;
+﻿using airo_event_simulation_infrastructure.Interfaces;
 
-namespace airo_event_simulation_microservice.Impl;
+namespace airo_event_simulation_infrastructure.Impl;
 
 public class EventsService(HttpClient httpClient) : IEventsService
 {

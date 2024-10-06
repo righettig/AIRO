@@ -1,8 +1,8 @@
-﻿using airo_event_simulation_microservice.Interfaces;
-using airo_event_simulation_microservice.Models;
+﻿using airo_event_simulation_domain;
+using airo_event_simulation_engine.Interfaces;
 using System.Collections.Concurrent;
 
-namespace airo_event_simulation_microservice.Impl;
+namespace airo_event_simulation_engine.Impl;
 
 public class SimulationStatusTracker : ISimulationStatusTracker
 {
@@ -18,11 +18,7 @@ public class SimulationStatusTracker : ISimulationStatusTracker
         else
         {
             // If status doesn't exist yet, create a new one
-            _simulationStatuses[eventId] = new SimulationStatus
-            {
-                EventId = eventId,
-                Logs = [log]
-            };
+            _simulationStatuses[eventId] = new SimulationStatus(eventId, [log]);
         }
     }
 
