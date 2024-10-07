@@ -35,7 +35,7 @@ public class EventSubscriptionsController : ControllerBase
             throw new InvalidOperationException($"The user {request.UserId} does not own the specified bot {request.BotId}");
         }
 
-        await _mediator.Send(new SubscribeToEventCommand(request.UserId, request.EventId, request.BotId));
+        await _mediator.Send(new SubscribeToEventCommand(request.UserId, request.EventId, request.BotId, request.BotBehaviourId));
 
         _rabbitMQPublisherService.OnEventSubscribed(request.UserId, request.EventId);
 
@@ -56,6 +56,14 @@ public class EventSubscriptionsController : ControllerBase
     public async Task<IActionResult> GetEventParticipants([FromQuery] Guid eventId)
     {
         var participants = await _mediator.Send(new GetEventParticipants(eventId));
+
+        return Ok(participants);
+    }
+
+    [HttpGet("{eventId}/full")]
+    public async Task<IActionResult> GetEventParticipantsFullDetails(Guid eventId)
+    {
+        var participants = await _mediator.Send(new GetEventParticipantsFullDetails(eventId));
 
         return Ok(participants);
     }

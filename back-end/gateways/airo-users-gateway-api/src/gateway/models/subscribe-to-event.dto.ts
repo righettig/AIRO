@@ -6,4 +6,7 @@ export class SubscribeToEventDto {
 
     @IsNotEmpty({ message: 'BotId is required' })
     botId: string;
+
+    @IsNotEmpty({ message: 'BotBehaviourId is required' })
+    botBehaviourId: string;
 }

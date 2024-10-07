@@ -69,6 +69,7 @@ services:
       - notifications-service
       - billing-service
       - bots-service
+      - bot-behaviours-service
       - purchase-service
       - events-service
       - event-subscription-service
@@ -80,6 +81,7 @@ services:
       - "3000:3000"
     environment:
       - AUTH_API_URL=${AUTH_API_URL}
+      - BOT_BEHAVIOURS_API_URL=${BOT_BEHAVIOURS_API_URL}
       - PROFILE_API_URL=${PROFILE_API_URL}
       - BILLING_API_URL=${BILLING_API_URL}
       - INVOICE_API_URL=${INVOICE_API_URL}
@@ -226,6 +228,21 @@ services:
     ports:
       - "4005:8080" # https not working so far!
 
+  bot-behaviours-service:
+    build:
+      context: ./back-end/microservices/airo-bot-behaviours-microservice
+    ports:
+      - "4013:3000"
+    develop:
+      watch:
+        - action: rebuild
+          path: ./back-end/microservices/airo-bot-behaviours-microservice
+          target: /app
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: ./back-end/microservices/airo-bot-behaviours-microservice/package.json
+
   events-service:
     depends_on:
       eventstore.db:
@@ -259,11 +276,15 @@ services:
   event-simulation-service:
     depends_on:
       - events-service
+      - event-subscription-service
+      - bot-behaviours-service
     build:
       context: .
       dockerfile: ./back-end/microservices/airo-event-simulation-microservice/Dockerfile
     environment:
       - EVENTS_API_URL=${EVENTS_API_URL}
+      - EVENT_SUBSCRIPTION_API_URL=${EVENT_SUBSCRIPTION_API_URL}
+      - BOT_BEHAVIOURS_API_URL=${BOT_BEHAVIOURS_API_URL}
     ports:
       - "4011:8080" # https not working so far!  
 

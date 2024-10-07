@@ -47,7 +47,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "airo-event-subscriptions-mi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Purchase", "Purchase", "{D5C38FDA-0B1A-4707-9147-98128E8A01A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "airo-purchase-domain", "airo-purchase-domain\airo-purchase-domain.csproj", "{D33F905D-0E0B-4FC6-A327-032158DABE74}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "airo-purchase-domain", "airo-purchase-domain\airo-purchase-domain.csproj", "{D33F905D-0E0B-4FC6-A327-032158DABE74}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Event Simulation", "Event Simulation", "{790B34F4-4501-43C0-A679-BBC8209C1A9E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "airo-event-simulation-domain", "airo-event-simulation-domain\airo-event-simulation-domain.csproj", "{BB3B97D3-F104-4BAE-A3A2-A128094E960D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "airo-event-simulation-engine", "airo-event-simulation-engine\airo-event-simulation-engine.csproj", "{22498F15-22C6-4743-BDC3-001422FC2A0D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "airo-event-simulation-playground", "airo-event-simulation-playground\airo-event-simulation-playground.csproj", "{7BF6D73A-9F53-4B17-AFCE-93EC24111290}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "airo-event-simulation-infrastructure", "airo-event-simulation-infrastructure\airo-event-simulation-infrastructure.csproj", "{258EC9F7-CA90-425B-B0B8-26280DF24091}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -127,6 +137,22 @@ Global
 		{D33F905D-0E0B-4FC6-A327-032158DABE74}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D33F905D-0E0B-4FC6-A327-032158DABE74}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D33F905D-0E0B-4FC6-A327-032158DABE74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB3B97D3-F104-4BAE-A3A2-A128094E960D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB3B97D3-F104-4BAE-A3A2-A128094E960D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB3B97D3-F104-4BAE-A3A2-A128094E960D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB3B97D3-F104-4BAE-A3A2-A128094E960D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22498F15-22C6-4743-BDC3-001422FC2A0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22498F15-22C6-4743-BDC3-001422FC2A0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22498F15-22C6-4743-BDC3-001422FC2A0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22498F15-22C6-4743-BDC3-001422FC2A0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BF6D73A-9F53-4B17-AFCE-93EC24111290}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BF6D73A-9F53-4B17-AFCE-93EC24111290}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BF6D73A-9F53-4B17-AFCE-93EC24111290}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BF6D73A-9F53-4B17-AFCE-93EC24111290}.Release|Any CPU.Build.0 = Release|Any CPU
+		{258EC9F7-CA90-425B-B0B8-26280DF24091}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{258EC9F7-CA90-425B-B0B8-26280DF24091}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{258EC9F7-CA90-425B-B0B8-26280DF24091}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{258EC9F7-CA90-425B-B0B8-26280DF24091}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -140,9 +166,14 @@ Global
 		{C8AD6178-1F06-49E6-AB25-2F6F7423C2C0} = {ECC6C50C-5E65-40CE-AE68-D39533E82357}
 		{8C433D60-FBDD-4587-A870-6A41FC4D1C33} = {5AE1877B-3721-4FEC-85C5-0BBD3DD898FD}
 		{FA2A6195-0CB5-47F8-AF2B-26419CC7A0AB} = {9D96AFA2-83E8-41B5-A567-C6E8B3809E24}
+		{146F1B09-9D8C-475B-8455-C3A48DBBAC1D} = {790B34F4-4501-43C0-A679-BBC8209C1A9E}
 		{ABB37F13-28CF-4979-A753-F1A780410FC1} = {E699605B-ECD7-4C8C-AB8B-B0254597982D}
 		{83778346-EB21-4D26-8508-6FAB008D470C} = {E699605B-ECD7-4C8C-AB8B-B0254597982D}
 		{D33F905D-0E0B-4FC6-A327-032158DABE74} = {D5C38FDA-0B1A-4707-9147-98128E8A01A9}
+		{BB3B97D3-F104-4BAE-A3A2-A128094E960D} = {790B34F4-4501-43C0-A679-BBC8209C1A9E}
+		{22498F15-22C6-4743-BDC3-001422FC2A0D} = {790B34F4-4501-43C0-A679-BBC8209C1A9E}
+		{7BF6D73A-9F53-4B17-AFCE-93EC24111290} = {790B34F4-4501-43C0-A679-BBC8209C1A9E}
+		{258EC9F7-CA90-425B-B0B8-26280DF24091} = {790B34F4-4501-43C0-A679-BBC8209C1A9E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {919F5805-3223-46B9-8C08-BDC0559A7492}

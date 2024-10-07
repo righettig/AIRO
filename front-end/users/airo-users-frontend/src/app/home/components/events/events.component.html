@@ -1,7 +1,9 @@
 <app-event-list 
     [events]="events" 
     [myEvents]="myEvents"
-    [myBots]="myBots" (onEventSubscribed)="onEventSubscribed($event)">
+    [myBots]="myBots" 
+    [botBehaviours]="botBehaviours"
+    (onEventSubscribed)="onEventSubscribed($event)">
 </app-event-list>
 
 <app-my-events 

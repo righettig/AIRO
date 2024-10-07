@@ -14,4 +14,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\airo-event-simulation-domain\airo-event-simulation-domain.csproj" />
+    <ProjectReference Include="..\airo-event-simulation-engine\airo-event-simulation-engine.csproj" />
+    <ProjectReference Include="..\airo-event-simulation-infrastructure\airo-event-simulation-infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

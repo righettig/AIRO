@@ -1,10 +1,18 @@
-using airo_event_simulation_microservice.Impl;
-using airo_event_simulation_microservice.Interfaces;
-using airo_event_simulation_microservice.Models;
+using airo_event_simulation_domain;
+using airo_event_simulation_engine.Impl;
+using airo_event_simulation_engine.Interfaces;
+using airo_event_simulation_infrastructure.Impl;
+using airo_event_simulation_infrastructure.Interfaces;
+using airo_event_simulation_microservice;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddHostedService<SimulationHostedService>();
+
+builder.Services.AddSingleton<ISimulationService, SimulationService>();
+builder.Services.AddSingleton<IBotBehavioursService, BotBehavioursService>();
+builder.Services.AddSingleton<IEventSubscriptionService, EventSubscriptionService>();
+builder.Services.AddSingleton<IBehaviourExecutor, BehaviourExecutor>();
 
 builder.Services.AddSingleton<IBackgroundTaskQueue, SimulationTaskQueue>();
 builder.Services.AddSingleton<ISimulationStatusTracker, SimulationStatusTracker>();
@@ -12,19 +20,32 @@ builder.Services.AddSingleton<IEventsService, EventsService>();
 
 builder.Services.AddHttpClient<IEventsService, EventsService>(client =>
 {
-    var purchaseApiUrl = builder.Configuration["EVENTS_API_URL"];
-    client.BaseAddress = new Uri(purchaseApiUrl + "/api/");
+    var baseApiUrl = builder.Configuration["EVENTS_API_URL"];
+    client.BaseAddress = new Uri(baseApiUrl + "/api/");
 });
 
-builder.Services.AddTransient<IGameSimulationEngine, GameSimulationEngine>();
+builder.Services.AddHttpClient<IEventSubscriptionService, EventSubscriptionService>(client =>
+{
+    var baseApiUrl = builder.Configuration["EVENT_SUBSCRIPTION_API_URL"];
+    client.BaseAddress = new Uri(baseApiUrl + "/api/");
+});
+
+builder.Services.AddHttpClient<IBotBehavioursService, BotBehavioursService>(client =>
+{
+    var baseApiUrl = builder.Configuration["BOT_BEHAVIOURS_API_URL"];
+    client.BaseAddress = new Uri(baseApiUrl + "/api/");
+});
+
+builder.Services.AddTransient<ISimulationEngine, SimulationEngine>();
 
 var app = builder.Build();
 
 app.MapPost("/simulate/{eventId}", (Guid eventId,
                                     ISimulationStatusTracker statusTracker,
                                     IBackgroundTaskQueue taskQueue,
-                                    IGameSimulationEngine engine,
-                                    GameSimulationParameters parameters,
+                                    ISimulationService simulationService,
+                                    ISimulationEngine engine,
+                                    SimulationParameters parameters,
                                     IEventsService eventsService) =>
 {
     statusTracker.AddLog(eventId, "Simulation created");
@@ -34,7 +55,8 @@ app.MapPost("/simulate/{eventId}", (Guid eventId,
         await eventsService.MarkEventAsStartedAsync(eventId);
         statusTracker.AddLog(eventId, "Simulation started");
 
-        var result = await engine.RunSimulationAsync(parameters, eventId, token);
+        var simulation = await simulationService.LoadSimulation(eventId);
+        var result = await engine.RunSimulationAsync(simulation, parameters, token);
 
         await eventsService.MarkEventAsCompletedAsync(eventId);
         statusTracker.AddLog(eventId, "Simulation marked as completed");

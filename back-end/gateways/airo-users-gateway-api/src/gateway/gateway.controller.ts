@@ -18,6 +18,7 @@ import { EventSimulationService } from 'src/event-simulation/event-simulation.se
 import { EventSubscriptionService } from 'src/event-subscription/event-subscription.service';
 import { SubscribeToEventDto } from './models/subscribe-to-event.dto';
 import { UnsubscribeFromEventDto } from './models/unsubscribe-from-event.dto';
+import { BotBehavioursService } from 'src/bot-behaviours/bot-behaviours.service';
 
 @Controller('gateway')
 export class GatewayController {
@@ -29,6 +30,7 @@ export class GatewayController {
     private readonly billingService: BillingService,
     private readonly invoiceService: InvoiceService,
     private readonly botsService: BotsService,
+    private readonly botBehavioursService: BotBehavioursService,
     private readonly purchaseService: PurchaseService,
     private readonly eventsService: EventsService,
     private readonly eventSubscriptionService: EventSubscriptionService,
@@ -216,6 +218,17 @@ export class GatewayController {
     }
   }
 
+  @Get('bot-behaviours')
+  async getAllBotBehaviours(@Req() request: Request) {
+    const token = request.headers['authorization'];
+    if (!token) {
+      throw new Error('Token is missing');
+    }
+
+    const response = await this.botBehavioursService.getAll();
+    return response;
+  }
+  
   @Get('ui-notifications')
   async getUiNotifications(@Req() request: Request): Promise<GetAllUiNotificationsResponse> {
     const token = request.headers['authorization'];
@@ -273,7 +286,7 @@ export class GatewayController {
     }
 
     const uid = this.decodeFromToken<{ user_id?: string }>(token, 'user_id');
-    const response = await this.eventSubscriptionService.subscribeToEvent(uid, body.eventId, body.botId);
+    const response = await this.eventSubscriptionService.subscribeToEvent(uid, body.eventId, body.botId, body.botBehaviourId);
 
     return response;
   }

@@ -16,12 +16,13 @@ public class EventSubscribedEventHandler(IReadRepository<EventSubscriptionReadMo
             readRepository.Add(new EventSubscriptionReadModel
             {
                 EventId = @event.EventId,
-                Participants = [(@event.UserId, @event.BotId)]
+                Participants = [(@event.UserId, new SubscriptionData(@event.BotId, @event.BotBehaviourId))]
             });
         }
         else
         {
-            model.Participants.Add((@event.UserId, @event.BotId));
+            model.Participants.Add(
+                (@event.UserId, new SubscriptionData(@event.BotId, @event.BotBehaviourId)));
         }
 
         readRepository.SaveChanges();

@@ -18,7 +18,7 @@ export class EventSubscriptionService {
         private http: HttpClient) { }
 
 
-    async subscribeToEvent(eventId: string, botId: string): Promise<void> {
+    async subscribeToEvent(eventId: string, botId: string, botBehaviourId: string): Promise<void> {
         const httpHeaders: HttpHeaders = new HttpHeaders({
             Authorization: this.authService.accessToken!
         });
@@ -26,7 +26,8 @@ export class EventSubscriptionService {
         await firstValueFrom(
             this.http.post(`${this.apiUrl}/event-subscription`, {
                 eventId,
-                botId
+                botId,
+                botBehaviourId
             }, 
             { headers: httpHeaders }),
         );
