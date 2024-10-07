@@ -1,17 +1,19 @@
 ﻿using airo_event_simulation_infrastructure.Interfaces;
+using System.Net.Http.Json;
 
 namespace airo_event_simulation_infrastructure.Impl;
 
-public class EventSubscriptionService : IEventSubscriptionService
+public class EventSubscriptionService(HttpClient httpClient) : IEventSubscriptionService
 {
-    public Task<(string, Guid)[]> GetParticipants(Guid eventId)
+    public async Task<EventSubscriptionDto[]> GetParticipants(Guid eventId)
     {
-        var participants = new List<(string, Guid)>
+        var response = await httpClient.GetFromJsonAsync<EventSubscriptionDto[]>($"eventsubscriptions/{eventId}/full");
+        
+        if (response is null)
         {
-            ("uid1", Guid.NewGuid()),
-            ("uid2", Guid.NewGuid())
-        };
+            throw new Exception($"Failed to retrieve subscription data for event: {eventId}");
+        }
 
-        return Task.FromResult(participants.ToArray());
+        return response;
     }
 }

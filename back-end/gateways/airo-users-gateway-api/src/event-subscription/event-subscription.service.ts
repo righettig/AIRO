@@ -9,12 +9,13 @@ export class EventSubscriptionService {
 
     constructor(private readonly httpService: HttpService) { }
 
-    async subscribeToEvent(userId: string, eventId: string, botId: string) {
+    async subscribeToEvent(userId: string, eventId: string, botId: string, botBehaviourId: string) {
         const response = await firstValueFrom(
             this.httpService.post(`${this.serviceUrl}`, {
                 userId,
                 eventId,
-                botId
+                botId,
+                botBehaviourId
             }),
         );
         return response.data;

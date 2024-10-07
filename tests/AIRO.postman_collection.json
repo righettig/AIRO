@@ -222,6 +222,32 @@
 					"response": []
 				},
 				{
+					"name": "gateway - bot behaviours get all",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjhkNzU2OWQyODJkNWM1Mzk5MmNiYWZjZWI2NjBlYmQ0Y2E1OTMxM2EiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWlyby00NGNhNyIsImF1ZCI6ImFpcm8tNDRjYTciLCJhdXRoX3RpbWUiOjE3MjgyMzAxOTYsInVzZXJfaWQiOiJUN0U2dFdwM3VQVG9Fb1pxcGFPVWQyZ1IzYnYxIiwic3ViIjoiVDdFNnRXcDN1UFRvRW9acXBhT1VkMmdSM2J2MSIsImlhdCI6MTcyODIzMDE5NiwiZXhwIjoxNzI4MjMzNzk2LCJlbWFpbCI6ImdpYWNvbW9fZnJlZUBhaXJvLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJnaWFjb21vX2ZyZWVAYWlyby5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.2Jh3xnbDSQsYW6WrqFgVXgjeenRifA70CaF3VxApd3L28sGsLUaZzh8x6akLQl-a1THGuBjGVlzdQ7YJvtdKpadZaGizBb0UrAq2usxRAotlPijgWW_0l3-T6o6FfLL45Ml77yGPiN9yG7K0AnN9v3dLADL5ObqZv_x3k0_99UjpoOFc9oobyjpub6eINxxwZ3yN0MprHpdjM3SOkzqTIqGwOeODi-5l8AIDB1GMgf_r6M6e-3L3W-P92SsU9_t_FQv-6eSL9g6mKHGtkjod9w7WCsda4d3FckQyPr7QTH_mQDpqZY07XJkNwsewvVhx8A_xh9JwzJugrNYlFYzADQ",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/gateway/bot-behaviours",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"gateway",
+								"bot-behaviours"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "gateway - store bots",
 					"request": {
 						"method": "GET",
@@ -475,7 +501,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"eventId\": \"cca36ae4-eb1d-455a-aca0-eb24c9727ddc\",\r\n\t\"botId\": \"b28192ca-d167-4471-9997-2dcd370f6df4\"\r\n}",
+							"raw": "{\r\n\t\"eventId\": \"cca36ae4-eb1d-455a-aca0-eb24c9727ddc\",\r\n\t\"botId\": \"b28192ca-d167-4471-9997-2dcd370f6df4\",\r\n    \"botBehaviourId\": \"b994a7b2-4277-46eb-a973-8645cc9eabc1\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1590,6 +1616,52 @@
 			]
 		},
 		{
+			"name": "Bot Behaviours",
+			"item": [
+				{
+					"name": "bot behaviours - get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4013/api/bot-behaviours",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4013",
+							"path": [
+								"api",
+								"bot-behaviours"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "bot behaviours - get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4013/api/bot-behaviours/botBehaviourId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4013",
+							"path": [
+								"api",
+								"bot-behaviours",
+								"botBehaviourId"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "UI Notifications",
 			"item": [
 				{
@@ -1989,7 +2061,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"userId\": \"T7E6tWp3uPToEoZqpaOUd2gR3bv1\",\r\n\t\"eventId\": \"d6fd7924-952c-4928-a158-712f5617b930\",\r\n\t\"botId\": \"9d2491ce-8794-47ef-98e2-f544fbe52892\"\r\n}",
+							"raw": "{\r\n    \"userId\": \"T7E6tWp3uPToEoZqpaOUd2gR3bv1\",\r\n\t\"eventId\": \"d6fd7924-952c-4928-a158-712f5617b930\",\r\n\t\"botId\": \"9d2491ce-8794-47ef-98e2-f544fbe52892\",\r\n    \"botBehaviourId\": \"b994a7b2-4277-46eb-a973-8645cc9eabc1\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2061,6 +2133,28 @@
 									"key": "eventId",
 									"value": "cca36ae4-eb1d-455a-aca0-eb24c9727ddc"
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "event subscription - get participants (full)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4012/api/eventsubscriptions/59ed4ec1-0e53-45aa-b1b4-78b6ebc7d521/full",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4012",
+							"path": [
+								"api",
+								"eventsubscriptions",
+								"59ed4ec1-0e53-45aa-b1b4-78b6ebc7d521",
+								"full"
 							]
 						}
 					},

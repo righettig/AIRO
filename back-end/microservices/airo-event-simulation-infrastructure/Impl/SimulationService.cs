@@ -11,11 +11,11 @@ public class SimulationService(IBotBehavioursService botBehavioursRepository,
         var participants = await Task.WhenAll(
             (await eventSubscriptionService.GetParticipants(eventId))
                 .Select(async (x) => {
-                    var behaviorScript = await botBehavioursRepository.GetBotBehaviour(x.Item1, x.Item2);
+                    var behaviorScript = await botBehavioursRepository.GetBotBehaviour(x.BotBehaviourId);
 
-                    var bot = new Bot(botId: x.Item2, behaviorScript);
+                    var bot = new Bot(x.BotId, behaviorScript);
 
-                    return new Participant(UserId: x.Item1, bot);
+                    return new Participant(x.UserId, bot);
                 })
             );
 

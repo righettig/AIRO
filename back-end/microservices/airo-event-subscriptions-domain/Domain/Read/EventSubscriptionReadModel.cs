@@ -5,7 +5,7 @@ namespace airo_event_subscriptions_domain.Domain.Read;
 public class EventSubscriptionReadModel : IReadModel
 {
     public Guid EventId { get; set; }
-    public List<(string, Guid)> Participants { get; set; } = [];
+    public List<(string, SubscriptionData)> Participants { get; set; } = [];
 
     public override string? ToString()
     {

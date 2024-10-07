@@ -20,8 +20,20 @@ builder.Services.AddSingleton<IEventsService, EventsService>();
 
 builder.Services.AddHttpClient<IEventsService, EventsService>(client =>
 {
-    var purchaseApiUrl = builder.Configuration["EVENTS_API_URL"];
-    client.BaseAddress = new Uri(purchaseApiUrl + "/api/");
+    var baseApiUrl = builder.Configuration["EVENTS_API_URL"];
+    client.BaseAddress = new Uri(baseApiUrl + "/api/");
+});
+
+builder.Services.AddHttpClient<IEventSubscriptionService, EventSubscriptionService>(client =>
+{
+    var baseApiUrl = builder.Configuration["EVENT_SUBSCRIPTION_API_URL"];
+    client.BaseAddress = new Uri(baseApiUrl + "/api/");
+});
+
+builder.Services.AddHttpClient<IBotBehavioursService, BotBehavioursService>(client =>
+{
+    var baseApiUrl = builder.Configuration["BOT_BEHAVIOURS_API_URL"];
+    client.BaseAddress = new Uri(baseApiUrl + "/api/");
 });
 
 builder.Services.AddTransient<ISimulationEngine, SimulationEngine>();

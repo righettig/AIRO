@@ -10,6 +10,7 @@ import { EventsModule } from 'src/events/events.module';
 import { UiNotificationsModule } from 'src/ui-notifications/ui-notifications.module';
 import { EventSimulationModule } from 'src/event-simulation/event-simulation.module';
 import { EventSubscriptionModule } from 'src/event-subscription/event-subscription.module';
+import { BotBehavioursModule } from 'src/bot-behaviours/bot-behaviours.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { EventSubscriptionModule } from 'src/event-subscription/event-subscripti
     BillingModule,
     InvoiceModule,
     BotsModule,
+    BotBehavioursModule,
     PurchaseModule,
     EventsModule,
     EventSubscriptionModule,
