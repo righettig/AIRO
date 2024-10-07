@@ -36,11 +36,20 @@
 
         .bot-item-details {
             margin-bottom: 20px;
-            height: 40px;
+        }
+
+        .bot-item-actions {
+            margin-top: 10px;
         }
 
         &:hover {
             background: aliceblue;
         }
+    }
+
+    button {
+        margin-right: 10px;
+        margin-bottom: 0;
+        display: inline-block;
     }
 }
