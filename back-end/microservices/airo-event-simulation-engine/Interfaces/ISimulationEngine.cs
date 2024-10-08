@@ -4,7 +4,5 @@ namespace airo_event_simulation_engine.Interfaces;
 
 public interface ISimulationEngine
 {
-    Task<SimulationResult> RunSimulationAsync(Simulation simulation,
-                                              SimulationParameters parameters,
-                                              CancellationToken token);
+    Task<SimulationResult> RunSimulationAsync(Simulation simulation, CancellationToken token);
 }

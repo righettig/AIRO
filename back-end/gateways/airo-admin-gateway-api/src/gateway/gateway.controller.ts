@@ -74,7 +74,8 @@ export class GatewayController {
   // Events
   @Post('events')
   async createEvent(@Body() createEventDto: CreateEventDto): Promise<string> {
-    return await this.eventsService.create(createEventDto.name, createEventDto.description);
+    return await this.eventsService.create(
+      createEventDto.name, createEventDto.description, createEventDto.scheduledAt);
   }
 
   @Put('events')

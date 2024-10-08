@@ -13,11 +13,13 @@ interface EventCreatorProps {
 const EventCreator: FC<EventCreatorProps> = ({ onAdd, onUpdate, eventToEdit }) => {
     const [eventName, setEventName] = useState('');
     const [eventDescription, setEventDescription] = useState('');
+    const [eventScheduledAt, setEventScheduledAt] = useState(new Date());
 
     useEffect(() => {
         if (eventToEdit) {
             setEventName(eventToEdit.name);
             setEventDescription(eventToEdit.description);
+            setEventScheduledAt(eventToEdit.scheduledAt);
         }
     }, [eventToEdit]);
 
@@ -31,6 +33,7 @@ const EventCreator: FC<EventCreatorProps> = ({ onAdd, onUpdate, eventToEdit }) =
             name: eventName,
             description: eventDescription,
             createdAt: eventToEdit ? eventToEdit.createdAt : new Date(),
+            scheduledAt: eventScheduledAt,
             status: eventToEdit ? eventToEdit.status : 'NotStarted',
             participants: 0
         };
@@ -43,6 +46,16 @@ const EventCreator: FC<EventCreatorProps> = ({ onAdd, onUpdate, eventToEdit }) =
 
         setEventName('');
         setEventDescription('');
+    };
+
+    const formatDate = (date: Date) => {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based, so we add 1
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+
+        return `${year}-${month}-${day}T${hours}:${minutes}`;
     };
 
     return (
@@ -59,6 +72,12 @@ const EventCreator: FC<EventCreatorProps> = ({ onAdd, onUpdate, eventToEdit }) =
                 placeholder="Event Description"
                 value={eventDescription}
                 onChange={(e) => setEventDescription(e.target.value)}
+            />
+            <input
+                type="datetime-local"
+                placeholder="Event Scheduled At"
+                value={formatDate(eventScheduledAt)}
+                onChange={(e) => setEventScheduledAt(new Date(e.target.value))}
             />
             <button onClick={handleSaveEvent} disabled={!eventName || !eventDescription}>
                 {eventToEdit ? 'Update Event' : 'Add Event'}

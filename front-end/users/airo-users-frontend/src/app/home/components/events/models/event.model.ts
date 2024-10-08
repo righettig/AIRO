@@ -3,4 +3,5 @@ export interface Event {
     name: string;
     description: string;
     status: 'NotStarted' | 'Started' | 'Completed'
+    scheduledAt: Date;
 }

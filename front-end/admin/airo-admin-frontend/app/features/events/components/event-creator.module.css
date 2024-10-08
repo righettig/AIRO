@@ -4,6 +4,8 @@
 
 .eventCreator input {
     margin-bottom: 10px;
+
+    width: 180px;
 }
 
 .eventCreator button {

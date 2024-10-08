@@ -9,11 +9,12 @@ export class EventsService {
 
     constructor(private readonly httpService: HttpService) { }
 
-    async create(name: string, description: string): Promise<string> {
+    async create(name: string, description: string, scheduledAt: Date): Promise<string> {
         const response = await firstValueFrom(
             this.httpService.post(`${this.serviceUrl}/api/events`, {
                 name,
-                description
+                description,
+                scheduledAt
             }),
         );
         return response.data;

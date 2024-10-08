@@ -8,10 +8,11 @@ public class EventReadModel : IReadModel
     public string Name { get; set; }
     public string Description { get; set; }
     public DateTime CreatedAt { get; set; }
+    public DateTime ScheduledAt { get; set; }
     public string Status { get; set; }
 
     public override string? ToString()
     {
-        return $"Id: {Id}, Name: {Name}, Description {Description}, CreatedAt {CreatedAt}, Status {Status}";
+        return $"Id: {Id}, Name: {Name}, Description {Description}, CreatedAt {CreatedAt}, ScheduledAt {ScheduledAt}, Status {Status}";
     }
 }

@@ -31,13 +31,14 @@ const Events = () => {
         getEvents();
     }, []);
 
-    const handleAddEvent = async ({ name, description }: EventListItem) => {
+    const handleAddEvent = async ({ name, description, scheduledAt }: EventListItem) => {
         try {
-            const id = await addEvent({ name, description });
+            const id = await addEvent({ name, description, scheduledAt });
             setEventList([...eventList, {
                 id,
                 name,
                 description,
+                scheduledAt,
                 // TODO: these should be set on the server -->
                 participants: 0,
                 status: 'NotStarted',
@@ -76,7 +77,7 @@ const Events = () => {
         if (window.confirm('Are you sure you want to start this event?')) {
             try {
                 await startEvent(event.id);
-                const updatedEvent = { ...event, status: 'Running', modifiedAt: new Date() } as EventListItem;
+                const updatedEvent = { ...event, status: 'Started', modifiedAt: new Date() } as EventListItem;
 
                 setEventList(eventList.map(event =>
                     event.id === updatedEvent.id ? updatedEvent : event

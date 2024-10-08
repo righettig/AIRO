@@ -4,6 +4,7 @@ import { MatButton } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { EventItemComponent } from "../event-item/event-item.component";
 import { Router } from '@angular/router';
+import { CountdownComponent } from '../../../../../common/components/countdown/countdown.component';
 
 @Component({
   selector: 'app-my-events',
@@ -13,7 +14,8 @@ import { Router } from '@angular/router';
   imports: [
     MatCardModule,
     MatButton,
-    EventItemComponent
+    EventItemComponent,
+    CountdownComponent
 ]
 })
 export class MyEventsComponent {

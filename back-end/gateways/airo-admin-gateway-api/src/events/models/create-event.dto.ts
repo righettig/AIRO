@@ -5,4 +5,7 @@ export class CreateEventDto {
     name: string;
 
     description: string;
+
+    @IsNotEmpty({ message: 'Scheduled At is required' })
+    scheduledAt: Date;
 }

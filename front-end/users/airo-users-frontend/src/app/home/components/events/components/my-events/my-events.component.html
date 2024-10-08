@@ -6,6 +6,9 @@
     @for (event of myEvents; track event.id) {
         <app-event-item [event]="event">
             @if (event.status === 'NotStarted') {
+                <app-countdown [targetDate]="event.scheduledAt">
+                    <button mat-raised-button (click)="gotoLiveFeed(event)">Live Feed</button>
+                </app-countdown>
                 <button mat-raised-button (click)="unsubscribe(event.id)">Unsubscribe</button>
             } @else if (event.status === 'Started') {
                 <button mat-raised-button (click)="gotoLiveFeed(event)">Live Feed</button>

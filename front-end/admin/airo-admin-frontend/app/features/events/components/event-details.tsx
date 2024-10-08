@@ -37,13 +37,20 @@ const EventDetails = () => {
             <p><strong>ID:</strong> {event.id}</p>
             <p><strong>Name:</strong> {event.name}</p>
             <p><strong>Description:</strong> {event.description}</p>
-            <p><strong>Participants:</strong>
-                <ul>
-                    {event.participants.map((userId: string) => <li>{userId}</li>)}
-                </ul>
+            <p><strong>Participants: </strong>
+                {event.participants.length > 0 ? (
+                    <ul>
+                        {event.participants.map((userId: string) => (
+                            <li key={userId}>{userId}</li>
+                        ))}
+                    </ul>
+                ) : (
+                    <span>No participants yet</span>
+                )}
             </p>
             <p><strong>Status:</strong> {event.status}</p>
             <p><strong>Created At:</strong> {new Date(event.createdAt).toLocaleString()}</p>
+            <p><strong>Scheduled At:</strong> {new Date(event.scheduledAt).toLocaleString()}</p>
         </div>
     );
 };
