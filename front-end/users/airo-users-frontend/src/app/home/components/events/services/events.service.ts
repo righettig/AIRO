@@ -27,6 +27,9 @@ export class EventsService {
             this.http.get<Event[]>(`${this.apiUrl}/events`, { headers: httpHeaders })
         );
 
-        return response;
+        return response.map(event => ({
+            ...event,
+            scheduledAt: new Date(event.scheduledAt)
+        }));
     }
 }
