@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "airo-events-scheduler": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}

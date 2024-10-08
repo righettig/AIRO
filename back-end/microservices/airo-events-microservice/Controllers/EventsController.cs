@@ -1,6 +1,7 @@
 ﻿using airo_events_microservice.Domain.Read.Queries;
 using airo_events_microservice.Domain.Write.Commands;
 using airo_events_microservice.DTOs;
+using airo_events_microservice.Services.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,18 +12,27 @@ namespace airo_events_microservice.Controllers;
 public class EventsController : ControllerBase
 {
     private readonly IMediator _mediator;
+    private readonly IRabbitMQPublisherService _rabbitMQPublisherService;
 
-    public EventsController(IMediator mediator)
+    public EventsController(IMediator mediator, IRabbitMQPublisherService rabbitMQPublisherService)
     {
         _mediator = mediator;
+        _rabbitMQPublisherService = rabbitMQPublisherService;
     }
 
     [HttpPost]
     public async Task<IActionResult> CreateEvent([FromBody] CreateEventRequest request)
     {
+        if (request.ScheduledAt < DateTime.Now) // TODO: introduce ITimeProvider
+        {
+            throw new ArgumentException("Cannot schedule an event in the past.");
+        }
+
         var eventId = Guid.NewGuid();
 
-        await _mediator.Send(new CreateEventCommand(eventId, request.Name, request.Description));
+        await _mediator.Send(new CreateEventCommand(eventId, request.Name, request.Description, request.ScheduledAt));
+
+        _rabbitMQPublisherService.OnEventCreated(eventId, request.ScheduledAt);
 
         return Ok(eventId);
     }

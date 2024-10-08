@@ -599,7 +599,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"event4\",\r\n    \"description\": \"fourth\"\r\n}",
+							"raw": "{\r\n    \"name\": \"event4\",\r\n    \"description\": \"fourth\",\r\n    \"scheduledAt\": \"2024-10-17T14:30\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1750,7 +1750,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"event1\",\r\n    \"description\": \"first event\"\r\n}",
+							"raw": "{\r\n    \"name\": \"event1\",\r\n    \"description\": \"first event\",\r\n    \"scheduledAt\": \"2024-10-17T14:30\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1978,17 +1978,8 @@
 								"type": "text"
 							}
 						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"foo\": \"bar\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "http://localhost:4011/simulate/eventId",
+							"raw": "http://localhost:4011/simulate/387f7f28-5e88-4fd4-b2e9-3b1e000e1f98",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1996,7 +1987,7 @@
 							"port": "4011",
 							"path": [
 								"simulate",
-								"eventId"
+								"387f7f28-5e88-4fd4-b2e9-3b1e000e1f98"
 							]
 						}
 					},

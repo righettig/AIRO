@@ -21,7 +21,7 @@ const EventItem: FC<EventItemProps> = ({ event, onDelete, onEdit, onStart, onDet
             </div>
             <div className={styles.eventMeta}>
                 <p>Status: {event.status}</p>
-                <p>Created At: {new Date(event.createdAt).toLocaleString()}</p>
+                <p>Scheduled At: {new Date(event.scheduledAt).toLocaleString()}</p>
                 <p>Participants: {event.participants}</p>
             </div>
             <div className={styles.eventActions}>

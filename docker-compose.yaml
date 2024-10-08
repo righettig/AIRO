@@ -245,6 +245,8 @@ services:
 
   events-service:
     depends_on:
+      rabbitmq:
+        condition: service_healthy
       eventstore.db:
         condition: service_healthy
     build:
@@ -252,6 +254,7 @@ services:
       dockerfile: ./back-end/microservices/airo-events-microservice/Dockerfile
     environment:
       - EVENT_STORE_DB_URL=${EVENT_STORE_DB_URL}
+      - RABBITMQ_URL=${RABBITMQ_URL}
     ports:
       - "4006:8080" # https not working so far!
 
@@ -287,6 +290,19 @@ services:
       - BOT_BEHAVIOURS_API_URL=${BOT_BEHAVIOURS_API_URL}
     ports:
       - "4011:8080" # https not working so far!  
+
+  events-scheduler:
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      event-simulation-service:
+        condition: service_started
+    build:
+      context: .
+      dockerfile: ./back-end/microservices/airo-events-scheduler/Dockerfile
+    environment:
+      - RABBITMQ_URL=${RABBITMQ_URL}
+      - EVENT_SIMULATION_API_URL=${EVENT_SIMULATION_API_URL}
 
   purchase-service:
     depends_on:

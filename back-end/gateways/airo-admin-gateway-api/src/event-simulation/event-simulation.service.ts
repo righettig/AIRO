@@ -10,9 +10,7 @@ export class EventSimulationService {
 
     async startSimulation(eventId: string) {
         const response = await firstValueFrom(
-            this.httpService.post(`${this.serviceUrl}/simulate/${eventId}`, {
-                foo: 'param1'
-            }),
+            this.httpService.post(`${this.serviceUrl}/simulate/${eventId}`),
         );
         return response.data;
     }

@@ -45,7 +45,6 @@ app.MapPost("/simulate/{eventId}", (Guid eventId,
                                     IBackgroundTaskQueue taskQueue,
                                     ISimulationService simulationService,
                                     ISimulationEngine engine,
-                                    SimulationParameters parameters,
                                     IEventsService eventsService) =>
 {
     statusTracker.AddLog(eventId, "Simulation created");
@@ -56,7 +55,7 @@ app.MapPost("/simulate/{eventId}", (Guid eventId,
         statusTracker.AddLog(eventId, "Simulation started");
 
         var simulation = await simulationService.LoadSimulation(eventId);
-        var result = await engine.RunSimulationAsync(simulation, parameters, token);
+        var result = await engine.RunSimulationAsync(simulation, token);
 
         await eventsService.MarkEventAsCompletedAsync(eventId);
         statusTracker.AddLog(eventId, "Simulation marked as completed");

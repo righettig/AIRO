@@ -11,9 +11,7 @@ public class SimulationEngine(
 
     // TODO: add event so that I can get rid of the ISimulationStatusTracker dependency
     // from playground I can log to console and I do not even need to instantiate ISimulationStatusTracker
-    public async Task<SimulationResult> RunSimulationAsync(Simulation simulation,
-                                                           SimulationParameters parameters,
-                                                           CancellationToken token)
+    public async Task<SimulationResult> RunSimulationAsync(Simulation simulation, CancellationToken token)
     {
         eventId = simulation.EventId;
 

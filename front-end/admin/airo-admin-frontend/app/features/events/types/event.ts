@@ -3,6 +3,7 @@ export type EventStatus = 'NotStarted' | 'Started' | 'Completed';
 export interface EventDto {
     name: string;
     description: string;
+    scheduledAt: Date;
 }
 
 export interface EventBase {
@@ -10,6 +11,7 @@ export interface EventBase {
     name: string;
     description: string;
     createdAt: Date;
+    scheduledAt: Date;
     status: EventStatus;
 }
 
