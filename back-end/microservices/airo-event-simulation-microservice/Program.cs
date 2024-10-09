@@ -47,6 +47,9 @@ app.MapPost("/simulate/{eventId}", (Guid eventId,
                                     ISimulationEngine engine,
                                     IEventsService eventsService) =>
 {
+    engine.OnLogMessage += 
+        (sender, message) => statusTracker.AddLog(eventId, message);
+
     statusTracker.AddLog(eventId, "Simulation created");
 
     taskQueue.QueueBackgroundWorkItem(eventId, async token =>

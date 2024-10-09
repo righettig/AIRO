@@ -1,10 +1,14 @@
 ﻿using airo_event_simulation_domain;
 using airo_event_simulation_engine.Impl;
 
-var statusTracker = new SimulationStatusTracker();
 var behaviourExecutor = new BehaviourExecutor();
 
-var engine = new SimulationEngine(statusTracker, behaviourExecutor);
+var engine = new SimulationEngine(behaviourExecutor);
+
+engine.OnLogMessage += (sender, message) =>
+{
+    Console.WriteLine($"Log: {message}");
+};
 
 var participants = new List<Participant>
 {
@@ -13,9 +17,8 @@ var participants = new List<Participant>
 };
 
 var simulation = new Simulation(Guid.NewGuid(), [.. participants]);
-var parameters = new SimulationParameters("foo");
 
-var result = await engine.RunSimulationAsync(simulation, parameters, CancellationToken.None);
+var result = await engine.RunSimulationAsync(simulation, CancellationToken.None);
 
 Console.WriteLine(result.ToString());
 

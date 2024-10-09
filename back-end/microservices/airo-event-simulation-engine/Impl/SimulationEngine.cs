@@ -3,18 +3,12 @@ using airo_event_simulation_engine.Interfaces;
 
 namespace airo_event_simulation_engine.Impl;
 
-public class SimulationEngine(
-    ISimulationStatusTracker statusTracker,
-    IBehaviourExecutor behaviourExecutor) : ISimulationEngine
+public class SimulationEngine(IBehaviourExecutor behaviourExecutor) : ISimulationEngine
 {
-    private Guid eventId;
+    public event EventHandler<string>? OnLogMessage;
 
-    // TODO: add event so that I can get rid of the ISimulationStatusTracker dependency
-    // from playground I can log to console and I do not even need to instantiate ISimulationStatusTracker
     public async Task<SimulationResult> RunSimulationAsync(Simulation simulation, CancellationToken token)
     {
-        eventId = simulation.EventId;
-
         AddLog("Initializing simulation");
 
         for (int i = 0; i < 5; i++) // 5 turns
@@ -38,8 +32,8 @@ public class SimulationEngine(
         return result;
     }
 
-    private void AddLog(string message) 
+    protected virtual void AddLog(string message)
     {
-        statusTracker.AddLog(eventId, message);
+        OnLogMessage?.Invoke(this, message);
     }
 }
