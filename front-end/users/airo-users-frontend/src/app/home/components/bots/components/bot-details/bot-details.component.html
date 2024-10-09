@@ -3,10 +3,25 @@
 </app-card>
 
 <app-card title="Behaviours">
+    <div title-content>
+        <button (click)="addBehaviour()">Add</button>
+        <button (click)="saveBehaviours()">Save</button>
+    </div>
+
     @for (botBehaviour of botBehaviours; track botBehaviour.id) {
-        <div class="content">
-            <div>{{botBehaviour.name}}</div>
-            <pre>{{botBehaviour.code}}</pre>
+        <div>
+            <app-behaviour-code 
+                [name]="botBehaviour.name" 
+                [code]="botBehaviour.code" 
+                [isReadOnly]="!botBehaviour.editing"
+                (codeChange)="codeModified(botBehaviour, $event)"
+                (modified)="markAsModified(botBehaviour, $event)">
+            </app-behaviour-code>
+
+            @if (botBehaviour.id) {
+                <button (click)="editBehaviour(botBehaviour)">Edit</button>
+            }
+            <button (click)="confirmDeleteBehaviour(botBehaviour)">Delete</button>
         </div>
     }
 </app-card>

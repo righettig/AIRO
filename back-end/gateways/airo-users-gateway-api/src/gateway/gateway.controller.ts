@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Logger, Param, Patch, Post, Req } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Logger, Param, Patch, Post, Put, Req } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
 import { ProfileService } from 'src/profile/profile.service';
 import { LoginDto } from 'src/gateway/models/login.dto';
@@ -19,6 +19,8 @@ import { EventSubscriptionService } from 'src/event-subscription/event-subscript
 import { SubscribeToEventDto } from './models/subscribe-to-event.dto';
 import { UnsubscribeFromEventDto } from './models/unsubscribe-from-event.dto';
 import { BotBehavioursService } from 'src/bot-behaviours/bot-behaviours.service';
+import { CreateBotBehaviourDto } from './models/create-bot-behaviour.dto';
+import { UpdateBotBehaviourDto } from './models/update-bot-behaviour.dto';
 
 @Controller('gateway')
 export class GatewayController {
@@ -225,8 +227,48 @@ export class GatewayController {
       throw new Error('Token is missing');
     }
 
-    const response = await this.botBehavioursService.getAll();
+    const uid = this.decodeFromToken<{ user_id?: string }>(token, 'user_id');
+    const response = await this.botBehavioursService.getAllByUserId(uid);
+
     return response;
+  }
+
+  @Post('bot-behaviours')
+  async createBotBehaviour(@Req() request: Request, @Body() body: CreateBotBehaviourDto) {
+    const token = request.headers['authorization'];
+    if (!token) {
+      throw new Error('Token is missing');
+    }
+
+    const uid = this.decodeFromToken<{ user_id?: string }>(token, 'user_id');
+    const response = await this.botBehavioursService.create(uid, body.name, body.code);
+
+    return response;
+  }
+
+  @Put('bot-behaviours/:botBehaviourId')
+  async updateBotBehaviour(
+    @Req() request: Request, 
+    @Param('botBehaviourId') botBehaviourId, 
+    @Body() updateBotBehaviourDto: UpdateBotBehaviourDto): Promise<void> {
+    const token = request.headers['authorization'];
+    if (!token) {
+      throw new Error('Token is missing');
+    }
+
+    const uid = this.decodeFromToken<{ user_id?: string }>(token, 'user_id');
+    await this.botBehavioursService.update(uid, botBehaviourId, updateBotBehaviourDto.name, updateBotBehaviourDto.code);
+  }
+
+  @Delete('bot-behaviours/:botBehaviourId')
+  async deleteBotBehaviour(@Req() request: Request, @Param('botBehaviourId') botBehaviourId: string): Promise<void> {
+    const token = request.headers['authorization'];
+    if (!token) {
+      throw new Error('Token is missing');
+    }
+
+    const uid = this.decodeFromToken<{ user_id?: string }>(token, 'user_id');
+    await this.botBehavioursService.delete(uid, botBehaviourId);
   }
   
   @Get('ui-notifications')

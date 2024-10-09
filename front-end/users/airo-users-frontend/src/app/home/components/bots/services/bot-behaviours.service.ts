@@ -29,4 +29,44 @@ export class BotBehavioursService {
 
         return response;
     }
+
+    async createBotBehaviour(name: string, code: string): Promise<string> {
+        const httpHeaders: HttpHeaders = new HttpHeaders({
+            Authorization: this.authService.accessToken!
+        });
+
+        const response = await firstValueFrom(
+            this.http.post<string>(`${this.apiUrl}`, {
+                name,
+                code,
+            }, 
+            { headers: httpHeaders })
+        );
+
+        return response;
+    }
+
+    async updateBotBehaviour(id: string, name: string, code: string): Promise<void> {
+        const httpHeaders: HttpHeaders = new HttpHeaders({
+            Authorization: this.authService.accessToken!
+        });
+
+        await firstValueFrom(
+            this.http.put(`${this.apiUrl}/${id}`, {
+                name,
+                code,
+            }, 
+            { headers: httpHeaders })
+        );
+    }
+
+    async deleteBotBehaviour(id: string): Promise<void> {
+        const httpHeaders: HttpHeaders = new HttpHeaders({
+            Authorization: this.authService.accessToken!
+        });
+
+        await firstValueFrom(
+            this.http.delete(`${this.apiUrl}/${id}`, { headers: httpHeaders })
+        );
+    }
 }

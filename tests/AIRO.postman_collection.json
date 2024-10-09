@@ -228,7 +228,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjhkNzU2OWQyODJkNWM1Mzk5MmNiYWZjZWI2NjBlYmQ0Y2E1OTMxM2EiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWlyby00NGNhNyIsImF1ZCI6ImFpcm8tNDRjYTciLCJhdXRoX3RpbWUiOjE3MjgyMzAxOTYsInVzZXJfaWQiOiJUN0U2dFdwM3VQVG9Fb1pxcGFPVWQyZ1IzYnYxIiwic3ViIjoiVDdFNnRXcDN1UFRvRW9acXBhT1VkMmdSM2J2MSIsImlhdCI6MTcyODIzMDE5NiwiZXhwIjoxNzI4MjMzNzk2LCJlbWFpbCI6ImdpYWNvbW9fZnJlZUBhaXJvLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJnaWFjb21vX2ZyZWVAYWlyby5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.2Jh3xnbDSQsYW6WrqFgVXgjeenRifA70CaF3VxApd3L28sGsLUaZzh8x6akLQl-a1THGuBjGVlzdQ7YJvtdKpadZaGizBb0UrAq2usxRAotlPijgWW_0l3-T6o6FfLL45Ml77yGPiN9yG7K0AnN9v3dLADL5ObqZv_x3k0_99UjpoOFc9oobyjpub6eINxxwZ3yN0MprHpdjM3SOkzqTIqGwOeODi-5l8AIDB1GMgf_r6M6e-3L3W-P92SsU9_t_FQv-6eSL9g6mKHGtkjod9w7WCsda4d3FckQyPr7QTH_mQDpqZY07XJkNwsewvVhx8A_xh9JwzJugrNYlFYzADQ",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjhkNzU2OWQyODJkNWM1Mzk5MmNiYWZjZWI2NjBlYmQ0Y2E1OTMxM2EiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWlyby00NGNhNyIsImF1ZCI6ImFpcm8tNDRjYTciLCJhdXRoX3RpbWUiOjE3Mjg0NTg0MTQsInVzZXJfaWQiOiJUN0U2dFdwM3VQVG9Fb1pxcGFPVWQyZ1IzYnYxIiwic3ViIjoiVDdFNnRXcDN1UFRvRW9acXBhT1VkMmdSM2J2MSIsImlhdCI6MTcyODQ1ODQxNCwiZXhwIjoxNzI4NDYyMDE0LCJlbWFpbCI6ImdpYWNvbW9fZnJlZUBhaXJvLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJnaWFjb21vX2ZyZWVAYWlyby5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.RqO13uVSUgr2Smh0nu8gIb-D5yHOFe7W1q5tY5mjOkZ3DyjVnp-Wwd4Hl3wnATv6pR3jngR-L2fndIvX-987LlXaYAkmrL6xbNXj4hboo6IrCsvOa2ejgjJwkyRK2gf8bOspOBu_W1OmbtoPSeCAwB3HVwVl3fNSarnjC5B11rcAHvtC0WkIimMSkMyLNMJHMSXTG-0XsM4ETtjdTwvmy2DBSxLNQjGgUrfcGNyVU2lETI_fAgCsS_RLn1WoOED1gER5bdqhKpVlJT4S6oGJLBHzmUoIr7_TDp_3oDDnu-2ZdXbBKhFnJYZtY13IK6D7eznVfD6Lh9eNA-6PhtS9sA",
 								"type": "text"
 							}
 						],
@@ -242,6 +242,104 @@
 							"path": [
 								"gateway",
 								"bot-behaviours"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - bot behaviours create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjhkNzU2OWQyODJkNWM1Mzk5MmNiYWZjZWI2NjBlYmQ0Y2E1OTMxM2EiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWlyby00NGNhNyIsImF1ZCI6ImFpcm8tNDRjYTciLCJhdXRoX3RpbWUiOjE3Mjg0NTg0MTQsInVzZXJfaWQiOiJUN0U2dFdwM3VQVG9Fb1pxcGFPVWQyZ1IzYnYxIiwic3ViIjoiVDdFNnRXcDN1UFRvRW9acXBhT1VkMmdSM2J2MSIsImlhdCI6MTcyODQ1ODQxNCwiZXhwIjoxNzI4NDYyMDE0LCJlbWFpbCI6ImdpYWNvbW9fZnJlZUBhaXJvLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJnaWFjb21vX2ZyZWVAYWlyby5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.RqO13uVSUgr2Smh0nu8gIb-D5yHOFe7W1q5tY5mjOkZ3DyjVnp-Wwd4Hl3wnATv6pR3jngR-L2fndIvX-987LlXaYAkmrL6xbNXj4hboo6IrCsvOa2ejgjJwkyRK2gf8bOspOBu_W1OmbtoPSeCAwB3HVwVl3fNSarnjC5B11rcAHvtC0WkIimMSkMyLNMJHMSXTG-0XsM4ETtjdTwvmy2DBSxLNQjGgUrfcGNyVU2lETI_fAgCsS_RLn1WoOED1gER5bdqhKpVlJT4S6oGJLBHzmUoIr7_TDp_3oDDnu-2ZdXbBKhFnJYZtY13IK6D7eznVfD6Lh9eNA-6PhtS9sA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"TEST\",\r\n    \"code\": \"test\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/gateway/bot-behaviours",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"gateway",
+								"bot-behaviours"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - bot behaviours update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjhkNzU2OWQyODJkNWM1Mzk5MmNiYWZjZWI2NjBlYmQ0Y2E1OTMxM2EiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWlyby00NGNhNyIsImF1ZCI6ImFpcm8tNDRjYTciLCJhdXRoX3RpbWUiOjE3Mjg0NTg0MTQsInVzZXJfaWQiOiJUN0U2dFdwM3VQVG9Fb1pxcGFPVWQyZ1IzYnYxIiwic3ViIjoiVDdFNnRXcDN1UFRvRW9acXBhT1VkMmdSM2J2MSIsImlhdCI6MTcyODQ1ODQxNCwiZXhwIjoxNzI4NDYyMDE0LCJlbWFpbCI6ImdpYWNvbW9fZnJlZUBhaXJvLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJnaWFjb21vX2ZyZWVAYWlyby5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.RqO13uVSUgr2Smh0nu8gIb-D5yHOFe7W1q5tY5mjOkZ3DyjVnp-Wwd4Hl3wnATv6pR3jngR-L2fndIvX-987LlXaYAkmrL6xbNXj4hboo6IrCsvOa2ejgjJwkyRK2gf8bOspOBu_W1OmbtoPSeCAwB3HVwVl3fNSarnjC5B11rcAHvtC0WkIimMSkMyLNMJHMSXTG-0XsM4ETtjdTwvmy2DBSxLNQjGgUrfcGNyVU2lETI_fAgCsS_RLn1WoOED1gER5bdqhKpVlJT4S6oGJLBHzmUoIr7_TDp_3oDDnu-2ZdXbBKhFnJYZtY13IK6D7eznVfD6Lh9eNA-6PhtS9sA",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"TEST_2\",\r\n    \"code\": \"test_2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/gateway/bot-behaviours/1e06a56d-4f93-4d8b-9d8a-66627a7223ae",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"gateway",
+								"bot-behaviours",
+								"1e06a56d-4f93-4d8b-9d8a-66627a7223ae"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - bot behaviours delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjhkNzU2OWQyODJkNWM1Mzk5MmNiYWZjZWI2NjBlYmQ0Y2E1OTMxM2EiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vYWlyby00NGNhNyIsImF1ZCI6ImFpcm8tNDRjYTciLCJhdXRoX3RpbWUiOjE3Mjg0NTg0MTQsInVzZXJfaWQiOiJUN0U2dFdwM3VQVG9Fb1pxcGFPVWQyZ1IzYnYxIiwic3ViIjoiVDdFNnRXcDN1UFRvRW9acXBhT1VkMmdSM2J2MSIsImlhdCI6MTcyODQ1ODQxNCwiZXhwIjoxNzI4NDYyMDE0LCJlbWFpbCI6ImdpYWNvbW9fZnJlZUBhaXJvLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJnaWFjb21vX2ZyZWVAYWlyby5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.RqO13uVSUgr2Smh0nu8gIb-D5yHOFe7W1q5tY5mjOkZ3DyjVnp-Wwd4Hl3wnATv6pR3jngR-L2fndIvX-987LlXaYAkmrL6xbNXj4hboo6IrCsvOa2ejgjJwkyRK2gf8bOspOBu_W1OmbtoPSeCAwB3HVwVl3fNSarnjC5B11rcAHvtC0WkIimMSkMyLNMJHMSXTG-0XsM4ETtjdTwvmy2DBSxLNQjGgUrfcGNyVU2lETI_fAgCsS_RLn1WoOED1gER5bdqhKpVlJT4S6oGJLBHzmUoIr7_TDp_3oDDnu-2ZdXbBKhFnJYZtY13IK6D7eznVfD6Lh9eNA-6PhtS9sA",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/gateway/bot-behaviours/1e06a56d-4f93-4d8b-9d8a-66627a7223ae",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"gateway",
+								"bot-behaviours",
+								"1e06a56d-4f93-4d8b-9d8a-66627a7223ae"
 							]
 						}
 					},
@@ -1619,10 +1717,62 @@
 			"name": "Bot Behaviours",
 			"item": [
 				{
-					"name": "bot behaviours - get all",
+					"name": "bot behaviours - get by behaviourId",
 					"request": {
 						"method": "GET",
 						"header": [],
+						"url": {
+							"raw": "http://localhost:4013/api/bot-behaviours/T7E6tWp3uPToEoZqpaOUd2gR3bv1/4f8e6784-bbf8-43cf-9811-767e1f9aaf57",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4013",
+							"path": [
+								"api",
+								"bot-behaviours",
+								"T7E6tWp3uPToEoZqpaOUd2gR3bv1",
+								"4f8e6784-bbf8-43cf-9811-767e1f9aaf57"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "bot behaviours - get by userId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4013/api/bot-behaviours/T7E6tWp3uPToEoZqpaOUd2gR3bv1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4013",
+							"path": [
+								"api",
+								"bot-behaviours",
+								"T7E6tWp3uPToEoZqpaOUd2gR3bv1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "bot behaviours - create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": \"T7E6tWp3uPToEoZqpaOUd2gR3bv1\",\r\n    \"name\": \"behaviour1\",\r\n    \"code\": \"foo\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
 							"raw": "http://localhost:4013/api/bot-behaviours",
 							"protocol": "http",
@@ -1639,12 +1789,21 @@
 					"response": []
 				},
 				{
-					"name": "bot behaviours - get",
+					"name": "bot behaviours - update",
 					"request": {
-						"method": "GET",
+						"method": "PUT",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"test\",\r\n    \"code\": \"foo_bar_baz\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "http://localhost:4013/api/bot-behaviours/botBehaviourId",
+							"raw": "http://localhost:4013/api/bot-behaviours/T7E6tWp3uPToEoZqpaOUd2gR3bv1/3ea0f0c1-38df-4c07-a662-663b03196751",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1653,7 +1812,39 @@
 							"path": [
 								"api",
 								"bot-behaviours",
-								"botBehaviourId"
+								"T7E6tWp3uPToEoZqpaOUd2gR3bv1",
+								"3ea0f0c1-38df-4c07-a662-663b03196751"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "bot behaviours - delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"test\",\r\n    \"code\": \"foo_bar_baz\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4013/api/bot-behaviours/T7E6tWp3uPToEoZqpaOUd2gR3bv1/0a5234e8-225c-44c6-86a8-7c77d41c6624",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4013",
+							"path": [
+								"api",
+								"bot-behaviours",
+								"T7E6tWp3uPToEoZqpaOUd2gR3bv1",
+								"0a5234e8-225c-44c6-86a8-7c77d41c6624"
 							]
 						}
 					},
