@@ -1,4 +1,7 @@
-﻿using airo_event_simulation_domain;
+﻿using airo_event_simulation_domain.Impl;
+using airo_event_simulation_domain.Impl.Simulation;
+using airo_event_simulation_domain.Impl.SimulationGoals;
+using airo_event_simulation_domain.Impl.WinnerTrackers;
 using airo_event_simulation_infrastructure.Interfaces;
 
 namespace airo_event_simulation_infrastructure.Impl;
@@ -19,7 +22,12 @@ public class SimulationService(IBotBehavioursService botBehavioursRepository,
                 })
             );
 
-        var simulation = new Simulation(eventId, participants);
+        var simulation = new Simulation(eventId,
+                                        participants,
+                                        //new TimeBasedGoal(TimeSpan.FromMinutes(1)),
+                                        new TurnBasedGoal(2),
+                                        new SimulationState(),
+                                        new RandomWinnerTracker());
 
         return simulation;
     }

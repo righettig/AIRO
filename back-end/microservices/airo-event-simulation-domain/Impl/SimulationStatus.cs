@@ -1,4 +1,4 @@
-﻿namespace airo_event_simulation_domain;
+﻿namespace airo_event_simulation_domain.Impl;
 
 public class SimulationStatus(Guid eventId, List<string> logs)
 {

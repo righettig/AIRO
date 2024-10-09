@@ -1,4 +1,4 @@
-﻿using airo_event_simulation_domain;
+﻿using airo_event_simulation_domain.Impl;
 
 namespace airo_event_simulation_engine.Interfaces;
 
