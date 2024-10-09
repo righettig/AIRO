@@ -1,4 +1,4 @@
-﻿namespace airo_event_simulation_domain;
+﻿namespace airo_event_simulation_domain.Impl.Simulation;
 
 public class Bot
 {

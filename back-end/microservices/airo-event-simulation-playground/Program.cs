@@ -1,10 +1,12 @@
-﻿using airo_event_simulation_domain;
+﻿using airo_event_simulation_domain.Impl;
+using airo_event_simulation_domain.Impl.Simulation;
+using airo_event_simulation_domain.Impl.SimulationGoals;
+using airo_event_simulation_domain.Impl.WinnerTrackers;
 using airo_event_simulation_engine.Impl;
 
-var statusTracker = new SimulationStatusTracker();
-var behaviourExecutor = new BehaviourExecutor();
+var engine = new SimulationEngine(new BehaviourExecutor());
 
-var engine = new SimulationEngine(statusTracker, behaviourExecutor);
+engine.OnLogMessage += (sender, message) => Console.WriteLine($"Log: {message}");
 
 var participants = new List<Participant>
 {
@@ -12,10 +14,16 @@ var participants = new List<Participant>
     CreateParticipant("user2"),
 };
 
-var simulation = new Simulation(Guid.NewGuid(), [.. participants]);
-var parameters = new SimulationParameters("foo");
+var simulation = new Simulation(Guid.NewGuid(), [.. participants],
+    new TurnBasedGoal(2),
+    //new TimeBasedGoal(TimeSpan.FromSeconds(30)),
+    new SimulationState(),
+    new RandomWinnerTracker()
+);
 
-var result = await engine.RunSimulationAsync(simulation, parameters, CancellationToken.None);
+var stateUpdater = new DummyStateUpdater();
+
+var result = await engine.RunSimulationAsync(simulation, stateUpdater, CancellationToken.None);
 
 Console.WriteLine(result.ToString());
 

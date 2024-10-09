@@ -1,45 +1,67 @@
-﻿using airo_event_simulation_domain;
+﻿using airo_event_simulation_domain.Impl;
+using airo_event_simulation_domain.Interfaces;
 using airo_event_simulation_engine.Interfaces;
 
 namespace airo_event_simulation_engine.Impl;
 
-public class SimulationEngine(
-    ISimulationStatusTracker statusTracker,
-    IBehaviourExecutor behaviourExecutor) : ISimulationEngine
+public class SimulationEngine(IBehaviourExecutor behaviourExecutor) : ISimulationEngine
 {
-    private Guid eventId;
+    public event EventHandler<string>? OnLogMessage;
 
-    // TODO: add event so that I can get rid of the ISimulationStatusTracker dependency
-    // from playground I can log to console and I do not even need to instantiate ISimulationStatusTracker
-    public async Task<SimulationResult> RunSimulationAsync(Simulation simulation, CancellationToken token)
+    public async Task<SimulationResult> RunSimulationAsync(ISimulation simulation,
+                                                           ISimulationStateUpdater stateUpdater,
+                                                           CancellationToken token)
     {
-        eventId = simulation.EventId;
-
         AddLog("Initializing simulation");
 
-        for (int i = 0; i < 5; i++) // 5 turns
+        try
         {
-            AddLog($"Turn {i} started");
-
-            foreach (var p in simulation.Participants)
+            while (!simulation.Goal.IsSimulationComplete(simulation))
             {
-                await behaviourExecutor.Execute(p.Bot.BehaviorScript, token);
-                
-                AddLog("Executed behaviour for bot: " + p.Bot.BotId);
-                AddLog("Updated simulation state");
+                await ExecuteTurnAsync(simulation, token);
+
+                stateUpdater.UpdateState(simulation);
             }
 
-            AddLog($"Turn {i} finished");
-        }
+            var winner = simulation.WinnerTracker.GetWinner(simulation);
 
-        AddLog("Simulation completed");
+            if (winner != null)
+            {
+                AddLog($"Simulation completed. Winner: {winner.Bot.BotId}");
+            }
+            else
+            {
+                AddLog("Simulation completed. No winner.");
+            }
+        }
+        catch (Exception ex)
+        {
+            AddLog($"Error during simulation: {ex.Message}");
+            return new SimulationResult(Success: false, ErrorMessage: ex.Message);
+        }
 
         var result = new SimulationResult(Success: true);
         return result;
     }
 
-    private void AddLog(string message) 
+    private async Task ExecuteTurnAsync(ISimulation simulation, CancellationToken token)
     {
-        statusTracker.AddLog(eventId, message);
+        token.ThrowIfCancellationRequested();
+
+        AddLog($"Turn started");
+
+        foreach (var p in simulation.Participants)
+        {
+            await behaviourExecutor.Execute(p.Bot.BehaviorScript, token);
+
+            AddLog("Executed behaviour for bot: " + p.Bot.BotId);
+        }
+
+        AddLog($"Turn finished");
+    }
+
+    protected virtual void AddLog(string message)
+    {
+        OnLogMessage?.Invoke(this, message);
     }
 }

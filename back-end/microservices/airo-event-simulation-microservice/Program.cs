@@ -1,4 +1,5 @@
-using airo_event_simulation_domain;
+using airo_event_simulation_domain.Impl;
+using airo_event_simulation_domain.Interfaces;
 using airo_event_simulation_engine.Impl;
 using airo_event_simulation_engine.Interfaces;
 using airo_event_simulation_infrastructure.Impl;
@@ -17,6 +18,7 @@ builder.Services.AddSingleton<IBehaviourExecutor, BehaviourExecutor>();
 builder.Services.AddSingleton<IBackgroundTaskQueue, SimulationTaskQueue>();
 builder.Services.AddSingleton<ISimulationStatusTracker, SimulationStatusTracker>();
 builder.Services.AddSingleton<IEventsService, EventsService>();
+builder.Services.AddSingleton<ISimulationStateUpdater, DummyStateUpdater>();
 
 builder.Services.AddHttpClient<IEventsService, EventsService>(client =>
 {
@@ -45,8 +47,12 @@ app.MapPost("/simulate/{eventId}", (Guid eventId,
                                     IBackgroundTaskQueue taskQueue,
                                     ISimulationService simulationService,
                                     ISimulationEngine engine,
+                                    ISimulationStateUpdater stateUpdater,
                                     IEventsService eventsService) =>
 {
+    engine.OnLogMessage += 
+        (sender, message) => statusTracker.AddLog(eventId, message);
+
     statusTracker.AddLog(eventId, "Simulation created");
 
     taskQueue.QueueBackgroundWorkItem(eventId, async token =>
@@ -55,12 +61,10 @@ app.MapPost("/simulate/{eventId}", (Guid eventId,
         statusTracker.AddLog(eventId, "Simulation started");
 
         var simulation = await simulationService.LoadSimulation(eventId);
-        var result = await engine.RunSimulationAsync(simulation, token);
+        var result = await engine.RunSimulationAsync(simulation, stateUpdater, token);
 
         await eventsService.MarkEventAsCompletedAsync(eventId);
         statusTracker.AddLog(eventId, "Simulation marked as completed");
-
-        // TODO Store result in the database
     });
 
     return Results.Accepted($"/simulate/{eventId}/status", new { EventId = eventId });
