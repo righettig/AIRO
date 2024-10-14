@@ -7,10 +7,11 @@ import Login from './features/login/login';
 import Sidebar from './features/layout/sidebar';
 import Events from './features/events/components/events';
 import Bots from './features/bots/components/bots';
+import MapEditorComponent from './features/maps/components/map-editor.component';
 
 const Home = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [selectedView, setSelectedView] = useState<'events' | 'bots'>('events');
+  const [selectedView, setSelectedView] = useState<'events' | 'bots' | 'maps'>('events');
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [error, setError] = useState('');
 
@@ -35,7 +36,7 @@ const Home = () => {
     }
   };
 
-  const handleSelectView = (view: 'events' | 'bots') => {
+  const handleSelectView = (view: 'events' | 'bots' | 'maps') => {
     setSelectedView(view);
   };
 
@@ -80,7 +81,10 @@ const Home = () => {
           transition: 'width 0.3s ease, margin-left 0.3s ease',
         }}
       >
-        {selectedView === 'events' ? <Events /> : <Bots />}
+        {/* Conditional rendering based on selected view */}
+        {selectedView === 'events' && <Events />}
+        {selectedView === 'bots' && <Bots />}
+        {selectedView === 'maps' && <MapEditorComponent />}
       </div>
       {error && <div>{error}</div>}
     </div>
