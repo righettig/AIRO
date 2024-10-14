@@ -61,9 +61,15 @@ app.MapPost("/simulate/{eventId}", (Guid eventId,
         statusTracker.AddLog(eventId, "Simulation started");
 
         var simulation = await simulationService.LoadSimulation(eventId);
+
+        if (simulation.Participants.Length == 0)
+        {
+            throw new InvalidOperationException("Cannot start an empty event.");
+        }
+
         var result = await engine.RunSimulationAsync(simulation, stateUpdater, token);
 
-        await eventsService.MarkEventAsCompletedAsync(eventId);
+        await eventsService.MarkEventAsCompletedAsync(eventId, result.WinnerUserId);
         statusTracker.AddLog(eventId, "Simulation marked as completed");
     });
 

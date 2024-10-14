@@ -21,6 +21,8 @@ import { UnsubscribeFromEventDto } from './models/unsubscribe-from-event.dto';
 import { BotBehavioursService } from 'src/bot-behaviours/bot-behaviours.service';
 import { CreateBotBehaviourDto } from './models/create-bot-behaviour.dto';
 import { UpdateBotBehaviourDto } from './models/update-bot-behaviour.dto';
+import { LeaderboardService } from 'src/leaderboard/leaderboard.service';
+import { UserLeaderboardResponseDto } from './models/leaderboard.response.dto';
 
 @Controller('gateway')
 export class GatewayController {
@@ -38,6 +40,7 @@ export class GatewayController {
     private readonly eventSubscriptionService: EventSubscriptionService,
     private readonly eventSimulationservice: EventSimulationService,
     private readonly uiNotificationsService: UiNotificationsService,
+    private readonly leaderboardService: LeaderboardService
   ) { }
 
   @Post('signup')
@@ -368,6 +371,41 @@ export class GatewayController {
 
     const response = await this.eventSimulationservice.getSimulationStatusById(eventId);
     return response;
+  }
+
+  @Get('leaderboard')
+  async getLeaderboardByUserId(@Req() request: Request) {
+    const token = request.headers['authorization'];
+    if (!token) {
+      throw new Error('Token is missing');
+    }
+
+    const uid = this.decodeFromToken<{ user_id?: string }>(token, 'user_id');
+    const response = await this.leaderboardService.getUserLeaderboardByUid(uid);
+
+    return response;
+  }
+
+  @Get('leaderboard/top/:n')
+  async getLeaderboardTopN(@Req() request: Request, @Param('n') n: number): Promise<UserLeaderboardResponseDto[]> {
+    const token = request.headers['authorization'];
+    if (!token) {
+      throw new Error('Token is missing');
+    }
+
+    const response = await this.leaderboardService.getUserLeaderboardTopN(n);
+
+    const result: UserLeaderboardResponseDto[] = await Promise.all(
+      response.map(async x => {
+        const profile = await this.profileService.getProfileByUid(x.id);
+        return {
+          ...x,
+          fullName: `${profile.firstName} ${profile.lastName}`
+        };
+      })
+    );
+
+    return result;
   }
 
   private decodeFromToken<T>(token: string, property: keyof T): T[keyof T] | null {

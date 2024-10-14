@@ -22,17 +22,6 @@ public class SimulationEngine(IBehaviourExecutor behaviourExecutor) : ISimulatio
 
                 stateUpdater.UpdateState(simulation);
             }
-
-            var winner = simulation.WinnerTracker.GetWinner(simulation);
-
-            if (winner != null)
-            {
-                AddLog($"Simulation completed. Winner: {winner.Bot.BotId}");
-            }
-            else
-            {
-                AddLog("Simulation completed. No winner.");
-            }
         }
         catch (Exception ex)
         {
@@ -40,7 +29,18 @@ public class SimulationEngine(IBehaviourExecutor behaviourExecutor) : ISimulatio
             return new SimulationResult(Success: false, ErrorMessage: ex.Message);
         }
 
-        var result = new SimulationResult(Success: true);
+        var winner = simulation.WinnerTracker.GetWinner(simulation);
+
+        if (winner != null)
+        {
+            AddLog($"Simulation completed. Winner: {winner.Bot.BotId}");
+        }
+        else
+        {
+            AddLog("Simulation completed. No winner.");
+        }
+
+        var result = new SimulationResult(Success: true, WinnerUserId: winner?.UserId);
         return result;
     }
 

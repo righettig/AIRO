@@ -3,5 +3,5 @@
 public interface IEventsService
 {
     Task MarkEventAsStartedAsync(Guid eventId);
-    Task MarkEventAsCompletedAsync(Guid eventId);
+    Task MarkEventAsCompletedAsync(Guid eventId, string? winnerUserId = null);
 }

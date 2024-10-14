@@ -7,6 +7,22 @@ namespace airo_events_scheduler.Services.Impl;
 
 public class QuartzJobScheduler(ISchedulerFactory schedulerFactory) : IJobScheduler
 {
+    public async Task DeleteScheduleEventStart(Guid eventId)
+    {
+        var scheduler = await schedulerFactory.GetScheduler();
+        
+        bool jobDeleted = await scheduler.DeleteJob(new JobKey(eventId.ToString(), "StartEventJobs"));
+
+        if (jobDeleted)
+        {
+            Console.WriteLine("Job deleted successfully: " + eventId);
+        }
+        else
+        {
+            Console.WriteLine("Job not found: " + eventId);
+        }
+    }
+
     public async Task ScheduleEventStart(Guid eventId, DateTime scheduledAt) 
     {
         // Grab the Scheduler instance from the Factory
@@ -30,7 +46,7 @@ public class QuartzJobScheduler(ISchedulerFactory schedulerFactory) : IJobSchedu
                                          utcDateTime.Day,
                                          utcDateTime.Month);
 
-        Console.WriteLine("DEBUG: " + runTime.ToString());
+        //Console.WriteLine("DEBUG: " + runTime.ToString());
 
         // Create a trigger that fires at the specific time
         var trigger = TriggerBuilder.Create()

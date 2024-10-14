@@ -430,6 +430,26 @@ services:
     volumes:
       - data-volume:/data
 
+  leaderboard-service:
+    depends_on:
+      redis:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
+      cosmosdb:
+        condition: service_healthy
+    build:
+      context: .
+      dockerfile: ./back-end/microservices/airo-leaderboard-microservice/Dockerfile
+    ports:
+      - "4014:8080" # https not working so far!
+    environment:
+      - EVENT_SUBSCRIPTION_API_URL=${EVENT_SUBSCRIPTION_API_URL}
+      - REDIS_URL=${REDIS_URL}
+      - RABBITMQ_URL=${RABBITMQ_URL}
+      - COSMOSDB_ENDPOINT=${COSMOSDB_ENDPOINT}
+      - COSMOSDB_KEY=${COSMOSDB_KEY}
+
   #---------------#
   # External APIs #
   #---------------#
@@ -468,8 +488,8 @@ services:
     image: mongo:6.0
     ports:
       - '27017:27017'
-    volumes:
-      - mongo_data:/data/db
+    # volumes:
+    #   - mongo_data:/data/db
 
   cosmosdb:
     # fix for: https://github.com/Azure/azure-cosmos-db-emulator-docker/issues/103
@@ -483,10 +503,14 @@ services:
     environment:
       - AZURE_COSMOS_EMULATOR_PARTITION_COUNT=3
       - AZURE_COSMOS_EMULATOR_ENABLE_DATA_PERSISTENCE=true
+      # This allows applications from the host to connect to the docker instance.
+      # Use https://127.0.0.1:8081 as the endpoint.
+      # However this seems to breaks other services running in Docker.
+      # - AZURE_COSMOS_EMULATOR_IP_ADDRESS_OVERRIDE=127.0.0.1
     ports:
       - "8081:8081"
-    volumes:
-      - cosmos_data:/CosmosDB/data
+    # volumes:
+    #   - cosmos_data:/CosmosDB/data
     healthcheck:
       test: ["CMD", "curl", "-f", "-k", "https://localhost:8081/_explorer/emulator.pem"]
       start_period: 1m
@@ -522,6 +546,20 @@ services:
     #     source: eventstore-volume-logs
     #     target: /var/log/eventstore
 
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    # volumes:
+    #   - redis_data:/data
+    command: ["redis-server", "--appendonly", "yes"]
+
+  redis-insight:
+    image: redis/redisinsight:latest
+    restart: always
+    ports:
+      - "5540:5540"
+
   # When uncommenting to run e2e tests please update .env file with correct USERS_GATEWAY_API_URL for e2e
   # cypress:
   #   image: cypress/included:13.14.2
@@ -546,9 +584,11 @@ volumes:
   
   data-volume:
   
-  mongo_data:
+  # mongo_data:
   
-  cosmos_data:
+  # cosmos_data:
 
-  eventstore-volume-data:
-  eventstore-volume-logs:
+  # redis_data:
+
+  # eventstore-volume-data:
+  # eventstore-volume-logs:

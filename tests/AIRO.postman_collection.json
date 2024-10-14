@@ -448,6 +448,60 @@
 					"response": []
 				},
 				{
+					"name": "gateway - leaderboard get by userId",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "123",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/gateway/leaderboard",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"gateway",
+								"leaderboard"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - leaderboard get top n",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "123",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/gateway/leaderboard/top/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"gateway",
+								"leaderboard",
+								"top",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "gateway - ui notifications get all",
 					"request": {
 						"method": "GET",
@@ -1322,6 +1376,34 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "gateway - leaderboard get top n (behaviours)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "123",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/gateway/leaderboard/top/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"gateway",
+								"leaderboard",
+								"top",
+								"5"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -1990,8 +2072,17 @@
 					"request": {
 						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"winnerUserId\": \"9X7l8xFnxTPwslzbfySCinrm46c2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "http://localhost:4006/api/events/eventId/complete",
+							"raw": "http://localhost:4006/api/events/72d477d7-ea1f-494e-bae2-0e5de297ebe4/complete",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2000,7 +2091,7 @@
 							"path": [
 								"api",
 								"events",
-								"eventId",
+								"72d477d7-ea1f-494e-bae2-0e5de297ebe4",
 								"complete"
 							]
 						}
@@ -2337,6 +2428,101 @@
 								"eventsubscriptions",
 								"59ed4ec1-0e53-45aa-b1b4-78b6ebc7d521",
 								"full"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Leaderboard",
+			"item": [
+				{
+					"name": "leaderboard - users top n",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4014/api/leaderboard/users/top/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4014",
+							"path": [
+								"api",
+								"leaderboard",
+								"users",
+								"top",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "leaderboard - users by Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4014/api/leaderboard/users/userId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4014",
+							"path": [
+								"api",
+								"leaderboard",
+								"users",
+								"userId"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "leaderboard - behaviours top n",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4014/api/leaderboard/behaviours/top/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4014",
+							"path": [
+								"api",
+								"leaderboard",
+								"behaviours",
+								"top",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "leaderboard - behaviours by Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4014/api/leaderboard/behaviours/behaviourId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4014",
+							"path": [
+								"api",
+								"leaderboard",
+								"behaviours",
+								"behaviourId"
 							]
 						}
 					},

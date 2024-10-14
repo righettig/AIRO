@@ -7,6 +7,7 @@ import { AgentsService } from "src/agents/agents.service";
 import { AuthService } from "src/auth/auth.service";
 import { LoginDto } from "./models/login.dto";
 import { LoginResponseDto } from "./models/login.response.dto";
+import { LeaderboardService } from "src/leaderboard/leaderboard.service";
 
 @Controller('gateway')
 export class GatewayController {
@@ -17,6 +18,7 @@ export class GatewayController {
     private readonly missionsService: MissionsService,
     private readonly commandsService: CommandsService,
     private readonly agentsService: AgentsService,
+    private readonly leaderboardService: LeaderboardService
   ) { } 
 
   @Post('login')
@@ -97,6 +99,12 @@ export class GatewayController {
   @Delete('missions/:missionId')
   async deleteMission(@Param('missionId') missionId: string) {
     const response = await this.missionsService.delete(missionId);
+    return response;
+  }
+
+  @Get('leaderboard/top/:n')
+  async getLeaderboardTopN(@Param('n') n: number) {
+    const response = await this.leaderboardService.getBehaviourLeaderboardTopN(n);
     return response;
   }
 }

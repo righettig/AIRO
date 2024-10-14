@@ -12,6 +12,7 @@ public class EventCompletedEventHandler(IReadRepository<EventReadModel> readRepo
     {
         var model = readRepository.GetById(@event.Id);
         model.Status = nameof(EventStatus.Completed);
+        model.WinnerUserId = @event.WinnerUserId;
 
         readRepository.Update(model);
         readRepository.SaveChanges();

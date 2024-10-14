@@ -11,6 +11,7 @@ import { UiNotificationsModule } from 'src/ui-notifications/ui-notifications.mod
 import { EventSimulationModule } from 'src/event-simulation/event-simulation.module';
 import { EventSubscriptionModule } from 'src/event-subscription/event-subscription.module';
 import { BotBehavioursModule } from 'src/bot-behaviours/bot-behaviours.module';
+import { LeaderboardModule } from 'src/leaderboard/leaderboard.module';
 
 @Module({
   imports: [
@@ -24,7 +25,8 @@ import { BotBehavioursModule } from 'src/bot-behaviours/bot-behaviours.module';
     EventsModule,
     EventSubscriptionModule,
     EventSimulationModule,
-    UiNotificationsModule
+    UiNotificationsModule,
+    LeaderboardModule
   ],
   controllers: [GatewayController]
 })

@@ -45,7 +45,7 @@ public class EventAggregate : AggregateRoot, IAggregateRoot
         RaiseEvent(new EventStartedEvent(id));
     }
 
-    public void CompletedEvent(Guid id)
+    public void CompletedEvent(Guid id, string winnerUserId)
     {
         if (_status == EventStatus.NotStarted)
         {
@@ -57,7 +57,7 @@ public class EventAggregate : AggregateRoot, IAggregateRoot
             throw new InvalidOperationException("Cannot complete an event multiple times.");
         }
 
-        RaiseEvent(new EventCompletedEvent(id));
+        RaiseEvent(new EventCompletedEvent(id, winnerUserId));
     }
 
     private void Apply(EventCreatedEvent @event)

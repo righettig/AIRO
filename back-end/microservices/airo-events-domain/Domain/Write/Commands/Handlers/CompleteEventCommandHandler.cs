@@ -11,6 +11,6 @@ public class CompleteEventCommandHandler(AggregateRepository<EventAggregate> agg
 
     protected override void ProcessCommand(CompleteEventCommand command, EventAggregate aggregate)
     {
-        aggregate.CompletedEvent(command.Id);
+        aggregate.CompletedEvent(command.Id, command.WinnerUserId);
     }
 }

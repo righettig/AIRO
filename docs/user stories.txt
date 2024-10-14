@@ -145,7 +145,7 @@ Event live feed [DONE]
 
 Define bot behaviour
 --------------------
-	Design bot behaiour (code, visual?)
+	Design bot behaviour (code, visual?)
 	
 
 [Email] Notifications for upcoming events
@@ -154,7 +154,7 @@ Define bot behaviour
 	Info like event name, description and subscribe link should be in the email
 
 
-Leaderboards
+Leaderboards [WIP]
 ------------
 
 
@@ -242,3 +242,8 @@ Audit History [DONE]
 
 Live feed [DONE]
 ---------
+
+=====
+NEW
+
+It should be possible to "clone" a predefined behaviour

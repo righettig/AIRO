@@ -5,13 +5,15 @@ import { CommandsModule } from 'src/commands/commands.module';
 import { AgentsModule } from 'src/agents/agents.module';
 import { AuthModule } from 'src/auth/auth.module';
 import { AgentsHubService as AgentsHubService } from 'src/agents/agents-hub.service';
+import { LeaderboardModule } from 'src/leaderboard/leaderboard.module';
 
 @Module({
   imports: [
     AuthModule,
     MissionsModule,
     CommandsModule,
-    AgentsModule
+    AgentsModule,
+    LeaderboardModule
   ],
   controllers: [GatewayController],
   providers: [AgentsHubService]

@@ -9,7 +9,12 @@ public class EventUpdatedEventHandler(IReadRepository<EventReadModel> readReposi
 {
     public override void Handle(EventUpdatedEvent @event)
     {
-        readRepository.Update(new EventReadModel { Id = @event.Id, Name = @event.Name, Description = @event.Description });
+        var entry = readRepository.GetById(@event.Id);
+
+        entry.Name = @event.Name;
+        entry.Description = @event.Description;
+
+        readRepository.Update(entry);
         readRepository.SaveChanges();
     }
 }
