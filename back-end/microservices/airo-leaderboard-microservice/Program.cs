@@ -32,6 +32,7 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(redis);
 // Configure CosmosDB
 var cosmosDbEndpoint = builder.Configuration["COSMOSDB_ENDPOINT"];
 var cosmosDbKey = builder.Configuration["COSMOSDB_KEY"];
+var leaderboardsDb = builder.Configuration["LEADERBOARD_DB"] ?? "airo-leaderboards";
 
 // avoid SSL certificate issue on connect
 var cosmosClientOptions = new CosmosClientOptions()
@@ -57,11 +58,19 @@ var rabbitMqUrl = builder.Configuration["RABBITMQ_URL"];
 builder.Services.AddHostedService(
     sp => new RabbitMqListener(sp.GetRequiredService<IEventCompletedProcessor>(), rabbitMqUrl));
 
-builder.Services.AddHostedService<CosmosDbInitializationService>();
+builder.Services.AddHostedService(sp =>
+{
+    var logger = sp.GetRequiredService<ILogger<CosmosDbInitializationService>>();
+    return new CosmosDbInitializationService(
+        cosmosClient,
+        logger,
+        leaderboardsDb
+    );
+});
 
 // Register leaderboard services for users and behaviours
-RegisterLeaderboardServices<UserLeaderboardEntry>(builder.Services, cosmosClient, "users");
-RegisterLeaderboardServices<BehaviourLeaderboardEntry>(builder.Services, cosmosClient, "behaviours");
+RegisterLeaderboardServices<UserLeaderboardEntry>(builder.Services, cosmosClient, leaderboardsDb, "users");
+RegisterLeaderboardServices<BehaviourLeaderboardEntry>(builder.Services, cosmosClient, leaderboardsDb, "behaviours");
 
 var app = builder.Build();
 
@@ -78,20 +87,20 @@ app.MapControllers();
 
 app.Run();
 
-void RegisterLeaderboardServices<T>(IServiceCollection services, CosmosClient client, string containerName) where T: class, ILeaderboardEntry, new()
+void RegisterLeaderboardServices<T>(IServiceCollection services, CosmosClient client, string databaseId, string containerName) where T: class, ILeaderboardEntry, new()
 {
     services.AddSingleton<IRedisCache<T>, RedisCache<T>>(
         sp => new RedisCache<T>(sp.GetRequiredService<IConnectionMultiplexer>(), containerName));
 
     services.AddSingleton<ICosmosDbContext<T>>(
-        sp => new CosmosDbContext<T>(client, containerName));
+        sp => new CosmosDbContext<T>(client, databaseId, containerName));
 
     services.AddSingleton<ILeaderboardReadService<T>, LeaderboardReadService<T>>();
     services.AddSingleton<ILeaderboardWriteService<T>, LeaderboardWriteService<T>>();
 
     services.AddHostedService(sp =>
     {
-        var container = client.GetContainer("LeaderboardDb", containerName);
+        var container = client.GetContainer(databaseId, containerName);
         var redis = sp.GetRequiredService<IRedisCache<T>>();
         return new CacheSyncService<T>(container, redis);
     });

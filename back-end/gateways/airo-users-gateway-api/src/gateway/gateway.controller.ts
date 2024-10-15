@@ -398,9 +398,10 @@ export class GatewayController {
     const result: UserLeaderboardResponseDto[] = await Promise.all(
       response.map(async x => {
         const profile = await this.profileService.getProfileByUid(x.id);
+        const fullName = `${profile.firstName} ${profile.lastName}`;
         return {
           ...x,
-          fullName: `${profile.firstName} ${profile.lastName}`
+          fullName
         };
       })
     );

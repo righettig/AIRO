@@ -74,6 +74,7 @@ services:
       - events-service
       - event-subscription-service
       - event-simulation-service
+      - leaderboard-service
       - ui-notifications-service
     build:
       context: ./back-end/gateways/airo-users-gateway-api
@@ -91,6 +92,7 @@ services:
       - EVENT_SUBSCRIPTION_API_URL=${EVENT_SUBSCRIPTION_API_URL}
       - EVENT_SIMULATION_API_URL=${EVENT_SIMULATION_API_URL}
       - UI_NOTIFICATIONS_API_URL=${UI_NOTIFICATIONS_API_URL}
+      - LEADERBOARD_API_URL=${LEADERBOARD_API_URL}
     develop:
       watch:
         - action: rebuild
@@ -132,6 +134,7 @@ services:
     depends_on:
       - enterprise-auth-service
       - anybotics-service
+      - leaderboard-service
     build:
       context: ./back-end/gateways/airo-enterprise-gateway-api
     ports:
@@ -140,6 +143,7 @@ services:
     environment:
       - AUTH_API_URL=${ENTERPRISE_AUTH_API_URL}
       - ANYBOTICS_SERVICE_URL=${ANYBOTICS_SERVICE_URL}
+      - LEADERBOARD_API_URL=${LEADERBOARD_API_URL}
     develop:
       watch:
         - action: rebuild
@@ -449,6 +453,7 @@ services:
       - RABBITMQ_URL=${RABBITMQ_URL}
       - COSMOSDB_ENDPOINT=${COSMOSDB_ENDPOINT}
       - COSMOSDB_KEY=${COSMOSDB_KEY}
+      - LEADERBOARD_DB=${LEADERBOARD_DB}
 
   #---------------#
   # External APIs #

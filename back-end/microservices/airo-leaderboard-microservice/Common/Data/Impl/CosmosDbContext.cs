@@ -7,11 +7,9 @@ public class CosmosDbContext<T> : ICosmosDbContext<T> where T : class, ILeaderbo
 {
     private readonly Container _container;
 
-    private const string DatabaseId = "LeaderboardDb";
-
-    public CosmosDbContext(CosmosClient cosmosClient, string containerId)
+    public CosmosDbContext(CosmosClient cosmosClient, string databaseId, string containerId)
     {
-        _container = cosmosClient.GetContainer(DatabaseId, containerId);
+        _container = cosmosClient.GetContainer(databaseId, containerId);
     }
 
     public async Task CreateOrUpdateEntryAsync(T entry)

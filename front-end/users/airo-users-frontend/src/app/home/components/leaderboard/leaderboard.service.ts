@@ -4,7 +4,13 @@ import { firstValueFrom } from 'rxjs';
 import { AuthService } from '../../../auth/services/auth.service';
 import { ConfigService } from '../../../common/services/config.service';
 
-export type UserLeaderboardEntry = { email: string, wins: number, losses: number; totalEvents: number };
+export type UserLeaderboardEntry = { 
+    id: string, 
+    fullName: string,
+    wins: number, 
+    losses: number; 
+    totalEvents: number 
+};
 
 @Injectable({
     providedIn: 'root',
