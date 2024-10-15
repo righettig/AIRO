@@ -110,6 +110,7 @@ services:
       - events-service
       - event-subscription-service
       - event-simulation-service
+      - maps-service
     build:
       context: ./back-end/gateways/airo-admin-gateway-api
     ports:
@@ -120,6 +121,7 @@ services:
       - EVENTS_API_URL=${EVENTS_API_URL}
       - EVENT_SUBSCRIPTION_API_URL=${EVENT_SUBSCRIPTION_API_URL}
       - EVENT_SIMULATION_API_URL=${EVENT_SIMULATION_API_URL}
+      - MAPS_API_URL=${MAPS_API_URL}
     develop:
       watch:
         - action: rebuild
@@ -261,6 +263,19 @@ services:
       - RABBITMQ_URL=${RABBITMQ_URL}
     ports:
       - "4006:8080" # https not working so far!
+
+  maps-service:
+    depends_on:
+      cosmosdb:
+        condition: service_healthy
+    build:
+      context: .
+      dockerfile: ./back-end/microservices/airo-maps-microservice/Dockerfile
+    environment:
+      - ConnectionStrings__CosmosDb=${COSMOSDB_CONNECTION_STRING}
+      - DatabaseName=${MAPS_DATABASE_NAME}
+    ports:
+      - "4015:8080" # https not working so far!
 
   event-subscription-service:
     depends_on:
