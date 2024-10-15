@@ -19,9 +19,11 @@ public class LeaderboardWriteService<T>(IRedisCache<T> redis, ICosmosDbContext<T
         entry.Losses += 1;
 
         await redis.SetEntryAsync(entry);
+        Console.WriteLine("Updated Redis entry: " + id);
 
         // update db entry
         await cosmos.CreateOrUpdateEntryAsync(entry);
+        Console.WriteLine("Updated CosmosDb entry: " + id);
     }
 
     public async Task MarkAsWinner(string id)
@@ -34,8 +36,10 @@ public class LeaderboardWriteService<T>(IRedisCache<T> redis, ICosmosDbContext<T
         entry.Wins += 1;
 
         await redis.SetEntryAsync(entry);
+        Console.WriteLine("Updated Redis entry: " + id);
 
         // update db entry
         await cosmos.CreateOrUpdateEntryAsync(entry);
+        Console.WriteLine("Updated CosmosDb entry: " + id);
     }
 }
