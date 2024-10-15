@@ -1,0 +1,31 @@
+.toolbar-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+.toolbar-label {
+    margin-right: 4px;
+}
+
+.toolbar-input {
+    height: 20px;
+    width: 50px;
+    margin-bottom: 0;
+}
+
+.toolbar-select {
+    height: 26px;
+    margin-left: 4px;
+}
+
+.toolbar-button {
+    height: 26px;
+}
+
+.inline-flex-container {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}

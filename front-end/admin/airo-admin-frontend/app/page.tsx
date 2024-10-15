@@ -7,7 +7,7 @@ import Login from './features/login/login';
 import Sidebar from './features/layout/sidebar';
 import Events from './features/events/components/events';
 import Bots from './features/bots/components/bots';
-import MapEditorComponent from './features/maps/components/map-editor.component';
+import MapEditorComponent from './features/maps/components/map-editor';
 
 const Home = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
