@@ -13,18 +13,29 @@ public class EventCompletedProcessor(ILeaderboardWriteService<UserLeaderboardEnt
     {
         var participants = await FetchParticipantsAsync(message.EventId);
 
-        foreach (var participant in participants)
+        try
         {
-            if (participant.UserId == message.WinnerUserId)
+            foreach (var participant in participants)
             {
-                await userLeaderboardService.MarkAsWinner(participant.UserId);
-                await behavioursLeaderboardService.MarkAsWinner(participant.BotBehaviourId.ToString());
+                if (participant.UserId == message.WinnerUserId)
+                {
+                    await userLeaderboardService.MarkAsWinner(participant.UserId);
+                    await behavioursLeaderboardService.MarkAsWinner(participant.BotBehaviourId.ToString());
+
+                    Console.WriteLine("Updated leaderboards for the winner");
+                }
+                else
+                {
+                    await userLeaderboardService.MarkAsLoser(participant.UserId);
+                    await behavioursLeaderboardService.MarkAsLoser(participant.BotBehaviourId.ToString());
+
+                    Console.WriteLine("Updated leaderboards for a loser");
+                }
             }
-            else 
-            {
-                await userLeaderboardService.MarkAsLoser(participant.UserId);
-                await behavioursLeaderboardService.MarkAsLoser(participant.BotBehaviourId.ToString());
-            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"One or more errors while updating leaderboards for event {message.EventId}: " + ex);
         }
     }
 
