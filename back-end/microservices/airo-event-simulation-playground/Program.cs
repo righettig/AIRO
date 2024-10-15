@@ -32,6 +32,7 @@ static Participant CreateParticipant(string userId)
     var botId = Guid.NewGuid();
     var message = $"this is the behaviour for userId {userId}, botId {botId}";
     var script = $"Console.WriteLine(\"{message}\");";
+    //var script = "while (true) {}";
     var result = new Participant(userId, new Bot(botId, script));
     return result;
 }

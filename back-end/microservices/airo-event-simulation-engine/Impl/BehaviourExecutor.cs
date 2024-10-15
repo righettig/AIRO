@@ -15,10 +15,31 @@ public class BehaviourExecutor : IBehaviourExecutor
             .AddReferences(typeof(Console).Assembly)
             .AddImports("System");
 
-        await CSharpScript.EvaluateAsync(
-            behaviorScript,
-            globals: new SimulationState(),
-            options: scriptOptions,
-            cancellationToken: token);
+        // Create the execution task
+        var executionTask = Task.Run(async () =>
+        {
+            await CSharpScript.EvaluateAsync(
+                behaviorScript,
+                globals: new SimulationState(),
+                options: scriptOptions,
+                cancellationToken: token);
+        });
+
+        // Create a delay task for timeout
+        var timeoutTask = Task.Delay(TimeSpan.FromSeconds(5), token);
+
+        // Wait for either the execution to finish or the timeout
+        var completedTask = await Task.WhenAny(executionTask, timeoutTask);
+
+        if (completedTask == timeoutTask)
+        {
+            // Cancel the execution task
+            token.ThrowIfCancellationRequested(); // This throws an OperationCanceledException
+            throw new TimeoutException("Behavior execution timed out.");
+        }
+
+        // Await the execution task to propagate any exceptions
+        await executionTask;
     }
 }
+
