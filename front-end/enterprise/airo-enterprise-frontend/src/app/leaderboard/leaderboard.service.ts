@@ -3,7 +3,12 @@ import { Injectable } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { ConfigService } from '../common/services/config.service';
 
-export type BehaviourLeaderboardEntry = { id: string, wins: number, losses: number; totalEvents: number };
+export type BehaviourLeaderboardEntry = { 
+    id: string, 
+    wins: number, 
+    losses: number; 
+    totalEvents: number 
+};
 
 @Injectable({
     providedIn: 'root',
@@ -21,6 +26,7 @@ export class LeaderboardService {
         const response = await firstValueFrom(
             this.http.get<BehaviourLeaderboardEntry[]>(`${this.apiUrl}/leaderboard/top/${n}`)
         );
+
         return response;
     }
 }

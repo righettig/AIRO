@@ -4,17 +4,17 @@ using Microsoft.AspNetCore.Mvc;
 namespace airo_leaderboard_microservice.Users;
 
 [ApiController]
-[Route("api/leaderboard")]
+[Route("api/leaderboard/users")]
 public class UsersLeaderboardController(ILeaderboardReadService<UserLeaderboardEntry> leaderboardService) : ControllerBase
 {
-    [HttpGet("users/top/{n}")]
+    [HttpGet("top/{n}")]
     public async Task<IActionResult> GetTopUsers(int n)
     {
         var topUsers = await leaderboardService.GetTopNAsync(n);
         return Ok(topUsers);
     }
 
-    [HttpGet("users/{userId}")]
+    [HttpGet("{userId}")]
     public async Task<IActionResult> GetUserById(string userId)
     {
         var userEntry = await leaderboardService.GetByIdAsync(userId);

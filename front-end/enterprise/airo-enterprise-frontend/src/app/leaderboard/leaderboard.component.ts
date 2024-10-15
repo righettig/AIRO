@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LeaderboardService } from './leaderboard.service';
+import { BehaviourLeaderboardEntry, LeaderboardService } from './leaderboard.service';
 
 @Component({
   selector: 'app-leaderboard',
@@ -9,7 +9,7 @@ import { LeaderboardService } from './leaderboard.service';
   imports: []
 })
 export class LeaderboardComponent implements OnInit {
-  leaderboard!: any[];
+  leaderboard!: BehaviourLeaderboardEntry[];
 
   constructor(private readonly leaderboardService: LeaderboardService) {
   }

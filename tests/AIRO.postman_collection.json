@@ -2484,12 +2484,12 @@
 					"response": []
 				},
 				{
-					"name": "leaderboard - behaviours top n",
+					"name": "leaderboard - behaviors top n",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:4014/api/leaderboard/behaviours/top/5",
+							"raw": "http://localhost:4014/api/leaderboard/behaviors/top/5",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2498,7 +2498,7 @@
 							"path": [
 								"api",
 								"leaderboard",
-								"behaviours",
+								"behaviors",
 								"top",
 								"5"
 							]
@@ -2507,12 +2507,12 @@
 					"response": []
 				},
 				{
-					"name": "leaderboard - behaviours by Id",
+					"name": "leaderboard - behaviors by Id",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:4014/api/leaderboard/behaviours/behaviourId",
+							"raw": "http://localhost:4014/api/leaderboard/behaviors/behaviorId",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2521,8 +2521,8 @@
 							"path": [
 								"api",
 								"leaderboard",
-								"behaviours",
-								"behaviourId"
+								"behaviors",
+								"behaviorId"
 							]
 						}
 					},

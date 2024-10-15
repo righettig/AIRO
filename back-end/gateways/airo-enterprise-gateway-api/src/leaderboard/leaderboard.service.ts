@@ -17,7 +17,7 @@ export class LeaderboardService {
 
     async getBehaviourLeaderboardTopN(n: number): Promise<BehaviourLeaderboardResponse[]> {
         const response = await firstValueFrom(
-            this.httpService.get(`${this.serviceUrl}/api/leaderboard/behaviours/top/${n}`),
+            this.httpService.get(`${this.serviceUrl}/api/leaderboard/behaviors/top/${n}`),
         );
         return response.data;
     }

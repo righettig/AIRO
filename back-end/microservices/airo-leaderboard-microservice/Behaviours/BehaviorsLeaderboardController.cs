@@ -4,17 +4,17 @@ using Microsoft.AspNetCore.Mvc;
 namespace airo_leaderboard_microservice.Behaviours;
 
 [ApiController]
-[Route("api/leaderboard")]
+[Route("api/leaderboard/behaviors")]
 public class BehaviorsLeaderboardController(ILeaderboardReadService<BehaviourLeaderboardEntry> leaderboardService) : ControllerBase
 {
-    [HttpGet("behaviors/top/{n}")]
+    [HttpGet("top/{n}")]
     public async Task<IActionResult> GetTopBehaviors(int n)
     {
         var topBehaviors = await leaderboardService.GetTopNAsync(n);
         return Ok(topBehaviors);
     }
 
-    [HttpGet("behaviors/{behaviorId}")]
+    [HttpGet("{behaviorId}")]
     public async Task<IActionResult> GetBehaviorById(Guid behaviorId)
     {
         var behaviorEntry = await leaderboardService.GetByIdAsync(behaviorId.ToString());
