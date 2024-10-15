@@ -249,3 +249,6 @@ NEW
 It should be possible to "clone" a predefined behaviour
 
 It should be possible to download a behaviour from the leaderboard behavour (enterprise)
+
+Timeout for behavior execution 5 secs
+	log failure and move on
