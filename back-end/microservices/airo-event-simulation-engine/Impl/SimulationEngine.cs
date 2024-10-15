@@ -52,9 +52,22 @@ public class SimulationEngine(IBehaviourExecutor behaviourExecutor) : ISimulatio
 
         foreach (var p in simulation.Participants)
         {
-            await behaviourExecutor.Execute(p.Bot.BehaviorScript, token);
+            var executionTask = behaviourExecutor.Execute(p.Bot.BehaviorScript, token);
+            var timeoutTask = Task.Delay(TimeSpan.FromSeconds(5), token);
 
-            AddLog("Executed behaviour for bot: " + p.Bot.BotId);
+            var completedTask = await Task.WhenAny(executionTask, timeoutTask);
+
+            if (completedTask == timeoutTask)
+            {
+                // Log the timeout error
+                AddLog($"Error: Behavior execution for bot {p.Bot.BotId} timed out.");
+            }
+            else
+            {
+                // Await the execution task to propagate any exceptions
+                await executionTask;
+                AddLog("Executed behaviour for bot: " + p.Bot.BotId);
+            }
         }
 
         AddLog($"Turn finished");
