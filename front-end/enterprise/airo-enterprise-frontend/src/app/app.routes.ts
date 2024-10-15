@@ -6,6 +6,7 @@ import { NotAuthorizedComponent } from './not-authorized/not-authorized.componen
 import { MissionsComponent } from './missions/missions.component';
 import { AuthGuard } from './guards/auth.guard';
 import { LoginComponent } from './auth/components/login/login.component';
+import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/agents', pathMatch: 'full' },
@@ -15,4 +16,5 @@ export const routes: Routes = [
   { path: 'agents/:id', component: AgentDetailsComponent, canActivate: [AuthGuard] },
   { path: 'commands/:id', component: CommandsComponent, canActivate: [AuthGuard] },
   { path: 'missions/:id', component: MissionsComponent, canActivate: [AuthGuard] },
+  { path: 'leaderboard', component: LeaderboardComponent, canActivate: [AuthGuard] },
 ];

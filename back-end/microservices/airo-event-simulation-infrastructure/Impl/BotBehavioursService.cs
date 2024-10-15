@@ -7,9 +7,9 @@ record GetBehaviourbyIdResponse(Guid Id, string Name, string Code);
 
 public class BotBehavioursService(HttpClient httpClient) : IBotBehavioursService
 {
-    public async Task<string> GetBotBehaviour(Guid botBehaviourId)
+    public async Task<string> GetBotBehaviour(string userId, Guid botBehaviourId)
     {
-        var response = await httpClient.GetFromJsonAsync<GetBehaviourbyIdResponse>($"bot-behaviours/{botBehaviourId}");
+        var response = await httpClient.GetFromJsonAsync<GetBehaviourbyIdResponse>($"bot-behaviours/{userId}/{botBehaviourId}");
 
         if (response is null)
         {

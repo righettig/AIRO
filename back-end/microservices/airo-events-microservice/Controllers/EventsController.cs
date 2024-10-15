@@ -48,6 +48,9 @@ public class EventsController : ControllerBase
     public async Task<IActionResult> DeleteEvent(Guid id)
     {
         await _mediator.Send(new DeleteEventCommand(id));
+
+        _rabbitMQPublisherService.OnEventDeleted(id);
+
         return Ok();
     }
 
@@ -59,9 +62,12 @@ public class EventsController : ControllerBase
     }
 
     [HttpPost("{id}/complete")]
-    public async Task<IActionResult> CompleteEvent(Guid id)
+    public async Task<IActionResult> CompleteEvent(Guid id, [FromBody] CompleteEventRequest request)
     {
-        await _mediator.Send(new CompleteEventCommand(id));
+        await _mediator.Send(new CompleteEventCommand(id, request.WinnerUserId));
+
+        _rabbitMQPublisherService.OnEventCompleted(id, request.WinnerUserId);
+
         return Ok();
     }
 

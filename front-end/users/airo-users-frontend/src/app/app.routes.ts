@@ -11,6 +11,7 @@ import { EventLiveFeedComponent } from './home/components/events/components/even
 import { BotDetailsComponent } from './home/components/bots/components/bot-details/bot-details.component';
 import { BotBehavioursResolver } from './home/components/bots/resolvers/bot-behaviours.resolver';
 import { BotResolver } from './home/components/bots/resolvers/bot.resolver';
+import { LeaderboardComponent } from './home/components/leaderboard/leaderboard.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -19,6 +20,7 @@ export const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
+  { path: 'leaderboard', component: LeaderboardComponent, canActivate: [AuthGuard] },
   { path: 'events', component: EventsComponent, canActivate: [AuthGuard] },
   { path: 'event-live-feed/:eventId', component: EventLiveFeedComponent, canActivate: [AuthGuard] },
   { path: 'bots/:botId', 

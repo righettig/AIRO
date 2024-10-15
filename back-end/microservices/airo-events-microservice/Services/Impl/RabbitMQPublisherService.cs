@@ -14,6 +14,7 @@ public class RabbitMQPublisherService : IRabbitMQPublisherService
         var factory = new ConnectionFactory() { Uri = new Uri(rabbitMqUrl) };
         _connection = factory.CreateConnection();
         _channel = _connection.CreateModel();
+
         _channel.ExchangeDeclare(exchange: "events-exchange",
                                  type: "direct",
                                  durable: true);
@@ -23,15 +24,42 @@ public class RabbitMQPublisherService : IRabbitMQPublisherService
                               exclusive: false,
                               autoDelete: false);
 
+        _channel.QueueDeclare(queue: "event.completed-queue",
+                              durable: true,
+                              exclusive: false,
+                              autoDelete: false);
+
         _channel.QueueBind("event.created-queue", "events-exchange", "event.created");
+        _channel.QueueBind("event.completed-queue", "events-exchange", "event.completed");
+    }
+
+    public void OnEventCompleted(Guid eventId, string winnerUserId)
+    {
+        var messageJson = System.Text.Json.JsonSerializer.Serialize(new { eventId, winnerUserId });
+        var body = Encoding.UTF8.GetBytes(messageJson);
+
+        _channel.BasicPublish(exchange: "events-exchange",
+                              routingKey: "event.completed",
+                              body: body);
     }
 
     public void OnEventCreated(Guid eventId, DateTime scheduledAt)
     {
         var messageJson = System.Text.Json.JsonSerializer.Serialize(new { eventId, scheduledAt });
         var body = Encoding.UTF8.GetBytes(messageJson);
+
         _channel.BasicPublish(exchange: "events-exchange",
                               routingKey: "event.created",
+                              body: body);
+    }
+
+    public void OnEventDeleted(Guid eventId)
+    {
+        var messageJson = System.Text.Json.JsonSerializer.Serialize(new { eventId });
+        var body = Encoding.UTF8.GetBytes(messageJson);
+
+        _channel.BasicPublish(exchange: "events-exchange",
+                              routingKey: "event.deleted",
                               body: body);
     }
 }

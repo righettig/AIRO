@@ -4,6 +4,9 @@ import * as crypto from 'crypto';
 
 export type BotBehaviour = { id: string, userId?: string, name: string, code: string };
 
+// TODO: it should be possible to create a new behaviour starting from a predefined one. 
+// To be addressed in a dedicated user story. For now predefined behaviour are simply being ignored.
+// When cloning a predefined behaviour the current userId is set into the newly created userDefined.
 const predefined: BotBehaviour[] = [
     {
         id: 'b48f74dc-b0e8-4d3c-848a-88d3fee44242',
@@ -33,7 +36,7 @@ export class BotBehavioursRepository {
     }
 
     async getByUserId(userId: string): Promise<BotBehaviour[]> {
-        return userDefined.filter(el => !el.userId || el.userId === userId);
+        return userDefined.filter(el => el.userId === userId);
     }
 
     async create(userId: string, name: string, code: string): Promise<string> {
