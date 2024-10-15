@@ -54,7 +54,7 @@ public class SimulationEngine(IBehaviourExecutor behaviourExecutor) : ISimulatio
         {
             try
             {
-                await behaviourExecutor.Execute(p.Bot.BehaviorScript, token);
+                await behaviourExecutor.Execute(p.Bot.BehaviorScript, simulation.State, token);
                 AddLog("Executed behaviour for bot: " + p.Bot.BotId);
             }
             catch (TimeoutException)

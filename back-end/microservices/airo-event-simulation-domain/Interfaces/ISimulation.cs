@@ -7,6 +7,6 @@ public interface ISimulation
     Guid EventId { get; }
     Participant[] Participants { get; }
     ISimulationGoal Goal { get; }
-    ISimulationState State { get; }
+    ISimulationState State { get; set; }
     IWinnerTracker WinnerTracker { get; }
 }

@@ -11,6 +11,6 @@ public class Simulation(Guid eventId,
     public Guid EventId { get; } = eventId;
     public Participant[] Participants { get; } = participants;
     public ISimulationGoal Goal { get; } = goal;
-    public ISimulationState State { get; } = state;
+    public ISimulationState State { get; set; } = state;
     public IWinnerTracker WinnerTracker { get; } = winnerTracker;
 }
