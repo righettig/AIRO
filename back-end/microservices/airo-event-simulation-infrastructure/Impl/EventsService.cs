@@ -1,4 +1,5 @@
 ﻿using airo_event_simulation_infrastructure.Interfaces;
+using System.Net.Http.Json;
 
 namespace airo_event_simulation_infrastructure.Impl;
 
@@ -16,9 +17,9 @@ public class EventsService(HttpClient httpClient) : IEventsService
         }
     }
 
-    public async Task MarkEventAsCompletedAsync(Guid eventId)
+    public async Task MarkEventAsCompletedAsync(Guid eventId, string winnerUserId)
     {
-        var response = await _httpClient.PostAsync($"events/{eventId}/complete", null);
+        var response = await _httpClient.PostAsJsonAsync($"events/{eventId}/complete", new { winnerUserId });
 
         if (!response.IsSuccessStatusCode)
         {

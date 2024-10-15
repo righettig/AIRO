@@ -14,7 +14,7 @@ public class SimulationService(IBotBehavioursService botBehavioursRepository,
         var participants = await Task.WhenAll(
             (await eventSubscriptionService.GetParticipants(eventId))
                 .Select(async (x) => {
-                    var behaviorScript = await botBehavioursRepository.GetBotBehaviour(x.BotBehaviourId);
+                    var behaviorScript = await botBehavioursRepository.GetBotBehaviour(x.UserId, x.BotBehaviourId);
 
                     var bot = new Bot(x.BotId, behaviorScript);
 

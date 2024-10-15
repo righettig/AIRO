@@ -3,4 +3,5 @@
 public interface IJobScheduler
 {
     Task ScheduleEventStart(Guid eventId, DateTime scheduledAt);
+    Task DeleteScheduleEventStart(Guid eventId);
 }

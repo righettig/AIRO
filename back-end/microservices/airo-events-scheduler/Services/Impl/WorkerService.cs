@@ -1,4 +1,5 @@
-﻿using airo_events_scheduler.Services.Interfaces;
+﻿using airo_events_scheduler.Messages;
+using airo_events_scheduler.Services.Interfaces;
 using Microsoft.Extensions.Hosting;
 
 namespace airo_events_scheduler.Services.Impl;
@@ -9,16 +10,10 @@ public class WorkerService(IRabbitMQConsumerService rabbitMQConsumer, IJobSchedu
     {
         Console.WriteLine("WorkerService is starting...");
 
+        rabbitMQConsumer.EventCreatedReceived += OnEventCreatedReceived;
+        rabbitMQConsumer.EventDeletedReceived += OnEventDeletedReceived;
+
         rabbitMQConsumer.StartListening();
-
-        rabbitMQConsumer.EventCreatedReceived += async (sender, message) =>
-        {
-            Console.WriteLine($"Scheduling the event start.");
-            
-            await jobScheduler.ScheduleEventStart(message.EventId, message.ScheduledAt);
-
-            Console.WriteLine($"Scheduled event start at {message.ScheduledAt}.");
-        };
 
         return base.StartAsync(cancellationToken);
     }
@@ -40,5 +35,33 @@ public class WorkerService(IRabbitMQConsumerService rabbitMQConsumer, IJobSchedu
         rabbitMQConsumer.StopListening();
 
         return base.StopAsync(cancellationToken);
+    }
+
+    private async void OnEventCreatedReceived(object sender, EventCreatedMessage message)
+    {
+        Console.WriteLine($"Scheduling the event start.");
+
+        try
+        {
+            await jobScheduler.ScheduleEventStart(message.EventId, message.ScheduledAt);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Failure scheduling event start at {message.ScheduledAt}: " + ex);
+        }
+    }
+
+    private async void OnEventDeletedReceived(object sender, EventDeletedMessage message)
+    {
+        Console.WriteLine($"Deleting scheduled event start.");
+
+        try
+        {
+            await jobScheduler.DeleteScheduleEventStart(message.EventId);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Failure deleting scheduled event start {message.EventId}: " + ex);
+        }
     }
 }

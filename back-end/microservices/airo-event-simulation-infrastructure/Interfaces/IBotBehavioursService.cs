@@ -2,5 +2,5 @@
 
 public interface IBotBehavioursService
 {
-    Task<string> GetBotBehaviour(Guid botBehaviourId);
+    Task<string> GetBotBehaviour(string userId, Guid botBehaviourId);
 }

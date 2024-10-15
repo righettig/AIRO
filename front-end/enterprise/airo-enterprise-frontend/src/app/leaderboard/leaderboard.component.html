@@ -1,0 +1,18 @@
+<h1 style="text-align: center;">Global behaviours leaderboard</h1>
+
+<div class="container">
+    <ul style="list-style: none;">
+        @for (entry of leaderboard; track entry.id; let idx = $index) {
+        <li style="margin-bottom: 28px;">
+            <div style="font-size: 40px;">
+                #{{ idx }}
+                <span><strong>{{entry.id}}</strong></span>
+            </div>
+            <div style="font-size: 26px; text-align: center; padding-top: 8px;">
+                <!-- <span>Fullname {{entry.fullName}}</span> -->
+                <span>Wins {{entry.wins}}</span> - <span>Losses {{entry.losses}}</span> - <span>Total Events {{entry.totalEvents}}</span>
+            </div>
+        </li>
+        }
+    </ul>
+</div>
