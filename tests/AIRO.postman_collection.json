@@ -1389,12 +1389,12 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:3000/gateway/leaderboard/top/5",
+							"raw": "http://localhost:3002/gateway/leaderboard/top/5",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
-							"port": "3000",
+							"port": "3002",
 							"path": [
 								"gateway",
 								"leaderboard",
