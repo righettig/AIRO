@@ -23,7 +23,8 @@ Provides authentication for the AIRO Admin Front-end web application.
 
 ## Dependencies
 - Google Firebase API, Google Firestore API.
-- **Internal:** airo-common-lib (C# class library for shared utilities and common functionality).
+- **Internal:** No dependencies.
+- **Projects:** `airo-common-lib` (C# class library for shared utilities and common functionality).
 
 ## Message Queue Topics/Events
 - Not applicable.

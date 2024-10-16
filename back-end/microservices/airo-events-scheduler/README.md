@@ -18,7 +18,9 @@ This is the scheduler that triggers event execution based on the event scheduleA
 - This microservice does not expose any endpoints.
 
 ## Dependencies
-- No dependencies.
+- RabbitMq.
+- **Internal:** event-simulation-service.
+- **Projects:** No dependencies.
 
 ## Message Queue Topics/Events
 - **Subscribed Events:** `event.created` (eventId, scheduledAt). `event.deleted` (eventId).

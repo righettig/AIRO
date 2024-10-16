@@ -26,8 +26,9 @@ Provides CRUD endpoints to manage events.
 | GET    | `/api/events/{id}`          | Returns the event with the given id |
 
 ## Dependencies
-- EventStoreDb.
-- **Internal:** airo-events-domain (Domain model), airo-cqrs-eventsourcing-lib (CQRS/Event sourcing Framework).
+- EventStoreDb, RabbitMq.
+- **Internal:** No dependencies.
+- **Projects:** `airo-events-domain` (Domain model), `airo-cqrs-eventsourcing-lib` (CQRS/Event sourcing Framework).
 
 ## Message Queue Topics/Events
 - **Published Events:** `event.created` (eventId, scheduledAt). `event.deleted` (eventId). `event.completed` (eventId, winnerUserId).

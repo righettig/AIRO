@@ -23,7 +23,7 @@ Provides CRUD endpoints to manage user profiles.
 
 ## Dependencies
 - Firebase and Firestore.
-- **Internal:** airo-common-lib.
+- **Internal:** `airo-common-lib`.
 
 ## Message Queue Topics/Events
 - Not applicable.

@@ -24,7 +24,8 @@ Provides CRUD endpoints to manage subscriptions to events.
 
 ## Dependencies
 - EventStoreDb, RabbitMq.
-- **Internal:** airo-event-subscriptions-domain (Domain model), airo-cqrs-eventsourcing-lib (CQRS/Event sourcing Framework), purchase-service.
+- **Internal:** purchase-service.
+- **Projects:** `airo-event-subscriptions-domain` (Domain model), `airo-cqrs-eventsourcing-lib` (CQRS/Event sourcing Framework).
 
 ## Message Queue Topics/Events
 - **Published Events:** `event.subscribed` and `event.unsubscribed`. Both events include userId and eventId.

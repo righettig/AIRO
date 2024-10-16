@@ -25,7 +25,8 @@ Manages users and behaviours leaderboards.
 
 ## Dependencies
 - CosmosDb, Redis, RabbitMq.
-- **Internal:** event subscription API.
+- **Internal:** event-subscriptions-service.
+- **Projects:** No dependencies.
 
 ## Message Queue Topics/Events
 - **Subscribed Events:** Upon receiving this message `event.completed` all participants' data is retrieved. The corresponding entries in both Redis and CosmosDb are updated.

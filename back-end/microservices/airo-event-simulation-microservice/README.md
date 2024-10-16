@@ -27,7 +27,8 @@ Each behaviour has a maximum time to completion. If it takes longer than that a 
 
 ## Dependencies
 - No external dependencies.
-- **Internal:** the microservice has a dependency on the Events, Event subscriptions and Bot Behaviours microservices.
+- **Internal:** events-service, event-subscription-service, bot-behaviours-service.
+- **Projects:** `airo-event-simulation-domain`, `airo-event-simulation-engine`, `airo-event-simulation-infrastructure`.
 
 ## Message Queue Topics/Events
 - Not applicable.
@@ -36,8 +37,8 @@ Each behaviour has a maximum time to completion. If it takes longer than that a 
 - **Environment Variables:** `EVENTS_API_URL`, `EVENT_SUBSCRIPTION_API_URL`, `BOT_BEHAVIOURS_API_URL`
 
 ## Error Handling
-- Describe how errors are handled in this microservice.
-- Mention any specific logging or alerting mechanisms in place.
+- Basic error handling.
+- Uses both ILogger<> for internal logs and `ISimulationStatusTracker` to track simulation updates to users.
 
 ## Performance Considerations
 - C# bot behaviours scripts are executed using `CSharpScript.EvaluateAsync`. Worth considering alternatives.
