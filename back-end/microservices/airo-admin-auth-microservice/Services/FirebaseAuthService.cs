@@ -1,19 +1,11 @@
 ﻿using airo_admin_auth_microservice.Models;
 using Firebase.Auth;
-using Google.Cloud.Firestore;
 
 namespace airo_admin_auth_microservice.Services;
 
-public class FirebaseAuthService : IAuthService
+public class FirebaseAuthService(FirebaseAuthClient firebaseAuth) : IAuthService
 {
-    private readonly FirebaseAuthClient _firebaseAuth;
-    private readonly FirestoreDb _firestoreDb;
-
-    public FirebaseAuthService(FirebaseAuthClient firebaseAuth, FirestoreDb firestoreDb)
-    {
-        _firebaseAuth = firebaseAuth;
-        _firestoreDb = firestoreDb;
-    }
+    private readonly FirebaseAuthClient _firebaseAuth = firebaseAuth;
 
     public async Task<LoginResponse?> Login(string email, string password)
     {

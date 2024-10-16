@@ -26,7 +26,7 @@ public class SimulationService(IBotBehavioursService botBehavioursRepository,
                                         participants,
                                         //new TimeBasedGoal(TimeSpan.FromMinutes(1)),
                                         new TurnBasedGoal(2),
-                                        new SimulationState(),
+                                        new SimulationState(1),
                                         new RandomWinnerTracker());
 
         return simulation;

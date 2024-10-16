@@ -189,6 +189,11 @@ services:
       - "4100:8080" # https not working so far!
     volumes:
       - airo-admin-config-volume:/app/config
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   enterprise-auth-service:
     build:
