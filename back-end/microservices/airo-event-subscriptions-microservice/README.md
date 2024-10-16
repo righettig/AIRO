@@ -27,7 +27,7 @@ Provides CRUD endpoints to manage subscriptions to events.
 - **Internal:** airo-event-subscriptions-domain (Domain model), airo-cqrs-eventsourcing-lib (CQRS/Event sourcing Framework), purchase-service.
 
 ## Message Queue Topics/Events
-- Not applicable.
+- **Published Events:** `event.subscribed` and `event.unsubscribed`. Both events include userId and eventId.
 
 ## Configuration
 - **Environment Variables:** `EVENT_STORE_DB_URL`, `PURCHASE_API_URL`, `RABBITMQ_URL`

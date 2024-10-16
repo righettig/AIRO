@@ -24,12 +24,18 @@ public class RabbitMQPublisherService : IRabbitMQPublisherService
                               exclusive: false,
                               autoDelete: false);
 
+        _channel.QueueDeclare(queue: "event.deleted-queue",
+                              durable: true,
+                              exclusive: false,
+                              autoDelete: false);
+
         _channel.QueueDeclare(queue: "event.completed-queue",
                               durable: true,
                               exclusive: false,
                               autoDelete: false);
 
         _channel.QueueBind("event.created-queue", "events-exchange", "event.created");
+        _channel.QueueBind("event.deleted-queue", "events-exchange", "event.deleted");
         _channel.QueueBind("event.completed-queue", "events-exchange", "event.completed");
     }
 

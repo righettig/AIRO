@@ -56,6 +56,7 @@ Each behaviour has a maximum time to completion. If it takes longer than that a 
 - Expose an interface for bot behaviours to use to return moves.
 - Simulation state should be updated according to each bot behaviour's move at the end of the simulation turn.
 - Introduce simulation logic (rules, etc.).
+- TimeBasedGoal should use ITimeProvider
 
 ## Maintainers
 - **Primary Contact:** Giacomo Righetti, righettig@outlook.com
