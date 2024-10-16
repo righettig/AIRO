@@ -23,7 +23,7 @@ Allows users to purchase bots.
 ## Dependencies
 - EventStoreDb.
 - **Internal:** No dependencies.
-- **Internal:** `airo-purchase-domain` (Domain model), `airo-cqrs-eventsourcing-lib` (CQRS/Event sourcing Framework).
+- **Projects:** `airo-purchase-domain` (Domain model), `airo-cqrs-eventsourcing-lib` (CQRS/Event sourcing Framework).
 
 ## Message Queue Topics/Events
 - Not applicable.
