@@ -1538,6 +1538,25 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "auth - health",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4000/health",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"health"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -1719,6 +1738,25 @@
 									"key": "uid",
 									"value": "T7E6tWp3uPToEoZqpaOUd2gR3bv1"
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "profile - health",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4001/health",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4001",
+							"path": [
+								"health"
 							]
 						}
 					},
