@@ -1,6 +1,6 @@
 ﻿using airo_auth_microservice.DTOs;
 
-namespace airo_auth_microservice.Services;
+namespace airo_auth_microservice.Services.Interfaces;
 
 public interface IAuthService
 {

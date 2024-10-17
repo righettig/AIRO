@@ -1,5 +1,5 @@
 using airo_auth_microservice.DTOs;
-using airo_auth_microservice.Services;
+using airo_auth_microservice.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace airo_auth_microservice.Controllers;

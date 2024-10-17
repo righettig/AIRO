@@ -1,7 +1,8 @@
-﻿using RabbitMQ.Client;
+﻿using airo_auth_microservice.Services.Interfaces;
+using RabbitMQ.Client;
 using System.Text;
 
-namespace airo_auth_microservice.Services;
+namespace airo_auth_microservice.Services.Impl;
 
 public class RabbitMQPublisherService : IRabbitMQPublisherService
 {
@@ -14,7 +15,7 @@ public class RabbitMQPublisherService : IRabbitMQPublisherService
         _connection = factory.CreateConnection();
         _channel = _connection.CreateModel();
         _channel.ExchangeDeclare(exchange: "auth-exchange",
-                                 type: "direct", 
+                                 type: "direct",
                                  durable: true);
     }
 

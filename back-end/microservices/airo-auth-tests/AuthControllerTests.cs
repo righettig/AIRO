@@ -1,6 +1,6 @@
 ﻿using airo_auth_microservice.Controllers;
 using airo_auth_microservice.DTOs;
-using airo_auth_microservice.Services;
+using airo_auth_microservice.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;

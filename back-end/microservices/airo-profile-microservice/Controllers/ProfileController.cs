@@ -1,5 +1,5 @@
 using airo_profile_microservice.Models.DTOs;
-using airo_profile_microservice.Services;
+using airo_profile_microservice.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace airo_profile_microservice.Controllers;

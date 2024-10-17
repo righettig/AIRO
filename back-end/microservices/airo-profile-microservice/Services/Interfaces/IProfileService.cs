@@ -1,6 +1,6 @@
 ﻿using airo_profile_microservice.Models;
 
-namespace airo_profile_microservice.Services;
+namespace airo_profile_microservice.Services.Interfaces;
 
 public interface IProfileService
 {

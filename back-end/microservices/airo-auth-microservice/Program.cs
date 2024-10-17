@@ -1,4 +1,5 @@
-using airo_auth_microservice.Services;
+using airo_auth_microservice.Services.Impl;
+using airo_auth_microservice.Services.Interfaces;
 using airo_common_lib.Extensions;
 using airo_common_lib.HealthChecks;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -16,6 +17,7 @@ builder.Services.AddFirebaseAndFirestore(firebaseConfigFile, firebaseProjectName
 
 // Add custom Firebase Authentication service
 builder.Services.AddSingleton<IAuthService, FirebaseAuthService>();
+builder.Services.AddSingleton<IUserRolesRepository, FirestoreUserRolesRepository>();
 
 // Set up JWT Bearer authentication
 builder.Services.AddJWTBearerAuthentication(firebaseProjectName, builder.Configuration["JWT_AUTHORITY"]);
