@@ -52,7 +52,6 @@ Provides authentication for the AIRO Admin Front-end web application.
 ## Future Improvements
 - Make sure this microservice can run in isolation from Visual Studio. This requires all environment variables to be available from appsettings.json.
 - LoginRequest should enforce validation on Email, Password. This is currently being done at the gateway level but as best practice I should perform checks on each microservice.
-- Add unit test coverage (AuthController, FirebaseAuthService). FirebaseAuthService should rely on interfaces rather than concrete classes, hence consider using IFirebaseAuthClient instead of FirebaseAuthClient. For the same reason introduce a wrapper for FirestoreDb.
 
 ## Maintainers
 - **Primary Contact:** Giacomo Righetti, righettig@outlook.com
