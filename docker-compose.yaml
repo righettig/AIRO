@@ -447,6 +447,8 @@ services:
         condition: service_healthy
       cosmosdb:
         condition: service_healthy
+      event-subscriptions-service:
+        condition: service_started
     build:
       context: .
       dockerfile: ./back-end/microservices/airo-leaderboard-microservice/Dockerfile

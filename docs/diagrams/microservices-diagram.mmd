@@ -1,0 +1,44 @@
+graph LR
+  subgraph Microservices
+    auth-service --> rabbitmq
+    auth-service --> firebase
+    auth-service --> firestore
+    admin-auth-service --> firebase
+    admin-auth-service --> firestore
+    enterprise-auth-service --> firebase
+    enterprise-auth-service --> firestore
+    profile-service --> firebase
+    profile-service --> firestore
+    bots-service --> eventstore.db
+    events-service --> rabbitmq
+    events-service --> eventstore.db
+    event-subscription-service --> purchase-service
+    event-subscription-service --> rabbitmq
+    event-subscription-service --> eventstore.db
+    event-simulation-service --> events-service
+    event-simulation-service --> event-subscription-service
+    event-simulation-service --> bot-behaviours-service
+    purchase-service --> eventstore.db
+    billing-service --> mongodb
+    billing-service --> rabbitmq
+    invoicing-service --> profile-service
+    invoicing-service --> mongodb
+    invoicing-service --> rabbitmq
+    notifications-service --> profile-service
+    notifications-service --> events-service
+    notifications-service --> rabbitmq
+    notifications-service --> sendgrid
+    ui-notifications-service --> events-service
+    ui-notifications-service --> rabbitmq
+    ui-notifications-service --> cosmosdb
+    notification-processor-service --> eventstore.db
+    notification-processor-service --> rabbitmq
+    leaderboard-service --> redis
+    leaderboard-service --> rabbitmq
+    leaderboard-service --> cosmosdb
+    leaderboard-service --> event-subscriptions-service
+  end
+
+  subgraph External_APIs
+    anybotics-service --> enterprise-auth-service
+  end
