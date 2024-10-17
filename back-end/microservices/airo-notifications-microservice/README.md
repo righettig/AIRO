@@ -30,7 +30,7 @@ Manages all email notifications.
 
 ## Error Handling
 - Exception handling in the services.
-- **Logging:** Logging via console.log statements..
+- **Logging:** Logging via console.log statements.
 
 ## Performance Considerations
 - Nothing to report.
