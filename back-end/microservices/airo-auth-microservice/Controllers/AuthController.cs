@@ -1,4 +1,4 @@
-using airo_auth_microservice.Models;
+using airo_auth_microservice.DTOs;
 using airo_auth_microservice.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -64,10 +64,10 @@ public class AuthController(IAuthService authService,
         var newToken = await authService.RefreshToken();
 
         logger.LogInformation("Token refreshed successfully.");
-        return Ok(new { token = newToken });
+
+        return Ok(new RefreshTokenResponse(newToken));
     }
 
-    // TODO: email should be extracted from token
     [HttpGet("user-role")]
     public async Task<IActionResult> GetUserRole([FromQuery] string email)
     {
@@ -78,7 +78,7 @@ public class AuthController(IAuthService authService,
         if (role != null)
         {
             logger.LogInformation("User role found for email: {Email}", email);
-            return Ok(new { role });
+            return Ok(new GetUserRoleResponse(role));
         }
 
         logger.LogWarning("User role not found for email: {Email}", email);

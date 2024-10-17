@@ -1,4 +1,4 @@
-﻿using airo_auth_microservice.Models;
+﻿using airo_auth_microservice.DTOs;
 using Firebase.Auth;
 using Google.Cloud.Firestore;
 
