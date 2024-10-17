@@ -51,8 +51,12 @@ public class AuthController(IAuthService authService,
     [HttpPost("logout")]
     public IActionResult Logout()
     {
+        logger.LogInformation("Logout attempt.");
+
         authService.SignOut();
+        
         logger.LogInformation("User logged out.");
+        
         return Ok();
     }
 
