@@ -28,7 +28,7 @@ public class EventsControllerTests
     public async Task CreateEvent_ShouldReturnOkWithEventId()
     {
         // Arrange
-        var request = new CreateEventRequest(Name: "Test Event", Description: "Test Description", ScheduledAt: DateTime.Now);
+        var request = new CreateEventRequest(Name: "Test Event", Description: "Test Description", ScheduledAt: DateTime.Now.AddDays(1));
         var eventId = Guid.NewGuid();
         _mediatorMock
             .Setup(m => m.Send(It.IsAny<CreateEventCommand>(), default))
