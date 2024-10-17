@@ -6,10 +6,10 @@ namespace airo_auth_microservice.Services;
 
 public class FirebaseAuthService : IAuthService
 {
-    private readonly FirebaseAuthClient _firebaseAuth;
+    private readonly IFirebaseAuthClient _firebaseAuth;
     private readonly FirestoreDb _firestoreDb;
 
-    public FirebaseAuthService(FirebaseAuthClient firebaseAuth, FirestoreDb firestoreDb)
+    public FirebaseAuthService(IFirebaseAuthClient firebaseAuth, FirestoreDb firestoreDb)
     {
         _firebaseAuth = firebaseAuth;
         _firestoreDb = firestoreDb;

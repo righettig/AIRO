@@ -24,7 +24,7 @@ public static class FirebaseExtensions
 
     public static void AddFirebaseAuthClient(this IServiceCollection services, string firebaseApiKey, string firebaseProjectName)
     {
-        services.AddSingleton(new FirebaseAuthClient(new FirebaseAuthConfig
+        services.AddSingleton<IFirebaseAuthClient>(new FirebaseAuthClient(new FirebaseAuthConfig
         {
             ApiKey = firebaseApiKey,
             AuthDomain = $"{firebaseProjectName}.firebaseapp.com",

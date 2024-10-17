@@ -3,9 +3,9 @@ using Firebase.Auth;
 
 namespace airo_admin_auth_microservice.Services;
 
-public class FirebaseAuthService(FirebaseAuthClient firebaseAuth) : IAuthService
+public class FirebaseAuthService(IFirebaseAuthClient firebaseAuth) : IAuthService
 {
-    private readonly FirebaseAuthClient _firebaseAuth = firebaseAuth;
+    private readonly IFirebaseAuthClient _firebaseAuth = firebaseAuth;
 
     public async Task<LoginResponse?> Login(string email, string password)
     {
