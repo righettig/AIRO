@@ -1,34 +1,29 @@
 ﻿namespace airo_event_simulation_microservice;
 
-public class SimulationHostedService : BackgroundService
+public class SimulationHostedService(IBackgroundTaskQueue taskQueue,
+                                     ILogger<SimulationHostedService> logger) : BackgroundService
 {
-    private readonly IBackgroundTaskQueue _taskQueue;
-    private readonly ILogger<SimulationHostedService> _logger;
-
-    public SimulationHostedService(IBackgroundTaskQueue taskQueue, ILogger<SimulationHostedService> logger)
-    {
-        _taskQueue = taskQueue;
-        _logger = logger;
-    }
-
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         while (!stoppingToken.IsCancellationRequested)
         {
-            var workItem = await _taskQueue.DequeueAsync(stoppingToken);
+            var workItem = await taskQueue.DequeueAsync(stoppingToken);
 
             try
             {
-                await workItem(stoppingToken);
+                await workItem(stoppingToken); // TODO: stoppingToken is not being used internally
             }
-            catch (OperationCanceledException)
+            catch (OperationCanceledException) // this is thrown when TryCancelSimulation is invoked
             {
-                _logger.LogInformation("Simulation task was canceled.");
+                logger.LogInformation("Simulation task was canceled.");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error occurred executing simulation task.");
+                logger.LogError(ex, "Error occurred executing simulation task.");
             }
         }
+
+        // Cancel all simulations
+        taskQueue.TryCancelSimulations();
     }
 }

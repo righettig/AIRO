@@ -19,11 +19,11 @@ public class SimulationTaskQueue : IBackgroundTaskQueue
     public async Task<Func<CancellationToken, Task>> DequeueAsync(CancellationToken cancellationToken)
     {
         await _signal.WaitAsync(cancellationToken);
-        _workItems.TryDequeue(out var workItem);
+        _workItems.TryDequeue(out var workItemEntry);
         return async token =>
         {
-            await workItem.workItem(_cancellationTokens[workItem.eventId].Token);
-            _cancellationTokens.TryRemove(workItem.eventId, out _);
+            await workItemEntry.workItem(_cancellationTokens[workItemEntry.eventId].Token);
+            _cancellationTokens.TryRemove(workItemEntry.eventId, out _);
         };
     }
 
@@ -35,5 +35,13 @@ public class SimulationTaskQueue : IBackgroundTaskQueue
             return true;
         }
         return false;
+    }
+
+    public void TryCancelSimulations()
+    {
+        foreach (var item in _cancellationTokens)
+        {
+            TryCancelSimulation(item.Key);
+        }
     }
 }

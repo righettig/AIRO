@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\airo-event-simulation-domain\airo-event-simulation-domain.csproj" />
     <ProjectReference Include="..\airo-event-simulation-infrastructure\airo-event-simulation-infrastructure.csproj" />
+    <ProjectReference Include="..\airo-event-simulation-microservice\airo-event-simulation-microservice.csproj" />
   </ItemGroup>
 
   <ItemGroup>
