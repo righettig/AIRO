@@ -86,6 +86,24 @@ Upgrade account for free users
 	If OK email confirmation received (& billing starts)
 	If NOT OK show error 
 	
+	I should have been billed (email)
+	I should see an invoice in my profile
+	I should log in and see my account as "Pro". I should also be able to purchase more bots
+	
+
+Cancel membership for PRO users
+------------------------------
+	Profile -> Membership section
+	Cancel membership
+	If OK email confirmation received
+	If NOT OK show error 
+	
+	I should log in and see my account as "Free". I should no longer be able to purchase more bots
+		What happens if I have already purchased additional bots?
+			List them as inactive (only first one) should be active
+	
+	[PRO features should still be available until the end of the billing cycle]	
+
 
 Billing (monthly) for pro users
 -------------------------------
@@ -103,12 +121,14 @@ Download invoices
 
 Pricing page
 -------------
-	TODO
-	
+	As a Free consumer user 
+	I should be able to see a Pricing page where the differences with the Free version are listed
+	I should be able to click Upgrade
+		
 
 Delete account
 --------------
-	UI: delete account
+	As a consumer user I should be able to delete my account
 	Upon confirmation, deactivate account
 	I should no longer be able to log-in
 	Data is preserved
@@ -154,7 +174,7 @@ Define bot behaviour
 	Info like event name, description and subscribe link should be in the email
 
 
-Leaderboards [WIP]
+Leaderboards [DONE]
 ------------
 
 
@@ -250,5 +270,31 @@ It should be possible to "clone" a predefined behaviour
 
 It should be possible to download a behaviour from the leaderboard behavour (enterprise)
 
-Timeout for behavior execution 5 secs
-	log failure and move on
+As an admin user I should be able to specify bot specs when creating a new bot
+
+As a consumer user I should be able to see the bot specs
+
+As an admin user I should be able to link a map to an event
+
+As a consumer user I should be able to see the map from the live feed page
+
+I should be able to define bot behaviours using different languages (Python, LUA, etc.)
+	pick language from dropdown
+
+I should be able to enter my bot behaviour by implementing code that satisfy: 
+	ISimulationAction DoMove(IWorldState state, IBot bot);
+	
+	public interface IGameAction
+    {
+    }
+
+	Hold
+	
+	public class MoveAction : IGameAction
+    {
+        public Direction Direction { get; }
+
+        public MoveAction(Direction direction) => Direction = direction;
+    }
+	
+	Assign bot to spawn point

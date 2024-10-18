@@ -23,8 +23,10 @@ public class SimulationEngine(IBehaviourExecutor behaviourExecutor) : ISimulatio
                 stateUpdater.UpdateState(simulation);
             }
         }
-        catch (Exception ex)
+        catch (Exception ex) 
         {
+            // Since ExecuteTurnAsync catches all exceptions this can only be caused by either UpdateState or IsSimulationComplete 
+
             AddLog($"Error during simulation: {ex.Message}");
             return new SimulationResult(Success: false, ErrorMessage: ex.Message);
         }
@@ -52,9 +54,19 @@ public class SimulationEngine(IBehaviourExecutor behaviourExecutor) : ISimulatio
 
         foreach (var p in simulation.Participants)
         {
-            await behaviourExecutor.Execute(p.Bot.BehaviorScript, token);
-
-            AddLog("Executed behaviour for bot: " + p.Bot.BotId);
+            try
+            {
+                await behaviourExecutor.Execute(p.Bot.BehaviorScript, simulation.State, token);
+                AddLog("Executed behaviour for bot: " + p.Bot.BotId);
+            }
+            catch (TimeoutException)
+            {
+                AddLog($"Error: Behavior execution for bot {p.Bot.BotId} timed out.");
+            }
+            catch (Exception ex)
+            {
+                AddLog($"Error executing behavior for bot {p.Bot.BotId}: {ex.Message}");
+            }
         }
 
         AddLog($"Turn finished");

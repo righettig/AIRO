@@ -1,4 +1,4 @@
-﻿using airo_admin_auth_microservice.Models;
+﻿using airo_admin_auth_microservice.DTOs;
 
 namespace airo_admin_auth_microservice.Services;
 

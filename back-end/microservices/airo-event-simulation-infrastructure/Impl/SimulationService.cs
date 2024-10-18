@@ -2,6 +2,7 @@
 using airo_event_simulation_domain.Impl.Simulation;
 using airo_event_simulation_domain.Impl.SimulationGoals;
 using airo_event_simulation_domain.Impl.WinnerTrackers;
+using airo_event_simulation_domain.Interfaces;
 using airo_event_simulation_infrastructure.Interfaces;
 
 namespace airo_event_simulation_infrastructure.Impl;
@@ -9,7 +10,7 @@ namespace airo_event_simulation_infrastructure.Impl;
 public class SimulationService(IBotBehavioursService botBehavioursRepository,
                                IEventSubscriptionService eventSubscriptionService) : ISimulationService
 {
-    public async Task<Simulation> LoadSimulation(Guid eventId)
+    public async Task<ISimulation> LoadSimulation(Guid eventId)
     {
         var participants = await Task.WhenAll(
             (await eventSubscriptionService.GetParticipants(eventId))
@@ -26,7 +27,7 @@ public class SimulationService(IBotBehavioursService botBehavioursRepository,
                                         participants,
                                         //new TimeBasedGoal(TimeSpan.FromMinutes(1)),
                                         new TurnBasedGoal(2),
-                                        new SimulationState(),
+                                        new SimulationState(1),
                                         new RandomWinnerTracker());
 
         return simulation;
