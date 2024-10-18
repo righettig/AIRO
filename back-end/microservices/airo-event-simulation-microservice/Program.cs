@@ -43,6 +43,8 @@ builder.Services.AddHttpClient<IBotBehavioursService, BotBehavioursService>(clie
 
 builder.Services.AddTransient<ISimulationEngine, SimulationEngine>();
 
+builder.Services.AddControllers();
+
 var app = builder.Build();
 
 app.MapControllers();
