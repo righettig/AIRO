@@ -105,12 +105,4 @@ public class CacheSyncServiceTests
         feedResponseMock.Setup(r => r.GetEnumerator()).Returns(items.GetEnumerator());
         return feedResponseMock.Object;
     }
-
-    private class LeaderboardEntry : ILeaderboardEntry
-    {
-        public required string Id { get; set; }
-        public int Wins { get; set; }
-        public int Losses { get; set; }
-        public int TotalEvents { get; set; }
-    }
 }
