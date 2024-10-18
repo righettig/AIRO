@@ -75,9 +75,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{D1C90981-902C-4B13-B885-2216179F966A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "airo-admin-auth-tests", "airo-admin-auth-tests\airo-admin-auth-tests.csproj", "{293CCD62-AEEC-4062-915E-E7899431718D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "airo-admin-auth-tests", "airo-admin-auth-tests\airo-admin-auth-tests.csproj", "{293CCD62-AEEC-4062-915E-E7899431718D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "airo-auth-tests", "airo-auth-tests\airo-auth-tests.csproj", "{3D7A83E2-BAA8-480F-8C73-A200614B247D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "airo-auth-tests", "airo-auth-tests\airo-auth-tests.csproj", "{3D7A83E2-BAA8-480F-8C73-A200614B247D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "airo-event-subscriptions-tests", "airo-event-subscriptions-tests\airo-event-subscriptions-tests.csproj", "{39DB1E57-5515-4D34-9D77-AD5135BA29C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -189,6 +191,10 @@ Global
 		{3D7A83E2-BAA8-480F-8C73-A200614B247D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D7A83E2-BAA8-480F-8C73-A200614B247D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D7A83E2-BAA8-480F-8C73-A200614B247D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39DB1E57-5515-4D34-9D77-AD5135BA29C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39DB1E57-5515-4D34-9D77-AD5135BA29C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39DB1E57-5515-4D34-9D77-AD5135BA29C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39DB1E57-5515-4D34-9D77-AD5135BA29C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -220,6 +226,7 @@ Global
 		{F243528F-E78D-4F9A-A1FE-B206BE3A70A1} = {52EEE915-6D02-4616-BB9B-C6AFB716DE53}
 		{293CCD62-AEEC-4062-915E-E7899431718D} = {DD129CD3-0430-4240-BBC3-B875AC242964}
 		{3D7A83E2-BAA8-480F-8C73-A200614B247D} = {DD129CD3-0430-4240-BBC3-B875AC242964}
+		{39DB1E57-5515-4D34-9D77-AD5135BA29C8} = {E699605B-ECD7-4C8C-AB8B-B0254597982D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {919F5805-3223-46B9-8C08-BDC0559A7492}
