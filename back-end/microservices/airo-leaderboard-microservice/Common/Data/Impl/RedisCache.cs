@@ -8,7 +8,7 @@ public class RedisCache<T>(IConnectionMultiplexer connection, string prefix) : I
 {
     private readonly IDatabase _database = connection.GetDatabase();
 
-    public Task<T> GetEntryAsync(string id)
+    public Task<T?> GetEntryAsync(string id)
     {
         return GetEntryFromKeyAsync($"{prefix}:{id}");
     }
@@ -28,7 +28,7 @@ public class RedisCache<T>(IConnectionMultiplexer connection, string prefix) : I
         await _database.StringSetAsync($"{prefix}:{entry.Id}", json);
     }
 
-    private async Task<T> GetEntryFromKeyAsync(string key)
+    private async Task<T?> GetEntryFromKeyAsync(string key)
     {
         var entry = await _database.StringGetAsync(key);
         return entry.IsNull ? default : JsonSerializer.Deserialize<T>(entry);

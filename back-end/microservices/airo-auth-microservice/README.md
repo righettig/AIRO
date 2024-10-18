@@ -56,7 +56,6 @@ Provides authentication for the AIRO Consumer Front-end web application.
 - Make sure this microservice can run in isolation from Visual Studio. This requires all environment variables to be available from appsettings.json.
 - SignupRequest/LoginRequest should enforce validation on Email, Password. This is currently being done at the gateway level but as best practice I should perform checks on each microservice.
 - Improve logging.
-- Add unit test coverage (AuthController, FirebaseAuthService). FirebaseAuthService should rely on interfaces rather than concrete classes, hence consider using IFirebaseAuthClient instead of FirebaseAuthClient. For the same reason introduce a wrapper for FirestoreDb.
 - Consider whether I also need to test RabbitMq health as well as part of the health check.
 
 ## Maintainers

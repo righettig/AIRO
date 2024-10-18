@@ -1,4 +1,4 @@
-using airo_admin_auth_microservice.Models;
+using airo_admin_auth_microservice.DTOs;
 using airo_admin_auth_microservice.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,8 +28,12 @@ public class AuthController(IAuthService authService, ILogger<AuthController> lo
     [HttpPost("logout")]
     public IActionResult Logout()
     {
+        logger.LogInformation("Logout attempt.");
+        
         authService.SignOut();
+
         logger.LogInformation("User logged out.");
+        
         return Ok();
     }
 
@@ -41,6 +45,7 @@ public class AuthController(IAuthService authService, ILogger<AuthController> lo
         var newToken = await authService.RefreshToken();
 
         logger.LogInformation("Token refreshed: {Token}", newToken);
-        return Ok(new { token = newToken });
+        
+        return Ok(new RefreshTokenResponse(newToken));
     }
 }

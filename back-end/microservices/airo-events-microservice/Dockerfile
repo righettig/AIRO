@@ -15,12 +15,14 @@ WORKDIR /src
 COPY ${PROJECT_PATH}/${PROJECT_NAME}.csproj ${PROJECT_NAME}/
 COPY ${BASE_PATH}/airo-cqrs-eventsourcing-lib/airo-cqrs-eventsourcing-lib.csproj airo-cqrs-eventsourcing-lib/
 COPY ${BASE_PATH}/airo-events-domain/airo-events-domain.csproj airo-events-domain/
+COPY ${BASE_PATH}/airo-common-lib/airo-common-lib.csproj airo-common-lib/
 RUN dotnet restore ${PROJECT_NAME}/${PROJECT_NAME}.csproj
 
 # Copy the rest of the source code
 COPY ${PROJECT_PATH}/ ${PROJECT_NAME}/
 COPY ${BASE_PATH}/airo-cqrs-eventsourcing-lib/ airo-cqrs-eventsourcing-lib/
 COPY ${BASE_PATH}/airo-events-domain/ airo-events-domain/
+COPY ${BASE_PATH}/airo-common-lib/ airo-common-lib/
 
 # Build and publish the service
 RUN dotnet publish ${PROJECT_NAME}/${PROJECT_NAME}.csproj -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false

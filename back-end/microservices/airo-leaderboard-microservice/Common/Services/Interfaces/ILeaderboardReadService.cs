@@ -3,5 +3,5 @@
 public interface ILeaderboardReadService<T>
 {
     Task<List<T>> GetTopNAsync(int n);
-    Task<T> GetByIdAsync(string id);
+    Task<T?> GetByIdAsync(string id);
 }

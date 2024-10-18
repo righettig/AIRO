@@ -1,10 +1,11 @@
-﻿using airo_event_simulation_domain.Interfaces;
+﻿using airo_common_lib.Time;
+using airo_event_simulation_domain.Interfaces;
 
 namespace airo_event_simulation_domain.Impl.SimulationGoals;
 
-public class TimeBasedGoal(TimeSpan duration) : ISimulationGoal
+public class TimeBasedGoal(TimeSpan duration, ITimeProvider timeProvider) : ISimulationGoal
 {
-    private readonly DateTime endTime = DateTime.Now.Add(duration);
+    private readonly DateTime endTime = timeProvider.Now.Add(duration);
 
-    public bool IsSimulationComplete(ISimulation simulation) => DateTime.Now >= endTime;
+    public bool IsSimulationComplete(ISimulation simulation) => timeProvider.Now >= endTime;
 }

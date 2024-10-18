@@ -10,18 +10,25 @@ public class CacheSyncService<T>(Container cosmosDbContainer, IRedisCache<T> red
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        var query = _cosmosDbContainer.GetItemQueryIterator<T>("SELECT * FROM c");
-
-        while (query.HasMoreResults)
+        try 
         {
-            foreach (var entry in await query.ReadNextAsync(stoppingToken))
-            {
-                Console.WriteLine($"Reading {entry.Id} from cosmosb: {entry.Wins}, {entry.Losses}, {entry.TotalEvents}.");
-                
-                await _redis.SetEntryAsync(entry);
+            var query = _cosmosDbContainer.GetItemQueryIterator<T>("SELECT * FROM c");
 
-                Console.WriteLine($"Entry {entry.Id} written in RedisCache.");
+            while (query.HasMoreResults)
+            {
+                foreach (var entry in await query.ReadNextAsync(stoppingToken))
+                {
+                    Console.WriteLine($"Reading {entry.Id} from cosmosb: {entry.Wins}, {entry.Losses}, {entry.TotalEvents}.");
+
+                    await _redis.SetEntryAsync(entry);
+
+                    Console.WriteLine($"Entry {entry.Id} written in RedisCache.");
+                }
             }
+        }
+        catch (CosmosException e) 
+        {
+            Console.WriteLine($"An error occurred while synching RedisCache with CosmosDB: " + e);
         }
     }
 }

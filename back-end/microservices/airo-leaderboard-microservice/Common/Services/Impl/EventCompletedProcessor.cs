@@ -13,9 +13,9 @@ public class EventCompletedProcessor(ILeaderboardWriteService<UserLeaderboardEnt
     {
         var participants = await FetchParticipantsAsync(message.EventId);
 
-        try
+        foreach (var participant in participants)
         {
-            foreach (var participant in participants)
+            try
             {
                 if (participant.UserId == message.WinnerUserId)
                 {
@@ -32,10 +32,10 @@ public class EventCompletedProcessor(ILeaderboardWriteService<UserLeaderboardEnt
                     Console.WriteLine("Updated leaderboards for a loser");
                 }
             }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"One or more errors while updating leaderboards for event {message.EventId}: " + ex);
+            catch (Exception ex)
+            {
+                Console.WriteLine($"One or more errors while updating leaderboards for event {message.EventId}: " + ex);
+            }
         }
     }
 

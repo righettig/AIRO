@@ -1,3 +1,4 @@
+using airo_common_lib.Time;
 using airo_events_microservice.Controllers;
 using airo_events_microservice.Domain.Read;
 using airo_events_microservice.Domain.Read.Queries;
@@ -14,21 +15,27 @@ public class EventsControllerTests
 {
     private readonly Mock<IMediator> _mediatorMock;
     private readonly Mock<IRabbitMQPublisherService> _rabbitMQPublisherServiceMock;
+    private readonly Mock<ITimeProvider> _timeProviderMock;
+
     private readonly EventsController _controller;
 
     public EventsControllerTests()
     {
         _mediatorMock = new Mock<IMediator>();
         _rabbitMQPublisherServiceMock = new Mock<IRabbitMQPublisherService>();
+        _timeProviderMock = new Mock<ITimeProvider>();
 
-        _controller = new EventsController(_mediatorMock.Object, _rabbitMQPublisherServiceMock.Object);
+        _controller = new EventsController(
+            _mediatorMock.Object, 
+            _rabbitMQPublisherServiceMock.Object,
+            _timeProviderMock.Object);
     }
 
     [Fact]
     public async Task CreateEvent_ShouldReturnOkWithEventId()
     {
         // Arrange
-        var request = new CreateEventRequest(Name: "Test Event", Description: "Test Description", ScheduledAt: DateTime.Now);
+        var request = new CreateEventRequest(Name: "Test Event", Description: "Test Description", ScheduledAt: DateTime.Now.AddDays(1));
         var eventId = Guid.NewGuid();
         _mediatorMock
             .Setup(m => m.Send(It.IsAny<CreateEventCommand>(), default))

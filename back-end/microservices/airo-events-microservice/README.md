@@ -57,7 +57,6 @@ Provides CRUD endpoints to manage events.
 - Improve logging.
 - Expose a `health` endpoint so that I can monitor and restart the service if necessary. Consider whether I also need to test EventStore health as well.
 - Currently using an in-memory store for the read model. Switch to cosmos db, or any other db.
-- TimeBasedGoal should use ITimeProvider
 
 ## Maintainers
 - **Primary Contact:** Giacomo Righetti, righettig@outlook.com

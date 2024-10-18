@@ -23,8 +23,10 @@ public class SimulationEngine(IBehaviourExecutor behaviourExecutor) : ISimulatio
                 stateUpdater.UpdateState(simulation);
             }
         }
-        catch (Exception ex)
+        catch (Exception ex) 
         {
+            // Since ExecuteTurnAsync catches all exceptions this can only be caused by either UpdateState or IsSimulationComplete 
+
             AddLog($"Error during simulation: {ex.Message}");
             return new SimulationResult(Success: false, ErrorMessage: ex.Message);
         }
