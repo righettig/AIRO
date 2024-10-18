@@ -16,6 +16,7 @@ COPY ${PROJECT_PATH}/${PROJECT_NAME}.csproj ${PROJECT_NAME}/
 COPY ${BASE_PATH}/airo-event-simulation-domain/airo-event-simulation-domain.csproj airo-event-simulation-domain/
 COPY ${BASE_PATH}/airo-event-simulation-infrastructure/airo-event-simulation-infrastructure.csproj airo-event-simulation-infrastructure/
 COPY ${BASE_PATH}/airo-event-simulation-engine/airo-event-simulation-engine.csproj airo-event-simulation-engine/
+COPY ${BASE_PATH}/airo-common-lib/airo-common-lib.csproj airo-common-lib/
 RUN dotnet restore ${PROJECT_NAME}/${PROJECT_NAME}.csproj
 
 # Copy the rest of the source code
@@ -23,6 +24,7 @@ COPY ${PROJECT_PATH}/ ${PROJECT_NAME}/
 COPY ${BASE_PATH}/airo-event-simulation-domain/ airo-event-simulation-domain/
 COPY ${BASE_PATH}/airo-event-simulation-infrastructure/ airo-event-simulation-infrastructure/
 COPY ${BASE_PATH}/airo-event-simulation-engine/ airo-event-simulation-engine/
+COPY ${BASE_PATH}/airo-common-lib/airo-common-lib.csproj airo-common-lib/
 
 # Build and publish the service
 RUN dotnet publish ${PROJECT_NAME}/${PROJECT_NAME}.csproj -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false

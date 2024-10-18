@@ -1,4 +1,5 @@
-﻿using airo_events_microservice.Domain.Read.Queries;
+﻿using airo_common_lib.Time;
+using airo_events_microservice.Domain.Read.Queries;
 using airo_events_microservice.Domain.Write.Commands;
 using airo_events_microservice.DTOs;
 using airo_events_microservice.Services.Interfaces;
@@ -9,30 +10,23 @@ namespace airo_events_microservice.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class EventsController : ControllerBase
+public class EventsController(IMediator mediator,
+                              IRabbitMQPublisherService rabbitMQPublisherService,
+                              ITimeProvider timeProvider) : ControllerBase
 {
-    private readonly IMediator _mediator;
-    private readonly IRabbitMQPublisherService _rabbitMQPublisherService;
-
-    public EventsController(IMediator mediator, IRabbitMQPublisherService rabbitMQPublisherService)
-    {
-        _mediator = mediator;
-        _rabbitMQPublisherService = rabbitMQPublisherService;
-    }
-
     [HttpPost]
     public async Task<IActionResult> CreateEvent([FromBody] CreateEventRequest request)
     {
-        if (request.ScheduledAt < DateTime.Now) // TODO: introduce ITimeProvider
+        if (request.ScheduledAt < timeProvider.Now)
         {
             throw new ArgumentException("Cannot schedule an event in the past.");
         }
 
         var eventId = Guid.NewGuid();
 
-        await _mediator.Send(new CreateEventCommand(eventId, request.Name, request.Description, request.ScheduledAt));
+        await mediator.Send(new CreateEventCommand(eventId, request.Name, request.Description, request.ScheduledAt));
 
-        _rabbitMQPublisherService.OnEventCreated(eventId, request.ScheduledAt);
+        rabbitMQPublisherService.OnEventCreated(eventId, request.ScheduledAt);
 
         return Ok(eventId);
     }
@@ -40,16 +34,16 @@ public class EventsController : ControllerBase
     [HttpPut]
     public async Task<IActionResult> UpdateEvent([FromBody] UpdateEventRequest request)
     {
-        await _mediator.Send(new UpdateEventCommand(request.Id, request.Name, request.Description));
+        await mediator.Send(new UpdateEventCommand(request.Id, request.Name, request.Description));
         return Ok();
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteEvent(Guid id)
     {
-        await _mediator.Send(new DeleteEventCommand(id));
+        await mediator.Send(new DeleteEventCommand(id));
 
-        _rabbitMQPublisherService.OnEventDeleted(id);
+        rabbitMQPublisherService.OnEventDeleted(id);
 
         return Ok();
     }
@@ -57,16 +51,16 @@ public class EventsController : ControllerBase
     [HttpPost("{id}/start")]
     public async Task<IActionResult> StartEvent(Guid id)
     {
-        await _mediator.Send(new StartEventCommand(id));
+        await mediator.Send(new StartEventCommand(id));
         return Ok();
     }
 
     [HttpPost("{id}/complete")]
     public async Task<IActionResult> CompleteEvent(Guid id, [FromBody] CompleteEventRequest request)
     {
-        await _mediator.Send(new CompleteEventCommand(id, request.WinnerUserId));
+        await mediator.Send(new CompleteEventCommand(id, request.WinnerUserId));
 
-        _rabbitMQPublisherService.OnEventCompleted(id, request.WinnerUserId);
+        rabbitMQPublisherService.OnEventCompleted(id, request.WinnerUserId);
 
         return Ok();
     }
@@ -74,14 +68,14 @@ public class EventsController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetEvents()
     {
-        var events = await _mediator.Send(new GetAllEvents());
+        var events = await mediator.Send(new GetAllEvents());
         return Ok(events);
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetEvent(Guid id)
     {
-        var @event = await _mediator.Send(new GetEventById(id));
+        var @event = await mediator.Send(new GetEventById(id));
         return Ok(@event);
     }
 }

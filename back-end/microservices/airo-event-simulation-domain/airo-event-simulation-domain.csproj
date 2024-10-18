@@ -7,4 +7,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\airo-common-lib\airo-common-lib.csproj" />
+  </ItemGroup>
+
 </Project>

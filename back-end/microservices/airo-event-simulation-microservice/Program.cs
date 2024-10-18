@@ -1,3 +1,4 @@
+using airo_common_lib.Extensions;
 using airo_event_simulation_domain.Impl;
 using airo_event_simulation_domain.Interfaces;
 using airo_event_simulation_engine.Impl;
@@ -19,6 +20,8 @@ builder.Services.AddSingleton<IBackgroundTaskQueue, SimulationTaskQueue>();
 builder.Services.AddSingleton<ISimulationStatusTracker, SimulationStatusTracker>();
 builder.Services.AddSingleton<IEventsService, EventsService>();
 builder.Services.AddSingleton<ISimulationStateUpdater, DummyStateUpdater>();
+
+builder.Services.AddDefaultTimeProvider();
 
 builder.Services.AddHttpClient<IEventsService, EventsService>(client =>
 {
