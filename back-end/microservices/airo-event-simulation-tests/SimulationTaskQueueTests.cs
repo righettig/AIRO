@@ -1,4 +1,4 @@
-﻿using airo_event_simulation_microservice;
+﻿using airo_event_simulation_microservice.Services;
 
 namespace airo_event_simulation_tests;
 

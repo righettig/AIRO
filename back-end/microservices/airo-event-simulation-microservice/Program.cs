@@ -5,7 +5,7 @@ using airo_event_simulation_engine.Impl;
 using airo_event_simulation_engine.Interfaces;
 using airo_event_simulation_infrastructure.Impl;
 using airo_event_simulation_infrastructure.Interfaces;
-using airo_event_simulation_microservice;
+using airo_event_simulation_microservice.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,65 +45,5 @@ builder.Services.AddTransient<ISimulationEngine, SimulationEngine>();
 
 var app = builder.Build();
 
-app.MapPost("/simulate/{eventId}", (Guid eventId,
-                                    ISimulationStatusTracker statusTracker,
-                                    IBackgroundTaskQueue taskQueue,
-                                    ISimulationService simulationService,
-                                    ISimulationEngine engine,
-                                    ISimulationStateUpdater stateUpdater,
-                                    IEventsService eventsService) =>
-{
-    engine.OnLogMessage += 
-        (sender, message) => statusTracker.AddLog(eventId, message);
-
-    statusTracker.AddLog(eventId, "Simulation created");
-
-    taskQueue.QueueBackgroundWorkItem(eventId, async token =>
-    {
-        await eventsService.MarkEventAsStartedAsync(eventId);
-        statusTracker.AddLog(eventId, "Simulation started");
-
-        var simulation = await simulationService.LoadSimulation(eventId);
-
-        if (simulation.Participants.Length == 0)
-        {
-            throw new InvalidOperationException("Cannot start an empty event.");
-        }
-
-        var result = await engine.RunSimulationAsync(simulation, stateUpdater, token);
-
-        await eventsService.MarkEventAsCompletedAsync(eventId, result.WinnerUserId);
-        statusTracker.AddLog(eventId, "Simulation marked as completed");
-    });
-
-    return Results.Accepted($"/simulate/{eventId}/status", new { EventId = eventId });
-});
-
-app.MapDelete("/simulate/{eventId}", (ISimulationStatusTracker statusTracker,
-                                      IBackgroundTaskQueue taskQueue,
-                                      Guid eventId) =>
-{
-    var wasCanceled = taskQueue.TryCancelSimulation(eventId);
-    if (wasCanceled)
-    {
-        statusTracker.AddLog(eventId, $"Simulation {eventId} canceled.");
-        return Results.Ok($"Simulation {eventId} canceled.");
-    }
-    return Results.NotFound($"Simulation {eventId} not found.");
-});
-
-app.MapGet("/simulate/{eventId}/status", (ISimulationStatusTracker statusTracker, Guid eventId) =>
-{
-    var status = statusTracker.GetSimulationStatus(eventId);
-    if (status != null)
-    {
-        return Results.Ok(new
-        {
-            status.EventId,
-            status.Logs
-        });
-    }
-    return Results.NotFound($"Simulation {eventId} not found.");
-});
-
+app.MapControllers();
 app.Run();
