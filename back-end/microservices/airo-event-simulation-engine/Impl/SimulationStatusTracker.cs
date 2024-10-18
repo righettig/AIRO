@@ -10,15 +10,19 @@ public class SimulationStatusTracker : ISimulationStatusTracker
 
     public void AddLog(Guid eventId, string log)
     {
-        // Add a log entry for the given eventId
-        if (_simulationStatuses.TryGetValue(eventId, out var status))
+        lock (_simulationStatuses)
         {
-            status.Logs.Add(log);
-        }
-        else
-        {
-            // If status doesn't exist yet, create a new one
-            _simulationStatuses[eventId] = new SimulationStatus(eventId, [log]);
+            if (_simulationStatuses.TryGetValue(eventId, out var status))
+            {
+                lock (status.Logs)
+                {
+                    status.Logs.Add(log);
+                }
+            }
+            else
+            {
+                _simulationStatuses[eventId] = new SimulationStatus(eventId, [log]);
+            }
         }
     }
 
