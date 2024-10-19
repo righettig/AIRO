@@ -16,6 +16,6 @@ public class Simulation(Guid eventId,
 
     public IBotState CreateBotStateFor(Bot bot)
     {
-        return new BotState();
+        return new BotState(bot.BotId);
     }
 }

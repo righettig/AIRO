@@ -1,4 +1,5 @@
-﻿using airo_event_simulation_domain.Interfaces;
+﻿using airo_event_simulation_domain.Impl.Simulation;
+using airo_event_simulation_domain.Interfaces;
 
 namespace airo_event_simulation_playground.Examples;
 

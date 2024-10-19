@@ -3,8 +3,9 @@ using airo_event_simulation_domain.Interfaces;
 
 namespace airo_event_simulation_domain.Impl;
 
-public class BotState : IBotState
+public class BotState(Guid botId) : IBotState
 {
+    public Guid Id => botId;
     public int Health => throw new NotImplementedException();
 
     public Position Position => throw new NotImplementedException();

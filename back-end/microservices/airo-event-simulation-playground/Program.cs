@@ -33,9 +33,32 @@ static Participant CreateParticipant(string userId)
 {
     var botId = Guid.NewGuid();
 
+    //var script = "^%$^% this will throw a CompilationErrorException!";
     //var script = $"Console.WriteLine(\"{message}\");";
     //var script = "while (true) {}";
-    var script = "return new MoveAction(Direction.Up);";
+    //var script = "return new MoveAction(Direction.Up);";
+    var script = @"
+        public class DummyBotAgent : BaseBotAgent
+        {
+            public override ISimulationAction ComputeNextMove(IBotState botState)
+            {
+                // For now, we’ll use a simple random strategy to either hold or move in a direction.
+                var random = new Random();
+                var actions = new List<ISimulationAction>
+                {
+                    Hold(),
+                    Up(),
+                    Down(),
+                    Left(),
+                    Right()
+                };
+
+                // Choose a random action
+                int actionIndex = random.Next(actions.Count);
+                return actions[actionIndex];
+            }
+        }
+    ";
 
     var result = new Participant(userId, new Bot(botId, script));
     return result;

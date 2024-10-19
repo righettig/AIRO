@@ -1,7 +1,7 @@
 ﻿using airo_event_simulation_domain.Impl.Simulation.Actions;
 using airo_event_simulation_domain.Interfaces;
 
-namespace airo_event_simulation_playground.Examples;
+namespace airo_event_simulation_domain.Impl.Simulation;
 
 public abstract class BaseBotAgent : IBotAgent
 {
