@@ -18,4 +18,11 @@ public class Simulation(Guid eventId,
     {
         return new BotState(bot.BotId);
     }
+
+    //private IBotState CreateBotStateFor(Bot bot, Position botPosition)
+    //{
+    //    // Create a personalized bot state with visible tiles and other relevant information
+    //    var visibleTiles = Map.GetVisibleTiles(botPosition, 2); // Assuming bot can see up to 2 tiles
+    //    return new BotState(bot.HP, botPosition, visibleTiles);
+    //}
 }

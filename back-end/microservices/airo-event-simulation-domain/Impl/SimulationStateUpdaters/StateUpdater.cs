@@ -106,4 +106,40 @@ public class StateUpdater : ISimulationStateUpdater
     //        Map.SpawnFood(spawnLocation);
     //    }
     //}
+
+    //private void ProcessBotAction(Bot bot, ISimulationAction action, Position oldPosition)
+    //{
+    //    if (action is MoveAction moveAction)
+    //    {
+    //        var newPosition = GetNewPosition(oldPosition, moveAction.Direction);
+
+    //        // Check if the new position is valid (not out of bounds or a wall)
+    //        if (Map.IsValidPosition(newPosition))
+    //        {
+    //            // Move the bot on the map
+    //            Map.MoveBot(bot, oldPosition, newPosition);
+
+    //            // Check if the new position contains food
+    //            var tile = Map.GetTile(newPosition);
+    //            if (tile.Type == TileType.Food)
+    //            {
+    //                // Remove the food from the map
+    //                Map.RemoveFood(newPosition);
+    //            }
+    //        }
+    //    }
+    //}
+
+    //private Position GetNewPosition(Position oldPosition, Direction direction)
+    //{
+    //    // Calculate new position based on the direction of movement
+    //    return direction switch
+    //    {
+    //        Direction.Up => new Position(oldPosition.X, oldPosition.Y - 1),
+    //        Direction.Down => new Position(oldPosition.X, oldPosition.Y + 1),
+    //        Direction.Left => new Position(oldPosition.X - 1, oldPosition.Y),
+    //        Direction.Right => new Position(oldPosition.X + 1, oldPosition.Y),
+    //        _ => oldPosition // No movement
+    //    };
+    //}
 }
