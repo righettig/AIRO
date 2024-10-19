@@ -1,17 +1,10 @@
 ﻿namespace airo_event_simulation_domain.Impl.Simulation;
 
-public enum TileType
+public record Position(int X, int Y)
 {
-    Bot,
-    SpawnPoint,
-    Empty,
-    Food
+    public Position(Position p)
+    {
+        X = p.X;
+        Y = p.Y;
+    }
 }
-
-public class TileInfo
-{
-    public TileType Type { get; set; }
-    //public required Bot Bot { get; set; } // Only used if there's a bot on the tile
-}
-
-public record Position(int X, int Y);

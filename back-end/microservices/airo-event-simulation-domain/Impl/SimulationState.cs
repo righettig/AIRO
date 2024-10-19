@@ -3,19 +3,66 @@ using airo_event_simulation_domain.Interfaces;
 
 namespace airo_event_simulation_domain.Impl;
 
-//public class Map
-//{
-//    private TileInfo[,] _tiles;
+public class Map
+{
+    public TileInfo[,] Tiles { get; }
+    public int Width { get; }
+    public int Height { get; }
 
-//    public Map(TileInfo[,] tiles)
-//    {
-//        _tiles = tiles;
-//    }
+    // Constructor that initializes the map from a string representation
+    public Map(string mapData, int size)
+    {
+        var rows = mapData.Split("\r\n");
+        Height = Width = size;
+        Tiles = new TileInfo[Width, Height];
 
-//    public int Width { get; internal set; }
-//    public int Height { get; internal set; }
+        for (int y = 0; y < Height; y++)
+        {
+            var cells = rows[y].Replace(" ", "");
+            for (int x = 0; x < Width; x++)
+            {
+                Tiles[x, y] = new TileInfo
+                {
+                    Type = CharToTileType(cells[x]) // Convert character to TileType
+                };
+            }
+        }
+    }
 
-//    public Position GetBotPosition(Bot bot)
+    // Method to convert a character into the corresponding TileType
+    private static TileType CharToTileType(char tileChar)
+    {
+        return tileChar switch
+        {
+            'S' => TileType.SpawnPoint,
+            '_' => TileType.Empty,
+            '~' => TileType.Water,
+            'I' => TileType.Iron,
+            'W' => TileType.Wood,
+            'F' => TileType.Food,
+            'X' => TileType.Wall,
+            _ => TileType.Empty // Default to Empty for unrecognized characters
+        };
+    }
+
+    // Method to return all spawn points on the map
+    public List<Position> GetSpawnPoints()
+    {
+        var spawnPoints = new List<Position>();
+        for (int x = 0; x < Width; x++)
+        {
+            for (int y = 0; y < Height; y++)
+            {
+                if (Tiles[x, y].Type == TileType.SpawnPoint)
+                {
+                    spawnPoints.Add(new Position(x, y));
+                }
+            }
+        }
+        return spawnPoints;
+    }
+
+    public Position GetBotPosition(Bot bot)
 //    {
 //        // Logic to find and return the bot's current position on the map
 //    }
@@ -70,34 +117,33 @@ namespace airo_event_simulation_domain.Impl;
 //    {
 //        _tiles[position.X, position.Y].Type = TileType.Empty; // Remove food from the tile
 //    }
-//}
+}
 
 public class SimulationState(int currentTurn) : ISimulationState
 {
     public List<Participant> Participants { get; set; }
-    //public Map Map { get; set; }
+    public Map Map { get; set; }
     public int CurrentTurn { get; } = currentTurn;
 
-    //public void InitializeSimulation(List<Participant> participants, Map map)
-    //{
-    //    // Get list of spawn points from the map
-    //    var spawnPoints = GetSpawnPoints(map);
+    public void InitializeSimulation(List<Participant> participants, Map map)
+    {
+        // get list of spawn points from the map
+        var spawnPoints = map.GetSpawnPoints();
 
-    //    // Shuffle the spawn points
-    //    var random = new Random();
-    //    spawnPoints = spawnPoints.OrderBy(x => random.Next()).ToList();
+        // shuffle the spawn points
+        var random = new Random();
+        spawnPoints = [.. spawnPoints.OrderBy(x => random.Next())];
 
-    //    // Assign each participant's bot to a spawn point
-    //    for (int i = 0; i < participants.Count; i++)
-    //    {
-    //        participants[i].Bot.HP = 100; // Initialize HP to 100
-    //        participants[i].Bot.Position = spawnPoints[i]; // Assign random spawn point
-    //    }
+        // assign each participant's bot to a spawn point
+        for (int i = 0; i < participants.Count; i++)
+        {
+            participants[i].Bot.Position = new Position(spawnPoints[i]); // assign random spawn point
+        }
 
-    //    // Set participants and map to simulation state
-    //    Participants = participants;
-    //    Map = map;
-    //}
+        // set participants and map to simulation state
+        Participants = participants;
+        Map = map;
+    }
 
     //public BotState ComputePersonalizedState(Bot bot, Position botPosition, int botHP)
     //{
@@ -137,21 +183,5 @@ public class SimulationState(int currentTurn) : ISimulationState
     //private Bot GetBotAtPosition(Position position)
     //{
     //    return Participants.Select(p => p.Bot).FirstOrDefault(b => b.Position == position);
-    //}
-
-    //private List<Position> GetSpawnPoints(Map map)
-    //{
-    //    var spawnPoints = new List<Position>();
-    //    for (int x = 0; x < map.Width; x++)
-    //    {
-    //        for (int y = 0; y < map.Height; y++)
-    //        {
-    //            if (map.Tiles[x, y] == TileType.SpawnPoint)
-    //            {
-    //                spawnPoints.Add(new Position(x, y));
-    //            }
-    //        }
-    //    }
-    //    return spawnPoints;
     //}
 }

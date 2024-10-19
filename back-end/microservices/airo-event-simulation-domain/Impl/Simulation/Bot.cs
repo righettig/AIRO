@@ -15,7 +15,6 @@ public class Bot : ISimulationBot
 
         BotId = botId;
         Health = 100;
-        Position = new Position(50, 50);
         BehaviorScript = behaviorScript;
     }
 }
