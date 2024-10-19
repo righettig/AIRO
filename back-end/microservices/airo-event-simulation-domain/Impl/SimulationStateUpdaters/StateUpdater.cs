@@ -41,16 +41,20 @@ public class StateUpdater : ISimulationStateUpdater
     {
         if (action is MoveAction moveAction)
         {
-            MoveBot(bot, moveAction.Direction);
+            MoveBot(simulation.State, bot, moveAction.Direction);
         }
 
         Console.WriteLine($"Bot {bot.BotId}, Health {bot.Health}, Position ({bot.Position.X},{bot.Position.Y})");
     }
 
-    private static void MoveBot(ISimulationBot bot, Direction direction)
+    private static void MoveBot(ISimulationState state, ISimulationBot bot, Direction direction)
     {
-        const int MAP_HEIGHT = 128;
-        const int MAP_WIDTH = 128;
+        var size = state.Tiles.GetLength(0); // assuming square map
+
+        var tile = state.Tiles[bot.Position.X, bot.Position.Y];
+        
+        tile.Type = TileType.Empty;
+        tile.Bot = null;
 
         // Update the bot's position on the map based on the direction
         // This would involve checking map boundaries, obstacles, etc.
@@ -61,15 +65,20 @@ public class StateUpdater : ISimulationStateUpdater
                 bot.Position = new Position(bot.Position.X, Math.Max(bot.Position.Y - 1, 0));
                 break;
             case Direction.Down:
-                bot.Position = new Position(bot.Position.X, Math.Min(bot.Position.Y + 1, MAP_HEIGHT - 1));
+                bot.Position = new Position(bot.Position.X, Math.Min(bot.Position.Y + 1, size - 1));
                 break;
             case Direction.Left:
                 bot.Position = new Position(Math.Max(bot.Position.X - 1, 0), bot.Position.Y);
                 break;
             case Direction.Right:
-                bot.Position = new Position(Math.Min(bot.Position.X + 1, MAP_WIDTH - 1), bot.Position.Y);
+                bot.Position = new Position(Math.Min(bot.Position.X + 1, size - 1), bot.Position.Y);
                 break;
         }
+
+        tile = state.Tiles[bot.Position.X, bot.Position.Y];
+
+        tile.Type = TileType.Bot;
+        tile.Bot = bot;
     }
 
     //private void DecreaseBotsHP()
