@@ -18,7 +18,7 @@ public class StateUpdater : ISimulationStateUpdater
 
     public void UpdateState(ISimulation simulation)
     {
-        simulation.State = new SimulationState(simulation.State.CurrentTurn + 1);
+        simulation.State.CurrentTurn += 1;
 
         //elapsedTime += timeStep;
 

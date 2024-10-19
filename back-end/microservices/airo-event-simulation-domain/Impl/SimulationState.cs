@@ -7,7 +7,31 @@ public class SimulationState(int currentTurn) : ISimulationState
 {
     public List<Participant> Participants { get; set; }
     public TileInfo[,] Tiles { get; private set; }
-    public int CurrentTurn { get; } = currentTurn;
+    public int CurrentTurn { get; set; } = currentTurn;
+
+    public Dictionary<Position, TileInfo> GetVisibleTiles(Position position, int radius)
+    {
+        var result = new Dictionary<Position, TileInfo>();
+
+        var mapSize = Tiles.GetLength(0); // assuming square map
+
+        // Define vision range
+        int minX = Math.Max(position.X - radius, 0);
+        int maxX = Math.Min(position.X + radius, mapSize - 1);
+        int minY = Math.Max(position.Y - radius, 0);
+        int maxY = Math.Min(position.Y + radius, mapSize - 1);
+
+        // Loop through the visible tiles
+        for (int x = minX; x <= maxX; x++)
+        {
+            for (int y = minY; y <= maxY; y++)
+            {
+                result.Add(new Position(x, y), Tiles[x,y]);
+            }
+        }
+
+        return result;
+    }
 
     public void InitializeSimulation(List<Participant> participants, Map map)
     {
@@ -53,44 +77,4 @@ public class SimulationState(int currentTurn) : ISimulationState
             Tiles[spawnPoint.X, spawnPoint.Y].Type = TileType.Empty;
         }
     }
-
-    //public BotState ComputePersonalizedState(Bot bot, Position botPosition, int botHP)
-    //{
-    //    // Initialize bot state with current HP and position
-    //    var botState = new BotState(botHP, botPosition);
-
-    //    // Define vision range (2 tiles in each direction)
-    //    int minX = Math.Max(botPosition.X - 2, 0);
-    //    int maxX = Math.Min(botPosition.X + 2, Map.Width - 1);
-    //    int minY = Math.Max(botPosition.Y - 2, 0);
-    //    int maxY = Math.Min(botPosition.Y + 2, Map.Height - 1);
-
-    //    // Loop through the visible tiles
-    //    for (int x = minX; x <= maxX; x++)
-    //    {
-    //        for (int y = minY; y <= maxY; y++)
-    //        {
-    //            var position = new Position(x, y);
-    //            var tileType = Map.Tiles[x, y];
-
-    //            // Check if another bot is on this tile
-    //            var otherBot = GetBotAtPosition(position);
-    //            if (otherBot != null)
-    //            {
-    //                botState.VisibleTiles[position] = new TileInfo { Type = TileType.Bot, Bot = otherBot };
-    //            }
-    //            else
-    //            {
-    //                botState.VisibleTiles[position] = new TileInfo { Type = tileType };
-    //            }
-    //        }
-    //    }
-
-    //    return botState;
-    //}
-
-    //private Bot GetBotAtPosition(Position position)
-    //{
-    //    return Participants.Select(p => p.Bot).FirstOrDefault(b => b.Position == position);
-    //}
 }

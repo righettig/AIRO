@@ -3,14 +3,17 @@ using airo_event_simulation_domain.Interfaces;
 
 namespace airo_event_simulation_domain.Impl;
 
-public class BotState(Guid botId, int health) : IBotState
+public class BotState(Guid botId,
+                      int health,
+                      Position position, 
+                      Dictionary<Position, TileInfo> visibleTiles) : IBotState
 {
     public Guid Id => botId;
     public int Health => health;
 
-    public Position Position => throw new NotImplementedException();
+    public Position Position => position;
 
-    public Dictionary<Position, TileInfo> VisibleTiles => null;
+    public Dictionary<Position, TileInfo> VisibleTiles => visibleTiles;
 
     public Position GetNearestFoodTile()
     {
@@ -26,17 +29,8 @@ public class BotState(Guid botId, int health) : IBotState
     {
         throw new NotImplementedException();
     }
-}
 
-//public class BotState(int hp, Position position) : IBotState
-//{
-//    public Dictionary<Position, TileInfo> VisibleTiles { get; set; } = [];
-
-//    public int Health { get; } = hp;
-
-//    public Position Position { get; } = position;
-
-//    public IEnumerable<KeyValuePair<Position, TileInfo>> TraverseVisibleTiles()
+    //    public IEnumerable<KeyValuePair<Position, TileInfo>> TraverseVisibleTiles()
 //    {
 //        return VisibleTiles;
 //    }
@@ -85,4 +79,4 @@ public class BotState(Guid botId, int health) : IBotState
 //    {
 //        return Math.Abs(pos1.X - pos2.X) + Math.Abs(pos1.Y - pos2.Y); // Manhattan distance
 //    }
-//}
+}
