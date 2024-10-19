@@ -16,9 +16,7 @@ public class BotTests
 
         // Assert
         Assert.Equal(botId, bot.BotId);
-        Assert.Equal(0, bot.Health);
-        Assert.Equal(0, bot.Attack);
-        Assert.Equal(0, bot.Defense);
+        Assert.Equal(100, bot.Health);
         Assert.Equal(behaviorScript, bot.BehaviorScript);
     }
 

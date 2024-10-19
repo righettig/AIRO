@@ -32,19 +32,22 @@ static Participant CreateParticipant(string userId)
     var botId = Guid.NewGuid();
     var message = $"this is the behaviour for userId {userId}, botId {botId}";
     //var script = $"Console.WriteLine(\"{message}\");";
+    
     //var script = "while (true) {}";
 
-    string script = @"
-Console.WriteLine(""Reading CurrentTurn: "" + CurrentTurn);
-if (CurrentTurn < 2)
-{
-    Console.WriteLine(""Simulation has just started"");
-}
-else
-{
-    Console.WriteLine(""Time is passing by!"");
-}
-";
+    //    string script = @"
+    //Console.WriteLine(""Reading CurrentTurn: "" + CurrentTurn);
+    //if (CurrentTurn < 2)
+    //{
+    //    Console.WriteLine(""Simulation has just started"");
+    //}
+    //else
+    //{
+    //    Console.WriteLine(""Time is passing by!"");
+    //}
+    //";
+
+    var script = "return new MoveAction(Direction.Up);";
 
     var result = new Participant(userId, new Bot(botId, script));
     return result;

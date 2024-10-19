@@ -4,8 +4,6 @@ public class Bot
 {
     public Guid BotId { get; }
     public int Health { get; }
-    public int Attack { get; }
-    public int Defense { get; }
     public string BehaviorScript { get; }
 
     public Bot(Guid botId, string behaviorScript)
@@ -13,9 +11,7 @@ public class Bot
         ArgumentException.ThrowIfNullOrEmpty(behaviorScript);
 
         BotId = botId;
-        Health = 0;
-        Attack = 0;
-        Defense = 0;
+        Health = 100;
         BehaviorScript = behaviorScript;
     }
 }

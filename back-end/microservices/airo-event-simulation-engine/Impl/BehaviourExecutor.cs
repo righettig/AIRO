@@ -1,5 +1,6 @@
 ﻿using airo_event_simulation_domain.Impl;
 using airo_event_simulation_domain.Impl.Simulation;
+using airo_event_simulation_domain.Impl.Simulation.Actions;
 using airo_event_simulation_domain.Interfaces;
 using airo_event_simulation_engine.Interfaces;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
@@ -9,22 +10,24 @@ namespace airo_event_simulation_engine.Impl;
 
 public class BehaviourExecutor : IBehaviourExecutor
 {
-    public async Task Execute(string behaviorScript, ISimulationState state, CancellationToken token)
+    public async Task<ISimulationAction> Execute(string behaviorScript, ISimulationState state, CancellationToken token)
     {
         var scriptOptions = ScriptOptions.Default
             .AddReferences(typeof(Bot).Assembly)
             .AddReferences(typeof(Console).Assembly)
-            .AddImports("System");
+            .AddImports("System")
+            .AddImports(typeof(HoldAction).Namespace);
 
         // Create the execution task
         var executionTask = Task.Run(async () =>
         {
-            await CSharpScript.EvaluateAsync(
+            var simulationAction = await CSharpScript.EvaluateAsync<ISimulationAction>(
                 behaviorScript,
                 globals: state,
                 globalsType: typeof(SimulationState),
                 options: scriptOptions,
                 cancellationToken: token);
+            return simulationAction;
         }, token);
 
         // Create a delay task for timeout
@@ -41,7 +44,7 @@ public class BehaviourExecutor : IBehaviourExecutor
         }
 
         // Await the execution task to propagate any exceptions
-        await executionTask;
+        return await executionTask;
     }
 }
 
