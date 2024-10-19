@@ -18,7 +18,7 @@ public class BehaviourExecutorTests
     {
         // Arrange
         var script = "await System.Threading.Tasks.Task.Delay(10000);"; // This simulates a long-running script.
-        var state = new BotState(Guid.NewGuid());
+        var state = new BotState(Guid.NewGuid(), 100);
 
         // Act & Assert
         await Assert.ThrowsAsync<TimeoutException>(async () =>
@@ -30,7 +30,7 @@ public class BehaviourExecutorTests
     {
         // Arrange
         var script = "await Task.Delay(100);"; // Simulates a script that waits for some time.
-        var state = new BotState(Guid.NewGuid());
+        var state = new BotState(Guid.NewGuid(), 100);
         var cts = new CancellationTokenSource();
 
         // Cancel the task immediately
@@ -46,7 +46,7 @@ public class BehaviourExecutorTests
     {
         // Arrange
         var script = "var x = 5 + 5;"; // A quick script execution.
-        var state = new BotState(Guid.NewGuid());
+        var state = new BotState(Guid.NewGuid(), 100);
         var cancellationToken = CancellationToken.None;
 
         // Act

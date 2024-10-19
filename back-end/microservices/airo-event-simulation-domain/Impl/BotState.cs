@@ -3,14 +3,14 @@ using airo_event_simulation_domain.Interfaces;
 
 namespace airo_event_simulation_domain.Impl;
 
-public class BotState(Guid botId) : IBotState
+public class BotState(Guid botId, int health) : IBotState
 {
     public Guid Id => botId;
-    public int Health => throw new NotImplementedException();
+    public int Health => health;
 
     public Position Position => throw new NotImplementedException();
 
-    public Dictionary<Position, TileInfo> VisibleTiles => throw new NotImplementedException();
+    public Dictionary<Position, TileInfo> VisibleTiles => null;
 
     public Position GetNearestFoodTile()
     {
