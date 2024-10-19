@@ -10,7 +10,7 @@ namespace airo_event_simulation_engine.Impl;
 
 public class BehaviourExecutor : IBehaviourExecutor
 {
-    public async Task<ISimulationAction> Execute(string behaviorScript, ISimulationState state, CancellationToken token)
+    public async Task<ISimulationAction> Execute(string behaviorScript, IBotState state, CancellationToken token)
     {
         var scriptOptions = ScriptOptions.Default
             .AddReferences(typeof(Bot).Assembly)
@@ -24,7 +24,7 @@ public class BehaviourExecutor : IBehaviourExecutor
             var simulationAction = await CSharpScript.EvaluateAsync<ISimulationAction>(
                 behaviorScript,
                 globals: state,
-                globalsType: typeof(SimulationState),
+                globalsType: typeof(IBotState),
                 options: scriptOptions,
                 cancellationToken: token);
             return simulationAction;

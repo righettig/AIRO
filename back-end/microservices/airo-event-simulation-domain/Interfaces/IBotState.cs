@@ -18,3 +18,27 @@ public interface IBotState
     // Find the nearest food tile
     Position GetNearestFoodTile();
 }
+
+public class BotState : IBotState
+{
+    public int Health => throw new NotImplementedException();
+
+    public Position Position => throw new NotImplementedException();
+
+    public Dictionary<Position, TileInfo> VisibleTiles => throw new NotImplementedException();
+
+    public Position GetNearestFoodTile()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Bot GetNearestOpponentBot()
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerable<(Position, TileInfo)> TraverseVisibleTiles()
+    {
+        throw new NotImplementedException();
+    }
+}

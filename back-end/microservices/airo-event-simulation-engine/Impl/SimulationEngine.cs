@@ -86,13 +86,10 @@ public class SimulationEngine(IBehaviourExecutor behaviourExecutor) : ISimulatio
                 //var bot = p.Bot;
                 //var botPosition = Map.GetBotPosition(bot); // Retrieve the current position of the bot
 
-                // Compute the personalized state for the bot
-                //IBotState botState = CreateBotStateFor(bot, botPosition);
+                var boState = simulation.CreateBotStateFor(p.Bot);
 
                 // Ask the bot to compute its next move based on the personalized state
-                //ISimulationAction action = bot.ComputeNextMove(botState); // <-- done inside behaviourExecutor
-
-                var action = await behaviourExecutor.Execute(p.Bot.BehaviorScript, simulation.State, token);
+                var action = await behaviourExecutor.Execute(p.Bot.BehaviorScript, boState, token);
 
                 if (action is null)
                 {

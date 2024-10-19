@@ -13,4 +13,9 @@ public class Simulation(Guid eventId,
     public ISimulationGoal Goal { get; } = goal;
     public ISimulationState State { get; set; } = state;
     public IWinnerTracker WinnerTracker { get; } = winnerTracker;
+
+    public IBotState CreateBotStateFor(Bot bot)
+    {
+        return new BotState();
+    }
 }

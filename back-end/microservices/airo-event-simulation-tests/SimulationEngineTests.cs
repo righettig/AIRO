@@ -81,7 +81,7 @@ public class SimulationEngineTests
             .Returns(false)
             .Returns(true);
 
-        _mockBehaviourExecutor.SetupSequence(e => e.Execute(It.IsAny<string>(), It.IsAny<ISimulationState>(), It.IsAny<CancellationToken>()))
+        _mockBehaviourExecutor.SetupSequence(e => e.Execute(It.IsAny<string>(), It.IsAny<IBotState>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new HoldAction())
             .ReturnsAsync(new MoveAction(Direction.Up));
 
@@ -143,7 +143,7 @@ public class SimulationEngineTests
         var cts = new CancellationTokenSource();
         var simulation = SetupMockSimulation(participantCount: 2, simulationComplete: false);
 
-        _mockBehaviourExecutor.Setup(e => e.Execute(It.IsAny<string>(), It.IsAny<ISimulationState>(), It.IsAny<CancellationToken>()))
+        _mockBehaviourExecutor.Setup(e => e.Execute(It.IsAny<string>(), It.IsAny<IBotState>(), It.IsAny<CancellationToken>()))
             .Callback(() => cts.Cancel());
 
         // Act
@@ -164,7 +164,7 @@ public class SimulationEngineTests
 
         // Assert
         _mockBehaviourExecutor.Verify(e => 
-            e.Execute(It.IsAny<string>(), It.IsAny<ISimulationState>(), It.IsAny<CancellationToken>()), Times.Exactly(2));
+            e.Execute(It.IsAny<string>(), It.IsAny<IBotState>(), It.IsAny<CancellationToken>()), Times.Exactly(2));
     }
 
     private ISimulation SetupMockSimulation(int participantCount, bool simulationComplete)
