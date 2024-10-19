@@ -8,6 +8,8 @@ using System.Runtime.Loader;
 
 namespace airo_event_simulation_engine.Impl;
 
+// TODO: it would be better to have BehaviourCompiler as well and give it the responsibility to compile behaviours
+// I could use this to validate bot behaviours
 public class BehaviourExecutor : IBehaviourExecutor
 {
     // Dictionary to store bot agents with IBotState.Id as the key
