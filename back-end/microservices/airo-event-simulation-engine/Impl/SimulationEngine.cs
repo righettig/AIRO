@@ -14,6 +14,8 @@ public class SimulationEngine(IBehaviourExecutor behaviourExecutor) : ISimulatio
     {
         AddLog("Initializing simulation");
 
+        var deadBots = new HashSet<Guid>();
+
         try
         {
             while (!simulation.Goal.IsSimulationComplete(simulation))
@@ -21,6 +23,14 @@ public class SimulationEngine(IBehaviourExecutor behaviourExecutor) : ISimulatio
                 await ExecuteTurnAsync(simulation, simulationStateUpdater, token);
 
                 simulationStateUpdater.UpdateState(simulation);
+
+                simulation.Participants.Where(x => x.Bot.Health <= 0).ToList().ForEach(x =>
+                {
+                    if (deadBots.Add(x.Bot.BotId))
+                    {
+                        AddLog($"Bot {x.Bot.BotId} just died!");
+                    }
+                });
             }
         }
         catch (Exception ex) 
@@ -52,9 +62,10 @@ public class SimulationEngine(IBehaviourExecutor behaviourExecutor) : ISimulatio
     {
         token.ThrowIfCancellationRequested();
 
+        // TODO: log turn index
         AddLog($"Turn started");
 
-        foreach (var p in simulation.Participants)
+        foreach (var p in simulation.Participants.Where(x => x.Bot.Health > 0)) // TODO move inside simulation to implement custom logic (for instance if a bot can freeze another one
         {
             try
             {

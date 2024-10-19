@@ -6,5 +6,5 @@ public interface ISimulationBot
 {
     public Guid BotId { get; }
     public Position Position { get; set; }
-    public int Health { get; }
+    public int Health { get; internal set; }
 }

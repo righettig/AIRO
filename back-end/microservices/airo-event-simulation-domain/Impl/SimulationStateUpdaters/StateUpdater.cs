@@ -22,12 +22,13 @@ public class StateUpdater : ISimulationStateUpdater
 
         //elapsedTime += timeStep;
 
-        //// Decrease HP every minute
+        // Decrease HP every minute
         //if (elapsedTime.TotalMinutes >= 1)
         //{
         //    DecreaseBotsHP();
         //    elapsedTime = elapsedTime.Subtract(TimeSpan.FromMinutes(1)); // Reset the 1-minute counter
         //}
+        DecreaseBotsHP(simulation);
 
         //// Respawn food every 10 minutes
         //if (elapsedTime.TotalMinutes >= 10)
@@ -81,27 +82,22 @@ public class StateUpdater : ISimulationStateUpdater
         tile.Bot = bot;
     }
 
-    //private void DecreaseBotsHP()
-    //{
-    //    foreach (var participant in Participants.ToList())
-    //    {
-    //        participant.Bot.HP -= 5; // Decrease bot HP by 5
+    private void DecreaseBotsHP(ISimulation simulation)
+    {
+        foreach (var participant in simulation.Participants)
+        {
+            participant.Bot.Health -= 5;
 
-    //        // Remove bots that have 0 HP or less
-    //        if (participant.Bot.HP <= 0)
-    //        {
-    //            RemoveBotFromMap(participant.Bot);
-    //            Participants.Remove(participant);
-    //        }
-    //    }
-    //}
+            if (participant.Bot.Health <= 0)
+            {
+                var position = participant.Bot.Position;
 
-    //private void RemoveBotFromMap(Bot bot)
-    //{
-    //    // Logic to remove the bot from the map (set its position to empty, etc.)
-    //    var botPosition = Map.GetBotPosition(bot);
-    //    Map.RemoveBot(botPosition); // Assuming there's a method to remove the bot from the map
-    //}
+                // TODO: add helper method to switch Empty -> Bot and viceversa
+                simulation.State.Tiles[position.X, position.Y].Type = TileType.Empty;
+                simulation.State.Tiles[position.X, position.Y].Bot = null;
+            }
+        }
+    }
 
     //private void RespawnFood()
     //{

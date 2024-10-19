@@ -5,7 +5,7 @@ namespace airo_event_simulation_domain.Impl.Simulation;
 public class Bot : ISimulationBot
 {
     public Guid BotId { get; }
-    public int Health { get; }
+    public int Health { get; set; }
     public string BehaviorScript { get; }
     public Position Position { get; set; }
 

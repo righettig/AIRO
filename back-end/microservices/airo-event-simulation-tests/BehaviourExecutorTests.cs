@@ -1,4 +1,5 @@
 ﻿using airo_event_simulation_domain.Impl;
+using airo_event_simulation_domain.Impl.Simulation;
 using airo_event_simulation_domain.Interfaces;
 using airo_event_simulation_engine.Impl;
 
@@ -18,7 +19,7 @@ public class BehaviourExecutorTests
     {
         // Arrange
         var script = "await System.Threading.Tasks.Task.Delay(10000);"; // This simulates a long-running script.
-        var state = new BotState(Guid.NewGuid(), 100);
+        var state = new BotState(Guid.NewGuid(), 100, new Position(0, 0), []);
 
         // Act & Assert
         await Assert.ThrowsAsync<TimeoutException>(async () =>
@@ -30,7 +31,7 @@ public class BehaviourExecutorTests
     {
         // Arrange
         var script = "await Task.Delay(100);"; // Simulates a script that waits for some time.
-        var state = new BotState(Guid.NewGuid(), 100);
+        var state = new BotState(Guid.NewGuid(), 100, new Position(0, 0), []);
         var cts = new CancellationTokenSource();
 
         // Cancel the task immediately
@@ -46,7 +47,7 @@ public class BehaviourExecutorTests
     {
         // Arrange
         var script = "var x = 5 + 5;"; // A quick script execution.
-        var state = new BotState(Guid.NewGuid(), 100);
+        var state = new BotState(Guid.NewGuid(), 100, new Position(0, 0), []);
         var cancellationToken = CancellationToken.None;
 
         // Act
