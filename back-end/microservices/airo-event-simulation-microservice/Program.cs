@@ -1,5 +1,5 @@
 using airo_common_lib.Extensions;
-using airo_event_simulation_domain.Impl;
+using airo_event_simulation_domain.Impl.SimulationStateUpdaters;
 using airo_event_simulation_domain.Interfaces;
 using airo_event_simulation_engine.Impl;
 using airo_event_simulation_engine.Interfaces;

@@ -1,10 +1,13 @@
-﻿namespace airo_event_simulation_domain.Impl.Simulation;
+﻿using airo_event_simulation_domain.Interfaces;
 
-public class Bot
+namespace airo_event_simulation_domain.Impl.Simulation;
+
+public class Bot : ISimulationBot
 {
     public Guid BotId { get; }
     public int Health { get; }
     public string BehaviorScript { get; }
+    public Position Position { get; set; }
 
     public Bot(Guid botId, string behaviorScript)
     {
@@ -12,6 +15,7 @@ public class Bot
 
         BotId = botId;
         Health = 100;
+        Position = new Position(50, 50);
         BehaviorScript = behaviorScript;
     }
 }

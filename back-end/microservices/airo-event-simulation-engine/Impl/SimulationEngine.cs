@@ -8,42 +8,19 @@ public class SimulationEngine(IBehaviourExecutor behaviourExecutor) : ISimulatio
 {
     public event EventHandler<string>? OnLogMessage;
 
-    //private List<Position> OriginalFoodSpawnLocations { get; }
-    //private TimeSpan elapsedTime;
-
     public async Task<SimulationResult> RunSimulationAsync(ISimulation simulation,
-                                                           ISimulationStateUpdater stateUpdater,
+                                                           ISimulationStateUpdater simulationStateUpdater,
                                                            CancellationToken token)
     {
         AddLog("Initializing simulation");
-
-        //OriginalFoodSpawnLocations = Map.GetAllFoodSpawnLocations(); // Store the original food spawn points
-        //elapsedTime = TimeSpan.Zero;
 
         try
         {
             while (!simulation.Goal.IsSimulationComplete(simulation)) // TODO: implement LastBotSTandingGoal
             {
-                await ExecuteTurnAsync(simulation, token);
+                await ExecuteTurnAsync(simulation, simulationStateUpdater, token);
 
-                // Move inside stateUpdater.UpdateState
-                //elapsedTime += timeStep;
-
-                //// Decrease HP every minute
-                //if (elapsedTime.TotalMinutes >= 1)
-                //{
-                //    DecreaseBotsHP();
-                //    elapsedTime = elapsedTime.Subtract(TimeSpan.FromMinutes(1)); // Reset the 1-minute counter
-                //}
-
-                //// Respawn food every 10 minutes
-                //if (elapsedTime.TotalMinutes >= 10)
-                //{
-                //    RespawnFood();
-                //    elapsedTime = elapsedTime.Subtract(TimeSpan.FromMinutes(10)); // Reset the 10-minute counter
-                //}
-
-                stateUpdater.UpdateState(simulation);
+                simulationStateUpdater.UpdateState(simulation);
             }
         }
         catch (Exception ex) 
@@ -69,7 +46,9 @@ public class SimulationEngine(IBehaviourExecutor behaviourExecutor) : ISimulatio
         return result;
     }
 
-    private async Task ExecuteTurnAsync(ISimulation simulation, CancellationToken token)
+    private async Task ExecuteTurnAsync(ISimulation simulation,
+                                        ISimulationStateUpdater simulationStateUpdater,
+                                        CancellationToken token)
     {
         token.ThrowIfCancellationRequested();
 
@@ -79,7 +58,6 @@ public class SimulationEngine(IBehaviourExecutor behaviourExecutor) : ISimulatio
         {
             try
             {
-                //var bot = participant.Bot;
                 //var botPosition = GetBotPosition(bot); // You should have logic to track each bot's position
                 //var botHP = GetBotHP(bot); // Retrieve bot's HP
 
@@ -100,8 +78,7 @@ public class SimulationEngine(IBehaviourExecutor behaviourExecutor) : ISimulatio
                     AddLog($"Executed behaviour for bot {p.Bot.BotId}, result -> {action}");
 
                     // Update the simulation based on the bot's action
-                    //ProcessBotAction(bot, action, botPosition);
-                    // HandleAction(bot, action);
+                    simulationStateUpdater.UpdateStateForAction(simulation, p.Bot, action);
                 }
             }
             catch (TimeoutException)
@@ -121,42 +98,6 @@ public class SimulationEngine(IBehaviourExecutor behaviourExecutor) : ISimulatio
     {
         OnLogMessage?.Invoke(this, message);
     }
-
-    // ---> this should fo in StateUpdater
-    //private void DecreaseBotsHP()
-    //{
-    //    foreach (var participant in Participants.ToList())
-    //    {
-    //        participant.Bot.HP -= 5; // Decrease bot HP by 5
-
-    //        // Remove bots that have 0 HP or less
-    //        if (participant.Bot.HP <= 0)
-    //        {
-    //            RemoveBotFromMap(participant.Bot);
-    //            Participants.Remove(participant);
-    //        }
-    //    }
-    //}
-
-    //private void RespawnFood()
-    //{
-    //    // Randomly pick a location from the original food spawn locations
-    //    Random random = new Random();
-    //    var spawnLocation = OriginalFoodSpawnLocations[random.Next(OriginalFoodSpawnLocations.Count)];
-
-    //    // Spawn food at the selected location
-    //    if (Map.GetTile(spawnLocation).Type == TileType.Empty) // Only spawn if the tile is empty
-    //    {
-    //        Map.SpawnFood(spawnLocation);
-    //    }
-    //} // <-- this should also go in stateUpdater
-
-    //private void RemoveBotFromMap(Bot bot)
-    //{
-    //    // Logic to remove the bot from the map (set its position to empty, etc.)
-    //    var botPosition = Map.GetBotPosition(bot);
-    //    Map.RemoveBot(botPosition); // Assuming there's a method to remove the bot from the map
-    //}
 
     //private IBotState CreateBotStateFor(Bot bot, Position botPosition)
     //{
@@ -199,27 +140,5 @@ public class SimulationEngine(IBehaviourExecutor behaviourExecutor) : ISimulatio
     //        Direction.Right => new Position(oldPosition.X + 1, oldPosition.Y),
     //        _ => oldPosition // No movement
     //    };
-    //}
-
-    //private void MoveBot(Bot bot, Direction direction)
-    //{
-    //    // Update the bot's position on the map based on the direction
-    //    // This would involve checking map boundaries, obstacles, etc.
-    //    // Example logic:
-    //    switch (direction)
-    //    {
-    //        case Direction.Up:
-    //            bot.Position.Y = Math.Max(bot.Position.Y - 1, 0);
-    //            break;
-    //        case Direction.Down:
-    //            bot.Position.Y = Math.Min(bot.Position.Y + 1, Map.Height - 1);
-    //            break;
-    //        case Direction.Left:
-    //            bot.Position.X = Math.Max(bot.Position.X - 1, 0);
-    //            break;
-    //        case Direction.Right:
-    //            bot.Position.X = Math.Min(bot.Position.X + 1, Map.Width - 1);
-    //            break;
-    //    }
     //}
 }

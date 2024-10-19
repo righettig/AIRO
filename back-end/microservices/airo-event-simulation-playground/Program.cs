@@ -1,6 +1,7 @@
 ﻿using airo_event_simulation_domain.Impl;
 using airo_event_simulation_domain.Impl.Simulation;
 using airo_event_simulation_domain.Impl.SimulationGoals;
+using airo_event_simulation_domain.Impl.SimulationStateUpdaters;
 using airo_event_simulation_domain.Impl.WinnerTrackers;
 using airo_event_simulation_engine.Impl;
 
@@ -21,7 +22,8 @@ var simulation = new Simulation(Guid.NewGuid(), [.. participants],
     new RandomWinnerTracker()
 );
 
-var stateUpdater = new DummyStateUpdater();
+//var stateUpdater = new DummyStateUpdater();
+var stateUpdater = new StateUpdater();
 
 var result = await engine.RunSimulationAsync(simulation, stateUpdater, CancellationToken.None);
 
