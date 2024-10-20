@@ -6,7 +6,9 @@ public interface ISimulationStateUpdater
     /// Updates the simulation state at the end of each turn independently from specific bot actions.
     /// </summary>
     /// <param name="simulation"></param>
-    void UpdateState(ISimulation simulation, TimeSpan timeStep);
+    /// <param name="timeStep"></param>
+    /// <param name="logMessage"></param>
+    void UpdateState(ISimulation simulation, TimeSpan timeStep, Action<string> logMessage);
 
     /// <summary>
     /// Update the simulation state after each bot's turn.
@@ -14,5 +16,6 @@ public interface ISimulationStateUpdater
     /// <param name="simulation"></param>
     /// <param name="bot"></param>
     /// <param name="action"></param>
-    void UpdateStateForAction(ISimulation simulation, ISimulationBot bot, ISimulationAction action);
+    /// <param name="logMessage"></param>
+    void UpdateStateForAction(ISimulation simulation, ISimulationBot bot, ISimulationAction action, Action<string> logMessage);
 }

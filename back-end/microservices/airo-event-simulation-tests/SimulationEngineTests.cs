@@ -53,7 +53,7 @@ public class SimulationEngineTests
     {
         // Arrange
         var simulation = SetupMockSimulation(participantCount: 2, simulationComplete: false);
-        _mockStateUpdater.Setup(e => e.UpdateState(It.IsAny<ISimulation>(), It.IsAny<TimeSpan>()))
+        _mockStateUpdater.Setup(e => e.UpdateState(It.IsAny<ISimulation>(), It.IsAny<TimeSpan>(), It.IsAny<Action<string>>()))
             .Throws(new Exception("Test exception"));
 
         // Act

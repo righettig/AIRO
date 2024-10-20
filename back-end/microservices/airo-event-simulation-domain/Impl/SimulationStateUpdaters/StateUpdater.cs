@@ -7,17 +7,17 @@ namespace airo_event_simulation_domain.Impl.SimulationStateUpdaters;
 public class StateUpdater : ISimulationStateUpdater
 {
     private TimeSpan elapsedTime;
-
-    private List<Position> OriginalFoodSpawnLocations { get; }
+    private readonly HashSet<Guid> deadBots;
+    private readonly List<Position> originalFoodSpawnLocations;
 
     public StateUpdater(ISimulationState state)
     {
         elapsedTime = TimeSpan.Zero;
-
-        OriginalFoodSpawnLocations = GetAllFoodSpawnLocations(state);
+        deadBots = [];
+        originalFoodSpawnLocations = GetAllFoodSpawnLocations(state);
     }
 
-    public void UpdateState(ISimulation simulation, TimeSpan timeStep)
+    public void UpdateState(ISimulation simulation, TimeSpan timeStep, Action<string> logMessage)
     {
         simulation.State.CurrentTurn += 1;
 
@@ -31,7 +31,6 @@ public class StateUpdater : ISimulationStateUpdater
             elapsedTime = elapsedTime.Subtract(TimeSpan.FromSeconds(5));
             //elapsedTime = elapsedTime.Subtract(TimeSpan.FromMinutes(1)); // Reset the 1-minute counter
         }
-        //DecreaseBotsHP(simulation);
 
         // Respawn food every 10 minutes
         if (elapsedTime.TotalMinutes >= 1)
@@ -39,9 +38,17 @@ public class StateUpdater : ISimulationStateUpdater
             RespawnFood(simulation.State);
             elapsedTime = elapsedTime.Subtract(TimeSpan.FromMinutes(1)); // Reset the 10-minute counter
         }
+
+        simulation.Participants.Where(x => x.Bot.Health <= 0).ToList().ForEach(x =>
+        {
+            if (deadBots.Add(x.Bot.BotId))
+            {
+                logMessage($"Bot {x.Bot.BotId} just died!");
+            }
+        });
     }
 
-    public void UpdateStateForAction(ISimulation simulation, ISimulationBot bot, ISimulationAction action)
+    public void UpdateStateForAction(ISimulation simulation, ISimulationBot bot, ISimulationAction action, Action<string> logMessage)
     {
         if (action is MoveAction moveAction)
         {
@@ -65,7 +72,7 @@ public class StateUpdater : ISimulationStateUpdater
             }
         }
 
-        Console.WriteLine($"Bot {bot.BotId}, Health {bot.Health}, Position ({bot.Position.X},{bot.Position.Y})");
+        logMessage($"Bot {bot.BotId}, Health {bot.Health}, Position ({bot.Position.X},{bot.Position.Y})");
     }
 
     private static void DecreaseBotsHP(ISimulation simulation)
@@ -87,7 +94,7 @@ public class StateUpdater : ISimulationStateUpdater
     {
         // Randomly pick a location from the original food spawn locations
         Random random = new();
-        var spawnLocation = OriginalFoodSpawnLocations[random.Next(OriginalFoodSpawnLocations.Count)];
+        var spawnLocation = originalFoodSpawnLocations[random.Next(originalFoodSpawnLocations.Count)];
 
         // Spawn food at the selected location
         if (state.GetTileAt(spawnLocation).Type == TileType.Empty) // Only spawn if the tile is empty

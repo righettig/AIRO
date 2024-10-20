@@ -14,8 +14,6 @@ public class SimulationEngine(IBehaviourExecutor behaviourExecutor) : ISimulatio
     {
         AddLog("Initializing simulation");
 
-        var deadBots = new HashSet<Guid>(); // move in simulation/simulationState/simulationStateUpdater, see comment below
-
         try
         {
             while (!simulation.Goal.IsSimulationComplete(simulation))
@@ -23,18 +21,7 @@ public class SimulationEngine(IBehaviourExecutor behaviourExecutor) : ISimulatio
                 var elapsedTime = await MeasureExecutionTimeAsync(
                     () => ExecuteTurnAsync(simulation, simulationStateUpdater, token));
 
-                simulationStateUpdater.UpdateState(simulation, elapsedTime);
-
-                // this is simulation specific
-                // this should be moved in simulationStateUpdater.UpdateState(simulation, elapsedTime);
-                // passing the logger
-                simulation.Participants.Where(x => x.Bot.Health <= 0).ToList().ForEach(x =>
-                {
-                    if (deadBots.Add(x.Bot.BotId))
-                    {
-                        AddLog($"Bot {x.Bot.BotId} just died!");
-                    }
-                });
+                simulationStateUpdater.UpdateState(simulation, elapsedTime, AddLog);
             }
         }
         catch (Exception ex) 
@@ -87,7 +74,7 @@ public class SimulationEngine(IBehaviourExecutor behaviourExecutor) : ISimulatio
                     AddLog($"Executed behaviour for bot {p.Bot.BotId}, result -> {action}");
 
                     // Update the simulation based on the bot's action
-                    simulationStateUpdater.UpdateStateForAction(simulation, p.Bot, action);
+                    simulationStateUpdater.UpdateStateForAction(simulation, p.Bot, action, AddLog);
                 }
             }
             catch (TimeoutException)
