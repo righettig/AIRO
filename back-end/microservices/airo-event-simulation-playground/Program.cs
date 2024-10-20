@@ -45,7 +45,7 @@ var simulation = new Simulation(Guid.NewGuid(), [.. participants],
 );
 
 //var stateUpdater = new DummyStateUpdater();
-var stateUpdater = new StateUpdater();
+var stateUpdater = new StateUpdater(simulationState);
 
 var result = await engine.RunSimulationAsync(simulation, stateUpdater, CancellationToken.None);
 

@@ -8,12 +8,13 @@ public class StateUpdater : ISimulationStateUpdater
 {
     private TimeSpan elapsedTime;
 
-    //private List<Position> OriginalFoodSpawnLocations { get; }
+    private List<Position> OriginalFoodSpawnLocations { get; }
 
-    public StateUpdater()
+    public StateUpdater(ISimulationState state)
     {
-        //OriginalFoodSpawnLocations = Map.GetAllFoodSpawnLocations(); // Store the original food spawn points
         elapsedTime = TimeSpan.Zero;
+
+        OriginalFoodSpawnLocations = GetAllFoodSpawnLocations(state);
     }
 
     public void UpdateState(ISimulation simulation, TimeSpan timeStep)
@@ -35,7 +36,7 @@ public class StateUpdater : ISimulationStateUpdater
         // Respawn food every 10 minutes
         if (elapsedTime.TotalMinutes >= 10)
         {
-        //    RespawnFood();
+            RespawnFood(simulation.State);
             elapsedTime = elapsedTime.Subtract(TimeSpan.FromMinutes(10)); // Reset the 10-minute counter
         }
     }
@@ -96,18 +97,34 @@ public class StateUpdater : ISimulationStateUpdater
         }
     }
 
-    //private void RespawnFood()
-    //{
-    //    // Randomly pick a location from the original food spawn locations
-    //    Random random = new Random();
-    //    var spawnLocation = OriginalFoodSpawnLocations[random.Next(OriginalFoodSpawnLocations.Count)];
+    private void RespawnFood(ISimulationState state)
+    {
+        // Randomly pick a location from the original food spawn locations
+        Random random = new();
+        var spawnLocation = OriginalFoodSpawnLocations[random.Next(OriginalFoodSpawnLocations.Count)];
 
-    //    // Spawn food at the selected location
-    //    if (Map.GetTile(spawnLocation).Type == TileType.Empty) // Only spawn if the tile is empty
-    //    {
-    //        Map.SpawnFood(spawnLocation);
-    //    }
-    //}
+        // Spawn food at the selected location
+        if (state.GetTileAt(spawnLocation).Type == TileType.Empty) // Only spawn if the tile is empty
+        {
+            state.GetTileAt(spawnLocation).Type = TileType.Food;
+        }
+    }
+
+    private static List<Position> GetAllFoodSpawnLocations(ISimulationState state)
+    {
+        var foodSpawns = new List<Position>();
+        for (int x = 0; x < state.Tiles.GetLength(0); x++)
+        {
+            for (int y = 0; y < state.Tiles.GetLength(1); y++)
+            {
+                if (state.Tiles[x, y].Type == TileType.Food)
+                {
+                    foodSpawns.Add(new Position(x, y));
+                }
+            }
+        }
+        return foodSpawns;
+    }
 
     //private void ProcessBotAction(Bot bot, ISimulationAction action, Position oldPosition)
     //{
@@ -144,4 +161,26 @@ public class StateUpdater : ISimulationStateUpdater
     //        _ => oldPosition // No movement
     //    };
     //}
+
+    // OLD: originally from "Map"
+
+    //    public bool IsValidPosition(Position position)
+    //    {
+    //        // Check if the position is within bounds and not blocked by walls, etc.
+    //        return position.X >= 0 && position.X < _tiles.GetLength(0) &&
+    //               position.Y >= 0 && position.Y < _tiles.GetLength(1) &&
+    //               _tiles[position.X, position.Y].Type != TileType.Wall;
+    //    }
+
+    //    public void MoveBot(Bot bot, Position oldPosition, Position newPosition)
+    //    {
+    //        // Update the bot's position on the map
+    //        _tiles[oldPosition.X, oldPosition.Y].Bot = null; // Remove bot from old position
+    //        _tiles[newPosition.X, newPosition.Y].Bot = bot;  // Place bot in the new position
+    //    }
+
+    //    public void RemoveFood(Position position)
+    //    {
+    //        _tiles[position.X, position.Y].Type = TileType.Empty; // Remove food from the tile
+    //    }
 }

@@ -9,6 +9,11 @@ public class SimulationState(int currentTurn) : ISimulationState
     public TileInfo[,] Tiles { get; private set; }
     public int CurrentTurn { get; set; } = currentTurn;
 
+    public TileInfo GetTileAt(Position position)
+    {
+        return Tiles[position.X, position.Y];
+    }
+
     public Dictionary<Position, TileInfo> GetVisibleTiles(Position position, int radius)
     {
         var result = new Dictionary<Position, TileInfo>();
@@ -64,7 +69,7 @@ public class SimulationState(int currentTurn) : ISimulationState
         {
             var spawnPoint = spawnPoints[i];
 
-            Tiles[spawnPoint.X, spawnPoint.Y].SetBot(participants[i].Bot);
+            GetTileAt(spawnPoint).SetBot(participants[i].Bot);
 
             participants[i].Bot.Position = spawnPoint; // assign random spawn point
         }
@@ -74,7 +79,7 @@ public class SimulationState(int currentTurn) : ISimulationState
         {
             var spawnPoint = spawnPoints[i];
 
-            Tiles[spawnPoint.X, spawnPoint.Y].SetEmpty();
+            GetTileAt(spawnPoint).SetEmpty();
         }
     }
 }

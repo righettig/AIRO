@@ -13,8 +13,8 @@ public interface IBotState
     IEnumerable<(Position, TileInfo)> TraverseVisibleTiles();
 
     // Find the nearest opponent Bot
-    Bot GetNearestOpponentBot();
+    ISimulationBot GetNearestOpponentBot();
 
     // Find the nearest food tile
-    Position GetNearestFoodTile();
+    Position? GetNearestFoodTile();
 }
