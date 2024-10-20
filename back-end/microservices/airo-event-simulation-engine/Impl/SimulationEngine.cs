@@ -14,7 +14,7 @@ public class SimulationEngine(IBehaviourExecutor behaviourExecutor) : ISimulatio
     {
         AddLog("Initializing simulation");
 
-        var deadBots = new HashSet<Guid>();
+        var deadBots = new HashSet<Guid>(); // move in simulation/simulationState/simulationStateUpdater, see comment below
 
         try
         {
@@ -25,6 +25,9 @@ public class SimulationEngine(IBehaviourExecutor behaviourExecutor) : ISimulatio
 
                 simulationStateUpdater.UpdateState(simulation, elapsedTime);
 
+                // this is simulation specific
+                // this should be moved in simulationStateUpdater.UpdateState(simulation, elapsedTime);
+                // passing the logger
                 simulation.Participants.Where(x => x.Bot.Health <= 0).ToList().ForEach(x =>
                 {
                     if (deadBots.Add(x.Bot.BotId))
