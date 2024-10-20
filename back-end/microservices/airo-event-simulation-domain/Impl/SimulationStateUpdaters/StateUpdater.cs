@@ -16,26 +16,28 @@ public class StateUpdater : ISimulationStateUpdater
         elapsedTime = TimeSpan.Zero;
     }
 
-    public void UpdateState(ISimulation simulation)
+    public void UpdateState(ISimulation simulation, TimeSpan timeStep)
     {
         simulation.State.CurrentTurn += 1;
 
-        //elapsedTime += timeStep;
+        elapsedTime += timeStep;
 
         // Decrease HP every minute
         //if (elapsedTime.TotalMinutes >= 1)
-        //{
-        //    DecreaseBotsHP();
-        //    elapsedTime = elapsedTime.Subtract(TimeSpan.FromMinutes(1)); // Reset the 1-minute counter
-        //}
-        DecreaseBotsHP(simulation);
+        if (elapsedTime.TotalSeconds >= 5)
+        {
+            DecreaseBotsHP(simulation);
+            elapsedTime = elapsedTime.Subtract(TimeSpan.FromSeconds(5));
+            //elapsedTime = elapsedTime.Subtract(TimeSpan.FromMinutes(1)); // Reset the 1-minute counter
+        }
+        //DecreaseBotsHP(simulation);
 
-        //// Respawn food every 10 minutes
-        //if (elapsedTime.TotalMinutes >= 10)
-        //{
+        // Respawn food every 10 minutes
+        if (elapsedTime.TotalMinutes >= 10)
+        {
         //    RespawnFood();
-        //    elapsedTime = elapsedTime.Subtract(TimeSpan.FromMinutes(10)); // Reset the 10-minute counter
-        //}
+            elapsedTime = elapsedTime.Subtract(TimeSpan.FromMinutes(10)); // Reset the 10-minute counter
+        }
     }
 
     public void UpdateStateForAction(ISimulation simulation, ISimulationBot bot, ISimulationAction action)
@@ -58,7 +60,6 @@ public class StateUpdater : ISimulationStateUpdater
 
         // Update the bot's position on the map based on the direction
         // This would involve checking map boundaries, obstacles, etc.
-        // Example logic:
         switch (direction)
         {
             case Direction.Up:

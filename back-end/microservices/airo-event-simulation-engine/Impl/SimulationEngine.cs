@@ -20,9 +20,10 @@ public class SimulationEngine(IBehaviourExecutor behaviourExecutor) : ISimulatio
         {
             while (!simulation.Goal.IsSimulationComplete(simulation))
             {
-                await ExecuteTurnAsync(simulation, simulationStateUpdater, token);
+                var elapsedTime = await MeasureExecutionTimeAsync(
+                    () => ExecuteTurnAsync(simulation, simulationStateUpdater, token));
 
-                simulationStateUpdater.UpdateState(simulation);
+                simulationStateUpdater.UpdateState(simulation, elapsedTime);
 
                 simulation.Participants.Where(x => x.Bot.Health <= 0).ToList().ForEach(x =>
                 {
@@ -97,6 +98,16 @@ public class SimulationEngine(IBehaviourExecutor behaviourExecutor) : ISimulatio
         }
 
         AddLog($"Turn finished");
+    }
+
+    private static async Task<TimeSpan> MeasureExecutionTimeAsync(Func<Task> operation)
+    {
+        var startTime = DateTime.Now;
+
+        await operation();
+
+        var endTime = DateTime.Now;
+        return endTime - startTime;
     }
 
     protected virtual void AddLog(string message)

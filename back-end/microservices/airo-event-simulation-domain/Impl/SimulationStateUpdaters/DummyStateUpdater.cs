@@ -4,7 +4,7 @@ namespace airo_event_simulation_domain.Impl.SimulationStateUpdaters;
 
 public class DummyStateUpdater : ISimulationStateUpdater
 {
-    public void UpdateState(ISimulation simulation)
+    public void UpdateState(ISimulation simulation, TimeSpan timeStep)
     {
         simulation.State = new SimulationState(simulation.State.CurrentTurn + 1);
 
