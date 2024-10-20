@@ -14,9 +14,9 @@ public class SimulationState(int currentTurn) : ISimulationState
         return Tiles[position.X, position.Y];
     }
 
-    public Dictionary<Position, TileInfo> GetVisibleTiles(Position position, int radius)
+    public Dictionary<Position, ITileInfo> GetVisibleTiles(Position position, int radius)
     {
-        var result = new Dictionary<Position, TileInfo>();
+        var result = new Dictionary<Position, ITileInfo>();
 
         var mapSize = Tiles.GetLength(0); // assuming square map
 

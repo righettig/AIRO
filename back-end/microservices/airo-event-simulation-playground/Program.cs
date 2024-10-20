@@ -38,10 +38,10 @@ var simulationState = new SimulationState(1);
 simulationState.InitializeSimulation(participants, map);
 
 var simulation = new Simulation(Guid.NewGuid(), [.. participants],
-    new TurnBasedGoal(1000000),
+    new TurnBasedGoal(100000),
     //new TimeBasedGoal(TimeSpan.FromSeconds(30)),
     simulationState,
-    new RandomWinnerTracker()
+    new HealthiestWinnerTracker()
 );
 
 //var stateUpdater = new DummyStateUpdater();

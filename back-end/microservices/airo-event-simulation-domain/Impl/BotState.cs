@@ -6,16 +6,16 @@ namespace airo_event_simulation_domain.Impl;
 public class BotState(Guid botId,
                       int health,
                       Position position, 
-                      Dictionary<Position, TileInfo> visibleTiles) : IBotState
+                      Dictionary<Position, ITileInfo> visibleTiles) : IBotState
 {
     public Guid Id => botId;
     public int Health => health;
 
     public Position Position => position;
 
-    public Dictionary<Position, TileInfo> VisibleTiles => visibleTiles;
+    public Dictionary<Position, ITileInfo> VisibleTiles => visibleTiles;
 
-    public IEnumerable<(Position, TileInfo)> TraverseVisibleTiles()
+    public IEnumerable<(Position, ITileInfo)> TraverseVisibleTiles()
     {
         // return VisibleTiles;
         throw new NotImplementedException();

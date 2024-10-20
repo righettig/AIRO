@@ -34,10 +34,10 @@ public class StateUpdater : ISimulationStateUpdater
         //DecreaseBotsHP(simulation);
 
         // Respawn food every 10 minutes
-        if (elapsedTime.TotalMinutes >= 10)
+        if (elapsedTime.TotalMinutes >= 1)
         {
             RespawnFood(simulation.State);
-            elapsedTime = elapsedTime.Subtract(TimeSpan.FromMinutes(10)); // Reset the 10-minute counter
+            elapsedTime = elapsedTime.Subtract(TimeSpan.FromMinutes(1)); // Reset the 10-minute counter
         }
     }
 
@@ -45,41 +45,27 @@ public class StateUpdater : ISimulationStateUpdater
     {
         if (action is MoveAction moveAction)
         {
-            MoveBot(simulation.State, bot, moveAction.Direction);
+            var newPosition = GetNewPosition(bot.Position, moveAction.Direction);
+
+            // Check if the new position is valid (not out of bounds or a wall)
+            if (IsValidPosition(newPosition, simulation.State))
+            {
+                // Check if the new position contains food
+                var tile = simulation.State.GetTileAt(newPosition);
+                if (tile.Type == TileType.Food)
+                {
+                    // Remove the food from the map
+                    tile.Type = TileType.Empty;
+
+                    bot.Health += 10;
+                }
+
+                // Move the bot on the map
+                MoveBot(bot, simulation.State, newPosition);
+            }
         }
 
         Console.WriteLine($"Bot {bot.BotId}, Health {bot.Health}, Position ({bot.Position.X},{bot.Position.Y})");
-    }
-
-    private static void MoveBot(ISimulationState state, ISimulationBot bot, Direction direction)
-    {
-        var size = state.Tiles.GetLength(0); // assuming square map
-
-        var tile = state.Tiles[bot.Position.X, bot.Position.Y];
-        
-        tile.SetEmpty();
-
-        // Update the bot's position on the map based on the direction
-        // This would involve checking map boundaries, obstacles, etc.
-        switch (direction)
-        {
-            case Direction.Up:
-                bot.Position = new Position(bot.Position.X, Math.Max(bot.Position.Y - 1, 0));
-                break;
-            case Direction.Down:
-                bot.Position = new Position(bot.Position.X, Math.Min(bot.Position.Y + 1, size - 1));
-                break;
-            case Direction.Left:
-                bot.Position = new Position(Math.Max(bot.Position.X - 1, 0), bot.Position.Y);
-                break;
-            case Direction.Right:
-                bot.Position = new Position(Math.Min(bot.Position.X + 1, size - 1), bot.Position.Y);
-                break;
-        }
-
-        tile = state.Tiles[bot.Position.X, bot.Position.Y];
-
-        tile.SetBot(bot);
     }
 
     private static void DecreaseBotsHP(ISimulation simulation)
@@ -126,61 +112,34 @@ public class StateUpdater : ISimulationStateUpdater
         return foodSpawns;
     }
 
-    //private void ProcessBotAction(Bot bot, ISimulationAction action, Position oldPosition)
-    //{
-    //    if (action is MoveAction moveAction)
-    //    {
-    //        var newPosition = GetNewPosition(oldPosition, moveAction.Direction);
+    private static Position GetNewPosition(Position oldPosition, Direction direction)
+    {
+        return direction switch
+        {
+            Direction.Up    => new Position(oldPosition.X,     oldPosition.Y - 1),
+            Direction.Down  => new Position(oldPosition.X,     oldPosition.Y + 1),
+            Direction.Left  => new Position(oldPosition.X - 1, oldPosition.Y),
+            Direction.Right => new Position(oldPosition.X + 1, oldPosition.Y),
+            _ => oldPosition // No movement
+        };
+    }
 
-    //        // Check if the new position is valid (not out of bounds or a wall)
-    //        if (Map.IsValidPosition(newPosition))
-    //        {
-    //            // Move the bot on the map
-    //            Map.MoveBot(bot, oldPosition, newPosition);
+    public static bool IsValidPosition(Position position, ISimulationState state)
+    {
+        // Check if the position is within bounds and not blocked by walls, etc.
+        return position.X >= 0 && position.X < state.Tiles.GetLength(0) &&
+               position.Y >= 0 && position.Y < state.Tiles.GetLength(1) &&
+               state.GetTileAt(position).Type != TileType.Wall;
+    }
 
-    //            // Check if the new position contains food
-    //            var tile = Map.GetTile(newPosition);
-    //            if (tile.Type == TileType.Food)
-    //            {
-    //                // Remove the food from the map
-    //                Map.RemoveFood(newPosition);
-    //            }
-    //        }
-    //    }
-    //}
+    public static void MoveBot(ISimulationBot bot, ISimulationState state, Position newPosition)
+    {
+        // Update the bot's position on the map
+        var oldTile = state.GetTileAt(bot.Position);
+        oldTile.RestorePrevTile();
 
-    //private Position GetNewPosition(Position oldPosition, Direction direction)
-    //{
-    //    // Calculate new position based on the direction of movement
-    //    return direction switch
-    //    {
-    //        Direction.Up => new Position(oldPosition.X, oldPosition.Y - 1),
-    //        Direction.Down => new Position(oldPosition.X, oldPosition.Y + 1),
-    //        Direction.Left => new Position(oldPosition.X - 1, oldPosition.Y),
-    //        Direction.Right => new Position(oldPosition.X + 1, oldPosition.Y),
-    //        _ => oldPosition // No movement
-    //    };
-    //}
+        state.GetTileAt(newPosition).SetBot(bot);
 
-    // OLD: originally from "Map"
-
-    //    public bool IsValidPosition(Position position)
-    //    {
-    //        // Check if the position is within bounds and not blocked by walls, etc.
-    //        return position.X >= 0 && position.X < _tiles.GetLength(0) &&
-    //               position.Y >= 0 && position.Y < _tiles.GetLength(1) &&
-    //               _tiles[position.X, position.Y].Type != TileType.Wall;
-    //    }
-
-    //    public void MoveBot(Bot bot, Position oldPosition, Position newPosition)
-    //    {
-    //        // Update the bot's position on the map
-    //        _tiles[oldPosition.X, oldPosition.Y].Bot = null; // Remove bot from old position
-    //        _tiles[newPosition.X, newPosition.Y].Bot = bot;  // Place bot in the new position
-    //    }
-
-    //    public void RemoveFood(Position position)
-    //    {
-    //        _tiles[position.X, position.Y].Type = TileType.Empty; // Remove food from the tile
-    //    }
+        bot.Position = newPosition;
+    }
 }

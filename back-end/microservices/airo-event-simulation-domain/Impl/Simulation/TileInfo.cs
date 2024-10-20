@@ -2,7 +2,7 @@
 
 namespace airo_event_simulation_domain.Impl.Simulation;
 
-public class TileInfo
+public class TileInfo : ITileInfo
 {
     public TileType Type { get; set; }
     
@@ -20,8 +20,22 @@ public class TileInfo
 
     public void SetBot(ISimulationBot bot)
     {
-        PrevType = Type;
+        if (Type == TileType.SpawnPoint) // We do not want to carry over this info while the simulation is running
+        {
+            PrevType = TileType.Empty;
+        }
+        else 
+        {
+            PrevType = Type;
+        }
+
         Type = TileType.Bot;
         Bot = bot;
+    }
+
+    public void RestorePrevTile() 
+    {
+        Type = PrevType;
+        PrevType = Type;
     }
 }

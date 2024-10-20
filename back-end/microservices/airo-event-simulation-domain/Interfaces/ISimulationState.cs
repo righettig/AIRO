@@ -8,6 +8,6 @@ public interface ISimulationState
 
     public TileInfo[,] Tiles { get; }
 
-    Dictionary<Position, TileInfo> GetVisibleTiles(Position position, int size);
+    Dictionary<Position, ITileInfo> GetVisibleTiles(Position position, int size);
     TileInfo GetTileAt(Position position);
 }
