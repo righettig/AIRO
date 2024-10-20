@@ -2,8 +2,6 @@
 using airo_event_simulation_domain.Impl.Simulation.Actions;
 using airo_event_simulation_domain.Interfaces;
 
-namespace airo_event_simulation_playground.Examples;
-
 public class DummyBotAgent2 : BaseBotAgent
 {
     public override ISimulationAction ComputeNextMove(IBotState botState)

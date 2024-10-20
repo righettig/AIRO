@@ -65,7 +65,7 @@ public class SimulationEngine(IBehaviourExecutor behaviourExecutor) : ISimulatio
         // TODO: log turn index
         AddLog($"Turn started");
 
-        foreach (var p in simulation.Participants.Where(x => x.Bot.Health > 0)) // TODO move inside simulation to implement custom logic (for instance if a bot can freeze another one
+        foreach (var p in simulation.GetActiveParticipants())
         {
             try
             {

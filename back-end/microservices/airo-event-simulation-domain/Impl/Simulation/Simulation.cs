@@ -10,9 +10,6 @@ public class Simulation(Guid eventId,
 {
     public Guid EventId { get; } = eventId;
     public Participant[] Participants { get; } = participants;
-    public ISimulationGoal Goal { get; } = goal;
-    public ISimulationState State { get; set; } = state;
-    public IWinnerTracker WinnerTracker { get; } = winnerTracker;
 
     public IBotState CreateBotStateFor(Bot bot)
     {
@@ -20,5 +17,19 @@ public class Simulation(Guid eventId,
         var visibleTiles = State.GetVisibleTiles(bot.Position, 2); // Assuming bot can see up to 2 tiles
 
         return new BotState(bot.BotId, bot.Health, bot.Position, visibleTiles);
+    }
+
+    // TODO: think about different simulation type. 
+    // Perhaps it's worth grouping together Goal, WinnerTracker and GetActiveParticipants
+    // if those can change from one simulation type to another.
+
+    public ISimulationGoal Goal { get; } = goal;
+    public ISimulationState State { get; set; } = state;
+    public IWinnerTracker WinnerTracker { get; } = winnerTracker;
+
+    // this can be useful if a bot can freeze another one
+    public Participant[] GetActiveParticipants()
+    {
+        return Participants.Where(x => x.Bot.Health > 0).ToArray();
     }
 }

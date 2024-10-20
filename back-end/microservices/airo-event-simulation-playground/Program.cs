@@ -59,29 +59,54 @@ static Participant CreateParticipant(string userId)
     //var script = $"Console.WriteLine(\"{message}\");";
     //var script = "while (true) {}";
     //var script = "return new MoveAction(Direction.Up);";
-    var script = @"
-        public class DummyBotAgent : BaseBotAgent
-        {
-            public override ISimulationAction ComputeNextMove(IBotState botState)
-            {
-                // For now, we’ll use a simple random strategy to either hold or move in a direction.
-                var random = new Random();
-                var actions = new List<ISimulationAction>
-                {
-                    Hold(),
-                    Up(),
-                    Down(),
-                    Left(),
-                    Right()
-                };
+    //var script = @"
+    //    public class DummyBotAgent : BaseBotAgent
+    //    {
+    //        public override ISimulationAction ComputeNextMove(IBotState botState)
+    //        {
+    //            // For now, we’ll use a simple random strategy to either hold or move in a direction.
+    //            var random = new Random();
+    //            var actions = new List<ISimulationAction>
+    //            {
+    //                Hold(),
+    //                Up(),
+    //                Down(),
+    //                Left(),
+    //                Right()
+    //            };
 
-                // Choose a random action
-                int actionIndex = random.Next(actions.Count);
-                return actions[actionIndex];
-            }
-        }
-    ";
+    //            // Choose a random action
+    //            int actionIndex = random.Next(actions.Count);
+    //            return actions[actionIndex];
+    //        }
+    //    }
+    //";
+    var script = ReadBehaviour("DummyBotAgent.cs");
 
     var result = new Participant(userId, new Bot(botId, script));
     return result;
+}
+
+static string ReadBehaviour(string fileName) 
+{
+    // Get the path of the directory containing the executable (usually bin/Debug or bin/Release)
+    string currentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+
+    // Navigate to the parent directory and then to the Examples folder
+    string projectDirectory = Directory.GetParent(currentDirectory).Parent.Parent.Parent.FullName;
+    string examplesFolder = Path.Combine(projectDirectory, "Examples");
+    string filePath = Path.Combine(examplesFolder, fileName);
+
+    string fileContent = "";
+
+    if (File.Exists(filePath))
+    {
+        fileContent = File.ReadAllText(filePath);
+    }
+    else
+    {
+        Console.WriteLine("File not found!");
+    }
+
+    return fileContent;
 }
