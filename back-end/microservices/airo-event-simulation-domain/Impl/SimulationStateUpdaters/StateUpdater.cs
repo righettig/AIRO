@@ -54,8 +54,7 @@ public class StateUpdater : ISimulationStateUpdater
 
         var tile = state.Tiles[bot.Position.X, bot.Position.Y];
         
-        tile.Type = TileType.Empty;
-        tile.Bot = null;
+        tile.SetEmpty();
 
         // Update the bot's position on the map based on the direction
         // This would involve checking map boundaries, obstacles, etc.
@@ -78,11 +77,10 @@ public class StateUpdater : ISimulationStateUpdater
 
         tile = state.Tiles[bot.Position.X, bot.Position.Y];
 
-        tile.Type = TileType.Bot;
-        tile.Bot = bot;
+        tile.SetBot(bot);
     }
 
-    private void DecreaseBotsHP(ISimulation simulation)
+    private static void DecreaseBotsHP(ISimulation simulation)
     {
         foreach (var participant in simulation.Participants)
         {
@@ -92,9 +90,7 @@ public class StateUpdater : ISimulationStateUpdater
             {
                 var position = participant.Bot.Position;
 
-                // TODO: add helper method to switch Empty -> Bot and viceversa
-                simulation.State.Tiles[position.X, position.Y].Type = TileType.Empty;
-                simulation.State.Tiles[position.X, position.Y].Bot = null;
+                simulation.State.Tiles[position.X, position.Y].SetEmpty();
             }
         }
     }

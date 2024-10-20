@@ -64,8 +64,7 @@ public class SimulationState(int currentTurn) : ISimulationState
         {
             var spawnPoint = spawnPoints[i];
 
-            Tiles[spawnPoint.X, spawnPoint.Y].Type = TileType.Bot;
-            Tiles[spawnPoint.X, spawnPoint.Y].Bot = participants[i].Bot;
+            Tiles[spawnPoint.X, spawnPoint.Y].SetBot(participants[i].Bot);
 
             participants[i].Bot.Position = spawnPoint; // assign random spawn point
         }
@@ -74,7 +73,8 @@ public class SimulationState(int currentTurn) : ISimulationState
         for (int i = participants.Count; i < spawnPoints.Count; i++)
         {
             var spawnPoint = spawnPoints[i];
-            Tiles[spawnPoint.X, spawnPoint.Y].Type = TileType.Empty;
+
+            Tiles[spawnPoint.X, spawnPoint.Y].SetEmpty();
         }
     }
 }
