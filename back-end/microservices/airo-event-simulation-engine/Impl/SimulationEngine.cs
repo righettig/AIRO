@@ -53,8 +53,7 @@ public class SimulationEngine(IBehaviourExecutor behaviourExecutor) : ISimulatio
     {
         token.ThrowIfCancellationRequested();
 
-        // TODO: log turn index
-        AddLog($"Turn started");
+        AddLog($"Turn started: " + simulation.State.CurrentTurn);
 
         foreach (var p in simulation.GetActiveParticipants())
         {
