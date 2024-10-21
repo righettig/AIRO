@@ -9,12 +9,14 @@ public class StateUpdater : ISimulationStateUpdater
     private TimeSpan elapsedTime;
     private readonly HashSet<Guid> deadBots;
     private readonly List<Position> originalFoodSpawnLocations;
+    private readonly SimulationConfig config;
 
-    public StateUpdater(ISimulationState state)
+    public StateUpdater(ISimulationState state, SimulationConfig config)
     {
         elapsedTime = TimeSpan.Zero;
         deadBots = [];
         originalFoodSpawnLocations = GetAllFoodSpawnLocations(state);
+        this.config = config;
     }
 
     public void UpdateState(ISimulation simulation, TimeSpan timeStep, Action<string> logMessage)
@@ -23,20 +25,18 @@ public class StateUpdater : ISimulationStateUpdater
 
         elapsedTime += timeStep;
 
-        // Decrease HP every minute
-        //if (elapsedTime.TotalMinutes >= 1)
-        if (elapsedTime.TotalSeconds >= 5)
+        // Decrease HP
+        if (elapsedTime.TotalSeconds >= config.BotHpDecayInterval)
         {
-            DecreaseBotsHP(simulation);
-            elapsedTime = elapsedTime.Subtract(TimeSpan.FromSeconds(5));
-            //elapsedTime = elapsedTime.Subtract(TimeSpan.FromMinutes(1)); // Reset the 1-minute counter
+            DecreaseBotsHP(simulation, config.BotHpDecayAmount);
+            elapsedTime = elapsedTime.Subtract(TimeSpan.FromSeconds(config.BotHpDecayInterval));
         }
 
-        // Respawn food every 10 minutes
-        if (elapsedTime.TotalMinutes >= 1)
+        // Respawn food
+        if (elapsedTime.TotalSeconds >= config.FoodRespawnInterval)
         {
             RespawnFood(simulation.State);
-            elapsedTime = elapsedTime.Subtract(TimeSpan.FromMinutes(1)); // Reset the 10-minute counter
+            elapsedTime = elapsedTime.Subtract(TimeSpan.FromSeconds(config.FoodRespawnInterval));
         }
 
         simulation.Participants.Where(x => x.Bot.Health <= 0).ToList().ForEach(x =>
@@ -64,7 +64,8 @@ public class StateUpdater : ISimulationStateUpdater
                     // Remove the food from the map
                     tile.Type = TileType.Empty;
 
-                    bot.Health += 10;
+                    // Cannot exceed initial health value
+                    bot.Health = Math.Min(bot.Health + config.BotHpRestoreAmount, 100);
                 }
 
                 // Move the bot on the map
@@ -75,11 +76,11 @@ public class StateUpdater : ISimulationStateUpdater
         logMessage($"Bot {bot.BotId}, Health {bot.Health}, Position ({bot.Position.X},{bot.Position.Y})");
     }
 
-    private static void DecreaseBotsHP(ISimulation simulation)
+    private static void DecreaseBotsHP(ISimulation simulation, int botHpDecayAmount)
     {
         foreach (var participant in simulation.Participants)
         {
-            participant.Bot.Health -= 5;
+            participant.Bot.Health -= botHpDecayAmount;
 
             if (participant.Bot.Health <= 0)
             {

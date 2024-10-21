@@ -38,14 +38,18 @@ var simulationState = new SimulationState(1);
 simulationState.InitializeSimulation(participants, map);
 
 var simulation = new Simulation(Guid.NewGuid(), [.. participants],
-    new TurnBasedGoal(100000),
+    new TurnBasedGoal(100),
     //new TimeBasedGoal(TimeSpan.FromSeconds(30)),
     simulationState,
     new HealthiestWinnerTracker()
 );
 
-//var stateUpdater = new DummyStateUpdater();
-var stateUpdater = new StateUpdater(simulationState);
+var config = new SimulationConfig(botHpDecayInterval: 60,
+                                  foodRespawnInterval: 60 * 2,
+                                  botHpDecayAmount: 5,
+                                  botHpRestoreAmount: 20);
+
+var stateUpdater = new StateUpdater(simulationState, config);
 
 var result = await engine.RunSimulationAsync(simulation, stateUpdater, CancellationToken.None);
 
@@ -56,7 +60,6 @@ static Participant CreateParticipant(string userId)
     var botId = Guid.NewGuid();
 
     //var script = "^%$^% this will throw a CompilationErrorException!";
-    //var script = $"Console.WriteLine(\"{message}\");";
     //var script = "while (true) {}";
     //var script = "return new MoveAction(Direction.Up);";
     //var script = @"
