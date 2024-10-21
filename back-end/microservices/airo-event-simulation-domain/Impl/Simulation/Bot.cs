@@ -6,15 +6,15 @@ public class Bot : ISimulationBot
 {
     public Guid BotId { get; }
     public int Health { get; set; }
-    public string BehaviorScript { get; }
     public Position Position { get; set; }
+    public string BehaviorScript { get; }
 
-    public Bot(Guid botId, string behaviorScript)
+    public Bot(Guid botId, int botHpInitialAmount, string behaviorScript)
     {
         ArgumentException.ThrowIfNullOrEmpty(behaviorScript);
 
         BotId = botId;
-        Health = 100;
+        Health = botHpInitialAmount;
         BehaviorScript = behaviorScript;
     }
 }

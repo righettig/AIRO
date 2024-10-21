@@ -44,7 +44,8 @@ var simulation = new Simulation(Guid.NewGuid(), [.. participants],
     new HealthiestWinnerTracker()
 );
 
-var config = new SimulationConfig(botHpDecayInterval: 60,
+var config = new SimulationConfig(botHpInitialAmount: 100,
+                                  botHpDecayInterval: 60,
                                   foodRespawnInterval: 60 * 2,
                                   botHpDecayAmount: 5,
                                   botHpRestoreAmount: 20);

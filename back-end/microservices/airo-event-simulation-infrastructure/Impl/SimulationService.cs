@@ -7,7 +7,8 @@ using airo_event_simulation_infrastructure.Interfaces;
 
 namespace airo_event_simulation_infrastructure.Impl;
 
-public class SimulationService(IBotBehavioursService botBehavioursRepository,
+public class SimulationService(ISimulationConfig config,
+                               IBotBehavioursService botBehavioursRepository,
                                IEventSubscriptionService eventSubscriptionService) : ISimulationService
 {
     public async Task<ISimulation> LoadSimulation(Guid eventId)
@@ -17,7 +18,7 @@ public class SimulationService(IBotBehavioursService botBehavioursRepository,
                 .Select(async (x) => {
                     var behaviorScript = await botBehavioursRepository.GetBotBehaviour(x.UserId, x.BotBehaviourId);
 
-                    var bot = new Bot(x.BotId, behaviorScript);
+                    var bot = new Bot(x.BotId, config.BotHpInitialAmount, behaviorScript);
 
                     return new Participant(x.UserId, bot);
                 })

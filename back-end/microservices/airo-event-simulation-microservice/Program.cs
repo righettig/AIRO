@@ -1,4 +1,5 @@
 using airo_common_lib.Extensions;
+using airo_event_simulation_domain.Impl.Simulation;
 using airo_event_simulation_domain.Impl.SimulationStateUpdaters;
 using airo_event_simulation_domain.Interfaces;
 using airo_event_simulation_engine.Impl;
@@ -8,6 +9,15 @@ using airo_event_simulation_infrastructure.Interfaces;
 using airo_event_simulation_microservice.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// TODO: create event mode based on params "easy", "med", "hard"
+var config = new SimulationConfig(botHpInitialAmount: 100,
+                                  botHpDecayInterval: 60,
+                                  foodRespawnInterval: 60 * 2,
+                                  botHpDecayAmount: 5,
+                                  botHpRestoreAmount: 20);
+
+builder.Services.AddSingleton<ISimulationConfig>(config);
 
 builder.Services.AddHostedService<SimulationHostedService>();
 
