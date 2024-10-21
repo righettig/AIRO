@@ -12,9 +12,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // TODO: create event mode based on params "easy", "med", "hard"
 var config = new SimulationConfig(botHpInitialAmount: 100,
-                                  botHpDecayInterval: 60,
-                                  foodRespawnInterval: 60 * 2,
-                                  botHpDecayAmount: 5,
+                                  botHpDecayInterval: 2,
+                                  foodRespawnInterval: 10,
+                                  botHpDecayAmount: 15,
                                   botHpRestoreAmount: 20);
 
 builder.Services.AddSingleton<ISimulationConfig>(config);
