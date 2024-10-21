@@ -30,7 +30,7 @@ builder.Services.AddSingleton<IBehaviourExecutor, BehaviourExecutor>();
 builder.Services.AddSingleton<IBackgroundTaskQueue, SimulationTaskQueue>();
 builder.Services.AddSingleton<ISimulationStatusTracker, SimulationStatusTracker>();
 builder.Services.AddSingleton<IEventsService, EventsService>();
-builder.Services.AddSingleton<ISimulationStateUpdater, DummyStateUpdater>();
+builder.Services.AddSingleton<ISimulationStateUpdater, StateUpdater>();
 
 builder.Services.AddDefaultTimeProvider();
 

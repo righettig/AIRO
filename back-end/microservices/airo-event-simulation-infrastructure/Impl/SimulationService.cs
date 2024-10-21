@@ -27,9 +27,10 @@ public class SimulationService(ISimulationConfig config,
         var simulation = new Simulation(eventId,
                                         participants,
                                         //new TimeBasedGoal(TimeSpan.FromMinutes(1)),
-                                        new TurnBasedGoal(2),
+                                        //new TurnBasedGoal(2),
+                                        new TurnBasedGoal(10000),
                                         new SimulationState(1),
-                                        new RandomWinnerTracker());
+                                        new HealthiestWinnerTracker());
 
         return simulation;
     }
