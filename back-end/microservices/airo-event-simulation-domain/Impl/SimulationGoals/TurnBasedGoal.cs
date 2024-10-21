@@ -11,6 +11,6 @@ public class TurnBasedGoal(int maxTurns) : ISimulationGoal
     public bool IsSimulationComplete(ISimulation simulation)
     {
         currentTurn++;
-        return currentTurn > maxTurns;
+        return currentTurn > maxTurns || simulation.GetActiveParticipants().Length == 1;
     }
 }

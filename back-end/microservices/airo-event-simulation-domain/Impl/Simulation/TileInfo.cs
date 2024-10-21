@@ -37,5 +37,6 @@ public class TileInfo : ITileInfo
     {
         Type = PrevType;
         PrevType = Type;
+        Bot = null;
     }
 }

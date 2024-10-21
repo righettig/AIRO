@@ -25,9 +25,9 @@ S I _ _ _ _ _ _ _ _ _ _ _ _ _ S";
 var map = new Map(mapString, 16);
 
 var config = new SimulationConfig(botHpInitialAmount: 100,
-                                  botHpDecayInterval: 60,
-                                  foodRespawnInterval: 60 * 2,
-                                  botHpDecayAmount: 5,
+                                  botHpDecayInterval: 2,
+                                  foodRespawnInterval: 10,
+                                  botHpDecayAmount: 15,
                                   botHpRestoreAmount: 20);
 
 var compiler = new CSharpBehaviourCompiler();
@@ -46,7 +46,7 @@ var simulationState = new SimulationState(1);
 simulationState.InitializeSimulation(participants, map);
 
 var simulation = new Simulation(Guid.NewGuid(), [.. participants],
-    new TurnBasedGoal(100),
+    new TurnBasedGoal(10000),
     //new TimeBasedGoal(TimeSpan.FromSeconds(30)),
     simulationState,
     new HealthiestWinnerTracker()

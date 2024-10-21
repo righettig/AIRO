@@ -35,7 +35,8 @@ public class StateUpdater : ISimulationStateUpdater
         // Respawn food
         if (elapsedTime.TotalSeconds >= config.FoodRespawnInterval)
         {
-            RespawnFood(simulation.State);
+            var position = RespawnFood(simulation.State);
+            logMessage($"Spawning Food at {position}");
             elapsedTime = elapsedTime.Subtract(TimeSpan.FromSeconds(config.FoodRespawnInterval));
         }
 
@@ -66,6 +67,8 @@ public class StateUpdater : ISimulationStateUpdater
 
                     // Cannot exceed initial health value
                     bot.Health = Math.Min(bot.Health + config.BotHpRestoreAmount, 100);
+
+                    logMessage($"Bot {bot.BotId} collected food at {newPosition}.");
                 }
 
                 // Move the bot on the map
@@ -73,7 +76,7 @@ public class StateUpdater : ISimulationStateUpdater
             }
         }
 
-        logMessage($"Bot {bot.BotId}, Health {bot.Health}, Position ({bot.Position.X},{bot.Position.Y})");
+        logMessage($"Bot {bot.BotId}, Health {bot.Health}, Position {bot.Position}");
     }
 
     private static void DecreaseBotsHP(ISimulation simulation, int botHpDecayAmount)
@@ -86,12 +89,12 @@ public class StateUpdater : ISimulationStateUpdater
             {
                 var position = participant.Bot.Position;
 
-                simulation.State.Tiles[position.X, position.Y].SetEmpty();
+                simulation.State.Tiles[position.X, position.Y].RestorePrevTile();
             }
         }
     }
 
-    private void RespawnFood(ISimulationState state)
+    private Position? RespawnFood(ISimulationState state)
     {
         // Randomly pick a location from the original food spawn locations
         Random random = new();
@@ -102,6 +105,8 @@ public class StateUpdater : ISimulationStateUpdater
         {
             state.GetTileAt(spawnLocation).Type = TileType.Food;
         }
+
+        return spawnLocation;
     }
 
     private static List<Position> GetAllFoodSpawnLocations(ISimulationState state)

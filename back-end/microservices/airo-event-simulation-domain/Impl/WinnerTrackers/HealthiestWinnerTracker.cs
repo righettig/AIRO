@@ -15,6 +15,6 @@ public class HealthiestWinnerTracker : IWinnerTracker
             return null;
         }
 
-        return activeParticipants.OrderBy(x => x.Bot.Health).First();
+        return activeParticipants.OrderByDescending(x => x.Bot.Health).First();
     }
 }
