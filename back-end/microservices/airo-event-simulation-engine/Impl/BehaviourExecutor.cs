@@ -4,25 +4,17 @@ using airo_event_simulation_domain.Interfaces;
 using airo_event_simulation_engine.Interfaces;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
+using Newtonsoft.Json.Linq;
 using System.Runtime.Loader;
 
 namespace airo_event_simulation_engine.Impl;
 
-// TODO: it would be better to have BehaviourCompiler as well and give it the responsibility to compile behaviours
-// I could use this to validate bot behaviours
-public class BehaviourExecutor : IBehaviourExecutor
+// TODO this can be used to validate scripts either exposing API or doing at simulation start
+// this depends only on simulation.domain. Move to "domain" or inside dedicated project then expose an API for validation
+static class BehaviourCompiler 
 {
-    // Dictionary to store bot agents with IBotState.Id as the key
-    private readonly Dictionary<Guid, IBotAgent> _botAgents = [];
-
-    public async Task<ISimulationAction> Execute(string behaviorScript, IBotState state, CancellationToken token)
+    public static async Task<IBotAgent> Compile(string behaviorScript, CancellationToken token) 
     {
-        if (_botAgents.TryGetValue(state.Id, out var botAgent))
-        {
-            // If the bot agent is already in the dictionary, execute its next move
-            return botAgent.ComputeNextMove(state);
-        }
-
         var scriptOptions = ScriptOptions.Default
             .AddReferences(typeof(Bot).Assembly)
             .AddReferences(typeof(Console).Assembly)
@@ -71,7 +63,26 @@ public class BehaviourExecutor : IBehaviourExecutor
         }
 
         // Instantiate the agent
-        botAgent = (IBotAgent)Activator.CreateInstance(agentType);
+        var botAgent = (IBotAgent)Activator.CreateInstance(agentType);
+
+        return botAgent;
+    }
+}
+
+public class BehaviourExecutor : IBehaviourExecutor
+{
+    // Dictionary to store bot agents with IBotState.Id as the key
+    private readonly Dictionary<Guid, IBotAgent> _botAgents = [];
+
+    public async Task<ISimulationAction> Execute(string behaviorScript, IBotState state, CancellationToken token)
+    {
+        if (_botAgents.TryGetValue(state.Id, out var botAgent))
+        {
+            // If the bot agent is already in the dictionary, execute its next move
+            return botAgent.ComputeNextMove(state);
+        }
+
+        botAgent = await BehaviourCompiler.Compile(behaviorScript, token);
 
         // Store the agent in the dictionary
         _botAgents[state.Id] = botAgent;
@@ -82,4 +93,3 @@ public class BehaviourExecutor : IBehaviourExecutor
         return botAgent.ComputeNextMove(state);
     }
 }
-
