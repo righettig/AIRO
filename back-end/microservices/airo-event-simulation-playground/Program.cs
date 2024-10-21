@@ -24,7 +24,15 @@ S I _ _ _ _ _ _ _ _ _ _ _ _ _ S";
 
 var map = new Map(mapString, 16);
 
-var engine = new SimulationEngine(new BehaviourExecutor());
+var config = new SimulationConfig(botHpInitialAmount: 100,
+                                  botHpDecayInterval: 60,
+                                  foodRespawnInterval: 60 * 2,
+                                  botHpDecayAmount: 5,
+                                  botHpRestoreAmount: 20);
+
+var compiler = new CSharpBehaviourCompiler();
+
+var engine = new SimulationEngine(new BehaviourExecutor(compiler));
 
 engine.OnLogMessage += (sender, message) => Console.WriteLine($"Log: {message}");
 
@@ -44,19 +52,13 @@ var simulation = new Simulation(Guid.NewGuid(), [.. participants],
     new HealthiestWinnerTracker()
 );
 
-var config = new SimulationConfig(botHpInitialAmount: 100,
-                                  botHpDecayInterval: 60,
-                                  foodRespawnInterval: 60 * 2,
-                                  botHpDecayAmount: 5,
-                                  botHpRestoreAmount: 20);
-
 var stateUpdater = new StateUpdater(simulationState, config);
 
 var result = await engine.RunSimulationAsync(simulation, stateUpdater, CancellationToken.None);
 
 Console.WriteLine(result.ToString());
 
-static Participant CreateParticipant(string userId)
+Participant CreateParticipant(string userId)
 {
     var botId = Guid.NewGuid();
 
@@ -87,7 +89,7 @@ static Participant CreateParticipant(string userId)
     //";
     var script = ReadBehaviour("DummyBotAgent.cs");
 
-    var result = new Participant(userId, new Bot(botId, script));
+    var result = new Participant(userId, new Bot(botId, config.BotHpInitialAmount, script));
     return result;
 }
 

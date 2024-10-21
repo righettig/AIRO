@@ -12,7 +12,7 @@ public class BotTests
         var behaviorScript = "attack();";
 
         // Act
-        var bot = new Bot(botId, behaviorScript);
+        var bot = new Bot(botId, 100, behaviorScript);
 
         // Assert
         Assert.Equal(botId, bot.BotId);
@@ -27,10 +27,10 @@ public class BotTests
         var botId = Guid.NewGuid();
 
         // Act & Assert
-        var exceptionNull = Assert.Throws<ArgumentNullException>(() => new Bot(botId, null));
+        var exceptionNull = Assert.Throws<ArgumentNullException>(() => new Bot(botId, 100, null));
         Assert.Equal("Value cannot be null. (Parameter 'behaviorScript')", exceptionNull.Message);
 
-        var exceptionEmpty = Assert.Throws<ArgumentException>(() => new Bot(botId, ""));
+        var exceptionEmpty = Assert.Throws<ArgumentException>(() => new Bot(botId, 100, ""));
         Assert.Equal("The value cannot be an empty string. (Parameter 'behaviorScript')", exceptionEmpty.Message);
     }
 
@@ -42,7 +42,7 @@ public class BotTests
         var behaviorScript = "defend();";
 
         // Act
-        var bot = new Bot(botId, behaviorScript);
+        var bot = new Bot(botId, 100, behaviorScript);
 
         // Assert
         Assert.Equal(botId, bot.BotId);

@@ -9,11 +9,8 @@ public interface IBotState
     Position Position { get; }
     Dictionary<Position, ITileInfo> VisibleTiles { get; }
 
-    // Traverse all visible tiles
-    IEnumerable<(Position, ITileInfo)> TraverseVisibleTiles();
-
     // Find the nearest opponent Bot
-    ISimulationBot GetNearestOpponentBot();
+    ISimulationBot? GetNearestOpponentBot();
 
     // Find the nearest food tile
     Position? GetNearestFoodTile();

@@ -24,6 +24,7 @@ builder.Services.AddHostedService<SimulationHostedService>();
 builder.Services.AddSingleton<ISimulationService, SimulationService>();
 builder.Services.AddSingleton<IBotBehavioursService, BotBehavioursService>();
 builder.Services.AddSingleton<IEventSubscriptionService, EventSubscriptionService>();
+builder.Services.AddSingleton<IBehaviourCompiler, CSharpBehaviourCompiler>();
 builder.Services.AddSingleton<IBehaviourExecutor, BehaviourExecutor>();
 
 builder.Services.AddSingleton<IBackgroundTaskQueue, SimulationTaskQueue>();

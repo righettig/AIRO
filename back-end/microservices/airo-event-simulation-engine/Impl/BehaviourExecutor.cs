@@ -1,75 +1,9 @@
-﻿using airo_event_simulation_domain.Impl.Simulation;
-using airo_event_simulation_domain.Impl.Simulation.Actions;
-using airo_event_simulation_domain.Interfaces;
+﻿using airo_event_simulation_domain.Interfaces;
 using airo_event_simulation_engine.Interfaces;
-using Microsoft.CodeAnalysis.CSharp.Scripting;
-using Microsoft.CodeAnalysis.Scripting;
-using Newtonsoft.Json.Linq;
-using System.Runtime.Loader;
 
 namespace airo_event_simulation_engine.Impl;
 
-// TODO this can be used to validate scripts either exposing API or doing at simulation start
-// this depends only on simulation.domain. Move to "domain" or inside dedicated project then expose an API for validation
-static class BehaviourCompiler 
-{
-    public static async Task<IBotAgent> Compile(string behaviorScript, CancellationToken token) 
-    {
-        var scriptOptions = ScriptOptions.Default
-            .AddReferences(typeof(Bot).Assembly)
-            .AddReferences(typeof(Console).Assembly)
-            .AddImports("System")
-            .AddImports("System.Collections.Generic")
-            .AddImports(typeof(HoldAction).Namespace)
-            .AddImports(typeof(IBotState).Namespace)
-            .AddImports(typeof(BaseBotAgent).Namespace);
-
-        // Run the script
-        var scriptState = await CSharpScript.RunAsync(
-            behaviorScript,
-            options: scriptOptions,
-            cancellationToken: token
-        );
-
-        // Get the compiled assembly from the ScriptState
-        var compilation = scriptState.Script.GetCompilation();
-
-        using var peStream = new MemoryStream();
-
-        var emitResult = compilation.Emit(peStream, cancellationToken: token);
-
-        if (!emitResult.Success)
-        {
-            throw new InvalidOperationException("Script compilation failed.");
-        }
-
-        peStream.Seek(0, SeekOrigin.Begin);
-        var assembly = AssemblyLoadContext.Default.LoadFromStream(peStream);
-
-        // Now you can access types from the loaded assembly
-        var agentType = assembly.GetTypes()
-            .FirstOrDefault(t => typeof(BaseBotAgent).IsAssignableFrom(t) || typeof(IBotAgent).IsAssignableFrom(t));
-
-        if (agentType == null)
-        {
-            throw new InvalidOperationException("No implementation of BaseBotAgent found in the script.");
-        }
-
-        // Ensure the class has a parameterless constructor
-        var constructor = agentType.GetConstructor(Type.EmptyTypes);
-        if (constructor == null)
-        {
-            throw new InvalidOperationException("The class must have a parameterless constructor.");
-        }
-
-        // Instantiate the agent
-        var botAgent = (IBotAgent)Activator.CreateInstance(agentType);
-
-        return botAgent;
-    }
-}
-
-public class BehaviourExecutor : IBehaviourExecutor
+public class BehaviourExecutor(IBehaviourCompiler compiler) : IBehaviourExecutor
 {
     // Dictionary to store bot agents with IBotState.Id as the key
     private readonly Dictionary<Guid, IBotAgent> _botAgents = [];
@@ -79,10 +13,10 @@ public class BehaviourExecutor : IBehaviourExecutor
         if (_botAgents.TryGetValue(state.Id, out var botAgent))
         {
             // If the bot agent is already in the dictionary, execute its next move
-            return botAgent.ComputeNextMove(state);
+            return await RunBehaviour(botAgent, state, token);
         }
 
-        botAgent = await BehaviourCompiler.Compile(behaviorScript, token);
+        botAgent = await compiler.Compile(behaviorScript, token);
 
         // Store the agent in the dictionary
         _botAgents[state.Id] = botAgent;
@@ -90,6 +24,32 @@ public class BehaviourExecutor : IBehaviourExecutor
         Console.WriteLine($"Compiled script {state.Id}");
 
         // Execute the bot agent's action
-        return botAgent.ComputeNextMove(state);
+        return await RunBehaviour(botAgent, state, token);
+    }
+
+    private static async Task<ISimulationAction> RunBehaviour(IBotAgent botAgent, IBotState state, CancellationToken token) 
+    {
+        // Create the execution task
+        var executionTask = Task.Run(() =>
+        {
+            var simulationAction = botAgent.ComputeNextMove(state);
+            return simulationAction;
+        }, token);
+
+        // Create a delay task for timeout
+        var timeoutTask = Task.Delay(TimeSpan.FromSeconds(5), token);
+
+        // Wait for either the execution to finish or the timeout
+        var completedTask = await Task.WhenAny(executionTask, timeoutTask);
+
+        if (completedTask == timeoutTask)
+        {
+            // Cancel the execution task
+            token.ThrowIfCancellationRequested(); // This throws an OperationCanceledException
+            throw new TimeoutException("Behavior execution timed out.");
+        }
+
+        // Await the execution task to propagate any exceptions
+        return await executionTask;
     }
 }

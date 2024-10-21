@@ -1,4 +1,5 @@
 ﻿using airo_event_simulation_domain.Impl.SimulationGoals;
+using airo_event_simulation_domain.Interfaces;
 using airo_event_simulation_infrastructure.Impl;
 using airo_event_simulation_infrastructure.Interfaces;
 using Moq;
@@ -7,6 +8,7 @@ namespace airo_event_simulation_tests;
 
 public class SimulationServiceTests
 {
+    private readonly Mock<ISimulationConfig> _simulationConfigMock;
     private readonly Mock<IBotBehavioursService> _botBehavioursServiceMock;
     private readonly Mock<IEventSubscriptionService> _eventSubscriptionServiceMock;
 
@@ -14,9 +16,13 @@ public class SimulationServiceTests
 
     public SimulationServiceTests()
     {
+        _simulationConfigMock = new Mock<ISimulationConfig>();
         _botBehavioursServiceMock = new Mock<IBotBehavioursService>();
         _eventSubscriptionServiceMock = new Mock<IEventSubscriptionService>();
-        _simulationService = new SimulationService(_botBehavioursServiceMock.Object, _eventSubscriptionServiceMock.Object);
+
+        _simulationService = new SimulationService(_simulationConfigMock.Object,
+                                                   _botBehavioursServiceMock.Object,
+                                                   _eventSubscriptionServiceMock.Object);
     }
 
     [Fact]

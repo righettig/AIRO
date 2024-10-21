@@ -15,12 +15,6 @@ public class BotState(Guid botId,
 
     public Dictionary<Position, ITileInfo> VisibleTiles => visibleTiles;
 
-    public IEnumerable<(Position, ITileInfo)> TraverseVisibleTiles()
-    {
-        // return VisibleTiles;
-        throw new NotImplementedException();
-    }
-
     public ISimulationBot? GetNearestOpponentBot()
     {
         ISimulationBot? nearestBot = null;
