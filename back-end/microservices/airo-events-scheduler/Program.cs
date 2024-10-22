@@ -17,10 +17,7 @@ var host = Host
     {
         var configuration = context.Configuration;
 
-        var eventStoreDbConnectionString = configuration["EVENT_STORE_DB_URL"];
         var rabbitMqUrl = configuration["RABBITMQ_URL"];
-
-        Console.WriteLine("RABBITMQ_URL: " + rabbitMqUrl);
 
         services.AddSingleton<IRabbitMQConsumerService, RabbitMQConsumerService>(provider => {
             return new RabbitMQConsumerService(rabbitMqUrl);
@@ -35,7 +32,6 @@ var host = Host
             client.BaseAddress = new Uri(baseApiUrl);
         });
 
-        // this allows to inject IDependency in HelloJob
         services.AddQuartz();
 
         services.AddQuartzHostedService(options =>

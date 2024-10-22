@@ -5,7 +5,7 @@ export class PaymentService {
     private readonly logger = new Logger(PaymentService.name);
    
     async process(creditCardDetails: string) {
-        console.log("PaymentService: processing payment... ", creditCardDetails);
+        this.logger.log("PaymentService: processing payment... ", creditCardDetails);
 
         // Simulate a 3-second delay
         await new Promise(resolve => setTimeout(resolve, 3000));
@@ -14,7 +14,7 @@ export class PaymentService {
         //const success = Math.random() < 0.9;
         const success = true;
 
-        console.log(`PaymentService: done! with ${success ? 'success' : 'failure'}.`);
+        this.logger.log(`PaymentService: done! with ${success ? 'success' : 'failure'}.`);
 
         return success;
     }

@@ -1,3 +1,4 @@
+using airo_common_lib.Extensions;
 using airo_cqrs_eventsourcing_lib.Web;
 
 using airo_events_microservice.Domain.Aggregates;
@@ -19,6 +20,8 @@ builder.Services
     .AddEventStore(eventStoreDbConnectionString)
     .AddCQRS(typeof(EventAggregate))
     .WithEvents("airo_events");
+
+builder.Services.AddDefaultTimeProvider();
 
 var app = builder.Build();
 

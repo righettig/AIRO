@@ -1,0 +1,19 @@
+graph TD
+  subgraph Users Front-End Deps.
+    users-app --> users-gateway-api
+  end
+
+  subgraph Users Gateway Deps.
+    users-gateway-api --> auth-service
+    users-gateway-api --> profile-service
+    users-gateway-api --> notifications-service
+    users-gateway-api --> billing-service
+    users-gateway-api --> bots-service
+    users-gateway-api --> bot-behaviours-service
+    users-gateway-api --> purchase-service
+    users-gateway-api --> events-service
+    users-gateway-api --> event-subscription-service
+    users-gateway-api --> event-simulation-service
+    users-gateway-api --> leaderboard-service
+    users-gateway-api --> ui-notifications-service
+  end

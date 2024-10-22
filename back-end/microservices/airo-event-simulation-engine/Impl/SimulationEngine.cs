@@ -9,22 +9,27 @@ public class SimulationEngine(IBehaviourExecutor behaviourExecutor) : ISimulatio
     public event EventHandler<string>? OnLogMessage;
 
     public async Task<SimulationResult> RunSimulationAsync(ISimulation simulation,
-                                                           ISimulationStateUpdater stateUpdater,
+                                                           ISimulationStateUpdater simulationStateUpdater,
                                                            CancellationToken token)
     {
         AddLog("Initializing simulation");
+
+        simulationStateUpdater.OnSimulationStart(simulation.State, AddLog);
 
         try
         {
             while (!simulation.Goal.IsSimulationComplete(simulation))
             {
-                await ExecuteTurnAsync(simulation, token);
+                var elapsedTime = await MeasureExecutionTimeAsync(
+                    () => ExecuteTurnAsync(simulation, simulationStateUpdater, token));
 
-                stateUpdater.UpdateState(simulation);
+                simulationStateUpdater.UpdateState(simulation, elapsedTime, AddLog);
             }
         }
-        catch (Exception ex)
+        catch (Exception ex) 
         {
+            // Since ExecuteTurnAsync catches all exceptions this can only be caused by either UpdateState or IsSimulationComplete 
+
             AddLog($"Error during simulation: {ex.Message}");
             return new SimulationResult(Success: false, ErrorMessage: ex.Message);
         }
@@ -44,20 +49,56 @@ public class SimulationEngine(IBehaviourExecutor behaviourExecutor) : ISimulatio
         return result;
     }
 
-    private async Task ExecuteTurnAsync(ISimulation simulation, CancellationToken token)
+    private async Task ExecuteTurnAsync(ISimulation simulation,
+                                        ISimulationStateUpdater simulationStateUpdater,
+                                        CancellationToken token)
     {
         token.ThrowIfCancellationRequested();
 
-        AddLog($"Turn started");
+        AddLog($"Turn started: " + simulation.State.CurrentTurn);
 
-        foreach (var p in simulation.Participants)
+        foreach (var p in simulation.GetActiveParticipants())
         {
-            await behaviourExecutor.Execute(p.Bot.BehaviorScript, token);
+            try
+            {
+                var botState = simulation.CreateBotStateFor(p.Bot);
 
-            AddLog("Executed behaviour for bot: " + p.Bot.BotId);
+                // Ask the bot to compute its next move based on the personalized state
+                var action = await behaviourExecutor.Execute(p.Bot.BehaviorScript, botState, token);
+
+                if (action is null)
+                {
+                    AddLog($"Error: Behavior execution for bot {p.Bot.BotId} did not return a valid action.");
+                }
+                else 
+                {
+                    AddLog($"Executed behaviour for bot {p.Bot.BotId}, result -> {action}");
+
+                    // Update the simulation based on the bot's action
+                    simulationStateUpdater.UpdateStateForAction(simulation, p.Bot, action, AddLog);
+                }
+            }
+            catch (TimeoutException)
+            {
+                AddLog($"Error: Behavior execution for bot {p.Bot.BotId} timed out.");
+            }
+            catch (Exception ex)
+            {
+                AddLog($"Error executing behavior for bot {p.Bot.BotId}: {ex.Message}");
+            }
         }
 
         AddLog($"Turn finished");
+    }
+
+    private static async Task<TimeSpan> MeasureExecutionTimeAsync(Func<Task> operation)
+    {
+        var startTime = DateTime.Now;
+
+        await operation();
+
+        var endTime = DateTime.Now;
+        return endTime - startTime;
     }
 
     protected virtual void AddLog(string message)

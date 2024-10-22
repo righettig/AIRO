@@ -13,4 +13,8 @@
     <ProjectReference Include="..\airo-event-simulation-engine\airo-event-simulation-engine.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Examples\Maps\" />
+  </ItemGroup>
+
 </Project>
