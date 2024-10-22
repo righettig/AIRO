@@ -12,22 +12,47 @@ public class SimulationService(ISimulationConfig config,
                                IBotBehavioursService botBehavioursRepository,
                                IEventSubscriptionService eventSubscriptionService) : ISimulationService
 {
-    private string mapString = @"S _ _ _ _ _ _ _ F _ _ _ _ _ _ S
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
-_ _ _ _ X X X X X _ _ _ _ _ _ _
-_ _ _ _ X I F _ W X _ _ _ I _ _
-_ W _ _ X _ W _ _ I X _ _ _ _ _
-_ W _ _ X F _ _ F _ X _ _ _ _ _
-_ _ _ _ ~ X _ F _ _ X _ _ _ _ _
-_ _ _ ~ ~ ~ X _ _ F _ X _ _ _ _
-_ _ _ ~ ~ ~ _ _ _ _ _ X _ F _ _
-_ F _ ~ X _ F _ _ X X _ _ _ _ _
-_ _ _ ~ X _ _ _ X _ _ _ _ _ _ _
-_ _ _ ~ ~ _ _ _ _ _ _ W _ _ _ _
-_ W _ _ ~ _ _ _ _ _ ~ ~ ~ _ _ _
-_ _ _ _ _ _ F _ _ F ~ ~ ~ _ _ _
-_ _ _ _ _ _ _ _ _ _ ~ ~ ~ _ _ _
-S I _ _ _ _ _ _ _ _ _ _ _ _ _ S";
+    private readonly string mapString = @"
+    {
+      ""size"": 4,
+      ""tiles"": [
+        {
+          ""x"": 0,
+          ""y"": 0,
+          ""type"": ""spawn""
+        },
+        {
+          ""x"": 2,
+          ""y"": 0,
+          ""type"": ""wall""
+        },
+        {
+          ""x"": 1,
+          ""y"": 1,
+          ""type"": ""food""
+        },
+        {
+          ""x"": 1,
+          ""y"": 2,
+          ""type"": ""wood""
+        },
+        {
+          ""x"": 3,
+          ""y"": 2,
+          ""type"": ""water""
+        },
+        {
+          ""x"": 0,
+          ""y"": 3,
+          ""type"": ""iron""
+        },
+        {
+          ""x"": 3,
+          ""y"": 3,
+          ""type"": ""spawn""
+        }
+      ]
+    }";
 
     public async Task<ISimulation> LoadSimulation(Guid eventId)
     {
@@ -43,7 +68,7 @@ S I _ _ _ _ _ _ _ _ _ _ _ _ _ S";
             );
 
         // TODO: Event will have a EventMapId. We will load the map using MapService
-        var map = new Map(mapString, 16);
+        var map = new Map(mapString);
 
         var simulationState = simulationStateFactory.Create(participants, map);
 
