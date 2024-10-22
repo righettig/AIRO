@@ -1,7 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { BotsComponent } from './components/bots/components/bots.component';
-import { MapLoaderComponent } from "./components/events/components/event-live-feed/map-loader/map-loader.component";
 import { MapRendererComponent } from "./components/events/components/event-live-feed/map/map.component";
 import { LoadedMapData } from './components/events/components/event-live-feed/map/models/map.models';
 
@@ -10,7 +9,7 @@ import { LoadedMapData } from './components/events/components/event-live-feed/ma
   standalone: true,
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
-  imports: [BotsComponent, RouterModule, MapLoaderComponent, MapRendererComponent]
+  imports: [BotsComponent, RouterModule, MapRendererComponent]
 })
 export class HomeComponent {
   @ViewChild('renderer', { static: false }) renderer!: MapRendererComponent;
