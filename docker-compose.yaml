@@ -447,7 +447,7 @@ services:
         condition: service_healthy
       cosmosdb:
         condition: service_healthy
-      event-subscriptions-service:
+      event-subscription-service:
         condition: service_started
     build:
       context: .

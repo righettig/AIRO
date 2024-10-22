@@ -1,59 +1,111 @@
 ﻿using airo_event_simulation_domain.Impl;
+using airo_event_simulation_domain.Impl.Simulation;
+using airo_event_simulation_domain.Interfaces;
 using airo_event_simulation_engine.Impl;
+using airo_event_simulation_engine.Interfaces;
+using Moq;
 
 namespace airo_event_simulation_tests;
 
 public class BehaviourExecutorTests
 {
+    private readonly Mock<IBehaviourCompiler> _compilerMock;
+
     private readonly BehaviourExecutor _behaviourExecutor;
 
     public BehaviourExecutorTests()
     {
-        _behaviourExecutor = new BehaviourExecutor();
+        _compilerMock = new Mock<IBehaviourCompiler>();
+        _behaviourExecutor = new BehaviourExecutor(_compilerMock.Object);
     }
 
     [Fact]
-    public async Task Execute_ShouldThrowTimeoutException_WhenScriptTakesTooLong()
+    public async Task Execute_ShouldCompileAndReturnActionForNewBot()
     {
         // Arrange
-        var script = "await System.Threading.Tasks.Task.Delay(10000);"; // This simulates a long-running script.
-        var state = new SimulationState(1);
+        var mockBotAgent = new Mock<IBotAgent>();
+        _compilerMock.Setup(c => c.Compile(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(mockBotAgent.Object);
+        
+        mockBotAgent.Setup(b => b.ComputeNextMove(It.IsAny<IBotState>())).Returns(new Mock<ISimulationAction>().Object);
+
+        var state = new Mock<IBotState>();
+        state.Setup(s => s.Id).Returns(Guid.NewGuid());
+
+        var executor = new BehaviourExecutor(_compilerMock.Object);
+
+        // Act
+        var action = await executor.Execute("dummy_script", state.Object, CancellationToken.None);
+
+        // Assert
+        Assert.NotNull(action);
+        _compilerMock.Verify(c => c.Compile(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Once);
+    }
+
+    [Fact]
+    public async Task Execute_ShouldThrowTimeoutExceptionForLongRunningScript()
+    {
+        // Arrange
+        var mockBotAgent = new Mock<IBotAgent>();
+        _compilerMock.Setup(c => c.Compile(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(mockBotAgent.Object);
+        mockBotAgent.Setup(b => b.ComputeNextMove(It.IsAny<IBotState>())).Returns(() =>
+        {
+            Task.Delay(TimeSpan.FromSeconds(10)).Wait(); // Simulate long-running task
+            return new Mock<ISimulationAction>().Object;
+        });
+
+        var state = new Mock<IBotState>();
+        state.Setup(s => s.Id).Returns(Guid.NewGuid());
+
+        var executor = new BehaviourExecutor(_compilerMock.Object);
 
         // Act & Assert
-        await Assert.ThrowsAsync<TimeoutException>(async () =>
-            await _behaviourExecutor.Execute(script, state, CancellationToken.None));
+        await Assert.ThrowsAsync<TimeoutException>(() => executor.Execute("dummy_script", state.Object, CancellationToken.None));
     }
 
     [Fact]
-    public async Task Execute_ShouldThrowTaskCanceledException_WhenCanceledBeforeTimeout()
+    public async Task Execute_ShouldReturnActionForCachedBot()
     {
         // Arrange
-        var script = "await Task.Delay(100);"; // Simulates a script that waits for some time.
-        var state = new SimulationState(1);
+        var mockBotAgent = new Mock<IBotAgent>();
+        _compilerMock.Setup(c => c.Compile(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(mockBotAgent.Object);
+        mockBotAgent.Setup(b => b.ComputeNextMove(It.IsAny<IBotState>())).Returns(new Mock<ISimulationAction>().Object);
+        var state = new Mock<IBotState>();
+        state.Setup(s => s.Id).Returns(Guid.NewGuid());
+
+        var executor = new BehaviourExecutor(_compilerMock.Object);
+        await executor.Execute("dummy_script", state.Object, CancellationToken.None);
+
+        // Act
+        var action = await executor.Execute("dummy_script", state.Object, CancellationToken.None);
+
+        // Assert
+        Assert.NotNull(action);
+        _compilerMock.Verify(c => c.Compile(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Once); // only compiled once!
+    }
+
+    [Fact]
+    public async Task Execute_ShouldThrowTaskCanceledOrOperationCanceledException_WhenCanceledBeforeTimeout()
+    {
+        // Arrange
+        var mockBotAgent = new Mock<IBotAgent>();
+        _compilerMock.Setup(c => c.Compile(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(mockBotAgent.Object);
+        mockBotAgent.Setup(b => b.ComputeNextMove(It.IsAny<IBotState>())).Returns(() =>
+        {
+            Task.Delay(TimeSpan.FromSeconds(2)).Wait(); // Simulate long-running task
+            return new Mock<ISimulationAction>().Object;
+        });
+
+        var state = new BotState(Guid.NewGuid(), 100, new Position(0, 0), []);
         var cts = new CancellationTokenSource();
 
         // Cancel the task immediately
         cts.Cancel();
 
         // Act & Assert
-        await Assert.ThrowsAsync<TaskCanceledException>(async () =>
-            await _behaviourExecutor.Execute(script, state, cts.Token));
-    }
+        var exception = await Assert.ThrowsAnyAsync<OperationCanceledException>(async () =>
+            await _behaviourExecutor.Execute("dummy_script", state, cts.Token));
 
-    [Fact]
-    public async Task Execute_ShouldCompleteWhenScriptIsFast()
-    {
-        // Arrange
-        var script = "var x = 5 + 5;"; // A quick script execution.
-        var state = new SimulationState(1);
-        var cancellationToken = CancellationToken.None;
-
-        // Act
-        var exception = await Record.ExceptionAsync(
-            async () => await _behaviourExecutor.Execute(script, state, cancellationToken));
-
-        // Assert
-        // Ensure the execution was successful and completed without exceptions
-        Assert.Null(exception);
+        // Assert it’s either TaskCanceledException or OperationCanceledException
+        Assert.True(exception is TaskCanceledException or OperationCanceledException);
     }
 }
