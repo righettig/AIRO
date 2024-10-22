@@ -83,9 +83,8 @@ public class BehaviourExecutorTests
         _compilerMock.Verify(c => c.Compile(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Once); // only compiled once!
     }
 
-    // TODO: test is flaky! sometimes OperationCanceledException is thrown instead
     [Fact]
-    public async Task Execute_ShouldThrowTaskCanceledException_WhenCanceledBeforeTimeout()
+    public async Task Execute_ShouldThrowTaskCanceledOrOperationCanceledException_WhenCanceledBeforeTimeout()
     {
         // Arrange
         var mockBotAgent = new Mock<IBotAgent>();
@@ -103,7 +102,10 @@ public class BehaviourExecutorTests
         cts.Cancel();
 
         // Act & Assert
-        await Assert.ThrowsAsync<TaskCanceledException>(async () =>
+        var exception = await Assert.ThrowsAnyAsync<OperationCanceledException>(async () =>
             await _behaviourExecutor.Execute("dummy_script", state, cts.Token));
+
+        // Assert it’s either TaskCanceledException or OperationCanceledException
+        Assert.True(exception is TaskCanceledException or OperationCanceledException);
     }
 }

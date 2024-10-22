@@ -8,6 +8,7 @@ namespace airo_event_simulation_tests;
 
 public class SimulationServiceTests
 {
+    private readonly Mock<ISimulationStateFactory> _simulationStateFactoryMock;
     private readonly Mock<ISimulationConfig> _simulationConfigMock;
     private readonly Mock<IBotBehavioursService> _botBehavioursServiceMock;
     private readonly Mock<IEventSubscriptionService> _eventSubscriptionServiceMock;
@@ -16,11 +17,13 @@ public class SimulationServiceTests
 
     public SimulationServiceTests()
     {
+        _simulationStateFactoryMock = new Mock<ISimulationStateFactory>();
         _simulationConfigMock = new Mock<ISimulationConfig>();
         _botBehavioursServiceMock = new Mock<IBotBehavioursService>();
         _eventSubscriptionServiceMock = new Mock<IEventSubscriptionService>();
 
         _simulationService = new SimulationService(_simulationConfigMock.Object,
+                                                   _simulationStateFactoryMock.Object,
                                                    _botBehavioursServiceMock.Object,
                                                    _eventSubscriptionServiceMock.Object);
     }

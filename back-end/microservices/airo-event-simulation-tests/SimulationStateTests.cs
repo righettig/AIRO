@@ -45,7 +45,7 @@ public class SimulationStateTests
         int size = 3;
         var map = new Map(mapData, size);
         var simulationState = new SimulationState(1);
-        simulationState.InitializeSimulation(new List<Participant>(), map);
+        simulationState.InitializeSimulation([], map);
         var position = new Position(1, 1);
         int radius = 1;
 
@@ -73,7 +73,7 @@ public class SimulationStateTests
         var simulationState = new SimulationState(1);
 
         // Act
-        simulationState.InitializeSimulation(participants, map);
+        simulationState.InitializeSimulation([.. participants], map);
 
         // Assert
         Assert.Equal(participants, simulationState.Participants);

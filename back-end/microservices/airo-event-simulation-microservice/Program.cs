@@ -1,4 +1,5 @@
 using airo_common_lib.Extensions;
+using airo_event_simulation_domain.Impl;
 using airo_event_simulation_domain.Impl.Simulation;
 using airo_event_simulation_domain.Impl.SimulationStateUpdaters;
 using airo_event_simulation_domain.Interfaces;
@@ -21,16 +22,17 @@ builder.Services.AddSingleton<ISimulationConfig>(config);
 
 builder.Services.AddHostedService<SimulationHostedService>();
 
-builder.Services.AddSingleton<ISimulationService, SimulationService>();
 builder.Services.AddSingleton<IBotBehavioursService, BotBehavioursService>();
 builder.Services.AddSingleton<IEventSubscriptionService, EventSubscriptionService>();
 builder.Services.AddSingleton<IBehaviourCompiler, CSharpBehaviourCompiler>();
-builder.Services.AddSingleton<IBehaviourExecutor, BehaviourExecutor>();
-
 builder.Services.AddSingleton<IBackgroundTaskQueue, SimulationTaskQueue>();
 builder.Services.AddSingleton<ISimulationStatusTracker, SimulationStatusTracker>();
 builder.Services.AddSingleton<IEventsService, EventsService>();
-builder.Services.AddSingleton<ISimulationStateUpdater, StateUpdater>();
+builder.Services.AddSingleton<ISimulationStateFactory, SimulationStateFactory>();
+builder.Services.AddSingleton<ISimulationService, SimulationService>();
+
+builder.Services.AddScoped<IBehaviourExecutor, BehaviourExecutor>();
+builder.Services.AddScoped<ISimulationStateUpdater, StateUpdater>();
 
 builder.Services.AddDefaultTimeProvider();
 

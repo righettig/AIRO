@@ -5,7 +5,7 @@ namespace airo_event_simulation_domain.Impl;
 
 public class SimulationState(int currentTurn) : ISimulationState
 {
-    public List<Participant> Participants { get; set; }
+    public Participant[] Participants { get; set; }
     public TileInfo[,] Tiles { get; private set; }
     public int CurrentTurn { get; set; } = currentTurn;
 
@@ -38,7 +38,7 @@ public class SimulationState(int currentTurn) : ISimulationState
         return result;
     }
 
-    public void InitializeSimulation(List<Participant> participants, Map map)
+    public void InitializeSimulation(Participant[] participants, Map map)
     {
         // get list of spawn points from the map
         var spawnPoints = map.GetSpawnPoints();
@@ -65,7 +65,7 @@ public class SimulationState(int currentTurn) : ISimulationState
         }
 
         // assign each participant's bot to a spawn point
-        for (int i = 0; i < participants.Count; i++)
+        for (int i = 0; i < participants.Length; i++)
         {
             var spawnPoint = spawnPoints[i];
 
@@ -75,7 +75,7 @@ public class SimulationState(int currentTurn) : ISimulationState
         }
 
         // clean up remaining spawn points
-        for (int i = participants.Count; i < spawnPoints.Count; i++)
+        for (int i = participants.Length; i < spawnPoints.Count; i++)
         {
             var spawnPoint = spawnPoints[i];
 

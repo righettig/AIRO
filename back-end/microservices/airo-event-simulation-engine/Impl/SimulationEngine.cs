@@ -14,6 +14,8 @@ public class SimulationEngine(IBehaviourExecutor behaviourExecutor) : ISimulatio
     {
         AddLog("Initializing simulation");
 
+        simulationStateUpdater.OnSimulationStart(simulation.State, AddLog);
+
         try
         {
             while (!simulation.Goal.IsSimulationComplete(simulation))

@@ -36,23 +36,24 @@ var engine = new SimulationEngine(new BehaviourExecutor(compiler));
 
 engine.OnLogMessage += (sender, message) => Console.WriteLine($"Log: {message}");
 
-var participants = new List<Participant>
+var participants = new Participant[] 
 {
     CreateParticipant("user1"),
     CreateParticipant("user2"),
 };
 
-var simulationState = new SimulationState(1);
-simulationState.InitializeSimulation(participants, map);
+var simulationStateFactory = new SimulationStateFactory();
+
+var simulationState = simulationStateFactory.Create(participants, map);
 
 var simulation = new Simulation(Guid.NewGuid(), [.. participants],
-    new TurnBasedGoal(10000),
+    new TurnBasedGoal(100),
     //new TimeBasedGoal(TimeSpan.FromSeconds(30)),
     simulationState,
     new HealthiestWinnerTracker()
 );
 
-var stateUpdater = new StateUpdater(simulationState, config);
+var stateUpdater = new StateUpdater(config);
 
 var result = await engine.RunSimulationAsync(simulation, stateUpdater, CancellationToken.None);
 

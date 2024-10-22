@@ -3,6 +3,14 @@
 public interface ISimulationStateUpdater
 {
     /// <summary>
+    /// Invoked at the beginning of the simulation.
+    /// This gives an opportunity to initialise instances.
+    /// </summary>
+    /// <param name="state"></param>
+    /// <param name="logMessage"></param>
+    void OnSimulationStart(ISimulationState state, Action<string> logMessage);
+
+    /// <summary>
     /// Updates the simulation state at the end of each turn independently from specific bot actions.
     /// </summary>
     /// <param name="simulation"></param>

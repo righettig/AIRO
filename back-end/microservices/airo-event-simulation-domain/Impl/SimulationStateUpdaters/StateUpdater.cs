@@ -7,16 +7,20 @@ namespace airo_event_simulation_domain.Impl.SimulationStateUpdaters;
 public class StateUpdater : ISimulationStateUpdater
 {
     private TimeSpan elapsedTime;
-    private readonly HashSet<Guid> deadBots;
-    private readonly List<Position> originalFoodSpawnLocations;
-    private readonly SimulationConfig config;
+    private HashSet<Guid> deadBots;
+    private List<Position> originalFoodSpawnLocations;
+    private ISimulationConfig config;
 
-    public StateUpdater(ISimulationState state, SimulationConfig config)
+    public StateUpdater(ISimulationConfig config)
+    {
+        this.config = config;
+    }
+
+    public void OnSimulationStart(ISimulationState state, Action<string> logMessage)
     {
         elapsedTime = TimeSpan.Zero;
         deadBots = [];
         originalFoodSpawnLocations = GetAllFoodSpawnLocations(state);
-        this.config = config;
     }
 
     public void UpdateState(ISimulation simulation, TimeSpan timeStep, Action<string> logMessage)
