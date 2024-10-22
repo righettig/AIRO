@@ -9,4 +9,6 @@ public interface ISimulation
     ISimulationGoal Goal { get; }
     ISimulationState State { get; set; }
     IWinnerTracker WinnerTracker { get; }
+    IBotState CreateBotStateFor(Bot bot);
+    Participant[] GetActiveParticipants();
 }

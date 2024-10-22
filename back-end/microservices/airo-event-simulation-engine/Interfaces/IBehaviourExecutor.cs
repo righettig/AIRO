@@ -4,5 +4,5 @@ namespace airo_event_simulation_engine.Interfaces;
 
 public interface IBehaviourExecutor
 {
-    Task Execute(string behaviorScript, ISimulationState state, CancellationToken token);
+    Task<ISimulationAction> Execute(string behaviorScript, IBotState state, CancellationToken token);
 }

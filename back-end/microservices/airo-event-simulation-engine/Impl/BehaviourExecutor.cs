@@ -1,30 +1,39 @@
-﻿using airo_event_simulation_domain.Impl;
-using airo_event_simulation_domain.Impl.Simulation;
-using airo_event_simulation_domain.Interfaces;
+﻿using airo_event_simulation_domain.Interfaces;
 using airo_event_simulation_engine.Interfaces;
-using Microsoft.CodeAnalysis.CSharp.Scripting;
-using Microsoft.CodeAnalysis.Scripting;
 
 namespace airo_event_simulation_engine.Impl;
 
-public class BehaviourExecutor : IBehaviourExecutor
+public class BehaviourExecutor(IBehaviourCompiler compiler) : IBehaviourExecutor
 {
-    public async Task Execute(string behaviorScript, ISimulationState state, CancellationToken token)
-    {
-        var scriptOptions = ScriptOptions.Default
-            .AddReferences(typeof(Bot).Assembly)
-            .AddReferences(typeof(Console).Assembly)
-            .AddImports("System");
+    // Dictionary to store bot agents with IBotState.Id as the key
+    private readonly Dictionary<Guid, IBotAgent> _botAgents = [];
 
-        // Create the execution task
-        var executionTask = Task.Run(async () =>
+    public async Task<ISimulationAction> Execute(string behaviorScript, IBotState state, CancellationToken token)
+    {
+        if (_botAgents.TryGetValue(state.Id, out var botAgent))
         {
-            await CSharpScript.EvaluateAsync(
-                behaviorScript,
-                globals: state,
-                globalsType: typeof(SimulationState),
-                options: scriptOptions,
-                cancellationToken: token);
+            // If the bot agent is already in the dictionary, execute its next move
+            return await RunBehaviour(botAgent, state, token);
+        }
+
+        botAgent = await compiler.Compile(behaviorScript, token);
+
+        // Store the agent in the dictionary
+        _botAgents[state.Id] = botAgent;
+
+        Console.WriteLine($"Compiled script {state.Id}");
+
+        // Execute the bot agent's action
+        return await RunBehaviour(botAgent, state, token);
+    }
+
+    private static async Task<ISimulationAction> RunBehaviour(IBotAgent botAgent, IBotState state, CancellationToken token) 
+    {
+        // Create the execution task
+        var executionTask = Task.Run(() =>
+        {
+            var simulationAction = botAgent.ComputeNextMove(state);
+            return simulationAction;
         }, token);
 
         // Create a delay task for timeout
@@ -41,7 +50,6 @@ public class BehaviourExecutor : IBehaviourExecutor
         }
 
         // Await the execution task to propagate any exceptions
-        await executionTask;
+        return await executionTask;
     }
 }
-

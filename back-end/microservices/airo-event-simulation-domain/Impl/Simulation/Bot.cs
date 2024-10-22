@@ -1,21 +1,20 @@
-﻿namespace airo_event_simulation_domain.Impl.Simulation;
+﻿using airo_event_simulation_domain.Interfaces;
 
-public class Bot
+namespace airo_event_simulation_domain.Impl.Simulation;
+
+public class Bot : ISimulationBot
 {
     public Guid BotId { get; }
-    public int Health { get; }
-    public int Attack { get; }
-    public int Defense { get; }
+    public int Health { get; set; }
+    public Position Position { get; set; }
     public string BehaviorScript { get; }
 
-    public Bot(Guid botId, string behaviorScript)
+    public Bot(Guid botId, int botHpInitialAmount, string behaviorScript)
     {
         ArgumentException.ThrowIfNullOrEmpty(behaviorScript);
 
         BotId = botId;
-        Health = 0;
-        Attack = 0;
-        Defense = 0;
+        Health = botHpInitialAmount;
         BehaviorScript = behaviorScript;
     }
 }

@@ -7,5 +7,6 @@ public class TimeBasedGoal(TimeSpan duration, ITimeProvider timeProvider) : ISim
 {
     private readonly DateTime endTime = timeProvider.Now.Add(duration);
 
-    public bool IsSimulationComplete(ISimulation simulation) => timeProvider.Now >= endTime;
+    public bool IsSimulationComplete(ISimulation simulation) => 
+        timeProvider.Now >= endTime || simulation.GetActiveParticipants().Length == 1;
 }
