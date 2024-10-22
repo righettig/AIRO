@@ -34,7 +34,7 @@ builder.Services.AddDbContext<MapContext>(options => options.UseCosmos(cosmosDbC
     cosmosOptions.HttpClientFactory(httpClientFactory);
 }));
 
-builder.Services.AddSingleton<IMapService, MapService>();
+builder.Services.AddScoped<IMapService, MapService>();
 
 builder.Services.AddHostedService(sp =>
 {

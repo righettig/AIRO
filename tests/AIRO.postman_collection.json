@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "21f71d1c-9e74-4e60-b48b-9da095ae3770",
+		"_postman_id": "c7752a36-bbe8-4996-8f5a-96f7403643ce",
 		"name": "AIRO",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "1748896"
@@ -2657,6 +2657,132 @@
 								"leaderboard",
 								"behaviors",
 								"behaviorId"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Maps",
+			"item": [
+				{
+					"name": "maps - get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4015/api/Maps",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4015",
+							"path": [
+								"api",
+								"Maps"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "maps - get by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4015/api/Maps/190c52a6-74a0-4690-856f-8a5f0ef7e953",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4015",
+							"path": [
+								"api",
+								"Maps",
+								"190c52a6-74a0-4690-856f-8a5f0ef7e953"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "maps - post",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"mapData\": \"{\\\"name\\\":\\\"Sample Map\\\",\\\"size\\\":14,\\\"tiles\\\":[{\\\"x\\\":0,\\\"y\\\":0,\\\"type\\\":\\\"spawnpoint\\\"},{\\\"x\\\":1,\\\"y\\\":0,\\\"type\\\":\\\"food\\\"}]}\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4015/api/Maps",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4015",
+							"path": [
+								"api",
+								"Maps"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "maps - put",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"mapData\": \"{\\\"name\\\":\\\"Sample Map\\\",\\\"size\\\":14,\\\"tiles\\\":[{\\\"x\\\":0,\\\"y\\\":0,\\\"type\\\":\\\"spawnpoint\\\"},{\\\"x\\\":1,\\\"y\\\":0,\\\"type\\\":\\\"food\\\"}]}\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4015/api/Maps/190c52a6-74a0-4690-856f-8a5f0ef7e953",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4015",
+							"path": [
+								"api",
+								"Maps",
+								"190c52a6-74a0-4690-856f-8a5f0ef7e953"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "maps - delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4015/api/Maps/190c52a6-74a0-4690-856f-8a5f0ef7e953",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4015",
+							"path": [
+								"api",
+								"Maps",
+								"190c52a6-74a0-4690-856f-8a5f0ef7e953"
 							]
 						}
 					},
