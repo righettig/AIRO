@@ -56,7 +56,8 @@
     "moduleNameMapper": {
       "^@auth/(.*)$": "<rootDir>/src/auth/$1",
       "^@bots/(.*)$": "<rootDir>/src/bots/$1",
-      "^@events/(.*)$": "<rootDir>/src/events/$1"
+      "^@events/(.*)$": "<rootDir>/src/events/$1",
+      "^@maps/(.*)$": "<rootDir>/src/maps/$1"
     },
     "moduleFileExtensions": [
       "js",

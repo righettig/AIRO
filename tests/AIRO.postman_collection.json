@@ -1097,6 +1097,126 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "gateway - map create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"mapData\": \"{\\\"name\\\":\\\"Sample Map\\\",\\\"size\\\":14,\\\"tiles\\\":[{\\\"x\\\":0,\\\"y\\\":0,\\\"type\\\":\\\"spawnpoint\\\"},{\\\"x\\\":1,\\\"y\\\":0,\\\"type\\\":\\\"food\\\"}]}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/gateway/maps",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"maps"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - map update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"a8931144-6a7b-4790-98aa-74df6e39f664\",\r\n    \"mapData\": \"{\\\"name\\\":\\\"Updated Map\\\",\\\"size\\\":14,\\\"tiles\\\":[{\\\"x\\\":0,\\\"y\\\":0,\\\"type\\\":\\\"spawnpoint\\\"},{\\\"x\\\":1,\\\"y\\\":0,\\\"type\\\":\\\"food\\\"}]}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/gateway/maps",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"maps"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - map get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/gateway/maps/542c423e-df6a-4670-84e4-2fc0b7a01084",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"maps",
+								"542c423e-df6a-4670-84e4-2fc0b7a01084"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - map delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/gateway/maps/542c423e-df6a-4670-84e4-2fc0b7a01084",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"maps",
+								"542c423e-df6a-4670-84e4-2fc0b7a01084"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - map get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/gateway/maps",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"maps"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
