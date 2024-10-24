@@ -10,6 +10,6 @@ public class UpdateEventCommandHandler(AggregateRepository<EventAggregate> aggre
 
     protected override void ProcessCommand(UpdateEventCommand command, EventAggregate aggregate)
     {
-        aggregate.UpdateEvent(command.Id, command.Name, command.Description);
+        aggregate.UpdateEvent(command.Id, command.Name, command.Description, command.MapId);
     }
 }

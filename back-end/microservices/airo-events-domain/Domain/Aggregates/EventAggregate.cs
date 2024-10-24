@@ -15,9 +15,9 @@ public class EventAggregate : AggregateRoot, IAggregateRoot
 {
     private EventStatus _status;
 
-    public void CreateEvent(Guid id, string name, string description, DateTime scheduledAt)
+    public void CreateEvent(Guid id, string name, string description, DateTime scheduledAt, Guid mapId)
     {
-        RaiseEvent(new EventCreatedEvent(id, name, description, scheduledAt));
+        RaiseEvent(new EventCreatedEvent(id, name, description, scheduledAt, mapId));
     }
 
     public void DeleteEvent(Guid id)
@@ -25,9 +25,9 @@ public class EventAggregate : AggregateRoot, IAggregateRoot
         RaiseEvent(new EventDeletedEvent(id));
     }
 
-    public void UpdateEvent(Guid id, string name, string description)
+    public void UpdateEvent(Guid id, string name, string description, Guid mapId)
     {
-        RaiseEvent(new EventUpdatedEvent(id, name, description));
+        RaiseEvent(new EventUpdatedEvent(id, name, description, mapId));
     }
     
     public void StartEvent(Guid id)

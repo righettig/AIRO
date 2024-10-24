@@ -8,4 +8,7 @@ export class CreateEventDto {
 
     @IsNotEmpty({ message: 'Scheduled At is required' })
     scheduledAt: Date;
+
+    @IsNotEmpty({ message: 'MapId is required' })
+    mapId: string;
 }

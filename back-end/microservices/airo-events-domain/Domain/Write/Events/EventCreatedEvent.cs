@@ -2,10 +2,15 @@
 
 namespace airo_events_microservice.Domain.Write.Events;
 
-public class EventCreatedEvent(Guid id, string name, string description, DateTime scheduledAt) : Event
+public class EventCreatedEvent(Guid id,
+                               string name,
+                               string description,
+                               DateTime scheduledAt,
+                               Guid mapId) : Event
 {
     public Guid Id { get; } = id;
     public string Name { get; } = name;
     public string Description { get; } = description;
     public DateTime ScheduledAt { get; } = scheduledAt;
+    public Guid MapId { get; } = mapId;
 }

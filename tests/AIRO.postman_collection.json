@@ -751,7 +751,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"event4\",\r\n    \"description\": \"fourth\",\r\n    \"scheduledAt\": \"2024-10-17T14:30\"\r\n}",
+							"raw": "{\r\n    \"name\": \"event4\",\r\n    \"description\": \"fourth\",\r\n    \"scheduledAt\": \"2024-10-17T14:30\",\r\n    \"mapId\": \"3b9cec31-227f-4ad5-8ef4-bdea714b26bf\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -774,13 +774,133 @@
 					"response": []
 				},
 				{
+					"name": "gateway - map create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"mapData\": \"{\\\"name\\\":\\\"Sample Map\\\",\\\"size\\\":14,\\\"tiles\\\":[{\\\"x\\\":0,\\\"y\\\":0,\\\"type\\\":\\\"spawnpoint\\\"},{\\\"x\\\":1,\\\"y\\\":0,\\\"type\\\":\\\"food\\\"}]}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/gateway/maps",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"maps"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - map update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"a8931144-6a7b-4790-98aa-74df6e39f664\",\r\n    \"mapData\": \"{\\\"name\\\":\\\"Updated Map\\\",\\\"size\\\":14,\\\"tiles\\\":[{\\\"x\\\":0,\\\"y\\\":0,\\\"type\\\":\\\"spawnpoint\\\"},{\\\"x\\\":1,\\\"y\\\":0,\\\"type\\\":\\\"food\\\"}]}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/gateway/maps",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"maps"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - map get",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/gateway/maps/542c423e-df6a-4670-84e4-2fc0b7a01084",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"maps",
+								"542c423e-df6a-4670-84e4-2fc0b7a01084"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - map delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/gateway/maps/542c423e-df6a-4670-84e4-2fc0b7a01084",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"maps",
+								"542c423e-df6a-4670-84e4-2fc0b7a01084"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gateway - map get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/gateway/maps",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"gateway",
+								"maps"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "gateway - event update",
 					"request": {
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": \"578ef806-c986-4608-adf2-f7e31a9dc1ae\",\r\n    \"name\": \"FOO\",\r\n    \"description\": \"new\"\r\n}",
+							"raw": "{\r\n    \"id\": \"578ef806-c986-4608-adf2-f7e31a9dc1ae\",\r\n    \"name\": \"FOO\",\r\n    \"description\": \"new\",\r\n    \"mapId\": \"3b9cec31-227f-4ad5-8ef4-bdea714b26bf\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1093,126 +1213,6 @@
 								"gateway",
 								"simulation",
 								"eventId"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "gateway - map create",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"mapData\": \"{\\\"name\\\":\\\"Sample Map\\\",\\\"size\\\":14,\\\"tiles\\\":[{\\\"x\\\":0,\\\"y\\\":0,\\\"type\\\":\\\"spawnpoint\\\"},{\\\"x\\\":1,\\\"y\\\":0,\\\"type\\\":\\\"food\\\"}]}\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:3001/gateway/maps",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3001",
-							"path": [
-								"gateway",
-								"maps"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "gateway - map update",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"id\": \"a8931144-6a7b-4790-98aa-74df6e39f664\",\r\n    \"mapData\": \"{\\\"name\\\":\\\"Updated Map\\\",\\\"size\\\":14,\\\"tiles\\\":[{\\\"x\\\":0,\\\"y\\\":0,\\\"type\\\":\\\"spawnpoint\\\"},{\\\"x\\\":1,\\\"y\\\":0,\\\"type\\\":\\\"food\\\"}]}\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:3001/gateway/maps",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3001",
-							"path": [
-								"gateway",
-								"maps"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "gateway - map get",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:3001/gateway/maps/542c423e-df6a-4670-84e4-2fc0b7a01084",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3001",
-							"path": [
-								"gateway",
-								"maps",
-								"542c423e-df6a-4670-84e4-2fc0b7a01084"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "gateway - map delete",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:3001/gateway/maps/542c423e-df6a-4670-84e4-2fc0b7a01084",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3001",
-							"path": [
-								"gateway",
-								"maps",
-								"542c423e-df6a-4670-84e4-2fc0b7a01084"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "gateway - map get all",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:3001/gateway/maps",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3001",
-							"path": [
-								"gateway",
-								"maps"
 							]
 						}
 					},
@@ -2277,7 +2277,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"event1\",\r\n    \"description\": \"first event\",\r\n    \"scheduledAt\": \"2024-10-17T14:30\"\r\n}",
+							"raw": "{\r\n    \"name\": \"event1\",\r\n    \"description\": \"first event\",\r\n    \"scheduledAt\": \"2024-10-17T14:30\",\r\n    \"mapId\": \"3b9cec31-227f-4ad5-8ef4-bdea714b26bf\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2359,7 +2359,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": \"78f538c5-baef-4909-8958-fdc6f0e5bc63\",\r\n    \"name\": \"event1\",\r\n    \"description\": \"updated description\"\r\n}",
+							"raw": "{\r\n    \"id\": \"78f538c5-baef-4909-8958-fdc6f0e5bc63\",\r\n    \"name\": \"event1\",\r\n    \"description\": \"updated description\",\r\n    \"mapId\": \"3b9cec31-227f-4ad5-8ef4-bdea714b26bf\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"

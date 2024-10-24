@@ -24,7 +24,11 @@ public class EventsController(IMediator mediator,
 
         var eventId = Guid.NewGuid();
 
-        await mediator.Send(new CreateEventCommand(eventId, request.Name, request.Description, request.ScheduledAt));
+        await mediator.Send(new CreateEventCommand(eventId,
+                                                   request.Name,
+                                                   request.Description,
+                                                   request.ScheduledAt,
+                                                   request.MapId));
 
         rabbitMQPublisherService.OnEventCreated(eventId, request.ScheduledAt);
 
@@ -34,7 +38,10 @@ public class EventsController(IMediator mediator,
     [HttpPut]
     public async Task<IActionResult> UpdateEvent([FromBody] UpdateEventRequest request)
     {
-        await mediator.Send(new UpdateEventCommand(request.Id, request.Name, request.Description));
+        await mediator.Send(new UpdateEventCommand(request.Id,
+                                                   request.Name,
+                                                   request.Description, 
+                                                   request.MapId));
         return Ok();
     }
 

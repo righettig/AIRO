@@ -10,52 +10,15 @@ namespace airo_event_simulation_infrastructure.Impl;
 public class SimulationService(ISimulationConfig config,
                                ISimulationStateFactory simulationStateFactory,
                                IBotBehavioursService botBehavioursRepository,
-                               IEventSubscriptionService eventSubscriptionService) : ISimulationService
+                               IEventSubscriptionService eventSubscriptionService,
+                               IEventsService eventsService,
+                               IMapsService mapsService) : ISimulationService
 {
-    private readonly string mapString = @"
-    {
-      ""size"": 4,
-      ""tiles"": [
-        {
-          ""x"": 0,
-          ""y"": 0,
-          ""type"": ""spawn""
-        },
-        {
-          ""x"": 2,
-          ""y"": 0,
-          ""type"": ""wall""
-        },
-        {
-          ""x"": 1,
-          ""y"": 1,
-          ""type"": ""food""
-        },
-        {
-          ""x"": 1,
-          ""y"": 2,
-          ""type"": ""wood""
-        },
-        {
-          ""x"": 3,
-          ""y"": 2,
-          ""type"": ""water""
-        },
-        {
-          ""x"": 0,
-          ""y"": 3,
-          ""type"": ""iron""
-        },
-        {
-          ""x"": 3,
-          ""y"": 3,
-          ""type"": ""spawn""
-        }
-      ]
-    }";
-
     public async Task<ISimulation> LoadSimulation(Guid eventId)
     {
+        var mapId = await eventsService.GetMapId(eventId);
+        var mapString = await mapsService.GetMapById(mapId);
+
         var participants = await Task.WhenAll(
             (await eventSubscriptionService.GetParticipants(eventId))
                 .Select(async (x) => {
@@ -67,7 +30,7 @@ public class SimulationService(ISimulationConfig config,
                 })
             );
 
-        // TODO: Event will have a EventMapId. We will load the map using MapService
+        // TODO: use factory to avoid passing real map in unit tests
         var map = new Map(mapString);
 
         var simulationState = simulationStateFactory.Create(participants, map);

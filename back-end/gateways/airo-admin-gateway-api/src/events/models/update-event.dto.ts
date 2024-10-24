@@ -8,4 +8,7 @@ export class UpdateEventDto {
     name: string;
 
     description: string;
+
+    @IsNotEmpty({ message: 'MapId is required' })
+    mapId: string;
 }

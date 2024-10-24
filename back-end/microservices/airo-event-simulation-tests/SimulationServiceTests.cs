@@ -12,6 +12,50 @@ public class SimulationServiceTests
     private readonly Mock<ISimulationConfig> _simulationConfigMock;
     private readonly Mock<IBotBehavioursService> _botBehavioursServiceMock;
     private readonly Mock<IEventSubscriptionService> _eventSubscriptionServiceMock;
+    private readonly Mock<IEventsService> _eventsServiceMock;
+    private readonly Mock<IMapsService> _mapsServiceMock;
+
+    private readonly string mapString = @"
+    {
+      ""size"": 4,
+      ""tiles"": [
+        {
+          ""x"": 0,
+          ""y"": 0,
+          ""type"": ""spawn""
+        },
+        {
+          ""x"": 2,
+          ""y"": 0,
+          ""type"": ""wall""
+        },
+        {
+          ""x"": 1,
+          ""y"": 1,
+          ""type"": ""food""
+        },
+        {
+          ""x"": 1,
+          ""y"": 2,
+          ""type"": ""wood""
+        },
+        {
+          ""x"": 3,
+          ""y"": 2,
+          ""type"": ""water""
+        },
+        {
+          ""x"": 0,
+          ""y"": 3,
+          ""type"": ""iron""
+        },
+        {
+          ""x"": 3,
+          ""y"": 3,
+          ""type"": ""spawn""
+        }
+      ]
+    }";
 
     private readonly SimulationService _simulationService;
 
@@ -21,11 +65,15 @@ public class SimulationServiceTests
         _simulationConfigMock = new Mock<ISimulationConfig>();
         _botBehavioursServiceMock = new Mock<IBotBehavioursService>();
         _eventSubscriptionServiceMock = new Mock<IEventSubscriptionService>();
+        _eventsServiceMock = new Mock<IEventsService>();
+        _mapsServiceMock = new Mock<IMapsService>();
 
         _simulationService = new SimulationService(_simulationConfigMock.Object,
                                                    _simulationStateFactoryMock.Object,
                                                    _botBehavioursServiceMock.Object,
-                                                   _eventSubscriptionServiceMock.Object);
+                                                   _eventSubscriptionServiceMock.Object, 
+                                                   _eventsServiceMock.Object, 
+                                                   _mapsServiceMock.Object);
     }
 
     [Fact]
@@ -46,6 +94,16 @@ public class SimulationServiceTests
         _botBehavioursServiceMock
             .Setup(bh => bh.GetBotBehaviour(It.IsAny<string>(), It.IsAny<Guid>()))
             .ReturnsAsync("BehaviorScript");
+
+        var mapId = Guid.NewGuid();
+
+        _eventsServiceMock
+            .Setup(x => x.GetMapId(It.IsAny<Guid>()))
+            .ReturnsAsync(mapId);
+
+        _mapsServiceMock
+            .Setup(x => x.GetMapById(It.Is<Guid>(y => y == mapId)))
+            .ReturnsAsync(mapString);
 
         // Act
         var simulation = await _simulationService.LoadSimulation(eventId);
@@ -72,6 +130,16 @@ public class SimulationServiceTests
         _eventSubscriptionServiceMock
             .Setup(es => es.GetParticipants(eventId))
             .ReturnsAsync([.. participants]);
+
+        var mapId = Guid.NewGuid();
+
+        _eventsServiceMock
+            .Setup(x => x.GetMapId(It.IsAny<Guid>()))
+            .ReturnsAsync(mapId);
+
+        _mapsServiceMock
+            .Setup(x => x.GetMapById(It.Is<Guid>(y => y == mapId)))
+            .ReturnsAsync(mapString);
 
         // Act
         var simulation = await _simulationService.LoadSimulation(eventId);

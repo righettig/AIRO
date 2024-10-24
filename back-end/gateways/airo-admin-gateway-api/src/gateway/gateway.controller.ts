@@ -78,12 +78,21 @@ export class GatewayController {
   @Post('events')
   async createEvent(@Body() createEventDto: CreateEventDto): Promise<string> {
     return await this.eventsService.create(
-      createEventDto.name, createEventDto.description, createEventDto.scheduledAt);
+      createEventDto.name, 
+      createEventDto.description, 
+      createEventDto.scheduledAt, 
+      createEventDto.mapId
+    );
   }
 
   @Put('events')
   async updateEvent(@Body() updateEventDto: UpdateEventDto): Promise<void> {
-    return await this.eventsService.update(updateEventDto.id, updateEventDto.name, updateEventDto.description);
+    return await this.eventsService.update(
+      updateEventDto.id, 
+      updateEventDto.name, 
+      updateEventDto.description,
+      updateEventDto.mapId
+    );
   }
 
   @Delete('events/:eventId')

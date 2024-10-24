@@ -9,23 +9,25 @@ export class EventsService {
 
     constructor(private readonly httpService: HttpService) { }
 
-    async create(name: string, description: string, scheduledAt: Date): Promise<string> {
+    async create(name: string, description: string, scheduledAt: Date, mapId: string): Promise<string> {
         const response = await firstValueFrom(
             this.httpService.post(`${this.serviceUrl}/api/events`, {
                 name,
                 description,
-                scheduledAt
+                scheduledAt,
+                mapId
             }),
         );
         return response.data;
     }
 
-    async update(id: string, name: string, description: string): Promise<void> {
+    async update(id: string, name: string, description: string, mapId: string): Promise<void> {
         const response = await firstValueFrom(
             this.httpService.put(`${this.serviceUrl}/api/events`, {
                 id,
                 name,
-                description
+                description,
+                mapId
             }),
         );
         return response.data;
