@@ -5,10 +5,12 @@ import { BotsService } from 'src/bots/bots.service';
 import { EventsService } from 'src/events/events.service';
 import { EventSubscriptionService } from 'src/event-subscription/event-subscription.service';
 import { EventSimulationService } from 'src/event-simulation/event-simulation.service';
+import { MapsService } from 'src/maps/maps.service';
 
 import { LoginDto, AuthLoginResponse, LoginResponseDto, AuthRefreshTokenResponse } from '@auth/models';
 import { CreateBotDto, UpdateBotDto, GetBotResponse, GetBotsResponse } from '@bots/models';
 import { CreateEventDto, UpdateEventDto, GetEventResponse, GetAllEventsResponse } from '@events/models';
+import { CreateMapDto, GetAllMapsResponse, GetMapResponse, UpdateMapDto } from '@maps/models';
 
 @Controller('gateway')
 export class GatewayController {
@@ -19,7 +21,8 @@ export class GatewayController {
     private readonly botsService: BotsService,
     private readonly eventsService: EventsService,
     private readonly eventSubscriptionService: EventSubscriptionService,
-    private readonly eventSimulationService: EventSimulationService
+    private readonly eventSimulationService: EventSimulationService,
+    private readonly mapService: MapsService
   ) { }
 
   // Auth
@@ -115,4 +118,30 @@ export class GatewayController {
   async stopSimulation(@Param('eventId') eventId: string) {
     return await this.eventSimulationService.stopSimulation(eventId);
   }
+
+  // Maps
+  @Post('maps')
+  async createMap(@Body() createMapDto: CreateMapDto): Promise<string> {
+    return await this.mapService.create(createMapDto.mapData);
+  }
+
+  @Put('maps')
+  async updateMap(@Body() updateMapDto: UpdateMapDto): Promise<void> {
+    return await this.mapService.update(updateMapDto.id, updateMapDto.mapData);
+  }
+
+  @Delete('maps/:mapId')
+  async deleteMap(@Param('mapId') mapId: string): Promise<void> {
+    return await this.mapService.delete(mapId);
+  }
+
+  @Get('maps/:mapId')
+  async getMap(@Param('mapId') mapId: string): Promise<GetMapResponse> {
+    return await this.mapService.getById(mapId);
+  }
+
+  @Get('maps')
+  async getAllMaps(): Promise<GetAllMapsResponse> {
+    return await this.mapService.getAll();
+  }  
 }

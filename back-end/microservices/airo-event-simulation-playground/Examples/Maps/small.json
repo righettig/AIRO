@@ -1,0 +1,40 @@
+{
+  "size": 4,
+  "tiles": [
+    {
+      "x": 0,
+      "y": 0,
+      "type": "spawn"
+    },
+    {
+      "x": 2,
+      "y": 0,
+      "type": "wall"
+    },
+    {
+      "x": 1,
+      "y": 1,
+      "type": "food"
+    },
+    {
+      "x": 1,
+      "y": 2,
+      "type": "wood"
+    },
+    {
+      "x": 3,
+      "y": 2,
+      "type": "water"
+    },
+    {
+      "x": 0,
+      "y": 3,
+      "type": "iron"
+    },
+    {
+      "x": 3,
+      "y": 3,
+      "type": "spawn"
+    }
+  ]
+}

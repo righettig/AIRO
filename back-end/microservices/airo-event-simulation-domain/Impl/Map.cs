@@ -1,4 +1,6 @@
 ﻿using airo_event_simulation_domain.Impl.Simulation;
+using Newtonsoft.Json;
+using System.Linq.Expressions;
 
 namespace airo_event_simulation_domain.Impl;
 
@@ -9,35 +11,55 @@ public class Map
     public int Height { get; }
 
     // Constructor that initializes the map from a string representation
-    public Map(string mapData, int size)
+    public Map(string json)
     {
-        var rows = mapData.Split("\r\n");
-        Height = Width = size;
+        MapData? mapData;
+
+        try
+        {
+            mapData = JsonConvert.DeserializeObject<MapData>(json);
+        }
+        catch (JsonReaderException) 
+        {
+            throw new ArgumentException("Invalid map format.");
+        }
+
+        if (mapData is null)
+        {
+            throw new ArgumentException("Invalid map format.");
+        }
+
+        Height = Width = mapData.Size;
         Tiles = new TileType[Width, Height];
 
-        for (int y = 0; y < Height; y++)
+        // Initialize the map with Empty tiles
+        for (int x = 0; x < Width; x++)
         {
-            var cells = rows[y].Replace(" ", "");
-            for (int x = 0; x < Width; x++)
+            for (int y = 0; y < Height; y++)
             {
-                Tiles[x, y] = CharToTileType(cells[x]); // Convert character to TileType
+                Tiles[x, y] = TileType.Empty;
             }
+        }
+
+        // Populate the map with the provided tiles
+        foreach (var tile in mapData.Tiles)
+        {
+            Tiles[tile.X, tile.Y] = CharToTileType(tile.Type);
         }
     }
 
-    // Method to convert a character into the corresponding TileType
-    private static TileType CharToTileType(char tileChar)
+    private static TileType CharToTileType(string tileType)
     {
-        return tileChar switch
+        return tileType switch
         {
-            'S' => TileType.SpawnPoint,
-            '_' => TileType.Empty,
-            '~' => TileType.Water,
-            'I' => TileType.Iron,
-            'W' => TileType.Wood,
-            'F' => TileType.Food,
-            'X' => TileType.Wall,
-            _ => TileType.Empty // Default to Empty for unrecognized characters
+            "spawn" => TileType.SpawnPoint,
+            "empty" => TileType.Empty,
+            "water" => TileType.Water,
+            "iron"  => TileType.Iron,
+            "wood"  => TileType.Wood,
+            "food"  => TileType.Food,
+            "wall"  => TileType.Wall,
+            _       => TileType.Empty // Default to Empty for unrecognized characters
         };
     }
 
@@ -56,5 +78,18 @@ public class Map
             }
         }
         return spawnPoints;
+    }
+
+    private class MapData
+    {
+        public required int Size { get; set; }
+        public required List<Tile2> Tiles { get; set; }
+    }
+
+    private class Tile2
+    {
+        public required int X { get; set; }
+        public required int Y { get; set; }
+        public required string Type { get; set; }
     }
 }

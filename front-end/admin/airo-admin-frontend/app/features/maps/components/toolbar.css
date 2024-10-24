@@ -1,8 +1,19 @@
 .toolbar-container {
     display: flex;
-    align-items: center;
-    margin-bottom: 20px;
+    flex-direction: column;
     gap: 10px;
+}
+
+.row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.inline-flex-container {
+    display: flex;
+    align-items: center;
+    gap: 4px;
 }
 
 .toolbar-label {
@@ -11,21 +22,16 @@
 
 .toolbar-input {
     height: 20px;
-    width: 50px;
     margin-bottom: 0;
+    flex: 1;
 }
 
 .toolbar-select {
     height: 26px;
-    margin-left: 4px;
+    flex: 1;
 }
 
 .toolbar-button {
     height: 26px;
-}
-
-.inline-flex-container {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
+    flex: 1;
 }
