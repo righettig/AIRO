@@ -7,7 +7,7 @@ import Login from './features/login/login';
 import Sidebar from './features/layout/sidebar';
 import Events from './features/events/components/events';
 import Bots from './features/bots/components/bots';
-import MapEditorComponent from './features/maps/components/map-editor';
+import Maps from './features/maps/components/maps';
 
 const Home = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -84,7 +84,7 @@ const Home = () => {
         {/* Conditional rendering based on selected view */}
         {selectedView === 'events' && <Events />}
         {selectedView === 'bots' && <Bots />}
-        {selectedView === 'maps' && <MapEditorComponent />}
+        {selectedView === 'maps' && <Maps />}
       </div>
       {error && <div>{error}</div>}
     </div>

@@ -1,0 +1,21 @@
+.map-list-container {
+    padding: 20px 0;
+}
+
+.add-map-button {
+    margin-bottom: 10px;
+}
+
+.map-list-item {
+    cursor: pointer;
+    margin-bottom: 8px;
+    background: lightgray;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+
+    &:hover {
+        background-color: lightblue;
+    }
+}

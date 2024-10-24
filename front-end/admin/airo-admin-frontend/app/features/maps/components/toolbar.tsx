@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState, useRef } from 'react';
+import React, { Dispatch, SetStateAction, useRef } from 'react';
 import TileType from '../types/tile';
 import './toolbar.css';
 
@@ -12,9 +12,15 @@ interface ToolbarProps {
   onGenerateRandomMap: () => void;
   onGenerateEmptyMap: () => void;
   onSaveMap: () => void;
+  onDeleteMap: () => void;
+  onExportMap: () => void;
   onLoadMap: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onMapNameChange: (newMapName: string) => void;
   zoom: number;
   setZoom: Dispatch<SetStateAction<number>>;
+  mapName?: string;
+  isModified: boolean;
+  onDiscardChanges: () => void;
 }
 
 const Toolbar: React.FC<ToolbarProps> = ({
@@ -27,11 +33,16 @@ const Toolbar: React.FC<ToolbarProps> = ({
   onGenerateRandomMap,
   onGenerateEmptyMap,
   onSaveMap,
+  onDeleteMap,
+  onExportMap,
   onLoadMap,
+  onMapNameChange,
   zoom,
   setZoom,
+  mapName,
+  isModified,
+  onDiscardChanges,
 }) => {
-  const [fileName, setFileName] = useState<string>('Untitled');
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleZoomIn = () => {
@@ -45,10 +56,10 @@ const Toolbar: React.FC<ToolbarProps> = ({
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      setFileName(file.name); // Update the file name
-      onLoadMap(event); // Call the original onLoadMap function
+      onMapNameChange(file.name);
+      onLoadMap(event);
     } else {
-      setFileName('Untitled');
+      onMapNameChange('Untitled'); // Reset to default
     }
   };
 
@@ -56,13 +67,25 @@ const Toolbar: React.FC<ToolbarProps> = ({
     fileInputRef.current?.click(); // Trigger file input click
   };
 
-  return (
-    <>
-      <div>
-        <h2>{fileName}</h2> {/* Display the selected file name */}
-      </div>
+  const handleMapNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newMapName = event.target.value;
+    onMapNameChange(newMapName);
+  };
 
-      <div className="toolbar-container">
+  return (
+    <div className="toolbar-container">
+      <div className="row">
+        <div className="inline-flex-container">
+          <label className="toolbar-label">Map Name:</label>
+          <input
+            className="toolbar-input"
+            type="text"
+            value={mapName}
+            onChange={handleMapNameChange}
+          />
+          {isModified ? '*' : ''}
+        </div>
+
         <div className="inline-flex-container">
           <label className="toolbar-label">Map Size:</label>
           <input
@@ -71,9 +94,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
             value={size}
             onChange={(e) => setSize(Math.max(1, parseInt(e.target.value)))}
           />
-        </div>
 
-        <div className="inline-flex-container">
           <label className="toolbar-label">Seed:</label>
           <input
             className="toolbar-input"
@@ -81,9 +102,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
             value={seed}
             onChange={(e) => setSeed(parseInt(e.target.value))}
           />
-        </div>
 
-        <div className="inline-flex-container">
           <label className="toolbar-label">Tile Type:</label>
           <select
             className="toolbar-select"
@@ -99,17 +118,23 @@ const Toolbar: React.FC<ToolbarProps> = ({
             <option value="wall">Wall</option>
           </select>
         </div>
-
+      </div>
+      <div className="row">
         <div className="inline-flex-container">
+          <button className="toolbar-button" onClick={handleZoomIn}>
+            Zoom In
+          </button>
+          <button className="toolbar-button" onClick={handleZoomOut}>
+            Zoom Out
+          </button>
+
           <button className="toolbar-button" onClick={onGenerateRandomMap}>
-            Generate Random Map
+            Randomize
           </button>
           <button className="toolbar-button" onClick={onGenerateEmptyMap}>
-            Generate Empty Map
+            Clear Tiles
           </button>
-        </div>
 
-        <div className="inline-flex-container">
           <button className="toolbar-button" onClick={handleLoadButtonClick}>
             Load Map
           </button>
@@ -123,18 +148,18 @@ const Toolbar: React.FC<ToolbarProps> = ({
           <button className="toolbar-button" onClick={onSaveMap}>
             Save Map
           </button>
-        </div>
-
-        <div className="inline-flex-container">
-          <button className="toolbar-button" onClick={handleZoomIn}>
-            Zoom In
+          <button className="toolbar-button" onClick={onExportMap}>
+            Export Map
           </button>
-          <button className="toolbar-button" onClick={handleZoomOut}>
-            Zoom Out
+          <button className="toolbar-button" onClick={onDeleteMap}>
+            Delete Map
           </button>
+          {isModified && <button className="toolbar-button" onClick={onDiscardChanges}>
+            Discard Changes
+          </button>}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
