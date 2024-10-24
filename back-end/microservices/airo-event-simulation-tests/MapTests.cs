@@ -9,11 +9,46 @@ public class MapTests
     public void Constructor_ShouldInitializeMapCorrectly()
     {
         // Arrange
-        string mapData = "S _ ~\r\nI W F\r\nX _ _";
+        string mapData = @"
+        {
+          ""size"": 3,
+          ""tiles"": [
+            {
+              ""x"": 0,
+              ""y"": 0,
+              ""type"": ""spawn""
+            },
+            {
+              ""x"": 2,
+              ""y"": 0,
+              ""type"": ""water""
+            },
+            {
+              ""x"": 0,
+              ""y"": 1,
+              ""type"": ""iron""
+            },
+	        {
+              ""x"": 1,
+              ""y"": 1,
+              ""type"": ""wood""
+            },
+	        {
+              ""x"": 2,
+              ""y"": 1,
+              ""type"": ""food""
+            },
+	        {
+              ""x"": 0,
+              ""y"": 2,
+              ""type"": ""wall""
+            },
+          ]
+        }";
         int size = 3;
 
         // Act
-        var map = new Map(mapData, size);
+        var map = new Map(mapData);
 
         // Assert
         Assert.Equal(size, map.Width);
@@ -30,12 +65,58 @@ public class MapTests
     }
 
     [Fact]
+    public void Constructor_Should_Throw_ArgumentException_When_No_Data()
+    {
+        Assert.Throws<ArgumentException>(() => new Map(""));
+    }
+
+    [Fact]
+    public void Constructor_Should_Throw_ArgumentException_When_Invalid_Format()
+    {
+        Assert.Throws<ArgumentException>(() => new Map("S _ ~\r\nI W F\r\nX _ _"));
+    }
+
+    [Fact]
     public void GetSpawnPoints_ShouldReturnAllSpawnPoints()
     {
         // Arrange
-        string mapData = "S _ ~\r\nI W F\r\nS _ _";
-        int size = 3;
-        var map = new Map(mapData, size);
+        string mapData = @"
+        {
+          ""size"": 3,
+          ""tiles"": [
+            {
+              ""x"": 0,
+              ""y"": 0,
+              ""type"": ""spawn""
+            },
+            {
+              ""x"": 2,
+              ""y"": 0,
+              ""type"": ""water""
+            },
+            {
+              ""x"": 0,
+              ""y"": 1,
+              ""type"": ""iron""
+            },
+	        {
+              ""x"": 1,
+              ""y"": 1,
+              ""type"": ""wood""
+            },
+	        {
+              ""x"": 2,
+              ""y"": 1,
+              ""type"": ""food""
+            },
+	        {
+              ""x"": 0,
+              ""y"": 2,
+              ""type"": ""spawn""
+            },
+          ]
+        }";
+        var map = new Map(mapData);
 
         // Act
         var spawnPoints = map.GetSpawnPoints();

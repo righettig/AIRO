@@ -1,0 +1,37 @@
+.toolbar-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.inline-flex-container {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.toolbar-label {
+    margin-right: 4px;
+}
+
+.toolbar-input {
+    height: 20px;
+    margin-bottom: 0;
+    flex: 1;
+}
+
+.toolbar-select {
+    height: 26px;
+    flex: 1;
+}
+
+.toolbar-button {
+    height: 26px;
+    flex: 1;
+}

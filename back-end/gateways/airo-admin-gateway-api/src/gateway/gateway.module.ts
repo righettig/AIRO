@@ -5,6 +5,7 @@ import { BotsModule } from 'src/bots/bots.module';
 import { EventsModule } from 'src/events/events.module';
 import { EventSimulationModule } from 'src/event-simulation/event-simulation.module';
 import { EventSubscriptionModule } from 'src/event-subscription/event-subscription.module';
+import { MapsModule } from 'src/maps/maps.module';
 
 @Module({
   imports: [
@@ -12,7 +13,8 @@ import { EventSubscriptionModule } from 'src/event-subscription/event-subscripti
     BotsModule,
     EventsModule,
     EventSubscriptionModule,
-    EventSimulationModule
+    EventSimulationModule,
+    MapsModule
   ],
   controllers: [GatewayController]
 })

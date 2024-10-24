@@ -1,5 +1,6 @@
 ﻿using airo_event_simulation_domain.Impl;
 using airo_event_simulation_domain.Impl.Simulation;
+using airo_event_simulation_tests.Common;
 
 namespace airo_event_simulation_tests;
 
@@ -24,9 +25,7 @@ public class SimulationStateTests
     public void GetTileAt_ShouldReturnCorrectTile()
     {
         // Arrange
-        var mapData = "S _ ~\r\nI W F\r\nX _ _";
-        int size = 3;
-        var map = new Map(mapData, size);
+        var map = TestMap.Get();
         var simulationState = new SimulationState(1);
         simulationState.InitializeSimulation([], map);
 
@@ -41,9 +40,7 @@ public class SimulationStateTests
     public void GetVisibleTiles_ShouldReturnCorrectTiles()
     {
         // Arrange
-        var mapData = "S _ ~\r\nI W F\r\nX _ _";
-        int size = 3;
-        var map = new Map(mapData, size);
+        var map = TestMap.Get();
         var simulationState = new SimulationState(1);
         simulationState.InitializeSimulation([], map);
         var position = new Position(1, 1);
@@ -63,9 +60,7 @@ public class SimulationStateTests
     public void InitializeSimulation_ShouldSetParticipantsAndMap()
     {
         // Arrange
-        var mapData = "S _ ~\r\nI W F\r\nX _ _";
-        int size = 3;
-        var map = new Map(mapData, size);
+        var map = TestMap.Get();
         var participants = new List<Participant>
         {
             new(UserId: "user1", new Bot(Guid.NewGuid(), 100, "dummyBehaviourScript"))
