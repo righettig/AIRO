@@ -27,3 +27,5 @@
 	<<MESSAGE_NAME>>Message e.g, InvoiceCreatedMessage
 	
 6) Keep mermaid architecture diagrams up-to-date when modifying the dependencies
+
+7) Release branches naming convention "release/1.0.0"
