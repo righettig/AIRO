@@ -15,6 +15,7 @@ public class EventCreatedEventHandler(IReadRepository<EventReadModel> readReposi
             Id = @event.Id, 
             Name = @event.Name, 
             Description = @event.Description,
+            MapId = @event.MapId,
             CreatedAt = @event.CreatedAt,
             ScheduledAt = @event.ScheduledAt,
             Status = nameof(EventStatus.NotStarted),

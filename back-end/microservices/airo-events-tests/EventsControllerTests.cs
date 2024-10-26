@@ -35,7 +35,10 @@ public class EventsControllerTests
     public async Task CreateEvent_ShouldReturnOkWithEventId()
     {
         // Arrange
-        var request = new CreateEventRequest(Name: "Test Event", Description: "Test Description", ScheduledAt: DateTime.Now.AddDays(1));
+        var request = new CreateEventRequest(Name: "Test Event",
+                                             Description: "Test Description",
+                                             ScheduledAt: DateTime.Now.AddDays(1),
+                                             Guid.NewGuid());
         var eventId = Guid.NewGuid();
         _mediatorMock
             .Setup(m => m.Send(It.IsAny<CreateEventCommand>(), default))
@@ -54,7 +57,11 @@ public class EventsControllerTests
     public async Task UpdateEvent_ShouldReturnOk()
     {
         // Arrange
-        var request = new UpdateEventRequest(Id: Guid.NewGuid(), Name: "Updated Event", Description: "Updated Description");
+        var request = new UpdateEventRequest(Id: Guid.NewGuid(),
+                                             Name: "Updated Event",
+                                             Description: "Updated Description",
+                                             DateTime.Now,
+                                             Guid.NewGuid());
         _mediatorMock
             .Setup(m => m.Send(It.IsAny<UpdateEventCommand>(), default))
             .Returns(Task.CompletedTask);

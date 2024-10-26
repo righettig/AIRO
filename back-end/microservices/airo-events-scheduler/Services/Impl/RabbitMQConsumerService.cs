@@ -8,6 +8,7 @@ using System.Text.Json;
 namespace airo_events_scheduler.Services.Impl;
 
 public delegate void EventCreatedHandler(object sender, EventCreatedMessage message);
+public delegate void EventUpdatedHandler(object sender, EventUpdatedMessage message);
 public delegate void EventDeletedHandler(object sender, EventDeletedMessage message);
 
 public class RabbitMQConsumerService : IRabbitMQConsumerService
@@ -16,6 +17,7 @@ public class RabbitMQConsumerService : IRabbitMQConsumerService
     private readonly IModel _channel;
 
     public event EventCreatedHandler? EventCreatedReceived;
+    public event EventUpdatedHandler? EventUpdatedReceived;
     public event EventDeletedHandler? EventDeletedReceived;
 
     public RabbitMQConsumerService(string rabbitMqUrl)
@@ -32,12 +34,18 @@ public class RabbitMQConsumerService : IRabbitMQConsumerService
                               exclusive: false,
                               autoDelete: false);
 
+        _channel.QueueDeclare(queue: "event.updated-queue",
+                              durable: true,
+                              exclusive: false,
+                              autoDelete: false);
+
         _channel.QueueDeclare(queue: "event.deleted-queue",
                               durable: true,
                               exclusive: false,
                               autoDelete: false);
 
         _channel.QueueBind("event.created-queue", "events-exchange", "event.created");
+        _channel.QueueBind("event.updated-queue", "events-exchange", "event.updated");
         _channel.QueueBind("event.deleted-queue", "events-exchange", "event.deleted");
     }
 
@@ -64,6 +72,27 @@ public class RabbitMQConsumerService : IRabbitMQConsumerService
                               autoAck: true,
                               consumer: eventCreatedConsumer);
 
+        // event.updated
+        var eventUpdatedConsumer = new EventingBasicConsumer(_channel);
+
+        eventUpdatedConsumer.Received += (model, ea) =>
+        {
+            var body = ea.Body.ToArray();
+            var message = Encoding.UTF8.GetString(body);
+            var eventMessage = JsonSerializer.Deserialize<EventUpdatedMessage>(message);
+
+            if (eventMessage != null)
+            {
+                Console.WriteLine($"Received message: {eventMessage.EventId}, {eventMessage.ScheduledAt}");
+
+                EventUpdatedReceived?.Invoke(this, eventMessage);
+            }
+        };
+
+        _channel.BasicConsume(queue: "event.updated-queue",
+                              autoAck: true,
+                              consumer: eventUpdatedConsumer);
+
         // event.deleted
         var eventDeletedConsumer = new EventingBasicConsumer(_channel);
 
@@ -85,7 +114,7 @@ public class RabbitMQConsumerService : IRabbitMQConsumerService
                               autoAck: true,
                               consumer: eventDeletedConsumer);
 
-        Console.WriteLine("Listening for messages on event.created-queue & event.deleted-queue");
+        Console.WriteLine("Listening for messages on event.created-queue, event.updated-queue & event.deleted-queue");
     }
 
     public void StopListening()

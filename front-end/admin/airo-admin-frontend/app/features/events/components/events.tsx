@@ -31,14 +31,15 @@ const Events = () => {
         getEvents();
     }, []);
 
-    const handleAddEvent = async ({ name, description, scheduledAt }: EventListItem) => {
+    const handleAddEvent = async ({ name, description, scheduledAt, mapId }: EventListItem) => {
         try {
-            const id = await addEvent({ name, description, scheduledAt });
+            const id = await addEvent({ name, description, scheduledAt, mapId });
             setEventList([...eventList, {
                 id,
                 name,
                 description,
                 scheduledAt,
+                mapId,
                 // TODO: these should be set on the server -->
                 participants: 0,
                 status: 'NotStarted',

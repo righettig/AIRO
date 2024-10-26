@@ -13,6 +13,8 @@ public class EventUpdatedEventHandler(IReadRepository<EventReadModel> readReposi
 
         entry.Name = @event.Name;
         entry.Description = @event.Description;
+        entry.ScheduledAt = @event.ScheduledAt;
+        entry.MapId = @event.MapId;
 
         readRepository.Update(entry);
         readRepository.SaveChanges();
