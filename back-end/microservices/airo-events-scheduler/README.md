@@ -23,7 +23,7 @@ This is the scheduler that triggers event execution based on the event scheduleA
 - **Projects:** No dependencies.
 
 ## Message Queue Topics/Events
-- **Subscribed Events:** `event.created` (eventId, scheduledAt). `event.deleted` (eventId).
+- **Subscribed Events:** `event.created` (eventId, scheduledAt). `event.updated` (eventId, scheduledAt). `event.deleted` (eventId).
 
 ## Configuration
 - **Environment Variables:** `RABBITMQ_URL`, `EVENT_SIMULATION_API_URL`
