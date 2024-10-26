@@ -611,11 +611,11 @@ volumes:
   
   data-volume:
   
-  # mongo_data:
+  mongo_data:
   
-  # cosmos_data:
+  cosmos_data:
 
-  # redis_data:
+  redis_data:
 
-  # eventstore-volume-data:
-  # eventstore-volume-logs:
+  eventstore-volume-data:
+  eventstore-volume-logs:
