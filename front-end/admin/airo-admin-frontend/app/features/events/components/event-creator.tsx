@@ -1,8 +1,9 @@
 import { FC, useState, useEffect } from 'react';
 
 import { EventListItem } from '../types/event';
+import { fetchMaps } from '@/app/common/maps.service';
 
-import styles from './event-creator.module.css';
+import Map from "../../maps/types/map";
 
 interface EventCreatorProps {
     onAdd: (event: EventListItem) => void;
@@ -14,24 +15,35 @@ const EventCreator: FC<EventCreatorProps> = ({ onAdd, onUpdate, eventToEdit }) =
     const [eventName, setEventName] = useState('');
     const [eventDescription, setEventDescription] = useState('');
     const [eventScheduledAt, setEventScheduledAt] = useState(new Date());
+    const [maps, setMaps] = useState<Map[]>([]);
+    const [selectedMapId, setSelectedMapId] = useState<string>('');
 
     useEffect(() => {
         if (eventToEdit) {
             setEventName(eventToEdit.name);
             setEventDescription(eventToEdit.description);
-            setEventScheduledAt(eventToEdit.scheduledAt);
+            setEventScheduledAt(new Date(eventToEdit.scheduledAt));
+            setSelectedMapId(eventToEdit.mapId || '');
         }
     }, [eventToEdit]);
 
+    // Fetch available maps when component mounts
+    useEffect(() => {
+        const loadMaps = async () => {
+            const fetchedMaps = await fetchMaps();
+            setMaps(fetchedMaps || []);
+        };
+        loadMaps();
+    }, []);
+
     const handleSaveEvent = () => {
-        if (!eventName || !eventDescription) {
-            return;
-        }
+        if (!eventName || !eventDescription || !selectedMapId) return;
 
         const event: EventListItem = {
             id: eventToEdit ? eventToEdit.id : (Math.random() * 1000).toString(),
             name: eventName,
             description: eventDescription,
+            mapId: selectedMapId,
             createdAt: eventToEdit ? eventToEdit.createdAt : new Date(),
             scheduledAt: eventScheduledAt,
             status: eventToEdit ? eventToEdit.status : 'NotStarted',
@@ -46,6 +58,7 @@ const EventCreator: FC<EventCreatorProps> = ({ onAdd, onUpdate, eventToEdit }) =
 
         setEventName('');
         setEventDescription('');
+        setSelectedMapId('');
     };
 
     const formatDate = (date: Date) => {
@@ -59,8 +72,7 @@ const EventCreator: FC<EventCreatorProps> = ({ onAdd, onUpdate, eventToEdit }) =
     };
 
     return (
-        <div className={styles.eventCreator}>
-            <h2>{eventToEdit ? 'Edit Event' : 'Create New Event'}</h2>
+        <div style={{ display: 'flex', flexDirection: 'column', width: '20%', minWidth: '280px' }}>
             <input
                 type="text"
                 placeholder="Event Name"
@@ -79,9 +91,22 @@ const EventCreator: FC<EventCreatorProps> = ({ onAdd, onUpdate, eventToEdit }) =
                 value={formatDate(eventScheduledAt)}
                 onChange={(e) => setEventScheduledAt(new Date(e.target.value))}
             />
-            <button onClick={handleSaveEvent} disabled={!eventName || !eventDescription}>
-                {eventToEdit ? 'Update Event' : 'Add Event'}
-            </button>
+            <select
+                value={selectedMapId}
+                onChange={(e) => setSelectedMapId(e.target.value)}
+            >
+                <option value="" disabled>Select Map</option>
+                {maps.map((map) => (
+                    <option key={map.id} value={map.id!}>
+                        {map.name}
+                    </option>
+                ))}
+            </select>
+            <div>
+                <button onClick={handleSaveEvent} disabled={!eventName || !eventDescription || !selectedMapId}>
+                    {eventToEdit ? 'Update Event' : 'Add Event'}
+                </button>
+            </div>
         </div>
     );
 };
