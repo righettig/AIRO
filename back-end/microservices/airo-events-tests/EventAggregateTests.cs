@@ -63,10 +63,11 @@ public class EventAggregateTests
         var id = Guid.NewGuid();
         var name = "Updated Event";
         var description = "Updated Description";
+        var newStartTime = DateTime.Now;
         var mapId = Guid.NewGuid(); 
 
         // Act
-        _eventAggregate.UpdateEvent(id, name, description, mapId);
+        _eventAggregate.UpdateEvent(id, name, description, newStartTime, mapId);
 
         // Assert
         var raisedEvents = _eventAggregate.GetUncommittedEvents();

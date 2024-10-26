@@ -40,8 +40,12 @@ public class EventsController(IMediator mediator,
     {
         await mediator.Send(new UpdateEventCommand(request.Id,
                                                    request.Name,
-                                                   request.Description, 
+                                                   request.Description,
+                                                   request.ScheduledAt,
                                                    request.MapId));
+
+        rabbitMQPublisherService.OnEventUpdated(request.Id, request.ScheduledAt);
+
         return Ok();
     }
 

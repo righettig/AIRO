@@ -21,12 +21,13 @@ export class EventsService {
         return response.data;
     }
 
-    async update(id: string, name: string, description: string, mapId: string): Promise<void> {
+    async update(id: string, name: string, description: string, scheduledAt: Date, mapId: string): Promise<void> {
         const response = await firstValueFrom(
             this.httpService.put(`${this.serviceUrl}/api/events`, {
                 id,
                 name,
                 description,
+                scheduledAt,
                 mapId
             }),
         );

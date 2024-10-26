@@ -60,6 +60,7 @@ public class EventsControllerTests
         var request = new UpdateEventRequest(Id: Guid.NewGuid(),
                                              Name: "Updated Event",
                                              Description: "Updated Description",
+                                             DateTime.Now,
                                              Guid.NewGuid());
         _mediatorMock
             .Setup(m => m.Send(It.IsAny<UpdateEventCommand>(), default))

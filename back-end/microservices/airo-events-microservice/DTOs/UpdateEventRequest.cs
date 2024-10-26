@@ -1,3 +1,3 @@
 ﻿namespace airo_events_microservice.DTOs;
 
-public record UpdateEventRequest(Guid Id, string Name, string Description, Guid MapId);
+public record UpdateEventRequest(Guid Id, string Name, string Description, DateTime ScheduledAt, Guid MapId);

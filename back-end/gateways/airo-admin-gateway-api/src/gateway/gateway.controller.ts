@@ -91,6 +91,7 @@ export class GatewayController {
       updateEventDto.id, 
       updateEventDto.name, 
       updateEventDto.description,
+      updateEventDto.scheduledAt,
       updateEventDto.mapId
     );
   }
