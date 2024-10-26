@@ -1,32 +1,27 @@
 import React, { useState, useEffect } from 'react';
+
+import Map from '../types/map';
 import MapList from './map-list';
 import MapEditorComponent from './map-editor';
-import Map from '../types/map';
-import MapDto from '../types/map.dto';
+
+import { createMap, updateMap, deleteMap, fetchMaps } from '@/app/common/maps.service';
 
 const Maps: React.FC = () => {
     const [selectedMap, setSelectedMap] = useState<Map | null>(null);
     const [maps, setMaps] = useState<Map[]>([]);
 
-    const fetchMaps = async () => {
-        try {
-            const response = await fetch('http://localhost:3001/gateway/maps');
-            const data: MapDto[] = await response.json();
-            const mappedData = data.map(x => {
-                const mapData = JSON.parse(x.mapData);
-                return { id: x.id, ...mapData };
-            });
-            setMaps(mappedData);
-            if (mappedData.length > 0) {
-                setSelectedMap(mappedData[0]);
-            }
-        } catch (error) {
-            console.error('Error fetching maps:', error);
+    const getMaps = async () => {
+        let maps = await fetchMaps();
+        setMaps(maps!);
+        if (!maps!.length) {
+            handleAddNewMap();
+        } else {
+            setSelectedMap(maps![0]);
         }
     };
 
     useEffect(() => {
-        fetchMaps();
+        getMaps();
     }, []);
 
     const handleMapSelect = (map: Map) => {
@@ -34,47 +29,42 @@ const Maps: React.FC = () => {
     };
 
     const handleSaveMap = async (mapData: Map) => {
-        const mapPayload = { mapData: JSON.stringify(mapData) };
-
         if (!mapData.id) {
-            const response = await fetch('http://localhost:3001/gateway/maps', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(mapPayload),
-            });
+            const response = await createMap(mapData);
+
             if (response.ok) {
                 alert('Map saved successfully');
-                fetchMaps(); // Refresh the map list
             }
+
         } else {
-            const updatedMap = { id: mapData.id, mapData: JSON.stringify(mapData) };
-            const response = await fetch('http://localhost:3001/gateway/maps', {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(updatedMap),
-            });
+            const response = await updateMap(mapData);
+
             if (response.ok) {
                 alert('Map updated successfully');
-                fetchMaps(); // Refresh the map list
             }
         }
+
+        getMaps(); // Refresh the map list
     };
 
     const handleDeleteMap = async (mapId: string) => {
         const confirmed = window.confirm('Are you sure you want to delete this map?');
         if (confirmed) {
-            await fetch(`http://localhost:3001/gateway/maps/${mapId}`, {
-                method: 'DELETE',
-            });
+            await deleteMap(mapId);
             alert('Map deleted successfully');
-            setMaps(maps.filter(map => map.id !== mapId)); // Update state
+            setMaps(maps.filter(map => map.id !== mapId));
             setSelectedMap(null); // Clear selected map
         }
     };
 
     const handleAddNewMap = () => {
         const untitledCount = maps.filter(map => map.name.startsWith('Untitled')).length + 1;
-        const newMap: Map = { id: null, name: `Untitled ${untitledCount}`, size: 8, tiles: [] };
+        const newMap: Map = {
+            id: null,
+            name: `Untitled ${untitledCount}`,
+            size: 8,
+            tiles: []
+        };
         setMaps([...maps, newMap]);
         setSelectedMap(newMap); // Automatically select the new map
     };
