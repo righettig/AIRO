@@ -4,7 +4,8 @@ using airo_event_simulation_engine.Interfaces;
 
 namespace airo_event_simulation_engine.Impl;
 
-public class SimulationEngine(IBehaviourExecutor behaviourExecutor) : ISimulationEngine
+public class SimulationEngine(ISimulationRepository simulationRepository,
+                              IBehaviourExecutor behaviourExecutor) : ISimulationEngine
 {
     public event EventHandler<string>? OnLogMessage;
 
@@ -16,6 +17,8 @@ public class SimulationEngine(IBehaviourExecutor behaviourExecutor) : ISimulatio
 
         simulationStateUpdater.OnSimulationStart(simulation.State, AddLog);
 
+        await simulationRepository.Save(simulation);
+
         try
         {
             while (!simulation.Goal.IsSimulationComplete(simulation))
@@ -24,6 +27,8 @@ public class SimulationEngine(IBehaviourExecutor behaviourExecutor) : ISimulatio
                     () => ExecuteTurnAsync(simulation, simulationStateUpdater, token));
 
                 simulationStateUpdater.UpdateState(simulation, elapsedTime, AddLog);
+
+                await simulationRepository.Save(simulation);
             }
         }
         catch (Exception ex) 
@@ -76,6 +81,8 @@ public class SimulationEngine(IBehaviourExecutor behaviourExecutor) : ISimulatio
 
                     // Update the simulation based on the bot's action
                     simulationStateUpdater.UpdateStateForAction(simulation, p.Bot, action, AddLog);
+
+                    await simulationRepository.Save(simulation);
                 }
             }
             catch (TimeoutException)
@@ -100,7 +107,7 @@ public class SimulationEngine(IBehaviourExecutor behaviourExecutor) : ISimulatio
         var endTime = DateTime.Now;
         return endTime - startTime;
     }
-
+    
     protected virtual void AddLog(string message)
     {
         OnLogMessage?.Invoke(this, message);

@@ -31,6 +31,7 @@ builder.Services.AddSingleton<ISimulationStatusTracker, SimulationStatusTracker>
 builder.Services.AddSingleton<IEventsService, EventsService>();
 builder.Services.AddSingleton<ISimulationStateFactory, SimulationStateFactory>();
 builder.Services.AddSingleton<ISimulationService, SimulationService>();
+builder.Services.AddSingleton<ISimulationRepository, InMemorySimulationRepository>();
 
 builder.Services.AddScoped<IBehaviourExecutor, BehaviourExecutor>();
 builder.Services.AddScoped<ISimulationStateUpdater, StateUpdater>();

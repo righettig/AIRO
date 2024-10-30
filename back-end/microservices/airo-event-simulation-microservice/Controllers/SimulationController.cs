@@ -12,6 +12,7 @@ public class SimulationController(ISimulationStatusTracker statusTracker,
                                   ISimulationService simulationService,
                                   ISimulationEngine engine,
                                   ISimulationStateUpdater stateUpdater,
+                                  ISimulationRepository simulationRepository,
                                   IEventsService eventsService) : ControllerBase
 {
     [HttpPost("/simulate/{eventId}")]
@@ -59,10 +60,13 @@ public class SimulationController(ISimulationStatusTracker statusTracker,
         var status = statusTracker.GetSimulationStatus(eventId);
         if (status != null)
         {
+            var simulation = simulationRepository.GetByEventId(eventId);
+
             return Ok(new GetSimulationStatusResponse
             {
                 EventId = status.EventId,
-                Logs = status.Logs
+                Logs = status.Logs,
+                SimulationState = new SimulationStateDto(simulation)
             });
         }
         return NotFound($"Simulation {eventId} not found.");

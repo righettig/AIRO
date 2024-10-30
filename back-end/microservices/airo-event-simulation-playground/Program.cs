@@ -16,7 +16,8 @@ var config = new SimulationConfig(botHpInitialAmount: 100,
 
 var compiler = new CSharpBehaviourCompiler();
 
-var engine = new SimulationEngine(new BehaviourExecutor(compiler));
+var engine = new SimulationEngine(new InMemorySimulationRepository(),
+                                  new BehaviourExecutor(compiler));
 
 engine.OnLogMessage += (sender, message) => Console.WriteLine($"Log: {message}");
 
