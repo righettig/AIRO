@@ -22,6 +22,7 @@ builder.Services.AddSingleton<ISimulationConfig>(config);
 
 builder.Services.AddHostedService<SimulationHostedService>();
 
+builder.Services.AddSingleton<IMapsService, MapsService>();
 builder.Services.AddSingleton<IBotBehavioursService, BotBehavioursService>();
 builder.Services.AddSingleton<IEventSubscriptionService, EventSubscriptionService>();
 builder.Services.AddSingleton<IBehaviourCompiler, CSharpBehaviourCompiler>();

@@ -31,7 +31,7 @@ Provides CRUD endpoints to manage events.
 - **Projects:** `airo-events-domain` (Domain model), `airo-cqrs-eventsourcing-lib` (CQRS/Event sourcing Framework).
 
 ## Message Queue Topics/Events
-- **Published Events:** `event.created` (eventId, scheduledAt). `event.deleted` (eventId). `event.completed` (eventId, winnerUserId).
+- **Published Events:** `event.created` (eventId, scheduledAt). `event.updated` (eventId, scheduledAt). `event.deleted` (eventId). `event.completed` (eventId, winnerUserId).
 
 ## Configuration
 - **Environment Variables:** `EVENT_STORE_DB_URL`, `RABBITMQ_URL`

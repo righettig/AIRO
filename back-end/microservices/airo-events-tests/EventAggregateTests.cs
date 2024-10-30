@@ -20,9 +20,10 @@ public class EventAggregateTests
         var name = "Sample Event";
         var description = "Event Description";
         var scheduledAt = DateTime.Now;
+        var mapId = Guid.NewGuid();
 
         // Act
-        _eventAggregate.CreateEvent(id, name, description, scheduledAt);
+        _eventAggregate.CreateEvent(id, name, description, scheduledAt, mapId);
 
         // Assert
         var raisedEvents = _eventAggregate.GetUncommittedEvents();
@@ -34,6 +35,7 @@ public class EventAggregateTests
         Assert.Equal(name, @event.Name);
         Assert.Equal(description, @event.Description);
         Assert.Equal(scheduledAt, @event.ScheduledAt);
+        Assert.Equal(mapId, @event.MapId);
     }
 
     [Fact]
@@ -61,9 +63,11 @@ public class EventAggregateTests
         var id = Guid.NewGuid();
         var name = "Updated Event";
         var description = "Updated Description";
+        var newStartTime = DateTime.Now;
+        var mapId = Guid.NewGuid(); 
 
         // Act
-        _eventAggregate.UpdateEvent(id, name, description);
+        _eventAggregate.UpdateEvent(id, name, description, newStartTime, mapId);
 
         // Assert
         var raisedEvents = _eventAggregate.GetUncommittedEvents();
@@ -74,6 +78,7 @@ public class EventAggregateTests
         Assert.Equal(id, @event.Id);
         Assert.Equal(name, @event.Name);
         Assert.Equal(description, @event.Description);
+        Assert.Equal(mapId, @event.MapId);
     }
 
     [Fact]
@@ -83,7 +88,7 @@ public class EventAggregateTests
         var id = Guid.NewGuid();
 
         // Act
-        _eventAggregate.CreateEvent(id, "Event", "Description", DateTime.Now); // Event created
+        _eventAggregate.CreateEvent(id, "Event", "Description", DateTime.Now, Guid.NewGuid()); // Event created
         _eventAggregate.StartEvent(id);
 
         // Assert
@@ -102,7 +107,7 @@ public class EventAggregateTests
         var id = Guid.NewGuid();
 
         // Act
-        _eventAggregate.CreateEvent(id, "Event", "Description", DateTime.Now);
+        _eventAggregate.CreateEvent(id, "Event", "Description", DateTime.Now, Guid.NewGuid());
         _eventAggregate.StartEvent(id);
 
         // Assert
@@ -117,7 +122,7 @@ public class EventAggregateTests
         var winnerUserId = "user-123";
 
         // Act
-        _eventAggregate.CreateEvent(id, "Event", "Description", DateTime.Now);
+        _eventAggregate.CreateEvent(id, "Event", "Description", DateTime.Now, Guid.NewGuid());
         _eventAggregate.StartEvent(id);
         _eventAggregate.CompletedEvent(id, winnerUserId);
 
@@ -150,7 +155,7 @@ public class EventAggregateTests
         var winnerUserId = "user-123";
 
         // Act
-        _eventAggregate.CreateEvent(id, "Event", "Description", DateTime.Now);
+        _eventAggregate.CreateEvent(id, "Event", "Description", DateTime.Now, Guid.NewGuid());
         _eventAggregate.StartEvent(id);
         _eventAggregate.CompletedEvent(id, winnerUserId);
 

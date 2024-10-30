@@ -11,6 +11,7 @@ public class WorkerService(IRabbitMQConsumerService rabbitMQConsumer, IJobSchedu
         Console.WriteLine("WorkerService is starting...");
 
         rabbitMQConsumer.EventCreatedReceived += OnEventCreatedReceived;
+        rabbitMQConsumer.EventUpdatedReceived += OnEventUpdatedReceived;
         rabbitMQConsumer.EventDeletedReceived += OnEventDeletedReceived;
 
         rabbitMQConsumer.StartListening();
@@ -48,6 +49,20 @@ public class WorkerService(IRabbitMQConsumerService rabbitMQConsumer, IJobSchedu
         catch (Exception ex)
         {
             Console.WriteLine($"Failure scheduling event start at {message.ScheduledAt}: " + ex);
+        }
+    }
+
+    private async void OnEventUpdatedReceived(object sender, EventUpdatedMessage message)
+    {
+        Console.WriteLine($"Updating the scheduled event start.");
+
+        try
+        {
+            await jobScheduler.UpdateScheduleEventStart(message.EventId, message.ScheduledAt);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Failure updating event schedule {message.ScheduledAt}: " + ex);
         }
     }
 

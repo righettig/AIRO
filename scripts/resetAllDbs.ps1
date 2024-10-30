@@ -1,1 +1,1 @@
-.\resetBotsDb.ps1; .\resetEventsDb.ps1
+.\resetBotsDb.ps1; .\resetMapsAndEvents.ps1;

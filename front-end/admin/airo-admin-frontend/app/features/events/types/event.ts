@@ -4,12 +4,14 @@ export interface EventDto {
     name: string;
     description: string;
     scheduledAt: Date;
+    mapId: string;
 }
 
 export interface EventBase {
     id: string;
     name: string;
     description: string;
+    mapId: string;
     createdAt: Date;
     scheduledAt: Date;
     status: EventStatus;

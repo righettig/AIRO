@@ -24,6 +24,11 @@ public class RabbitMQPublisherService : IRabbitMQPublisherService
                               exclusive: false,
                               autoDelete: false);
 
+        _channel.QueueDeclare(queue: "event.updated-queue",
+                      durable: true,
+                      exclusive: false,
+                      autoDelete: false);
+
         _channel.QueueDeclare(queue: "event.deleted-queue",
                               durable: true,
                               exclusive: false,
@@ -35,18 +40,9 @@ public class RabbitMQPublisherService : IRabbitMQPublisherService
                               autoDelete: false);
 
         _channel.QueueBind("event.created-queue", "events-exchange", "event.created");
+        _channel.QueueBind("event.updated-queue", "events-exchange", "event.updated");
         _channel.QueueBind("event.deleted-queue", "events-exchange", "event.deleted");
         _channel.QueueBind("event.completed-queue", "events-exchange", "event.completed");
-    }
-
-    public void OnEventCompleted(Guid eventId, string winnerUserId)
-    {
-        var messageJson = System.Text.Json.JsonSerializer.Serialize(new { eventId, winnerUserId });
-        var body = Encoding.UTF8.GetBytes(messageJson);
-
-        _channel.BasicPublish(exchange: "events-exchange",
-                              routingKey: "event.completed",
-                              body: body);
     }
 
     public void OnEventCreated(Guid eventId, DateTime scheduledAt)
@@ -59,6 +55,16 @@ public class RabbitMQPublisherService : IRabbitMQPublisherService
                               body: body);
     }
 
+    public void OnEventUpdated(Guid eventId, DateTime scheduledAt)
+    {
+        var messageJson = System.Text.Json.JsonSerializer.Serialize(new { eventId, scheduledAt });
+        var body = Encoding.UTF8.GetBytes(messageJson);
+
+        _channel.BasicPublish(exchange: "events-exchange",
+                              routingKey: "event.updated",
+                              body: body);
+    }
+
     public void OnEventDeleted(Guid eventId)
     {
         var messageJson = System.Text.Json.JsonSerializer.Serialize(new { eventId });
@@ -66,6 +72,16 @@ public class RabbitMQPublisherService : IRabbitMQPublisherService
 
         _channel.BasicPublish(exchange: "events-exchange",
                               routingKey: "event.deleted",
+                              body: body);
+    }
+
+    public void OnEventCompleted(Guid eventId, string winnerUserId)
+    {
+        var messageJson = System.Text.Json.JsonSerializer.Serialize(new { eventId, winnerUserId });
+        var body = Encoding.UTF8.GetBytes(messageJson);
+
+        _channel.BasicPublish(exchange: "events-exchange",
+                              routingKey: "event.completed",
                               body: body);
     }
 }

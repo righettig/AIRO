@@ -37,6 +37,7 @@ const EventDetails = () => {
             <p><strong>ID:</strong> {event.id}</p>
             <p><strong>Name:</strong> {event.name}</p>
             <p><strong>Description:</strong> {event.description}</p>
+            <p><strong>Map:</strong> {event.mapId}</p>
             <p><strong>Participants: </strong>
                 {event.participants.length > 0 ? (
                     <ul>

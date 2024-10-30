@@ -10,6 +10,10 @@ public class CreateEventCommandHandler(AggregateRepository<EventAggregate> aggre
 
     protected override void ProcessCommand(CreateEventCommand command, EventAggregate aggregate)
     {
-        aggregate.CreateEvent(command.Id, command.Name, command.Description, command.ScheduledAt);
+        aggregate.CreateEvent(command.Id,
+                              command.Name,
+                              command.Description,
+                              command.ScheduledAt, 
+                              command.MapId);
     }
 }
