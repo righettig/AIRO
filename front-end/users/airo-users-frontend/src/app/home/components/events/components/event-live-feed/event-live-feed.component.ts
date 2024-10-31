@@ -33,6 +33,10 @@ export class EventLiveFeedComponent {
   eventDescription!: string;
   
   mapInitialized: boolean = false;
+
+  logs: string[] = [];
+
+  private lastReceived = 0;
   
   constructor(
     private route: ActivatedRoute,
@@ -44,41 +48,37 @@ export class EventLiveFeedComponent {
     this.eventName = history.state.eventName;
     this.eventDescription = history.state.eventDescription;
 
-    this.eventLiveFeed = await this.getLiveFeed();
-    
+    await this.fetchLiveFeed();
+
     // TODO: use signalR
-    setInterval(async () => {
-      this.eventLiveFeed = await this.getLiveFeed();
-    }, 5000);
+    setInterval(() => this.fetchLiveFeed(), 5000);
   }
 
-  private async getLiveFeed() {
-    var response = await this.eventLiveFeedService.getLiveFeed(this.eventId!);
-    //console.log(JSON.stringify(response));
+  private async fetchLiveFeed() {
+    try {
+      this.eventLiveFeed = await this.getLiveFeed(this.lastReceived);
+      if (this.eventLiveFeed) {
+        this.updateLogs(this.eventLiveFeed.logs);
+        this.loadMap(this.eventLiveFeed.simulationState.tiles);
+      }
+    } catch (error) {
+      console.error('Error fetching live feed:', error);
+    }
+  }
 
-    this.loadMap(response.simulationState.tiles);
+  private async getLiveFeed(skip: number) {
+    return this.eventLiveFeedService.getLiveFeed(this.eventId!, skip);
+  }
 
-    return response;
+  private updateLogs(newLogs: string[]) {
+    this.logs = [...this.logs, ...newLogs];
+    this.lastReceived += newLogs.length;
   }
 
   private loadMap(tiles: TileInfoDto[][]) {
-    let mapData: LoadedMapData = {
+    const mapData: LoadedMapData = {
       size: tiles.length,
-      tiles: tiles.flatMap((row, y) => {
-        return row.map((cell, x) => { 
-          let type: TileType = 'empty';
-          switch (cell.type) {
-            case 0: type = 'bot'; break;
-            case 2: type = 'empty'; break;
-            case 3: type = 'food'; break;
-            case 4: type = 'wall'; break;
-            case 5: type = 'water'; break;
-            case 6: type = 'iron'; break;
-            case 7: type = 'wood'; break;
-          }
-          return { x, y, type };
-        });
-      })
+      tiles: this.flattenTiles(tiles),
     };
 
     if (this.renderer) {
@@ -88,5 +88,27 @@ export class EventLiveFeedComponent {
       }
       this.renderer.updateMap(mapData);
     }
+  }
+
+  private flattenTiles(tiles: TileInfoDto[][]): { x: number; y: number; type: TileType }[] {
+    return tiles.flatMap((row, y) => {
+      return row.map((cell, x) => this.mapTileType(cell.type, x, y));
+    });
+  }
+
+  private mapTileType(typeId: number, x: number, y: number): { x: number; y: number; type: TileType } {
+    const typeMapping: { [key: number]: TileType } = {
+      0: 'bot',
+      2: 'empty',
+      3: 'food',
+      4: 'wall',
+      5: 'water',
+      6: 'iron',
+      7: 'wood',
+    };
+
+    const type = typeMapping[typeId] || 'empty'; // Default to 'empty' if typeId is not found
+
+    return { x, y, type };
   }
 }

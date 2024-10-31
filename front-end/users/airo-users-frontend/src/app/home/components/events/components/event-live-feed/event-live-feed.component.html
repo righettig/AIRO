@@ -18,7 +18,7 @@
                     </div>
                     <div class="log-container">
                         <cdk-virtual-scroll-viewport itemSize="20" class="viewport">
-                            <div *cdkVirtualFor="let log of eventLiveFeed.logs" class="log-entry">
+                            <div *cdkVirtualFor="let log of logs" class="log-entry">
                                 {{ log }}
                             </div>
                         </cdk-virtual-scroll-viewport>

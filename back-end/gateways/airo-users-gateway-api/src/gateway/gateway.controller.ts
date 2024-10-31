@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Logger, Param, Patch, Post, Put, Req } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Logger, Param, Patch, Post, Put, Query, Req } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
 import { ProfileService } from 'src/profile/profile.service';
 import { LoginDto } from 'src/gateway/models/login.dto';
@@ -363,13 +363,13 @@ export class GatewayController {
   }
 
   @Get('simulation/:eventId')
-  async getSimulationStatus(@Req() request: Request, @Param('eventId') eventId: string) {
+  async getSimulationStatus(@Req() request: Request, @Param('eventId') eventId: string, @Query('skip') skip: number) {
     const token = request.headers['authorization'];
     if (!token) {
       throw new Error('Token is missing');
     }
 
-    const response = await this.eventSimulationservice.getSimulationStatusById(eventId);
+    const response = await this.eventSimulationservice.getSimulationStatusById(eventId, skip);
     return response;
   }
 

@@ -55,17 +55,26 @@ public class SimulationController(ISimulationStatusTracker statusTracker,
     }
 
     [HttpGet("/simulate/{eventId}/status")]
-    public IActionResult GetSimulationStatus(Guid eventId)
+    public IActionResult GetSimulationStatus(Guid eventId, [FromQuery] int skip = 0)
     {
+        // Validate the skip value
+        if (skip < 0)
+        {
+            return BadRequest("Invalid skip parameter");
+        }
+
         var status = statusTracker.GetSimulationStatus(eventId);
         if (status != null)
         {
             var simulation = simulationRepository.GetByEventId(eventId);
 
+            // skips the specified number of entries
+            var logs = status.Logs.Skip(skip).ToList();
+
             return Ok(new GetSimulationStatusResponse
             {
                 EventId = status.EventId,
-                Logs = status.Logs,
+                Logs = logs,
                 SimulationState = new SimulationStateDto(simulation)
             });
         }

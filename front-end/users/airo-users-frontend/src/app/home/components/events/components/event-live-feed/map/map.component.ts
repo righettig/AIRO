@@ -67,7 +67,6 @@ export class MapRendererComponent implements AfterViewInit {
   }
 
   initMap(mapData: LoadedMapData) {
-    // console.log(`size: ${mapData.size}`);
     this.createGround(mapData.size);
   }
 

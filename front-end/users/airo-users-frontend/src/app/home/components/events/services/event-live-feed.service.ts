@@ -37,13 +37,13 @@ export class EventLiveFeedService {
         private configService: ConfigService,
         private http: HttpClient) { }
 
-    async getLiveFeed(eventId: string): Promise<GetLiveFeedResponse> {
+    async getLiveFeed(eventId: string, skip: number): Promise<GetLiveFeedResponse> {
         const httpHeaders: HttpHeaders = new HttpHeaders({
             Authorization: this.authService.accessToken!
         });
 
         const response = await firstValueFrom(
-            this.http.get<GetLiveFeedResponse>(`${this.apiUrl}/simulation/${eventId}`, { headers: httpHeaders })
+            this.http.get<GetLiveFeedResponse>(`${this.apiUrl}/simulation/${eventId}?skip=${skip}`, { headers: httpHeaders })
         );
 
         return response;
