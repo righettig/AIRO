@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { EventLiveFeedService, GetLiveFeedResponse, TileInfoDto } from '../../services/event-live-feed.service';
 import { MapRendererComponent } from './map/map.component';
 import { LoadedMapData, TileType } from './map/models/map.models';
-import { ScrollingModule } from '@angular/cdk/scrolling';
+import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 
 @Component({
   selector: 'app-event-live-feed',
@@ -14,8 +14,11 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 })
 export class EventLiveFeedComponent {
   @ViewChild('renderer', { static: false }) renderer!: MapRendererComponent;
+  @ViewChild('viewport', { static: false }) viewport!: CdkVirtualScrollViewport;
 
   ngAfterViewInit(): void {
+    this.scrollToBottom();
+
     try {
       if (this.eventLiveFeed) {
         this.loadMap(this.eventLiveFeed.simulationState.tiles);
@@ -36,6 +39,8 @@ export class EventLiveFeedComponent {
 
   logs: string[] = [];
 
+  autoScroll: boolean = true;
+
   private lastReceived = 0;
   
   constructor(
@@ -52,6 +57,13 @@ export class EventLiveFeedComponent {
 
     // TODO: use signalR
     setInterval(() => this.fetchLiveFeed(), 5000);
+  }
+
+  onScroll(viewport: CdkVirtualScrollViewport) {
+    // Check if the user is at the bottom
+    //const offset = viewport.getOffsetToIndex(viewport.getDataLength() - 1);
+    const offset = viewport.getOffsetToRenderedContentStart();
+    this.autoScroll = offset === 0; // Set autoScroll to false if not at the bottom
   }
 
   private async fetchLiveFeed() {
@@ -73,6 +85,17 @@ export class EventLiveFeedComponent {
   private updateLogs(newLogs: string[]) {
     this.logs = [...this.logs, ...newLogs];
     this.lastReceived += newLogs.length;
+
+    if (this.autoScroll) {
+      this.scrollToBottom();
+    }
+  }
+
+  private scrollToBottom() {
+    if (this.viewport && this.autoScroll) {
+      // Scroll to the last item
+      this.viewport.scrollToIndex(this.logs.length - 1);
+    }
   }
 
   private loadMap(tiles: TileInfoDto[][]) {

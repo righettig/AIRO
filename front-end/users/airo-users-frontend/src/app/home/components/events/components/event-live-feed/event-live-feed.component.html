@@ -10,19 +10,19 @@
             </div>
             <div class="feed">
                 @if (eventLiveFeed) {
-                    <div class="participants">
-                        <h3>Participants</h3>
-                        @for (p of eventLiveFeed.simulationState.participants; track p.userId) {
-                            <p>{{p.userId}} - Health: {{p.health}}</p>
-                        }
-                    </div>
-                    <div class="log-container">
-                        <cdk-virtual-scroll-viewport itemSize="20" class="viewport">
-                            <div *cdkVirtualFor="let log of logs" class="log-entry">
-                                {{ log }}
-                            </div>
-                        </cdk-virtual-scroll-viewport>
-                    </div>
+                <div class="participants">
+                    <h3>Participants</h3>
+                    @for (p of eventLiveFeed.simulationState.participants; track p.userId) {
+                    <p>{{p.userId}} - Health: {{p.health}}</p>
+                    }
+                </div>
+                <div class="log-container">
+                    <cdk-virtual-scroll-viewport itemSize="20" class="viewport" #viewport (scroll)="onScroll(viewport)">
+                        <div *cdkVirtualFor="let log of logs" class="log-entry">
+                            {{ log }}
+                        </div>
+                    </cdk-virtual-scroll-viewport>
+                </div>
                 }
             </div>
         </div>
