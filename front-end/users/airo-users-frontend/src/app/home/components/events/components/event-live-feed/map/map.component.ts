@@ -29,7 +29,7 @@ export class MapRendererComponent implements AfterViewInit {
   private meshes: Mesh[] = [];
 
   private readonly yOffset: number = 0.001; // Offset to avoid z-fighting between tiles and ground
-  
+
   ngAfterViewInit(): void {
     this.initializeBabylon();
   }
@@ -40,9 +40,9 @@ export class MapRendererComponent implements AfterViewInit {
     this.scene = new Scene(this.engine);
 
     // Create a camera and light for the scene
-    const camera = new ArcRotateCamera('Camera', Math.PI / 2, Math.PI / 2, 10, new Vector3(0, 0, 0), this.scene);
+    const camera = new ArcRotateCamera('Camera', Math.PI, Math.PI / 5, 15, new Vector3(0, -2.5, 0), this.scene);
     camera.attachControl(canvas, true);
-    
+
     const light = new HemisphericLight('light1', new Vector3(0, 1, 0), this.scene);
 
     // Preload materials based on tile colors
