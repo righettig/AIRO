@@ -1,28 +1,30 @@
-<h1>{{eventName}} - Live Feed</h1>
-<h3>{{eventDescription}}</h3>
-
-@if (eventLiveFeed) {
-    <div style="display: flex; flex-direction: row;">
-        <div>
-            <app-map-renderer #renderer></app-map-renderer>
-        </div>
-        <div style="display: flex; flex-direction: column;">
-            <div>
-                @for (p of eventLiveFeed.simulationState.participants; track p.userId) {
-                    <p>{{p.userId}} - Health: {{p.health}}</p>
-                }
+<div class="container">
+    <div>
+        <h1>{{ eventName }} - Live Feed</h1>
+        <h3>{{ eventDescription }}</h3>
+    </div>
+    <div class="full-height-div">
+        <div class="content-wrapper">
+            <div class="map-renderer">
+                <app-map-renderer #renderer></app-map-renderer>
             </div>
-            <div>
-                <ul style="max-height: 80vh; /* Sets the maximum height to 80% of the viewport height */
-                overflow-y: auto; /* Enables vertical scrollbars if the content overflows */
-                list-style-type: none; /* Optional: removes bullet points */
-                padding: 0;
-                margin: 0;">
-                    @for (log of eventLiveFeed.logs; let index = $index; track index) {
-                        <li>{{log}}</li>
-                    }
-                </ul>
+            <div class="feed">
+                @if (eventLiveFeed) {
+                    <div class="participants">
+                        <h3>Participants</h3>
+                        @for (p of eventLiveFeed.simulationState.participants; track p.userId) {
+                            <p>{{p.userId}} - Health: {{p.health}}</p>
+                        }
+                    </div>
+                    <div class="log-container">
+                        <cdk-virtual-scroll-viewport itemSize="20" class="viewport">
+                            <div *cdkVirtualFor="let log of eventLiveFeed.logs" class="log-entry">
+                                {{ log }}
+                            </div>
+                        </cdk-virtual-scroll-viewport>
+                    </div>
+                }
             </div>
         </div>
     </div>
-}
+</div>

@@ -3,13 +3,14 @@ import { ActivatedRoute } from '@angular/router';
 import { EventLiveFeedService, GetLiveFeedResponse, TileInfoDto } from '../../services/event-live-feed.service';
 import { MapRendererComponent } from './map/map.component';
 import { LoadedMapData, TileType } from './map/models/map.models';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 @Component({
   selector: 'app-event-live-feed',
   templateUrl: './event-live-feed.component.html',
   styleUrl: './event-live-feed.component.scss',
   standalone: true,
-  imports: [MapRendererComponent]
+  imports: [MapRendererComponent, ScrollingModule]
 })
 export class EventLiveFeedComponent {
   @ViewChild('renderer', { static: false }) renderer!: MapRendererComponent;
