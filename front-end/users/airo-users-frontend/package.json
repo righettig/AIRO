@@ -26,7 +26,6 @@
     "@babylonjs/core": "^7.29.0",
     "@babylonjs/gui": "^7.29.0",
     "@babylonjs/materials": "^7.29.0",
-    "@types/babylonjs": "^2.3.31",
     "babylonjs": "^7.29.0",
     "jwt-decode": "^4.0.0",
     "rxjs": "~7.8.0",

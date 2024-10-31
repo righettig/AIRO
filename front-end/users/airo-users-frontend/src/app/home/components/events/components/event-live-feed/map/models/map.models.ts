@@ -1,14 +1,7 @@
-export type TileType = 'empty' | 'spawn' | 'food' | 'water' | 'wood' | 'iron' | 'wall';
+export type TileType = 'empty' | 'food' | 'water' | 'wood' | 'iron' | 'wall' | 'bot';
 
-export const tileColors: Record<TileType, string> = {
-    empty: 'white',
-    spawn: 'green',
-    food: 'orange',
-    water: 'blue',
-    wood: 'brown',
-    iron: 'red',
-    wall: 'gray',
-};
+// Define an array with all TileType values
+export const TILE_TYPES: TileType[] = ['empty', 'food', 'water', 'wood', 'iron', 'wall', 'bot'];
 
 export interface LoadedMapData {
     size: number;

@@ -12,7 +12,8 @@ var config = new SimulationConfig(botHpInitialAmount: 100,
                                   botHpDecayInterval: 2,
                                   foodRespawnInterval: 10,
                                   botHpDecayAmount: 15,
-                                  botHpRestoreAmount: 20);
+                                  botHpRestoreAmount: 20,
+                                  turnDelaySeconds: 3);
 
 var compiler = new CSharpBehaviourCompiler();
 

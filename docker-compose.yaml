@@ -305,6 +305,7 @@ services:
       - events-service
       - event-subscription-service
       - bot-behaviours-service
+      - maps-service
     build:
       context: .
       dockerfile: ./back-end/microservices/airo-event-simulation-microservice/Dockerfile
@@ -312,8 +313,9 @@ services:
       - EVENTS_API_URL=${EVENTS_API_URL}
       - EVENT_SUBSCRIPTION_API_URL=${EVENT_SUBSCRIPTION_API_URL}
       - BOT_BEHAVIOURS_API_URL=${BOT_BEHAVIOURS_API_URL}
+      - MAPS_API_URL=${MAPS_API_URL}
     ports:
-      - "4011:8080" # https not working so far!  
+      - "4011:8080" # https not working so far! 
 
   events-scheduler:
     depends_on:
@@ -528,7 +530,7 @@ services:
             DEBIAN_FRONTEND=noninteractive apt-get install -y \
             curl
     environment:
-      - AZURE_COSMOS_EMULATOR_PARTITION_COUNT=3
+      - AZURE_COSMOS_EMULATOR_PARTITION_COUNT=1
       - AZURE_COSMOS_EMULATOR_ENABLE_DATA_PERSISTENCE=true
       # This allows applications from the host to connect to the docker instance.
       # Use https://127.0.0.1:8081 as the endpoint.

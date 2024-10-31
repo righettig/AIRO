@@ -7,11 +7,10 @@ public record ParticipantDto(string UserId, Guid BotId, int Health);
 
 public record TileInfoDto(TileType Type, Guid? BotId);
 
-public class SimulationStateDto 
+public class SimulationStateDto
 {
     public ParticipantDto[] Participants { get; }
-
-    public TileInfoDto[,] Tiles { get; }
+    public List<List<TileInfoDto>> Tiles { get; }
 
     public SimulationStateDto(ISimulation simulation)
     {
@@ -22,19 +21,21 @@ public class SimulationStateDto
         Tiles = MapTilesToDto(simulation.State.Tiles);
     }
 
-    private static TileInfoDto[,] MapTilesToDto(TileInfo[,] tiles)
+    private static List<List<TileInfoDto>> MapTilesToDto(TileInfo[,] tiles)
     {
         int width = tiles.GetLength(0);
         int height = tiles.GetLength(1);
-        var tileDtos = new TileInfoDto[width, height];
+        var tileDtos = new List<List<TileInfoDto>>();
 
         for (int x = 0; x < width; x++)
         {
+            var row = new List<TileInfoDto>();
             for (int y = 0; y < height; y++)
             {
                 var tile = tiles[x, y];
-                tileDtos[x, y] = new TileInfoDto(tile.Type, tile.Bot?.BotId);
+                row.Add(new TileInfoDto(tile.Type, tile.Bot?.BotId));
             }
+            tileDtos.Add(row);
         }
 
         return tileDtos;

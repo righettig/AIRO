@@ -25,5 +25,5 @@ public interface ISimulationStateUpdater
     /// <param name="bot"></param>
     /// <param name="action"></param>
     /// <param name="logMessage"></param>
-    void UpdateStateForAction(ISimulation simulation, ISimulationBot bot, ISimulationAction action, Action<string> logMessage);
+    Task UpdateStateForAction(ISimulation simulation, ISimulationBot bot, ISimulationAction action, Action<string> logMessage);
 }

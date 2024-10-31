@@ -2,9 +2,27 @@
 <h3>{{eventDescription}}</h3>
 
 @if (eventLiveFeed) {
-    <ul>
-        @for (log of eventLiveFeed.logs; track log) {
-            <li>{{log}}</li>
-        }
-    </ul>
+    <div style="display: flex; flex-direction: row;">
+        <div>
+            <app-map-renderer #renderer></app-map-renderer>
+        </div>
+        <div style="display: flex; flex-direction: column;">
+            <div>
+                @for (p of eventLiveFeed.simulationState.participants; track p.userId) {
+                    <p>{{p.userId}} - Health: {{p.health}}</p>
+                }
+            </div>
+            <div>
+                <ul style="max-height: 80vh; /* Sets the maximum height to 80% of the viewport height */
+                overflow-y: auto; /* Enables vertical scrollbars if the content overflows */
+                list-style-type: none; /* Optional: removes bullet points */
+                padding: 0;
+                margin: 0;">
+                    @for (log of eventLiveFeed.logs; let index = $index; track index) {
+                        <li>{{log}}</li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
 }

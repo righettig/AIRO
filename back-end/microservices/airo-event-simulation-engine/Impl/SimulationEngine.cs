@@ -80,7 +80,7 @@ public class SimulationEngine(ISimulationRepository simulationRepository,
                     AddLog($"Executed behaviour for bot {p.Bot.BotId}, result -> {action}");
 
                     // Update the simulation based on the bot's action
-                    simulationStateUpdater.UpdateStateForAction(simulation, p.Bot, action, AddLog);
+                    await simulationStateUpdater.UpdateStateForAction(simulation, p.Bot, action, AddLog);
 
                     await simulationRepository.Save(simulation);
                 }
