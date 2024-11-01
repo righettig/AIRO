@@ -53,7 +53,7 @@ public class StateUpdater : ISimulationStateUpdater
         });
     }
 
-    public void UpdateStateForAction(ISimulation simulation, ISimulationBot bot, ISimulationAction action, Action<string> logMessage)
+    public async Task UpdateStateForAction(ISimulation simulation, ISimulationBot bot, ISimulationAction action, Action<string> logMessage)
     {
         if (action is MoveAction moveAction)
         {
@@ -67,7 +67,7 @@ public class StateUpdater : ISimulationStateUpdater
                 if (tile.Type == TileType.Food)
                 {
                     // Remove the food from the map
-                    tile.Type = TileType.Empty;
+                    tile.SetType(TileType.Empty);
 
                     // Cannot exceed initial health value
                     bot.Health = Math.Min(bot.Health + config.BotHpRestoreAmount, 100);
@@ -81,6 +81,11 @@ public class StateUpdater : ISimulationStateUpdater
         }
 
         logMessage($"Bot {bot.BotId}, Health {bot.Health}, Position {bot.Position}");
+
+        if (config.TurnDelaySeconds.HasValue && config.TurnDelaySeconds.Value > 0)
+        {
+            await Task.Delay(config.TurnDelaySeconds.Value * 1000);
+        }
     }
 
     private static void DecreaseBotsHP(ISimulation simulation, int botHpDecayAmount)
@@ -107,7 +112,7 @@ public class StateUpdater : ISimulationStateUpdater
         // Spawn food at the selected location
         if (state.GetTileAt(spawnLocation).Type == TileType.Empty) // Only spawn if the tile is empty
         {
-            state.GetTileAt(spawnLocation).Type = TileType.Food;
+            state.GetTileAt(spawnLocation).SetType(TileType.Food);
         }
 
         return spawnLocation;

@@ -16,7 +16,8 @@ var config = new SimulationConfig(botHpInitialAmount: 100,
                                   botHpDecayInterval: 2,
                                   foodRespawnInterval: 10,
                                   botHpDecayAmount: 15,
-                                  botHpRestoreAmount: 20);
+                                  botHpRestoreAmount: 20,
+                                  turnDelaySeconds: 3); // DEBUG
 
 builder.Services.AddSingleton<ISimulationConfig>(config);
 
@@ -31,6 +32,7 @@ builder.Services.AddSingleton<ISimulationStatusTracker, SimulationStatusTracker>
 builder.Services.AddSingleton<IEventsService, EventsService>();
 builder.Services.AddSingleton<ISimulationStateFactory, SimulationStateFactory>();
 builder.Services.AddSingleton<ISimulationService, SimulationService>();
+builder.Services.AddSingleton<ISimulationRepository, InMemorySimulationRepository>();
 
 builder.Services.AddScoped<IBehaviourExecutor, BehaviourExecutor>();
 builder.Services.AddScoped<ISimulationStateUpdater, StateUpdater>();
@@ -52,6 +54,12 @@ builder.Services.AddHttpClient<IEventSubscriptionService, EventSubscriptionServi
 builder.Services.AddHttpClient<IBotBehavioursService, BotBehavioursService>(client =>
 {
     var baseApiUrl = builder.Configuration["BOT_BEHAVIOURS_API_URL"];
+    client.BaseAddress = new Uri(baseApiUrl + "/api/");
+});
+
+builder.Services.AddHttpClient<IMapsService, MapsService>(client =>
+{
+    var baseApiUrl = builder.Configuration["MAPS_API_URL"];
     client.BaseAddress = new Uri(baseApiUrl + "/api/");
 });
 

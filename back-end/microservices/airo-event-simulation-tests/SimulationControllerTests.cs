@@ -15,6 +15,7 @@ public class SimulationControllerTests
 {
     private readonly Mock<ISimulationStatusTracker> _mockStatusTracker;
     private readonly Mock<IBackgroundTaskQueue> _mockTaskQueue;
+    private readonly Mock<ISimulationRepository> _mockSimulationRepository;
     private readonly Mock<ISimulationService> _mockSimulationService;
     private readonly Mock<ISimulationEngine> _mockEngine;
     private readonly Mock<ISimulationStateUpdater> _mockStateUpdater;
@@ -26,6 +27,7 @@ public class SimulationControllerTests
     {
         _mockStatusTracker = new Mock<ISimulationStatusTracker>();
         _mockTaskQueue = new Mock<IBackgroundTaskQueue>();
+        _mockSimulationRepository = new Mock<ISimulationRepository>();
         _mockSimulationService = new Mock<ISimulationService>();
         _mockEngine = new Mock<ISimulationEngine>();
         _mockStateUpdater = new Mock<ISimulationStateUpdater>();
@@ -37,6 +39,7 @@ public class SimulationControllerTests
             _mockSimulationService.Object,
             _mockEngine.Object,
             _mockStateUpdater.Object,
+            _mockSimulationRepository.Object,
             _mockEventsService.Object
         );
     }
@@ -123,6 +126,10 @@ public class SimulationControllerTests
         var eventId = Guid.NewGuid();
         var simulationStatus = new SimulationStatus(eventId, ["log1", "log2"]);
         _mockStatusTracker.Setup(s => s.GetSimulationStatus(eventId)).Returns(simulationStatus);
+
+        var simulation = new Mock<ISimulation>();
+        simulation.SetupGet(s => s.State).Returns(new Mock<ISimulationState>().Object);
+        _mockSimulationRepository.Setup(s => s.GetByEventId(eventId)).Returns(simulation.Object);
 
         // Act
         var result = _controller.GetSimulationStatus(eventId);

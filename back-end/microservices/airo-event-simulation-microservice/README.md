@@ -54,9 +54,8 @@ Each behaviour has a maximum time to completion. If it takes longer than that a 
 - **Other:** None.
 
 ## Future Improvements
-- Expose an interface for bot behaviours to use to return moves.
-- Simulation state should be updated according to each bot behaviour's move at the end of the simulation turn.
-- Introduce simulation logic (rules, etc.).
+- Support multiple bot behaviour languages by implementing additional IBehaviourCompiler(s)
+- Validate bot behaviours
 
 ## Maintainers
 - **Primary Contact:** Giacomo Righetti, righettig@outlook.com

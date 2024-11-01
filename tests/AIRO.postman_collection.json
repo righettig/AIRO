@@ -620,7 +620,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:3000/gateway/simulation/eventId",
+							"raw": "http://localhost:3000/gateway/simulation/eventId?skip=123",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -630,6 +630,12 @@
 								"gateway",
 								"simulation",
 								"eventId"
+							],
+							"query": [
+								{
+									"key": "skip",
+									"value": "123"
+								}
 							]
 						}
 					},
@@ -2555,7 +2561,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:4011/simulate/eventId/status",
+							"raw": "http://localhost:4011/simulate/eventId/status?skip=123",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2565,6 +2571,12 @@
 								"simulate",
 								"eventId",
 								"status"
+							],
+							"query": [
+								{
+									"key": "skip",
+									"value": "123"
+								}
 							]
 						}
 					},

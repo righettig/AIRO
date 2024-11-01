@@ -12,11 +12,13 @@ var config = new SimulationConfig(botHpInitialAmount: 100,
                                   botHpDecayInterval: 2,
                                   foodRespawnInterval: 10,
                                   botHpDecayAmount: 15,
-                                  botHpRestoreAmount: 20);
+                                  botHpRestoreAmount: 20,
+                                  turnDelaySeconds: 3);
 
 var compiler = new CSharpBehaviourCompiler();
 
-var engine = new SimulationEngine(new BehaviourExecutor(compiler));
+var engine = new SimulationEngine(new InMemorySimulationRepository(),
+                                  new BehaviourExecutor(compiler));
 
 engine.OnLogMessage += (sender, message) => Console.WriteLine($"Log: {message}");
 

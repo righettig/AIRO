@@ -1,0 +1,55 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 96px); /* 64 (navbar) + 16 (padding)*2 */
+}
+
+.full-height-div {
+    flex: 1;
+    overflow: hidden;
+}
+
+.content-wrapper {
+    display: flex;
+    height: 100vh;
+}
+
+.map-renderer,
+.feed {
+    flex: 1;
+    height: 100%;
+}
+
+.participants {
+    padding: 10px;
+    background-color: lightgreen;
+}
+
+.participants h3 {
+    margin: 0;
+}
+
+.participants p {
+    margin: 0;
+    margin-top: 8px;
+    font-size: 18px;
+}
+
+.log-container {
+    height: 100%;
+    width: 100%;
+    border: 1px solid #ccc;
+    overflow: auto;
+    font-size: 15px;
+}
+
+.viewport {
+    height: 100%;
+}
+
+.log-entry {
+    padding: 5px;
+    border-bottom: 1px solid #e0e0e0;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
