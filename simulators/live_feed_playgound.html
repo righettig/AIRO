@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Babylon.js Example</title>
+    <!-- Load Babylon.js from CDN -->
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+    <script src="https://cdn.babylonjs.com/babylonjs.loaders.js"></script>
+    <style>
+        body { margin: 0; }
+        canvas { width: 100%; height: 100vh; display: block; }
+    </style>
+</head>
+<body>
+    <canvas id="renderCanvas"></canvas>
+
+    <script>
+        // Get the canvas element
+        const canvas = document.getElementById('renderCanvas');
+        
+        // Create a Babylon.js engine
+        const engine = new BABYLON.Engine(canvas, true);
+        
+        // Create a scene
+        const createScene = () => {
+            const scene = new BABYLON.Scene(engine);
+            
+            // Create a camera
+            const camera = new BABYLON.ArcRotateCamera('camera', Math.PI / 2, Math.PI / 4, 5, BABYLON.Vector3.Zero(), scene);
+            camera.attachControl(canvas, true);
+            
+            // Create a light
+            const light = new BABYLON.HemisphericLight('light', new BABYLON.Vector3(0, 1, 0), scene);
+            
+            // Create a box
+            const box = BABYLON.MeshBuilder.CreateBox('box', { size: 2 }, scene);
+            
+            // Return the scene
+            return scene;
+        };
+        
+        // Create the scene
+        const scene = createScene();
+        
+        // Render loop
+        engine.runRenderLoop(() => {
+            scene.render();
+        });
+
+        // Resize the engine on window resize
+        window.addEventListener('resize', () => {
+            engine.resize();
+        });
+    </script>
+</body>
+</html>
