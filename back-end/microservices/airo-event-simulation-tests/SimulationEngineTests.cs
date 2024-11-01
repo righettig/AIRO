@@ -12,6 +12,7 @@ public class SimulationEngineTests
 {
     private readonly Mock<IBehaviourExecutor> _mockBehaviourExecutor;
     private readonly Mock<ISimulationStateUpdater> _mockStateUpdater;
+    private readonly Mock<ISimulationRepository> _mockSimulationRepository;
     private readonly Mock<ISimulation> _mockSimulation;
     private readonly Mock<ISimulationGoal> _mockSimulationGoal;
     private readonly Mock<IWinnerTracker> _mockWinnerTracker;
@@ -22,6 +23,7 @@ public class SimulationEngineTests
     {
         _mockBehaviourExecutor = new Mock<IBehaviourExecutor>();
         _mockStateUpdater = new Mock<ISimulationStateUpdater>();
+        _mockSimulationRepository = new Mock<ISimulationRepository>();
         _mockSimulation = new Mock<ISimulation>();
         _mockSimulationGoal = new Mock<ISimulationGoal>();
         _mockWinnerTracker = new Mock<IWinnerTracker>();
@@ -29,7 +31,7 @@ public class SimulationEngineTests
         _mockSimulation.Setup(s => s.Goal).Returns(_mockSimulationGoal.Object);
         _mockSimulation.Setup(s => s.WinnerTracker).Returns(_mockWinnerTracker.Object);
 
-        _simulationEngine = new SimulationEngine(_mockBehaviourExecutor.Object);
+        _simulationEngine = new SimulationEngine(_mockSimulationRepository.Object, _mockBehaviourExecutor.Object);
     }
 
     [Fact]
