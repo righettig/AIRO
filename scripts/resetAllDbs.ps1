@@ -1,1 +1,1 @@
-.\resetBotsDb.ps1; .\resetMapsAndEvents.ps1;
+.\resetBotsDb.ps1; .\resetMapsAndEvents.ps1; .\purchaseBots.ps1; .\defineBehaviours.ps1; .\subscribeToEvents.ps1

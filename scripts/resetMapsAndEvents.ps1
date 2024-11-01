@@ -29,7 +29,7 @@ $events = @(
 )
 
 # Get the current time and add 5 minutes to it
-$scheduledTime = (Get-Date).AddMinutes(3).ToString("yyyy-MM-ddTHH:mm:ss")
+$scheduledTime = (Get-Date).AddMinutes(1).ToString("yyyy-MM-ddTHH:mm:ss")
 
 # Loop through the event data and map IDs to create events with associated map IDs
 for ($i = 0; $i -lt $events.Count; $i++) {
