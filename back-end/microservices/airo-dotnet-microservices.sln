@@ -71,7 +71,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Profile", "Profile", "{0E30
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Maps", "Maps", "{64D90FC2-E1FC-4719-938C-F26F5ACF39C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "airo-maps-microservice", "airo-maps-microservice\airo-maps-microservice.csproj", "{A1B68E47-681E-4506-839C-94A5094931BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "airo-maps-microservice", "airo-maps-microservice\airo-maps-microservice.csproj", "{A1B68E47-681E-4506-839C-94A5094931BB}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notifications", "Notifications", "{07FE9BA1-C33B-48A7-BF9A-447D036A2EE3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{8A763D0B-4639-4501-BBCF-7B498B02EB94}"
@@ -82,11 +83,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "airo-admin-auth-tests", "ai
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "airo-auth-tests", "airo-auth-tests\airo-auth-tests.csproj", "{3D7A83E2-BAA8-480F-8C73-A200614B247D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "airo-event-subscriptions-tests", "airo-event-subscriptions-tests\airo-event-subscriptions-tests.csproj", "{39DB1E57-5515-4D34-9D77-AD5135BA29C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "airo-event-subscriptions-tests", "airo-event-subscriptions-tests\airo-event-subscriptions-tests.csproj", "{39DB1E57-5515-4D34-9D77-AD5135BA29C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "airo-leaderboard-tests", "airo-leaderboard-tests\airo-leaderboard-tests.csproj", "{E1D1B99B-6C49-43BD-8BF8-AB2375571E45}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "airo-leaderboard-tests", "airo-leaderboard-tests\airo-leaderboard-tests.csproj", "{E1D1B99B-6C49-43BD-8BF8-AB2375571E45}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "airo-event-simulation-tests", "airo-event-simulation-tests\airo-event-simulation-tests.csproj", "{ADEBCAC9-9B5F-4D51-971B-88B98E628937}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "airo-event-simulation-tests", "airo-event-simulation-tests\airo-event-simulation-tests.csproj", "{ADEBCAC9-9B5F-4D51-971B-88B98E628937}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bot Behaviour Compiler", "Bot Behaviour Compiler", "{5CCA7FFB-18F8-429F-BDE2-5070F968286B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "airo-bot-behaviour-compiler-microservice", "airo-bot-behaviour-compiler-microservice\airo-bot-behaviour-compiler-microservice.csproj", "{605169AA-FF55-4218-86BC-AFD8860CD4A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -214,6 +219,10 @@ Global
 		{ADEBCAC9-9B5F-4D51-971B-88B98E628937}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADEBCAC9-9B5F-4D51-971B-88B98E628937}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ADEBCAC9-9B5F-4D51-971B-88B98E628937}.Release|Any CPU.Build.0 = Release|Any CPU
+		{605169AA-FF55-4218-86BC-AFD8860CD4A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{605169AA-FF55-4218-86BC-AFD8860CD4A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{605169AA-FF55-4218-86BC-AFD8860CD4A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{605169AA-FF55-4218-86BC-AFD8860CD4A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -249,6 +258,7 @@ Global
 		{39DB1E57-5515-4D34-9D77-AD5135BA29C8} = {E699605B-ECD7-4C8C-AB8B-B0254597982D}
 		{E1D1B99B-6C49-43BD-8BF8-AB2375571E45} = {52EEE915-6D02-4616-BB9B-C6AFB716DE53}
 		{ADEBCAC9-9B5F-4D51-971B-88B98E628937} = {790B34F4-4501-43C0-A679-BBC8209C1A9E}
+		{605169AA-FF55-4218-86BC-AFD8860CD4A5} = {5CCA7FFB-18F8-429F-BDE2-5070F968286B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {919F5805-3223-46B9-8C08-BDC0559A7492}
