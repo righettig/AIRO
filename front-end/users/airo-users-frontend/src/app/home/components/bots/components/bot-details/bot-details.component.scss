@@ -1,6 +1,35 @@
-.content {
-    border-bottom: solid 2px black; 
-    padding-bottom: 14px;
+.layout {
+    display: flex;
+    height: calc(100vh - 300px);
+
+    .behaviours-list {
+        flex: 4;
+        border-right: solid 6px #d0ebf7;
+
+        .behaviours-list-item {
+            padding-top: 8px;
+            padding-left: 4px;
+            padding-right: 4px;
+            padding-bottom: 8px;
+            margin-right: 8px;
+
+            cursor: pointer;
+
+            &:hover {
+                background-color: #d0ebf7;
+                padding-left: 6px;
+            }
+
+            &.selected {
+                background-color: #add8e6;
+                font-weight: 500;
+            }
+        }
+    }
+
+    .behaviour-code-editor {
+        flex: 10;
+    }
 }
 
 .validation-result {

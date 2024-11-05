@@ -1,0 +1,23 @@
+.behaviour-container {
+    display: flex;
+    flex-direction: column;
+    padding-left: 12px;
+
+    .title-bar {
+        padding: 8px;
+        font-size: 18px;
+        background-color: lightgreen;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .content {
+        padding-left: 12px;
+        padding-right: 12px;
+
+        textarea {
+            width: 60%;
+            height: 100px;
+        }
+    }
+}

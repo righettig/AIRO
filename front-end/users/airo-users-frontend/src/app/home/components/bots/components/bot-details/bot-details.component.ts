@@ -6,18 +6,21 @@ import { TitleComponent } from '../../../../../common/components/title/title.com
 import { CardComponent } from '../../../../../common/components/card/card.component';
 import { BehaviourCodeComponent } from "./behaviour-code/behaviour-code.component";
 import { BotBehavioursService } from '../../services/bot-behaviours.service';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-bot-details',
   templateUrl: './bot-details.component.html',
   styleUrl: './bot-details.component.scss',
   standalone: true,
-  imports: [TitleComponent, CardComponent, BehaviourCodeComponent]
+  imports: [TitleComponent, CardComponent, BehaviourCodeComponent, NgClass]
 })
 export class BotDetailsComponent {
   bot: Bot | undefined;
   botBehaviours: BotBehaviourViewModel[] = [];
  
+  selectedBehaviour: BotBehaviourViewModel | undefined;
+
   constructor(
     private route: ActivatedRoute, 
     private botBehavioursService: BotBehavioursService) { }
@@ -43,7 +46,7 @@ export class BotDetailsComponent {
     this.botBehaviours.unshift(newBehaviour);
   }
 
-  async saveBehaviours() {
+  async saveAllBehaviours() {
     for (const behaviour of this.botBehaviours) {
       if (!behaviour.id) {
         await this.botBehavioursService.createBotBehaviour(behaviour.name, behaviour.code);
@@ -61,6 +64,10 @@ export class BotDetailsComponent {
     } else {
       alert("Invalid behaviour: " + response.errors.join(","));
     }
+  }
+
+  selectBehaviour(behaviour: BotBehaviourViewModel) {
+    this.selectedBehaviour = behaviour;
   }
 
   editBehaviour(behaviour: BotBehaviourViewModel) {
