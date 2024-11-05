@@ -5,6 +5,11 @@ import { AuthService } from '../../../../auth/services/auth.service';
 import { ConfigService } from '../../../../common/services/config.service';
 import { BotBehaviour } from '../models/bot-behaviour.model';
 
+export type BotValidationResponse = {
+    success: boolean;
+    errors: string[];
+}
+
 @Injectable({
     providedIn: 'root',
 })
@@ -46,13 +51,13 @@ export class BotBehavioursService {
         return response;
     }
 
-    async validateBotBehaviour(id: string, code: string): Promise<any> { // TODO: add type
+    async validateBotBehaviour(id: string, code: string): Promise<BotValidationResponse> {
         const httpHeaders: HttpHeaders = new HttpHeaders({
             Authorization: this.authService.accessToken!
         });
 
         const response = await firstValueFrom(
-            this.http.post<string>(`${this.apiUrl}/${id}/validate`, {
+            this.http.post<BotValidationResponse>(`${this.apiUrl}/${id}/validate`, {
                 code,
             }, 
             { headers: httpHeaders })
