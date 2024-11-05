@@ -19,11 +19,12 @@ import { EventSubscriptionService } from 'src/event-subscription/event-subscript
 import { SubscribeToEventDto } from './models/subscribe-to-event.dto';
 import { UnsubscribeFromEventDto } from './models/unsubscribe-from-event.dto';
 import { BotBehavioursService } from 'src/bot-behaviours/bot-behaviours.service';
-import { BotBehaviourCompilerService } from 'src/bot-behaviour-compiler/bot-behaviour-compiler.service';
+import { BotBehaviourCompilerService, ValidateResult } from 'src/bot-behaviour-compiler/bot-behaviour-compiler.service';
 import { CreateBotBehaviourDto } from './models/create-bot-behaviour.dto';
 import { UpdateBotBehaviourDto } from './models/update-bot-behaviour.dto';
 import { LeaderboardService } from 'src/leaderboard/leaderboard.service';
 import { UserLeaderboardResponseDto } from './models/leaderboard.response.dto';
+import { ValidateBotBehaviourDto } from './models/validate-bot-behaviour.dto';
 
 @Controller('gateway')
 export class GatewayController {
@@ -249,6 +250,21 @@ export class GatewayController {
     const response = await this.botBehavioursService.create(uid, body.name, body.code);
     
     await this.botBehaviourCompilerService.compile(response, body.code);
+
+    return response;
+  }
+
+  @Post('bot-behaviours/:botBehaviourId/validate')
+  async validateBotBehaviour(
+    @Req() request: Request, 
+    @Param('botBehaviourId') botBehaviourId, 
+    @Body() validateBotBehaviourDto: ValidateBotBehaviourDto): Promise<ValidateResult> {
+    const token = request.headers['authorization'];
+    if (!token) {
+      throw new Error('Token is missing');
+    }
+
+    const response = await this.botBehaviourCompilerService.validate(botBehaviourId, validateBotBehaviourDto.code);
 
     return response;
   }

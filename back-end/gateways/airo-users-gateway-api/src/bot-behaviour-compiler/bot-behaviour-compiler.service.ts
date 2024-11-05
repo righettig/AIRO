@@ -2,8 +2,8 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
 
-type ValidateResult = { success: boolean; errors: string[] };
-type CompileResult = { message: string, blobUri: string };
+export type ValidateResult = { success: boolean; errors: string[] };
+export type CompileResult = { message: string, blobUri: string };
 
 @Injectable()
 export class BotBehaviourCompilerService {
@@ -13,7 +13,7 @@ export class BotBehaviourCompilerService {
 
     async compile(behaviourId: string, code: string): Promise<CompileResult> {
         const response = await firstValueFrom(
-            this.httpService.post(`${this.serviceUrl}/api/bot-behaviours/${behaviourId}/compile`, {
+            this.httpService.post(`${this.serviceUrl}/api/bot-behaviors/${behaviourId}/compile`, {
                 botBehaviourId: behaviourId,
                 botBehaviourScript: code
             }),
@@ -23,7 +23,7 @@ export class BotBehaviourCompilerService {
 
     async validate(behaviourId: string, code: string): Promise<ValidateResult> {
         const response = await firstValueFrom(
-            this.httpService.post(`${this.serviceUrl}/api/bot-behaviours/${behaviourId}/validate`, {
+            this.httpService.post(`${this.serviceUrl}/api/bot-behaviors/${behaviourId}/validate`, {
                 botBehaviourId: behaviourId,
                 botBehaviourScript: code
             }),

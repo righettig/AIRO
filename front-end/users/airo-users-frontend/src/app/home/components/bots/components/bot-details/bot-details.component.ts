@@ -53,6 +53,10 @@ export class BotDetailsComponent {
     }
   }
 
+  async validateBehaviour(behaviour: BotBehaviourViewModel) {
+    const response = await this.botBehavioursService.validateBotBehaviour(behaviour.id, behaviour.code);
+  }
+
   editBehaviour(behaviour: BotBehaviourViewModel) {
     behaviour.editing = !behaviour.editing;
   }

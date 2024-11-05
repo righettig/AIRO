@@ -46,6 +46,21 @@ export class BotBehavioursService {
         return response;
     }
 
+    async validateBotBehaviour(id: string, code: string): Promise<any> { // TODO: add type
+        const httpHeaders: HttpHeaders = new HttpHeaders({
+            Authorization: this.authService.accessToken!
+        });
+
+        const response = await firstValueFrom(
+            this.http.post<string>(`${this.apiUrl}/${id}/validate`, {
+                code,
+            }, 
+            { headers: httpHeaders })
+        );
+
+        return response;
+    }
+
     async updateBotBehaviour(id: string, name: string, code: string): Promise<void> {
         const httpHeaders: HttpHeaders = new HttpHeaders({
             Authorization: this.authService.accessToken!

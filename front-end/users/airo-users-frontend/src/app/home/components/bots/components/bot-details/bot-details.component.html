@@ -9,7 +9,7 @@
     </div>
 
     @for (botBehaviour of botBehaviours; track botBehaviour.id) {
-        <div>
+        <div class="content">
             <app-behaviour-code 
                 [name]="botBehaviour.name" 
                 [code]="botBehaviour.code" 
@@ -19,6 +19,7 @@
             </app-behaviour-code>
 
             @if (botBehaviour.id) {
+                <button (click)="validateBehaviour(botBehaviour)">Validate</button>
                 <button (click)="editBehaviour(botBehaviour)">Edit</button>
             }
             <button (click)="confirmDeleteBehaviour(botBehaviour)">Delete</button>
