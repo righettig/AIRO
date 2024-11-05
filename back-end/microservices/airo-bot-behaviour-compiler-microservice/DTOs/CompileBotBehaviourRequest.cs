@@ -1,0 +1,3 @@
+﻿namespace airo_bot_behaviour_compiler_microservice.DTOs;
+
+public record CompileBotBehaviourRequest(string BotBehaviourId, string BotBehaviourScript);

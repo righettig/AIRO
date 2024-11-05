@@ -9,8 +9,6 @@ namespace airo_event_simulation_tests;
 
 public class BehaviourExecutorTests
 {
-    private readonly Mock<IBehaviourCompiler> _compilerMock;
-
     private readonly BehaviourExecutor _behaviourExecutor;
 
     public BehaviourExecutorTests()
@@ -56,7 +54,7 @@ public class BehaviourExecutorTests
         var state = new Mock<IBotState>();
         state.Setup(s => s.Id).Returns(Guid.NewGuid());
 
-        var executor = new BehaviourExecutor(_compilerMock.Object);
+        var executor = new BehaviourExecutor();
 
         // Act & Assert
         await Assert.ThrowsAsync<TimeoutException>(() => executor.Execute("dummy_script", state.Object, CancellationToken.None));

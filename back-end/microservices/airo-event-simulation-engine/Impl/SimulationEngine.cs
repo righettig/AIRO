@@ -69,7 +69,7 @@ public class SimulationEngine(ISimulationRepository simulationRepository,
                 var botState = simulation.CreateBotStateFor(p.Bot);
 
                 // Ask the bot to compute its next move based on the personalized state
-                var action = await behaviourExecutor.Execute(p.Bot.BehaviorScript, botState, token);
+                var action = await behaviourExecutor.Execute(p.Bot.BotAgent, botState, token);
 
                 if (action is null)
                 {

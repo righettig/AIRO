@@ -4,12 +4,15 @@ using airo_event_simulation_domain.Impl.SimulationGoals;
 using airo_event_simulation_domain.Impl.WinnerTrackers;
 using airo_event_simulation_domain.Interfaces;
 using airo_event_simulation_infrastructure.Interfaces;
+using airo_event_simulation_microservice.Services.Interfaces;
+using System.Reflection;
 
 namespace airo_event_simulation_infrastructure.Impl;
 
 public class SimulationService(ISimulationConfig config,
                                ISimulationStateFactory simulationStateFactory,
-                               IBotBehavioursService botBehavioursRepository,
+                               IRedisCache redisCacheService,
+                               IBotAgentFactory botAgentFactory,
                                IEventSubscriptionService eventSubscriptionService,
                                IEventsService eventsService,
                                IMapsService mapsService) : ISimulationService
@@ -22,9 +25,11 @@ public class SimulationService(ISimulationConfig config,
         var participants = await Task.WhenAll(
             (await eventSubscriptionService.GetParticipants(eventId))
                 .Select(async (x) => {
-                    var behaviorScript = await botBehavioursRepository.GetBotBehaviour(x.UserId, x.BotBehaviourId);
+                    var assembly = await GetBotBehaviourAssembly(x.BotBehaviourId);
 
-                    var bot = new Bot(x.BotId, config.BotHpInitialAmount, behaviorScript);
+                    var botAgent = botAgentFactory.Create(assembly);
+
+                    var bot = new Bot(x.BotId, config.BotHpInitialAmount, botAgent);
 
                     return new Participant(x.UserId, bot);
                 })
@@ -44,5 +49,12 @@ public class SimulationService(ISimulationConfig config,
                                         new HealthiestWinnerTracker());
 
         return simulation;
+    }
+
+    public async Task<Assembly> GetBotBehaviourAssembly(Guid botBehaviourId)
+    {
+        var assemblyByteArray = await redisCacheService.GetDllAsync(botBehaviourId.ToString());
+
+        return Assembly.Load(assemblyByteArray);
     }
 }

@@ -10,7 +10,6 @@ public class SimulationServiceTests
 {
     private readonly Mock<ISimulationStateFactory> _simulationStateFactoryMock;
     private readonly Mock<ISimulationConfig> _simulationConfigMock;
-    private readonly Mock<IBotBehavioursService> _botBehavioursServiceMock;
     private readonly Mock<IEventSubscriptionService> _eventSubscriptionServiceMock;
     private readonly Mock<IEventsService> _eventsServiceMock;
     private readonly Mock<IMapsService> _mapsServiceMock;
@@ -63,14 +62,12 @@ public class SimulationServiceTests
     {
         _simulationStateFactoryMock = new Mock<ISimulationStateFactory>();
         _simulationConfigMock = new Mock<ISimulationConfig>();
-        _botBehavioursServiceMock = new Mock<IBotBehavioursService>();
         _eventSubscriptionServiceMock = new Mock<IEventSubscriptionService>();
         _eventsServiceMock = new Mock<IEventsService>();
         _mapsServiceMock = new Mock<IMapsService>();
 
         _simulationService = new SimulationService(_simulationConfigMock.Object,
                                                    _simulationStateFactoryMock.Object,
-                                                   _botBehavioursServiceMock.Object,
                                                    _eventSubscriptionServiceMock.Object, 
                                                    _eventsServiceMock.Object, 
                                                    _mapsServiceMock.Object);

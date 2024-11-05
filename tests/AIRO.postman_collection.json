@@ -2940,14 +2940,15 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:4016/BotBehaviourCompiler/123/validate",
+							"raw": "http://localhost:4016/api/bot-behaviors/123/validate",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "4016",
 							"path": [
-								"BotBehaviourCompiler",
+								"api",
+								"bot-behaviors",
 								"123",
 								"validate"
 							]
@@ -2970,14 +2971,15 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:4016/BotBehaviourCompiler/123/compile",
+							"raw": "http://localhost:4016/api/bot-behaviors/123/compile",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "4016",
 							"path": [
-								"BotBehaviourCompiler",
+								"api",
+								"bot-behaviors",
 								"123",
 								"compile"
 							]

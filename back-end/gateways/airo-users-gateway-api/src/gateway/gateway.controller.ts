@@ -19,6 +19,7 @@ import { EventSubscriptionService } from 'src/event-subscription/event-subscript
 import { SubscribeToEventDto } from './models/subscribe-to-event.dto';
 import { UnsubscribeFromEventDto } from './models/unsubscribe-from-event.dto';
 import { BotBehavioursService } from 'src/bot-behaviours/bot-behaviours.service';
+import { BotBehaviourCompilerService } from 'src/bot-behaviour-compiler/bot-behaviour-compiler.service';
 import { CreateBotBehaviourDto } from './models/create-bot-behaviour.dto';
 import { UpdateBotBehaviourDto } from './models/update-bot-behaviour.dto';
 import { LeaderboardService } from 'src/leaderboard/leaderboard.service';
@@ -35,6 +36,7 @@ export class GatewayController {
     private readonly invoiceService: InvoiceService,
     private readonly botsService: BotsService,
     private readonly botBehavioursService: BotBehavioursService,
+    private readonly botBehaviourCompilerService: BotBehaviourCompilerService,
     private readonly purchaseService: PurchaseService,
     private readonly eventsService: EventsService,
     private readonly eventSubscriptionService: EventSubscriptionService,
@@ -245,6 +247,8 @@ export class GatewayController {
 
     const uid = this.decodeFromToken<{ user_id?: string }>(token, 'user_id');
     const response = await this.botBehavioursService.create(uid, body.name, body.code);
+    
+    await this.botBehaviourCompilerService.compile(response, body.code);
 
     return response;
   }
@@ -260,7 +264,9 @@ export class GatewayController {
     }
 
     const uid = this.decodeFromToken<{ user_id?: string }>(token, 'user_id');
+    
     await this.botBehavioursService.update(uid, botBehaviourId, updateBotBehaviourDto.name, updateBotBehaviourDto.code);
+    await this.botBehaviourCompilerService.compile(botBehaviourId, updateBotBehaviourDto.code);
   }
 
   @Delete('bot-behaviours/:botBehaviourId')

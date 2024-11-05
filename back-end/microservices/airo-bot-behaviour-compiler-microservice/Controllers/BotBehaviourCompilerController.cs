@@ -1,30 +1,73 @@
+using airo_bot_behaviour_compiler_microservice.DTOs;
+using airo_bot_behaviour_compiler_microservice.Impl;
+using airo_bot_behaviour_compiler_microservice.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace airo_bot_behaviour_compiler_microservice.Controllers
+namespace airo_bot_behaviour_compiler_microservice.Controllers;
+
+[ApiController]
+[Route("api/bot-behaviors")]
+public class BotBehaviourCompilerController : ControllerBase
 {
-    public record BotBehaviourCompilerRequest(string BotBehaviourId, string BotBehaviourScript);
+    private readonly ILogger<BotBehaviourCompilerController> _logger;
 
-    [ApiController]
-    [Route("[controller]")]
-    public class BotBehaviourCompilerController : ControllerBase
+    private readonly IBehaviourCompiler _behaviourCompiler;
+    private readonly IBotBehaviorStorageService _storageService;
+    private readonly IRabbitMQPublisherService _publisherService;
+
+    public BotBehaviourCompilerController(ILogger<BotBehaviourCompilerController> logger,
+                                          IBehaviourCompiler behaviourCompiler,
+                                          IBotBehaviorStorageService storageService,
+                                          IRabbitMQPublisherService publisherService)
     {
-        private readonly ILogger<BotBehaviourCompilerController> _logger;
+        _logger = logger;
+        _behaviourCompiler = behaviourCompiler;
+        _storageService = storageService;
+        _publisherService = publisherService;
+    }
 
-        public BotBehaviourCompilerController(ILogger<BotBehaviourCompilerController> logger)
+    [HttpPost("{botBehaviourId}/validate")]
+    public async Task<IActionResult> Validate([FromBody] ValidateBotBehaviourRequest request, CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrWhiteSpace(request.BotBehaviourScript))
         {
-            _logger = logger;
+            return BadRequest("Script code cannot be empty.");
         }
 
-        [HttpPost("{botBehaviourId}/validate")]
-        public async Task<IActionResult> IsValid([FromBody] BotBehaviourCompilerRequest request)
+        var validationResult = await _behaviourCompiler.ValidateScriptAsync(request.BotBehaviourScript, cancellationToken);
+
+        return Ok(validationResult);
+    }
+
+    [HttpPost("{botBehaviourId}/compile")]
+    public async Task<IActionResult> Compile([FromBody] CompileBotBehaviourRequest request, CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrWhiteSpace(request.BotBehaviourScript))
         {
-            return Ok(true);
+            return BadRequest("Script code cannot be empty.");
         }
 
-        [HttpPost("{botBehaviourId}/compile")]
-        public async Task<IActionResult> Compile([FromBody] BotBehaviourCompilerRequest request)
+        // Step 1: Compile
+        var compileResult = await _behaviourCompiler.CompileScriptAsync(request.BotBehaviourScript, cancellationToken);
+
+        if (!compileResult.Success)
         {
-            return Ok(true);
+            return BadRequest(new { message = "Compilation failed.", errors = compileResult.Errors });
         }
+
+        // Step 2: Save to Blob Storage
+        var blobUri = await _storageService.SaveCompiledBehaviorAsync(request.BotBehaviourId, compileResult.CompiledAssembly);
+
+        // Step 3: Publish update message
+        var updateMessage = new BotBehaviorUpdateMessage
+        {
+            BehaviorId = request.BotBehaviourId,
+            BlobUri = blobUri,
+            Timestamp = DateTime.UtcNow
+        };
+
+        _publisherService.PublishBotBehaviorUpdate(updateMessage);
+
+        return Ok(new { message = "Script compiled and saved successfully.", blobUri });
     }
 }

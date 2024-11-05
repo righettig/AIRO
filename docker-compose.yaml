@@ -1,258 +1,260 @@
 services:
-#   #------------#
-#   # Front-ends #
-#   #------------#
-#   users-app:
-#     depends_on:
-#       - users-gateway-api
-#     build:
-#       context: ./front-end/users/airo-users-frontend
-#     ports:
-#       - "5000:4200"
-#     environment:
-#       - USERS_GATEWAY_API_URL=${USERS_GATEWAY_API_URL}
-#     develop:
-#       watch:
-#         - action: sync
-#           path: ./front-end/users/airo-users-frontend
-#           target: /app
-#           ignore:
-#             - node_modules/
-#         - action: rebuild
-#           path: ./front-end/users/airo-users-frontend/package.json
+  #------------#
+  # Front-ends #
+  #------------#
+  users-app:
+    depends_on:
+      - users-gateway-api
+    build:
+      context: ./front-end/users/airo-users-frontend
+    ports:
+      - "5000:4200"
+    environment:
+      - USERS_GATEWAY_API_URL=${USERS_GATEWAY_API_URL}
+    develop:
+      watch:
+        - action: sync
+          path: ./front-end/users/airo-users-frontend
+          target: /app
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: ./front-end/users/airo-users-frontend/package.json
 
-#   admin-app:
-#     depends_on:
-#       - admin-gateway-api
-#     build:
-#       context: ./front-end/admin/airo-admin-frontend
-#     ports:
-#       - "5001:3000"
-#     environment:
-#       - NEXT_PUBLIC_ADMIN_GATEWAY_API_URL=${ADMIN_GATEWAY_API_URL}
-#     develop:
-#       watch:
-#         - action: sync
-#           path: ./front-end/admin/airo-admin-frontend
-#           target: /app
-#           ignore:
-#             - node_modules/
-#         - action: rebuild
-#           path: ./front-end/admin/airo-admin-frontend/package.json
+  # admin-app:
+  #   depends_on:
+  #     - admin-gateway-api
+  #   build:
+  #     context: ./front-end/admin/airo-admin-frontend
+  #   ports:
+  #     - "5001:3000"
+  #   environment:
+  #     - NEXT_PUBLIC_ADMIN_GATEWAY_API_URL=${ADMIN_GATEWAY_API_URL}
+  #   develop:
+  #     watch:
+  #       - action: sync
+  #         path: ./front-end/admin/airo-admin-frontend
+  #         target: /app
+  #         ignore:
+  #           - node_modules/
+  #       - action: rebuild
+  #         path: ./front-end/admin/airo-admin-frontend/package.json
 
-#   enterprise-app:
-#     depends_on:
-#       - enterprise-gateway-api
-#     build:
-#       context: ./front-end/enterprise/airo-enterprise-frontend
-#     ports:
-#       - "5002:4200"
-#     environment:
-#       - ENTERPRISE_GATEWAY_API_URL=${ENTERPRISE_GATEWAY_API_URL}
-#     develop:
-#       watch:
-#         - action: sync
-#           path: ./front-end/enterprise/airo-enterprise-frontend
-#           target: /app
-#           ignore:
-#             - node_modules/
-#         - action: rebuild
-#           path: ./front-end/enterprise/airo-enterprise-frontend/package.json
+  # enterprise-app:
+  #   depends_on:
+  #     - enterprise-gateway-api
+  #   build:
+  #     context: ./front-end/enterprise/airo-enterprise-frontend
+  #   ports:
+  #     - "5002:4200"
+  #   environment:
+  #     - ENTERPRISE_GATEWAY_API_URL=${ENTERPRISE_GATEWAY_API_URL}
+  #   develop:
+  #     watch:
+  #       - action: sync
+  #         path: ./front-end/enterprise/airo-enterprise-frontend
+  #         target: /app
+  #         ignore:
+  #           - node_modules/
+  #       - action: rebuild
+  #         path: ./front-end/enterprise/airo-enterprise-frontend/package.json
 
-#   #--------------#
-#   # Gateway APIs #
-#   #--------------#
-#   users-gateway-api:
-#     depends_on:
-#       - auth-service
-#       - profile-service
-#       - notifications-service
-#       - billing-service
-#       - bots-service
-#       - bot-behaviours-service
-#       - purchase-service
-#       - events-service
-#       - event-subscription-service
-#       - event-simulation-service
-#       - leaderboard-service
-#       - ui-notifications-service
-#     build:
-#       context: ./back-end/gateways/airo-users-gateway-api
-#     ports:
-#       - "3000:3000"
-#     environment:
-#       - AUTH_API_URL=${AUTH_API_URL}
-#       - BOT_BEHAVIOURS_API_URL=${BOT_BEHAVIOURS_API_URL}
-#       - PROFILE_API_URL=${PROFILE_API_URL}
-#       - BILLING_API_URL=${BILLING_API_URL}
-#       - INVOICE_API_URL=${INVOICE_API_URL}
-#       - BOTS_API_URL=${BOTS_API_URL}
-#       - PURCHASE_API_URL=${PURCHASE_API_URL}
-#       - EVENTS_API_URL=${EVENTS_API_URL}
-#       - EVENT_SUBSCRIPTION_API_URL=${EVENT_SUBSCRIPTION_API_URL}
-#       - EVENT_SIMULATION_API_URL=${EVENT_SIMULATION_API_URL}
-#       - UI_NOTIFICATIONS_API_URL=${UI_NOTIFICATIONS_API_URL}
-#       - LEADERBOARD_API_URL=${LEADERBOARD_API_URL}
-#     develop:
-#       watch:
-#         - action: rebuild
-#           path: ./back-end/gateways/airo-users-gateway-api
-#           target: /app
-#           ignore:
-#             - node_modules/
-#         - action: rebuild
-#           path: ./back-end/gateways/airo-users-gateway-api/package.json
+  #--------------#
+  # Gateway APIs #
+  #--------------#
+  users-gateway-api:
+    depends_on:
+      - auth-service
+      - profile-service
+      # - notifications-service
+      # - billing-service
+      - bots-service
+      - bot-behaviours-service
+      - bot-behaviour-compiler-service
+      - purchase-service
+      - events-service
+      - event-subscription-service
+      - event-simulation-service
+      # - leaderboard-service
+      # - ui-notifications-service
+    build:
+      context: ./back-end/gateways/airo-users-gateway-api
+    ports:
+      - "3000:3000"
+    environment:
+      - AUTH_API_URL=${AUTH_API_URL}
+      - BOT_BEHAVIOURS_API_URL=${BOT_BEHAVIOURS_API_URL}
+      - BOT_BEHAVIOUR_COMPILER_API_URL=${BOT_BEHAVIOUR_COMPILER_API_URL}
+      - PROFILE_API_URL=${PROFILE_API_URL}
+      - BILLING_API_URL=${BILLING_API_URL}
+      - INVOICE_API_URL=${INVOICE_API_URL}
+      - BOTS_API_URL=${BOTS_API_URL}
+      - PURCHASE_API_URL=${PURCHASE_API_URL}
+      - EVENTS_API_URL=${EVENTS_API_URL}
+      - EVENT_SUBSCRIPTION_API_URL=${EVENT_SUBSCRIPTION_API_URL}
+      - EVENT_SIMULATION_API_URL=${EVENT_SIMULATION_API_URL}
+      - UI_NOTIFICATIONS_API_URL=${UI_NOTIFICATIONS_API_URL}
+      - LEADERBOARD_API_URL=${LEADERBOARD_API_URL}
+    develop:
+      watch:
+        - action: rebuild
+          path: ./back-end/gateways/airo-users-gateway-api
+          target: /app
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: ./back-end/gateways/airo-users-gateway-api/package.json
 
-#   admin-gateway-api:
-#     depends_on:
-#       - admin-auth-service
-#       - bots-service
-#       - events-service
-#       - event-subscription-service
-#       - event-simulation-service
-#       - maps-service
-#     build:
-#       context: ./back-end/gateways/airo-admin-gateway-api
-#     ports:
-#       - "3001:3000"
-#     environment:
-#       - ADMIN_AUTH_API_URL=${ADMIN_AUTH_API_URL}
-#       - BOTS_API_URL=${BOTS_API_URL}
-#       - EVENTS_API_URL=${EVENTS_API_URL}
-#       - EVENT_SUBSCRIPTION_API_URL=${EVENT_SUBSCRIPTION_API_URL}
-#       - EVENT_SIMULATION_API_URL=${EVENT_SIMULATION_API_URL}
-#       - MAPS_API_URL=${MAPS_API_URL}
-#     develop:
-#       watch:
-#         - action: rebuild
-#           path: ./back-end/gateways/airo-admin-gateway-api
-#           target: /app
-#           ignore:
-#             - node_modules/
-#         - action: rebuild
-#           path: ./back-end/gateways/airo-admin-gateway-api/package.json
+  admin-gateway-api:
+    depends_on:
+      - admin-auth-service
+      - bots-service
+      - events-service
+      - event-subscription-service
+      - event-simulation-service
+      - maps-service
+    build:
+      context: ./back-end/gateways/airo-admin-gateway-api
+    ports:
+      - "3001:3000"
+    environment:
+      - ADMIN_AUTH_API_URL=${ADMIN_AUTH_API_URL}
+      - BOTS_API_URL=${BOTS_API_URL}
+      - EVENTS_API_URL=${EVENTS_API_URL}
+      - EVENT_SUBSCRIPTION_API_URL=${EVENT_SUBSCRIPTION_API_URL}
+      - EVENT_SIMULATION_API_URL=${EVENT_SIMULATION_API_URL}
+      - MAPS_API_URL=${MAPS_API_URL}
+    develop:
+      watch:
+        - action: rebuild
+          path: ./back-end/gateways/airo-admin-gateway-api
+          target: /app
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: ./back-end/gateways/airo-admin-gateway-api/package.json
 
-#   enterprise-gateway-api:
-#     depends_on:
-#       - enterprise-auth-service
-#       - anybotics-service
-#       - leaderboard-service
-#     build:
-#       context: ./back-end/gateways/airo-enterprise-gateway-api
-#     ports:
-#       - "3002:3000"
-#       - "3003:3001" # signalR gateway
-#     environment:
-#       - AUTH_API_URL=${ENTERPRISE_AUTH_API_URL}
-#       - ANYBOTICS_SERVICE_URL=${ANYBOTICS_SERVICE_URL}
-#       - LEADERBOARD_API_URL=${LEADERBOARD_API_URL}
-#     develop:
-#       watch:
-#         - action: rebuild
-#           path: ./back-end/gateways/airo-enterprise-gateway-api
-#           target: /app
-#           ignore:
-#             - node_modules/
-#         - action: rebuild
-#           path: ./back-end/gateways/airo-enterprise-gateway-api/package.json
+  # enterprise-gateway-api:
+  #   depends_on:
+  #     - enterprise-auth-service
+  #     - anybotics-service
+  #     - leaderboard-service
+  #   build:
+  #     context: ./back-end/gateways/airo-enterprise-gateway-api
+  #   ports:
+  #     - "3002:3000"
+  #     - "3003:3001" # signalR gateway
+  #   environment:
+  #     - AUTH_API_URL=${ENTERPRISE_AUTH_API_URL}
+  #     - ANYBOTICS_SERVICE_URL=${ANYBOTICS_SERVICE_URL}
+  #     - LEADERBOARD_API_URL=${LEADERBOARD_API_URL}
+  #   develop:
+  #     watch:
+  #       - action: rebuild
+  #         path: ./back-end/gateways/airo-enterprise-gateway-api
+  #         target: /app
+  #         ignore:
+  #           - node_modules/
+  #       - action: rebuild
+  #         path: ./back-end/gateways/airo-enterprise-gateway-api/package.json
 
-#   #---------------#
-#   # Microservices #
-#   #---------------#
-#   auth-service:
-#     depends_on:
-#       - rabbitmq
-#     build:
-#       context: .
-#       dockerfile: ./back-end/microservices/airo-auth-microservice/Dockerfile
-#     environment:
-#       - FIREBASE_PROJECT_NAME=${FIREBASE_PROJECT_NAME}
-#       - FIREBASE_API_KEY=${FIREBASE_API_KEY}
-#       - FIREBASE_CONFIG_FILE=${FIREBASE_CONFIG_FILE}
-#       - JWT_AUTHORITY=${JWT_AUTHORITY}
-#       - CORS_ALLOWED_ORIGINS=${USERS_FRONT_END_URL}
-#       - RABBITMQ_URL=${RABBITMQ_URL}
-#     ports:
-#       - "4000:8080" # https not working so far!
-#     volumes:
-#       - airo-config-volume:/app/config
+  #---------------#
+  # Microservices #
+  #---------------#
+  auth-service:
+    depends_on:
+      - rabbitmq
+    build:
+      context: .
+      dockerfile: ./back-end/microservices/airo-auth-microservice/Dockerfile
+    environment:
+      - FIREBASE_PROJECT_NAME=${FIREBASE_PROJECT_NAME}
+      - FIREBASE_API_KEY=${FIREBASE_API_KEY}
+      - FIREBASE_CONFIG_FILE=${FIREBASE_CONFIG_FILE}
+      - JWT_AUTHORITY=${JWT_AUTHORITY}
+      - CORS_ALLOWED_ORIGINS=${USERS_FRONT_END_URL}
+      - RABBITMQ_URL=${RABBITMQ_URL}
+    ports:
+      - "4000:8080" # https not working so far!
+    volumes:
+      - airo-config-volume:/app/config
   
-#   admin-auth-service:
-#     build:
-#       context: .
-#       dockerfile: ./back-end/microservices/airo-admin-auth-microservice/Dockerfile
-#     environment:
-#       - FIREBASE_PROJECT_NAME=${ADMIN_FIREBASE_PROJECT_NAME}
-#       - FIREBASE_API_KEY=${ADMIN_FIREBASE_API_KEY}
-#       - FIREBASE_CONFIG_FILE=${ADMIN_FIREBASE_CONFIG_FILE}
-#       - JWT_AUTHORITY=${ADMIN_JWT_AUTHORITY}
-#       - CORS_ALLOWED_ORIGINS=${ADMIN_FRONT_END_URL}
-#     ports:
-#       - "4100:8080" # https not working so far!
-#     volumes:
-#       - airo-admin-config-volume:/app/config
-#     healthcheck:
-#       test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
-#       interval: 30s
-#       timeout: 10s
-#       retries: 3
+  admin-auth-service:
+    build:
+      context: .
+      dockerfile: ./back-end/microservices/airo-admin-auth-microservice/Dockerfile
+    environment:
+      - FIREBASE_PROJECT_NAME=${ADMIN_FIREBASE_PROJECT_NAME}
+      - FIREBASE_API_KEY=${ADMIN_FIREBASE_API_KEY}
+      - FIREBASE_CONFIG_FILE=${ADMIN_FIREBASE_CONFIG_FILE}
+      - JWT_AUTHORITY=${ADMIN_JWT_AUTHORITY}
+      - CORS_ALLOWED_ORIGINS=${ADMIN_FRONT_END_URL}
+    ports:
+      - "4100:8080" # https not working so far!
+    volumes:
+      - airo-admin-config-volume:/app/config
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
-#   enterprise-auth-service:
-#     build:
-#       context: .
-#       dockerfile: ./back-end/microservices/airo-admin-auth-microservice/Dockerfile
-#     environment:
-#       - FIREBASE_PROJECT_NAME=${ENTERPRISE_FIREBASE_PROJECT_NAME}
-#       - FIREBASE_API_KEY=${ENTERPRISE_FIREBASE_API_KEY}
-#       - FIREBASE_CONFIG_FILE=${ENTERPRISE_FIREBASE_CONFIG_FILE}
-#       - JWT_AUTHORITY=${ENTERPRISE_JWT_AUTHORITY}
-#       - CORS_ALLOWED_ORIGINS=${ENTERPRISE_FRONT_END_URL}
-#     ports:
-#       - "4200:8080" # https not working so far!
-#     volumes:
-#       - airo-enterprise-config-volume:/app/config
+  # enterprise-auth-service:
+  #   build:
+  #     context: .
+  #     dockerfile: ./back-end/microservices/airo-admin-auth-microservice/Dockerfile
+  #   environment:
+  #     - FIREBASE_PROJECT_NAME=${ENTERPRISE_FIREBASE_PROJECT_NAME}
+  #     - FIREBASE_API_KEY=${ENTERPRISE_FIREBASE_API_KEY}
+  #     - FIREBASE_CONFIG_FILE=${ENTERPRISE_FIREBASE_CONFIG_FILE}
+  #     - JWT_AUTHORITY=${ENTERPRISE_JWT_AUTHORITY}
+  #     - CORS_ALLOWED_ORIGINS=${ENTERPRISE_FRONT_END_URL}
+  #   ports:
+  #     - "4200:8080" # https not working so far!
+  #   volumes:
+  #     - airo-enterprise-config-volume:/app/config
 
-#   profile-service:
-#     build:
-#       context: .
-#       dockerfile: ./back-end/microservices/airo-profile-microservice/Dockerfile
-#     environment:
-#       - FIREBASE_PROJECT_NAME=${FIREBASE_PROJECT_NAME}
-#       - FIREBASE_API_KEY=${FIREBASE_API_KEY}
-#       - FIREBASE_CONFIG_FILE=${FIREBASE_CONFIG_FILE}
-#       - JWT_AUTHORITY=${JWT_AUTHORITY}
-#       - CORS_ALLOWED_ORIGINS=${USERS_FRONT_END_URL}
-#     ports:
-#       - "4001:8080" # https not working so far!
-#     volumes:
-#       - airo-config-volume:/app/config
+  profile-service:
+    build:
+      context: .
+      dockerfile: ./back-end/microservices/airo-profile-microservice/Dockerfile
+    environment:
+      - FIREBASE_PROJECT_NAME=${FIREBASE_PROJECT_NAME}
+      - FIREBASE_API_KEY=${FIREBASE_API_KEY}
+      - FIREBASE_CONFIG_FILE=${FIREBASE_CONFIG_FILE}
+      - JWT_AUTHORITY=${JWT_AUTHORITY}
+      - CORS_ALLOWED_ORIGINS=${USERS_FRONT_END_URL}
+    ports:
+      - "4001:8080" # https not working so far!
+    volumes:
+      - airo-config-volume:/app/config
   
-#   bots-service:
-#     depends_on:
-#       eventstore.db:
-#         condition: service_healthy
-#     build:
-#       context: .
-#       dockerfile: ./back-end/microservices/airo-bots-microservice/Dockerfile
-#     environment:
-#       - EVENT_STORE_DB_URL=${EVENT_STORE_DB_URL}
-#     ports:
-#       - "4005:8080" # https not working so far!
+  bots-service:
+    depends_on:
+      eventstore.db:
+        condition: service_healthy
+    build:
+      context: .
+      dockerfile: ./back-end/microservices/airo-bots-microservice/Dockerfile
+    environment:
+      - EVENT_STORE_DB_URL=${EVENT_STORE_DB_URL}
+    ports:
+      - "4005:8080" # https not working so far!
 
-#   bot-behaviours-service:
-#     build:
-#       context: ./back-end/microservices/airo-bot-behaviours-microservice
-#     ports:
-#       - "4013:3000"
-#     develop:
-#       watch:
-#         - action: rebuild
-#           path: ./back-end/microservices/airo-bot-behaviours-microservice
-#           target: /app
-#           ignore:
-#             - node_modules/
-#         - action: rebuild
-#           path: ./back-end/microservices/airo-bot-behaviours-microservice/package.json
+  bot-behaviours-service:
+    build:
+      context: ./back-end/microservices/airo-bot-behaviours-microservice
+    ports:
+      - "4013:3000"
+    develop:
+      watch:
+        - action: rebuild
+          path: ./back-end/microservices/airo-bot-behaviours-microservice
+          target: /app
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: ./back-end/microservices/airo-bot-behaviours-microservice/package.json
 
   bot-behaviour-compiler-service:
     depends_on:
@@ -265,256 +267,261 @@ services:
       dockerfile: ./back-end/microservices/airo-bot-behaviour-compiler-microservice/Dockerfile
     environment:
       - RABBITMQ_URL=${RABBITMQ_URL}
+      - ConnectionStrings__AzureBlobStorage=${AZURITE_CONNECTION_STRING}
     ports:
       - "4016:8080" # https not working so far!
 
-#   events-service:
-#     depends_on:
-#       rabbitmq:
-#         condition: service_healthy
-#       eventstore.db:
-#         condition: service_healthy
-#     build:
-#       context: .
-#       dockerfile: ./back-end/microservices/airo-events-microservice/Dockerfile
-#     environment:
-#       - EVENT_STORE_DB_URL=${EVENT_STORE_DB_URL}
-#       - RABBITMQ_URL=${RABBITMQ_URL}
-#     ports:
-#       - "4006:8080" # https not working so far!
+  events-service:
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      eventstore.db:
+        condition: service_healthy
+    build:
+      context: .
+      dockerfile: ./back-end/microservices/airo-events-microservice/Dockerfile
+    environment:
+      - EVENT_STORE_DB_URL=${EVENT_STORE_DB_URL}
+      - RABBITMQ_URL=${RABBITMQ_URL}
+    ports:
+      - "4006:8080" # https not working so far!
 
-#   maps-service:
-#     depends_on:
-#       cosmosdb:
-#         condition: service_healthy
-#     build:
-#       context: .
-#       dockerfile: ./back-end/microservices/airo-maps-microservice/Dockerfile
-#     environment:
-#       - ConnectionStrings__CosmosDb=${COSMOSDB_CONNECTION_STRING}
-#       - DatabaseName=${MAPS_DATABASE_NAME}
-#     ports:
-#       - "4015:8080" # https not working so far!
+  maps-service:
+    depends_on:
+      cosmosdb:
+        condition: service_healthy
+    build:
+      context: .
+      dockerfile: ./back-end/microservices/airo-maps-microservice/Dockerfile
+    environment:
+      - ConnectionStrings__CosmosDb=${COSMOSDB_CONNECTION_STRING}
+      - DatabaseName=${MAPS_DATABASE_NAME}
+    ports:
+      - "4015:8080" # https not working so far!
 
-#   event-subscription-service:
-#     depends_on:
-#       purchase-service:
-#         condition: service_started
-#       rabbitmq:
-#         condition: service_healthy
-#       eventstore.db:
-#         condition: service_healthy
-#     build:
-#       context: .
-#       dockerfile: ./back-end/microservices/airo-event-subscriptions-microservice/Dockerfile
-#     environment:
-#       - PURCHASE_API_URL=${PURCHASE_API_URL}
-#       - EVENT_STORE_DB_URL=${EVENT_STORE_DB_URL}
-#       - RABBITMQ_URL=${RABBITMQ_URL}
-#     ports:
-#       - "4012:8080" # https not working so far!
+  event-subscription-service:
+    depends_on:
+      purchase-service:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
+      eventstore.db:
+        condition: service_healthy
+    build:
+      context: .
+      dockerfile: ./back-end/microservices/airo-event-subscriptions-microservice/Dockerfile
+    environment:
+      - PURCHASE_API_URL=${PURCHASE_API_URL}
+      - EVENT_STORE_DB_URL=${EVENT_STORE_DB_URL}
+      - RABBITMQ_URL=${RABBITMQ_URL}
+    ports:
+      - "4012:8080" # https not working so far!
 
-#   event-simulation-service:
-#     depends_on:
-#       - events-service
-#       - event-subscription-service
-#       - bot-behaviours-service
-#       - maps-service
-#     build:
-#       context: .
-#       dockerfile: ./back-end/microservices/airo-event-simulation-microservice/Dockerfile
-#     environment:
-#       - EVENTS_API_URL=${EVENTS_API_URL}
-#       - EVENT_SUBSCRIPTION_API_URL=${EVENT_SUBSCRIPTION_API_URL}
-#       - BOT_BEHAVIOURS_API_URL=${BOT_BEHAVIOURS_API_URL}
-#       - MAPS_API_URL=${MAPS_API_URL}
-#     ports:
-#       - "4011:8080" # https not working so far! 
+  event-simulation-service:
+    depends_on:
+      - events-service
+      - event-subscription-service
+      - maps-service
+      - azurite
+      - redis
+    build:
+      context: .
+      dockerfile: ./back-end/microservices/airo-event-simulation-microservice/Dockerfile
+    environment:
+      - ConnectionStrings__AzureBlobStorage=${AZURITE_CONNECTION_STRING}
+      - REDIS_URL=${REDIS_URL}
+      - RABBITMQ_URL=${RABBITMQ_URL}
+      - EVENTS_API_URL=${EVENTS_API_URL}
+      - EVENT_SUBSCRIPTION_API_URL=${EVENT_SUBSCRIPTION_API_URL}
+      - BOT_BEHAVIOURS_API_URL=${BOT_BEHAVIOURS_API_URL}
+      - MAPS_API_URL=${MAPS_API_URL}
+    ports:
+      - "4011:8080" # https not working so far! 
 
-#   events-scheduler:
-#     depends_on:
-#       rabbitmq:
-#         condition: service_healthy
-#       event-simulation-service:
-#         condition: service_started
-#     build:
-#       context: .
-#       dockerfile: ./back-end/microservices/airo-events-scheduler/Dockerfile
-#     environment:
-#       - RABBITMQ_URL=${RABBITMQ_URL}
-#       - EVENT_SIMULATION_API_URL=${EVENT_SIMULATION_API_URL}
+  events-scheduler:
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      event-simulation-service:
+        condition: service_started
+    build:
+      context: .
+      dockerfile: ./back-end/microservices/airo-events-scheduler/Dockerfile
+    environment:
+      - RABBITMQ_URL=${RABBITMQ_URL}
+      - EVENT_SIMULATION_API_URL=${EVENT_SIMULATION_API_URL}
 
-#   purchase-service:
-#     depends_on:
-#       eventstore.db:
-#         condition: service_healthy
-#     build:
-#       context: .
-#       dockerfile: ./back-end/microservices/airo-purchase-microservice/Dockerfile
-#     environment:
-#       - EVENT_STORE_DB_URL=${EVENT_STORE_DB_URL}
-#     ports:
-#       - "4007:8080" # https not working so far!
+  purchase-service:
+    depends_on:
+      eventstore.db:
+        condition: service_healthy
+    build:
+      context: .
+      dockerfile: ./back-end/microservices/airo-purchase-microservice/Dockerfile
+    environment:
+      - EVENT_STORE_DB_URL=${EVENT_STORE_DB_URL}
+    ports:
+      - "4007:8080" # https not working so far!
 
-#   billing-service:
-#     depends_on:
-#       - mongodb
-#       - rabbitmq
-#     build:
-#       context: ./back-end/microservices/airo-billing-microservice
-#     environment:
-#       - MONGO_URL=${BILLING_MONGO_DB_URL}
-#       - RABBITMQ_URL=${RABBITMQ_URL}
-#     ports:
-#       - "4002:3000"
-#     develop:
-#       watch:
-#         - action: rebuild
-#           path: ./back-end/microservices/airo-billing-microservice
-#           target: /app
-#           ignore:
-#             - node_modules/
-#         - action: rebuild
-#           path: ./back-end/microservices/airo-billing-microservice/package.json
+  # billing-service:
+  #   depends_on:
+  #     - mongodb
+  #     - rabbitmq
+  #   build:
+  #     context: ./back-end/microservices/airo-billing-microservice
+  #   environment:
+  #     - MONGO_URL=${BILLING_MONGO_DB_URL}
+  #     - RABBITMQ_URL=${RABBITMQ_URL}
+  #   ports:
+  #     - "4002:3000"
+  #   develop:
+  #     watch:
+  #       - action: rebuild
+  #         path: ./back-end/microservices/airo-billing-microservice
+  #         target: /app
+  #         ignore:
+  #           - node_modules/
+  #       - action: rebuild
+  #         path: ./back-end/microservices/airo-billing-microservice/package.json
 
-#   invoicing-service:
-#     depends_on:
-#       - profile-service
-#       - mongodb
-#       - rabbitmq
-#     build:
-#       context: ./back-end/microservices/airo-invoicing-microservice
-#     environment:
-#       - PROFILE_API_URL=${PROFILE_API_URL}
-#       - MONGO_URL=${INVOICE_MONGO_DB_URL}
-#       - RABBITMQ_URL=${RABBITMQ_URL}
-#     ports:
-#       - "4003:3000"
-#     develop:
-#       watch:
-#         - action: rebuild
-#           path: ./back-end/microservices/airo-invoicing-microservice
-#           target: /app
-#           ignore:
-#             - node_modules/
-#         - action: rebuild
-#           path: ./back-end/microservices/airo-invoicing-microservice/package.json
+  # invoicing-service:
+  #   depends_on:
+  #     - profile-service
+  #     - mongodb
+  #     - rabbitmq
+  #   build:
+  #     context: ./back-end/microservices/airo-invoicing-microservice
+  #   environment:
+  #     - PROFILE_API_URL=${PROFILE_API_URL}
+  #     - MONGO_URL=${INVOICE_MONGO_DB_URL}
+  #     - RABBITMQ_URL=${RABBITMQ_URL}
+  #   ports:
+  #     - "4003:3000"
+  #   develop:
+  #     watch:
+  #       - action: rebuild
+  #         path: ./back-end/microservices/airo-invoicing-microservice
+  #         target: /app
+  #         ignore:
+  #           - node_modules/
+  #       - action: rebuild
+  #         path: ./back-end/microservices/airo-invoicing-microservice/package.json
 
-#   notifications-service:
-#     depends_on:
-#       profile-service:
-#         condition: service_started
-#       events-service:
-#         condition: service_started
-#       rabbitmq:
-#         condition: service_healthy
-#     build:
-#       context: ./back-end/microservices/airo-notifications-microservice
-#     environment:
-#       - RABBITMQ_URL=${RABBITMQ_URL}
-#       - SENDGRID_API_KEY=${SENDGRID_API_KEY}
-#       - SENDGRID_FROM_EMAIL=${SENDGRID_FROM_EMAIL}
-#       - PROFILE_API_URL=${PROFILE_API_URL}
-#       - EVENTS_API_URL=${EVENTS_API_URL}
-#     ports:
-#       - "4004:3000"
-#     develop:
-#       watch:
-#         - action: rebuild
-#           path: ./back-end/microservices/airo-notifications-microservice
-#           target: /app
-#           ignore:
-#             - node_modules/
-#         - action: rebuild
-#           path: ./back-end/microservices/airo-notifications-microservice/package.json
+  # notifications-service:
+  #   depends_on:
+  #     profile-service:
+  #       condition: service_started
+  #     events-service:
+  #       condition: service_started
+  #     rabbitmq:
+  #       condition: service_healthy
+  #   build:
+  #     context: ./back-end/microservices/airo-notifications-microservice
+  #   environment:
+  #     - RABBITMQ_URL=${RABBITMQ_URL}
+  #     - SENDGRID_API_KEY=${SENDGRID_API_KEY}
+  #     - SENDGRID_FROM_EMAIL=${SENDGRID_FROM_EMAIL}
+  #     - PROFILE_API_URL=${PROFILE_API_URL}
+  #     - EVENTS_API_URL=${EVENTS_API_URL}
+  #   ports:
+  #     - "4004:3000"
+  #   develop:
+  #     watch:
+  #       - action: rebuild
+  #         path: ./back-end/microservices/airo-notifications-microservice
+  #         target: /app
+  #         ignore:
+  #           - node_modules/
+  #       - action: rebuild
+  #         path: ./back-end/microservices/airo-notifications-microservice/package.json
 
-#   ui-notifications-service:
-#     depends_on:
-#       events-service:
-#         condition: service_started
-#       rabbitmq:
-#         condition: service_healthy
-#       cosmosdb:
-#         condition: service_healthy
-#     build:
-#       context: ./back-end/microservices/airo-ui-notifications-microservice
-#     environment:
-#       - RABBITMQ_URL=${RABBITMQ_URL}
-#       - COSMOSDB_ENDPOINT=${COSMOSDB_ENDPOINT}
-#       - COSMOSDB_KEY=${COSMOSDB_KEY}
-#       - EVENTS_API_URL=${EVENTS_API_URL}
-#     ports:
-#       - "4010:3000"
-#     develop:
-#       watch:
-#         - action: rebuild
-#           path: ./back-end/microservices/airo-ui-notifications-microservice
-#           target: /app
-#           ignore:
-#             - node_modules/
-#         - action: rebuild
-#           path: ./back-end/microservices/airo-ui-notifications-microservice/package.json
+  # ui-notifications-service:
+  #   depends_on:
+  #     events-service:
+  #       condition: service_started
+  #     rabbitmq:
+  #       condition: service_healthy
+  #     cosmosdb:
+  #       condition: service_healthy
+  #   build:
+  #     context: ./back-end/microservices/airo-ui-notifications-microservice
+  #   environment:
+  #     - RABBITMQ_URL=${RABBITMQ_URL}
+  #     - COSMOSDB_ENDPOINT=${COSMOSDB_ENDPOINT}
+  #     - COSMOSDB_KEY=${COSMOSDB_KEY}
+  #     - EVENTS_API_URL=${EVENTS_API_URL}
+  #   ports:
+  #     - "4010:3000"
+  #   develop:
+  #     watch:
+  #       - action: rebuild
+  #         path: ./back-end/microservices/airo-ui-notifications-microservice
+  #         target: /app
+  #         ignore:
+  #           - node_modules/
+  #       - action: rebuild
+  #         path: ./back-end/microservices/airo-ui-notifications-microservice/package.json
 
-#   notification-processor-service:
-#     depends_on:
-#       eventstore.db:
-#         condition: service_healthy
-#       rabbitmq:
-#         condition: service_healthy
-#     build:
-#       context: .
-#       dockerfile: ./back-end/microservices/airo-notification-processor-microservice/Dockerfile
-#     environment:
-#       - EVENT_STORE_DB_URL=${EVENT_STORE_DB_URL}
-#       - RABBITMQ_URL=${RABBITMQ_URL}
-#     volumes:
-#       - data-volume:/data
+  # notification-processor-service:
+  #   depends_on:
+  #     eventstore.db:
+  #       condition: service_healthy
+  #     rabbitmq:
+  #       condition: service_healthy
+  #   build:
+  #     context: .
+  #     dockerfile: ./back-end/microservices/airo-notification-processor-microservice/Dockerfile
+  #   environment:
+  #     - EVENT_STORE_DB_URL=${EVENT_STORE_DB_URL}
+  #     - RABBITMQ_URL=${RABBITMQ_URL}
+  #   volumes:
+  #     - data-volume:/data
 
-#   leaderboard-service:
-#     depends_on:
-#       redis:
-#         condition: service_started
-#       rabbitmq:
-#         condition: service_healthy
-#       cosmosdb:
-#         condition: service_healthy
-#       event-subscription-service:
-#         condition: service_started
-#     build:
-#       context: .
-#       dockerfile: ./back-end/microservices/airo-leaderboard-microservice/Dockerfile
-#     ports:
-#       - "4014:8080" # https not working so far!
-#     environment:
-#       - EVENT_SUBSCRIPTION_API_URL=${EVENT_SUBSCRIPTION_API_URL}
-#       - REDIS_URL=${REDIS_URL}
-#       - RABBITMQ_URL=${RABBITMQ_URL}
-#       - COSMOSDB_ENDPOINT=${COSMOSDB_ENDPOINT}
-#       - COSMOSDB_KEY=${COSMOSDB_KEY}
-#       - LEADERBOARD_DB=${LEADERBOARD_DB}
+  # leaderboard-service:
+  #   depends_on:
+  #     redis:
+  #       condition: service_started
+  #     rabbitmq:
+  #       condition: service_healthy
+  #     cosmosdb:
+  #       condition: service_healthy
+  #     event-subscription-service:
+  #       condition: service_started
+  #   build:
+  #     context: .
+  #     dockerfile: ./back-end/microservices/airo-leaderboard-microservice/Dockerfile
+  #   ports:
+  #     - "4014:8080" # https not working so far!
+  #   environment:
+  #     - EVENT_SUBSCRIPTION_API_URL=${EVENT_SUBSCRIPTION_API_URL}
+  #     - REDIS_URL=${REDIS_URL}
+  #     - RABBITMQ_URL=${RABBITMQ_URL}
+  #     - COSMOSDB_ENDPOINT=${COSMOSDB_ENDPOINT}
+  #     - COSMOSDB_KEY=${COSMOSDB_KEY}
+  #     - LEADERBOARD_DB=${LEADERBOARD_DB}
 
-#   #---------------#
-#   # External APIs #
-#   #---------------#
-#   anybotics-service:
-#     build:
-#       context: .
-#       dockerfile: ./back-end/external APIs/anybotics/anybotics-anymal-api/Dockerfile
-#     environment:
-#       - FIREBASE_PROJECT_NAME=${ENTERPRISE_FIREBASE_PROJECT_NAME}
-#       - FIREBASE_API_KEY=${ENTERPRISE_FIREBASE_API_KEY}
-#       - FIREBASE_CONFIG_FILE=${ENTERPRISE_FIREBASE_CONFIG_FILE}
-#       - JWT_AUTHORITY=${ENTERPRISE_JWT_AUTHORITY}
-#       - CORS_ALLOWED_ORIGINS=${ENTERPRISE_FRONT_END_URL}
-#     ports:
-#       - "4008:5002" # HTTP/1.1 for SignalR on this port
-#       - "4009:5001" # HTTP/2 for gRPC on this port
-#     volumes:
-#       - airo-enterprise-config-volume:/app/config
+  #---------------#
+  # External APIs #
+  #---------------#
+  # anybotics-service:
+  #   build:
+  #     context: .
+  #     dockerfile: ./back-end/external APIs/anybotics/anybotics-anymal-api/Dockerfile
+  #   environment:
+  #     - FIREBASE_PROJECT_NAME=${ENTERPRISE_FIREBASE_PROJECT_NAME}
+  #     - FIREBASE_API_KEY=${ENTERPRISE_FIREBASE_API_KEY}
+  #     - FIREBASE_CONFIG_FILE=${ENTERPRISE_FIREBASE_CONFIG_FILE}
+  #     - JWT_AUTHORITY=${ENTERPRISE_JWT_AUTHORITY}
+  #     - CORS_ALLOWED_ORIGINS=${ENTERPRISE_FRONT_END_URL}
+  #   ports:
+  #     - "4008:5002" # HTTP/1.1 for SignalR on this port
+  #     - "4009:5001" # HTTP/2 for gRPC on this port
+  #   volumes:
+  #     - airo-enterprise-config-volume:/app/config
 
-#   #----------------------#
-#   # DBs & Message queues #
-#   #----------------------#
+  #----------------------#
+  # DBs & Message queues #
+  #----------------------#
   rabbitmq:
     image: "rabbitmq:3-management"
     container_name: rabbitmq
@@ -538,65 +545,67 @@ services:
     image: mcr.microsoft.com/azure-storage/azurite
     hostname: azurite
     restart: always
-    command: "azurite --inMemoryPersistence --blobHost 127.0.0.1 --blobPort 10000 --queueHost 127.0.0.1 --queuePort 10001"
+    command: 'azurite --loose --blobHost 0.0.0.0 --blobPort 10000 --queueHost 0.0.0.0 --queuePort 10001 --location /workspace --debug /workspace/debug.log'
     ports:
-      - "10000:10000"
-      - "10001:10001"
+      - 10000:10000
+      - 10001:10001
+    volumes:
+      - ./azurite:/workspace
 
-#   cosmosdb:
-#     # fix for: https://github.com/Azure/azure-cosmos-db-emulator-docker/issues/103
-#     image: cosmos-emulator-wrapper
-#     build:
-#       dockerfile_inline: |
-#         FROM mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:latest
-#         RUN apt-get update && \
-#             DEBIAN_FRONTEND=noninteractive apt-get install -y \
-#             curl
-#     environment:
-#       - AZURE_COSMOS_EMULATOR_PARTITION_COUNT=1
-#       - AZURE_COSMOS_EMULATOR_ENABLE_DATA_PERSISTENCE=true
-#       # This allows applications from the host to connect to the docker instance.
-#       # Use https://127.0.0.1:8081 as the endpoint.
-#       # However this seems to breaks other services running in Docker.
-#       # - AZURE_COSMOS_EMULATOR_IP_ADDRESS_OVERRIDE=127.0.0.1
-#     ports:
-#       - "8081:8081"
-#     # volumes:
-#     #   - cosmos_data:/CosmosDB/data
-#     healthcheck:
-#       test: ["CMD", "curl", "-f", "-k", "https://localhost:8081/_explorer/emulator.pem"]
-#       start_period: 1m
-#       interval: 30s
-#       timeout: 10s
-#       retries: 10
+  cosmosdb:
+    # fix for: https://github.com/Azure/azure-cosmos-db-emulator-docker/issues/103
+    image: cosmos-emulator-wrapper
+    build:
+      dockerfile_inline: |
+        FROM mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:latest
+        RUN apt-get update && \
+            DEBIAN_FRONTEND=noninteractive apt-get install -y \
+            curl
+    environment:
+      - AZURE_COSMOS_EMULATOR_PARTITION_COUNT=3
+      - AZURE_COSMOS_EMULATOR_ENABLE_DATA_PERSISTENCE=true
+      # This allows applications from the host to connect to the docker instance.
+      # Use https://127.0.0.1:8081 as the endpoint.
+      # However this seems to breaks other services running in Docker.
+      # - AZURE_COSMOS_EMULATOR_IP_ADDRESS_OVERRIDE=127.0.0.1
+    ports:
+      - "8081:8081"
+    # volumes:
+    #   - cosmos_data:/CosmosDB/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "-k", "https://localhost:8081/_explorer/emulator.pem"]
+      start_period: 1m
+      interval: 30s
+      timeout: 10s
+      retries: 10
 
-#   eventstore.db:
-#     image: eventstore/eventstore:lts
-#     environment:
-#       - EVENTSTORE_INSECURE=true # let eventstore run without certificate
-#       - EVENTSTORE_EXT_TCP_PORT=1113 # set internal tcp port
-#       - EVENTSTORE_HTTP_PORT=2113 # set internal admin ui port
-#       - EVENTSTORE_ENABLE_ATOM_PUB_OVER_HTTP=true
-#       - EVENTSTORE_RUN_PROJECTIONS=All
-#       - EVENTSTORE_START_STANDARD_PROJECTIONS=true
-#     ports:
-#       - "1113:1113" # map internal tcp port
-#       - "2113:2113" # map internal admin ui port
-#     healthcheck:
-#       test: ["CMD", "curl", "-f", "http://localhost:2113/health/live"]
-#       interval: 10s
-#       timeout: 5s
-#       retries: 5
+  eventstore.db:
+    image: eventstore/eventstore:lts
+    environment:
+      - EVENTSTORE_INSECURE=true # let eventstore run without certificate
+      - EVENTSTORE_EXT_TCP_PORT=1113 # set internal tcp port
+      - EVENTSTORE_HTTP_PORT=2113 # set internal admin ui port
+      - EVENTSTORE_ENABLE_ATOM_PUB_OVER_HTTP=true
+      - EVENTSTORE_RUN_PROJECTIONS=All
+      - EVENTSTORE_START_STANDARD_PROJECTIONS=true
+    ports:
+      - "1113:1113" # map internal tcp port
+      - "2113:2113" # map internal admin ui port
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:2113/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
-#     # While developing I can start with a fresh db by simply destroying the container.
-#     # Uncomment these lines to be able to retain data across restarts.
-#     # volumes:
-#     #   - type: volume
-#     #     source: eventstore-volume-data
-#     #     target: /var/lib/eventstore
-#     #   - type: volume
-#     #     source: eventstore-volume-logs
-#     #     target: /var/log/eventstore
+    # While developing I can start with a fresh db by simply destroying the container.
+    # Uncomment these lines to be able to retain data across restarts.
+    # volumes:
+    #   - type: volume
+    #     source: eventstore-volume-data
+    #     target: /var/lib/eventstore
+    #   - type: volume
+    #     source: eventstore-volume-logs
+    #     target: /var/log/eventstore
 
   redis:
     image: redis:alpine
@@ -612,35 +621,35 @@ services:
     ports:
       - "5540:5540"
 
-#   # When uncommenting to run e2e tests please update .env file with correct USERS_GATEWAY_API_URL for e2e
-#   # cypress:
-#   #   image: cypress/included:13.14.2
-#   #   depends_on:
-#   #     - users-app
-#   #   environment:
-#   #     # IMPORTANT: the internal post MUST be used here, otherwise cypress cannot find the app. Obviously this should be fixed!
-#   #     - CYPRESS_BASE_URL=http://users-app:4200
-#   #   working_dir: /e2e
-#   #   volumes:
-#   #     - ./front-end/users/airo-users-frontend:/e2e # Mount Cypress test folder
+  # When uncommenting to run e2e tests please update .env file with correct USERS_GATEWAY_API_URL for e2e
+  # cypress:
+  #   image: cypress/included:13.14.2
+  #   depends_on:
+  #     - users-app
+  #   environment:
+  #     # IMPORTANT: the internal post MUST be used here, otherwise cypress cannot find the app. Obviously this should be fixed!
+  #     - CYPRESS_BASE_URL=http://users-app:4200
+  #   working_dir: /e2e
+  #   volumes:
+  #     - ./front-end/users/airo-users-frontend:/e2e # Mount Cypress test folder
 
-# volumes:
-#   airo-config-volume:
-#     external: true
+volumes:
+  airo-config-volume:
+    external: true
   
-#   airo-admin-config-volume:
-#     external: true 
+  airo-admin-config-volume:
+    external: true 
 
-#   airo-enterprise-config-volume:
-#     external: true 
+  airo-enterprise-config-volume:
+    external: true 
   
-#   data-volume:
+  # data-volume:
   
-#   # mongo_data:
+  # mongo_data:
   
-#   # cosmos_data:
+  # cosmos_data:
 
-#   # redis_data:
+  # redis_data:
 
-#   # eventstore-volume-data:
-#   # eventstore-volume-logs:
+  # eventstore-volume-data:
+  # eventstore-volume-logs:

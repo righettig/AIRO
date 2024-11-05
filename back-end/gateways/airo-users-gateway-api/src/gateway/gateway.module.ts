@@ -11,6 +11,7 @@ import { UiNotificationsModule } from 'src/ui-notifications/ui-notifications.mod
 import { EventSimulationModule } from 'src/event-simulation/event-simulation.module';
 import { EventSubscriptionModule } from 'src/event-subscription/event-subscription.module';
 import { BotBehavioursModule } from 'src/bot-behaviours/bot-behaviours.module';
+import { BotBehaviourCompilerModule } from 'src/bot-behaviour-compiler/bot-behaviour-compiler.module';
 import { LeaderboardModule } from 'src/leaderboard/leaderboard.module';
 
 @Module({
@@ -21,6 +22,7 @@ import { LeaderboardModule } from 'src/leaderboard/leaderboard.module';
     InvoiceModule,
     BotsModule,
     BotBehavioursModule,
+    BotBehaviourCompilerModule,
     PurchaseModule,
     EventsModule,
     EventSubscriptionModule,

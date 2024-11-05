@@ -15,10 +15,8 @@ var config = new SimulationConfig(botHpInitialAmount: 100,
                                   botHpRestoreAmount: 20,
                                   turnDelaySeconds: 3);
 
-var compiler = new CSharpBehaviourCompiler();
-
 var engine = new SimulationEngine(new InMemorySimulationRepository(),
-                                  new BehaviourExecutor(compiler));
+                                  new BehaviourExecutor());
 
 engine.OnLogMessage += (sender, message) => Console.WriteLine($"Log: {message}");
 
@@ -47,13 +45,6 @@ Console.WriteLine(result.ToString());
 
 Participant CreateParticipant(string userId)
 {
-    var botId = Guid.NewGuid();
-
-    //var script = "^%$^% this will throw a CompilationErrorException!";
-    //var script = "while (true) {}";
-    //var script = "return new MoveAction(Direction.Up);";
-    var script = FileReader.ReadBehaviour("DummyBotAgent.cs");
-
-    var result = new Participant(userId, new Bot(botId, config.BotHpInitialAmount, script));
+    var result = new Participant(userId, new Bot(botId: Guid.NewGuid(), config.BotHpInitialAmount, new DummyBotAgent()));
     return result;
 }
