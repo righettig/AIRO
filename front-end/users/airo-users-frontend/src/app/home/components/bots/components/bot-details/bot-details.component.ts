@@ -17,7 +17,7 @@ import { BotBehavioursService } from '../../services/bot-behaviours.service';
 export class BotDetailsComponent {
   bot: Bot | undefined;
   botBehaviours: BotBehaviourViewModel[] = [];
-
+ 
   constructor(
     private route: ActivatedRoute, 
     private botBehavioursService: BotBehavioursService) { }
@@ -55,6 +55,12 @@ export class BotDetailsComponent {
 
   async validateBehaviour(behaviour: BotBehaviourViewModel) {
     const response = await this.botBehavioursService.validateBotBehaviour(behaviour.id, behaviour.code);
+
+    if (response.success) {
+      alert("Valid behaviour");
+    } else {
+      alert("Invalid behaviour: " + response.errors.join(","));
+    }
   }
 
   editBehaviour(behaviour: BotBehaviourViewModel) {

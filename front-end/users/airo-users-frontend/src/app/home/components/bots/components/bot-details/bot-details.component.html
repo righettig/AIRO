@@ -8,6 +8,9 @@
         <button (click)="saveBehaviours()">Save</button>
     </div>
 
+    <!-- TODO: create layout: 30/70 -->
+    <!-- TODO: create behaviours-list -->
+    <!-- TODO: create behaviour-code-editor -->
     @for (botBehaviour of botBehaviours; track botBehaviour.id) {
         <div class="content">
             <app-behaviour-code 
@@ -18,11 +21,17 @@
                 (modified)="markAsModified(botBehaviour, $event)">
             </app-behaviour-code>
 
-            @if (botBehaviour.id) {
-                <button (click)="validateBehaviour(botBehaviour)">Validate</button>
-                <button (click)="editBehaviour(botBehaviour)">Edit</button>
-            }
-            <button (click)="confirmDeleteBehaviour(botBehaviour)">Delete</button>
+            <div>
+                @if (botBehaviour.id) {
+                    <button (click)="validateBehaviour(botBehaviour)">Validate</button>
+                    <button (click)="editBehaviour(botBehaviour)">Edit</button>
+                }
+                <button (click)="confirmDeleteBehaviour(botBehaviour)">Delete</button>
+            </div>
+            <!-- <div class="validation-result">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Non eligendi, pariatur, cupiditate similique alias aperiam reprehenderit fugiat quas vel laudantium fugit dolores, explicabo possimus magni iusto rem blanditiis sit dignissimos.
+                Id assumenda voluptate totam cumque, facere qui distinctio reprehenderit expedita voluptates quisquam ab sit consectetur veniam asperiores modi dolor minus nisi inventore placeat veritatis quo. Quia tenetur corrupti accusantium pariatur?
+            </div> -->
         </div>
     }
 </app-card>
