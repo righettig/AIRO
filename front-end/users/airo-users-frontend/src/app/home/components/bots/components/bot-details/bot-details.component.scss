@@ -1,3 +1,13 @@
+.title {
+    div {
+        display: flex;
+
+        mat-spinner {
+            margin-right: 8px;
+        }
+    }
+}
+
 .layout {
     display: flex;
     height: calc(100vh - 300px);
@@ -24,6 +34,10 @@
                 background-color: #add8e6;
                 font-weight: 500;
             }
+        }
+
+        .no-behaviours-msg {
+            line-height: 1.5em;
         }
     }
 
