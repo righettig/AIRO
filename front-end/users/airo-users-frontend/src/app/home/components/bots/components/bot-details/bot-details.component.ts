@@ -27,10 +27,7 @@ export class BotDetailsComponent {
   botBehaviours: BotBehaviourViewModel[] = [];
   selectedBehaviour: BotBehaviourViewModel | undefined;
   isLoading: boolean = false;
-
-  // TODO: set to undefined when clicking on a different entry in the list
   validationResult: BotValidationResponse | undefined;
-  
   isSaving: boolean = false;
 
   constructor(
