@@ -44,7 +44,7 @@ export class BotDetailsComponent {
 
       // Select the first behaviour in the list if available
       if (this.botBehaviours.length > 0) {
-        this.selectedBehaviour = this.botBehaviours[0];
+        this.selectBehaviour(this.botBehaviours[0]);
       }
     });
   }
