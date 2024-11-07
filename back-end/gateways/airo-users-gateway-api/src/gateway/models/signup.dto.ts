@@ -9,7 +9,7 @@ export class SignupDto {
     password: string;
 
     @IsNotEmpty({ message: 'AccountType is required' })
-    accountType: string;
+    accountType: 'free' | 'pro';
 
     creditCardDetails?: string;
 }

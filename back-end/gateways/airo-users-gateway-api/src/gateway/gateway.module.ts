@@ -13,6 +13,9 @@ import { EventSubscriptionModule } from 'src/event-subscription/event-subscripti
 import { BotBehavioursModule } from 'src/bot-behaviours/bot-behaviours.module';
 import { BotBehaviourCompilerModule } from 'src/bot-behaviour-compiler/bot-behaviour-compiler.module';
 import { LeaderboardModule } from 'src/leaderboard/leaderboard.module';
+import { TokenService } from 'src/common/token.service';
+import { TokenGuard } from 'src/common/token.guard';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -30,6 +33,14 @@ import { LeaderboardModule } from 'src/leaderboard/leaderboard.module';
     UiNotificationsModule,
     LeaderboardModule
   ],
-  controllers: [GatewayController]
+  controllers: [GatewayController],
+  providers: [
+    TokenService, 
+    {
+      provide: APP_GUARD,
+      useClass: TokenGuard, // Apply TokenGuard globally
+    },
+  ], 
+
 })
 export class GatewayModule { }

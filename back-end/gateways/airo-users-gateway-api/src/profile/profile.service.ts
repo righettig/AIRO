@@ -6,7 +6,7 @@ export type ProfileGetProfileByUidResponse = {
     uid: string,
     firstName: string,
     lastName: string,
-    accountType: string,
+    accountType: 'free' | 'pro',
 };
 
 @Injectable()

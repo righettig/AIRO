@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { GatewayController } from './gateway.controller';
+import { CustomRequest, GatewayController } from './gateway.controller';
 import { ProfileGetProfileByUidResponse, ProfileService } from '../profile/profile.service';
 import { BillingService } from '../billing/billing.service';
 import { InvoiceService } from '../invoice/invoice.service';
@@ -153,7 +153,7 @@ describe('GatewayController', () => {
       const signupDto: SignupDto = {
         email: 'test@example.com',
         password: 'password',
-        accountType: 'basic',
+        accountType: 'free',
         creditCardDetails: '1234-5678-9101',
       };
       const signupResponse = { uid: '123', token: 'jwt-token' };
@@ -215,15 +215,25 @@ describe('GatewayController', () => {
 
   describe('login', () => {
     it('should call authService.login and profileService.getProfileByUid', async () => {
+      const loginResponse = { 
+        uid: '123', 
+        token: 'jwt-token' 
+      };
+
+      const profileResponse: ProfileGetProfileByUidResponse = {
+        uid: '123', 
+        firstName: 'John', 
+        lastName: 'Doe', 
+        accountType: 'free' 
+      };
+
+      jest.spyOn(authService, 'login').mockResolvedValue(loginResponse);
+      jest.spyOn(profileService, 'getProfileByUid').mockResolvedValue(profileResponse);
+
       const loginDto: LoginDto = {
         email: 'test@example.com',
         password: 'password',
       };
-      const loginResponse = { uid: '123', token: 'jwt-token' };
-      const profileResponse = { uid: '123', firstName: 'John', lastName: 'Doe', accountType: 'basic' };
-
-      jest.spyOn(authService, 'login').mockResolvedValue(loginResponse);
-      jest.spyOn(profileService, 'getProfileByUid').mockResolvedValue(profileResponse);
 
       const result = await controller.login(loginDto);
 
@@ -263,9 +273,15 @@ describe('GatewayController', () => {
 
   describe('getUser', () => {
     it('should return user data from token and services', async () => {
-      const mockRequest = { headers: { authorization: 'Bearer jwt-token' } } as any;
-      jest.spyOn(controller as any, 'decodeFromToken').mockReturnValue('123');
-      const userResponse = { uid: '123', firstName: 'John', lastName: 'Doe', accountType: 'basic' };
+      const mockRequest = { userId: '123', email: 'user@mail.com' } as CustomRequest;
+
+      const userResponse: ProfileGetProfileByUidResponse = { 
+        uid: '123', 
+        firstName: 'John', 
+        lastName: 'Doe', 
+        accountType: 'free'
+      };
+
       const userRoleResponse = { role: 'admin' };
 
       jest.spyOn(profileService, 'getProfileByUid').mockResolvedValue(userResponse);
@@ -273,28 +289,24 @@ describe('GatewayController', () => {
 
       const result = await controller.getUser(mockRequest);
 
-      expect(profileService.getProfileByUid).toHaveBeenCalledWith('123');
-      expect(authService.getUserRole).toHaveBeenCalledWith(expect.any(String));
+      expect(profileService.getProfileByUid).toHaveBeenCalledWith(mockRequest.userId);
+      expect(authService.getUserRole).toHaveBeenCalledWith(mockRequest.email);
       expect(result).toEqual({ ...userResponse, ...userRoleResponse });
-    });
-
-    it('should throw an error if the token is missing', async () => {
-      const mockRequest = { headers: {} } as any; 
-      await expect(controller.getUser(mockRequest)).rejects.toThrow('Token is missing');
     });
   });
 
   describe('updateProfile', () => {
     it('should update the user profile successfully', async () => {
-      const mockRequest = { headers: { authorization: 'Bearer jwt-token' } } as any;
+      const uid = '123';
+      const mockRequest = { userId: uid } as any;
+
       const updateProfileDto: UpdateProfileDto = {
         firstName: 'John',
         lastName: 'Doe',
       };
-      const uid = '123';
-      const userResponse = { uid, firstName: 'John', lastName: 'Doe', accountType: 'basic' };
+      
+      const userResponse: ProfileGetProfileByUidResponse = { uid, firstName: 'John', lastName: 'Doe', accountType: 'free' };
   
-      jest.spyOn(controller as any, 'decodeFromToken').mockReturnValue(uid);
       jest.spyOn(profileService, 'updateProfileByUid').mockResolvedValue(userResponse);
   
       const result = await controller.updateProfile(mockRequest, updateProfileDto);
@@ -302,22 +314,12 @@ describe('GatewayController', () => {
       expect(profileService.updateProfileByUid).toHaveBeenCalledWith(uid, updateProfileDto.firstName, updateProfileDto.lastName);
       expect(result).toEqual(userResponse);
     });
-  
-    it('should throw an error if the token is missing', async () => {
-      const mockRequest = { headers: {} } as any;
-      const updateProfileDto: UpdateProfileDto = {
-        firstName: 'John',
-        lastName: 'Doe',
-      };
-  
-      await expect(controller.updateProfile(mockRequest, updateProfileDto)).rejects.toThrow('Token is missing');
-    });
   }); 
 
   describe('getAllInvoices', () => {
     it('should return all invoices for the user', async () => {
-      const mockRequest = { headers: { authorization: 'Bearer jwt-token' } } as any;
-      jest.spyOn(controller as any, 'decodeFromToken').mockReturnValue('123');
+      const mockRequest = { userId: '123' } as CustomRequest;
+
       const invoicesResponse = [
         { uid: 'invoice1', amount: 100, createdAt: new Date() }, 
         { uid: 'invoice2', amount: 200, createdAt: new Date() }
@@ -327,42 +329,29 @@ describe('GatewayController', () => {
 
       const result = await controller.getAllInvoices(mockRequest);
 
-      expect(invoiceService.getAllInvoicesByUid).toHaveBeenCalledWith('123');
+      expect(invoiceService.getAllInvoicesByUid).toHaveBeenCalledWith(mockRequest.userId);
       expect(result).toEqual(invoicesResponse);
-    });
-
-    it('should throw an error if the token is missing', async () => {
-      const mockRequest = { headers: {} } as any; 
-      await expect(controller.getAllInvoices(mockRequest)).rejects.toThrow('Token is missing');
     });
   });
 
   describe('getAllEvents', () => {
     it('should return all events', async () => {
-      const mockRequest = { headers: { authorization: 'Bearer jwt-token' } } as any;
-      jest.spyOn(controller as any, 'decodeFromToken').mockReturnValue('123');
       const response = [
         { id: 'event1', name: "event 1", description: "this is the first event" }, 
       ];
 
       jest.spyOn(eventsService, 'getAll').mockResolvedValue(response);
 
-      const result = await controller.getAllEvents(mockRequest);
+      const result = await controller.getAllEvents();
 
       expect(eventsService.getAll).toHaveBeenCalled();
       expect(result).toEqual(response);
-    });
-
-    it('should throw an error if the token is missing', async () => {
-      const mockRequest = { headers: {} } as any; 
-      await expect(controller.getAllEvents(mockRequest)).rejects.toThrow('Token is missing');
     });
   });
 
   describe('myBots', () => {
     it('should return the bots owned by the user', async () => {
-      const mockRequest = { headers: { authorization: 'Bearer jwt-token' } } as any;
-      jest.spyOn(controller as any, 'decodeFromToken').mockReturnValue('123');
+      const mockRequest = { userId: '123'} as CustomRequest;
 
       const botIds = ['1', '2'];
       const bots = [
@@ -375,21 +364,15 @@ describe('GatewayController', () => {
 
       const result = await controller.myBots(mockRequest);
 
-      expect(purchaseService.getAll).toHaveBeenCalledWith('123');
+      expect(purchaseService.getAll).toHaveBeenCalledWith(mockRequest.userId);
       expect(botsService.getByIds).toHaveBeenCalledWith(botIds);
       expect(result).toEqual(bots);
-    });
-
-    it('should throw an error if the token is missing', async () => {
-      const mockRequest = { headers: {} } as any; 
-      await expect(controller.myBots(mockRequest)).rejects.toThrow('Token is missing');
     });
   });
 
   describe('getAllBots', () => {
     it('should return all available bots', async () => {
-      const mockRequest = { headers: { authorization: 'Bearer jwt-token' } } as any;
-      jest.spyOn(controller as any, 'decodeFromToken').mockReturnValue('123');
+      const mockRequest = { } as CustomRequest;
       
       const bots = [
         { id: '1', name: 'Bot1', price: '100' }, 
@@ -402,18 +385,12 @@ describe('GatewayController', () => {
       expect(botsService.getAll).toHaveBeenCalled();
       expect(result).toEqual(bots);
     });
-
-    it('should throw an error if the token is missing', async () => {
-      const mockRequest = { headers: {} } as any; 
-      await expect(controller.getAllBots(mockRequest)).rejects.toThrow('Token is missing');
-    });
   });
 
   describe('getFreeBotsAllowance', () => {
-    it('should return the remaining free bots allowance when account is pro', async () => {
-      const mockRequest = { headers: { authorization: 'Bearer jwt-token' } } as any;
-      jest.spyOn(controller as any, 'decodeFromToken').mockReturnValue('123');
+    const mockRequest = { } as CustomRequest;
 
+    it('should return the remaining free bots allowance when account is pro', async () => {
       const mockProfile = { accountType: 'pro' } as ProfileGetProfileByUidResponse;
       const botIds = ['1'];
       
@@ -426,9 +403,6 @@ describe('GatewayController', () => {
     });
 
     it('should return the remaining free bots allowance when account is free', async () => {
-      const mockRequest = { headers: { authorization: 'Bearer jwt-token' } } as any;
-      jest.spyOn(controller as any, 'decodeFromToken').mockReturnValue('123');
-
       const mockProfile = { accountType: 'free' } as ProfileGetProfileByUidResponse;
       const botIds = [];
       
@@ -439,17 +413,12 @@ describe('GatewayController', () => {
 
       expect(result).toEqual(1); // pro account type allows 1 bots, user owns 0
     });
-
-    it('should throw an error if the token is missing', async () => {
-      const mockRequest = { headers: {} } as any; 
-      await expect(controller.getFreeBotsAllowance(mockRequest)).rejects.toThrow('Token is missing');
-    });
   });
 
   describe('buyBot', () => {
+    const mockRequest = { } as CustomRequest;
+
     it('should successfully buy a bot', async () => {
-      const mockRequest = { headers: { authorization: 'Bearer jwt-token' } } as any;
-      jest.spyOn(controller as any, 'decodeFromToken').mockReturnValue('123');
       jest.spyOn(purchaseService, 'purchase').mockResolvedValue(true);
       
       const botId = 'bot-123';
@@ -459,8 +428,6 @@ describe('GatewayController', () => {
     });
 
     it('should fail to buy a bot', async () => {
-      const mockRequest = { headers: { authorization: 'Bearer jwt-token' } } as any;
-      jest.spyOn(controller as any, 'decodeFromToken').mockReturnValue('123');
       jest.spyOn(purchaseService, 'purchase').mockRejectedValue(new Error('Purchase failed'));
       
       const botId = 'bot-123';
@@ -468,19 +435,12 @@ describe('GatewayController', () => {
 
       expect(result).toEqual({ success: false });
     });
-
-    it('should throw an error if the token is missing', async () => {
-      const mockRequest = { headers: {} } as any; 
-      const botId = 'bot-123';
-      await expect(controller.buyBot(mockRequest, botId)).rejects.toThrow('Token is missing');
-    });
   });
 
   describe('getAllBotBehaviours', () => {
+    const mockRequest = { } as CustomRequest;
+
     it('should return all bot behaviors', async () => {
-      const mockRequest = { headers: { authorization: 'Bearer jwt-token' } } as any;
-      jest.spyOn(controller as any, 'decodeFromToken').mockReturnValue('123');
-  
       const botBehavioursResponse = [
         { id: 'behaviour1', name: 'Aggressive', code: 'behaviourCode1' },
         { id: 'behaviour2', name: 'Defensive', code: 'behaviourCode2' },
@@ -495,142 +455,52 @@ describe('GatewayController', () => {
     });
   
     it('should throw an error if there is an issue retrieving bot behaviors', async () => {
-      const mockRequest = { headers: { authorization: 'Bearer jwt-token' } } as any;
-      jest.spyOn(controller as any, 'decodeFromToken').mockReturnValue('123');
-  
       jest.spyOn(botBehavioursService, 'getAllByUserId').mockRejectedValue(new Error('Unable to retrieve bot behaviors'));
   
       await expect(controller.getAllBotBehaviours(mockRequest)).rejects.toThrow('Unable to retrieve bot behaviors');
       expect(botBehavioursService.getAllByUserId).toHaveBeenCalled();
     });
-
-    it('should throw an error if the token is missing', async () => {
-      const mockRequest = { headers: {} } as any; 
-      await expect(controller.getAllBotBehaviours(mockRequest)).rejects.toThrow('Token is missing');
-    });
   });
 
   describe('createBotBehaviour', () => {
-    it('should throw an error if the token is missing', async () => {
-      const mockRequest = { headers: {} } as any;
-      const createBotBehaviourDto: CreateBotBehaviourDto = {
-        name: 'name',
-        code: 'code'
-      };
-  
-      await expect(controller.createBotBehaviour(mockRequest, createBotBehaviourDto)).rejects.toThrow('Token is missing');
-    });
   });
   
   describe('validateBotBehaviour', () => {
-    it('should throw an error if the token is missing', async () => {
-      const mockRequest = { headers: {} } as any;
-      const dto: ValidateBotBehaviourDto = {
-        code: 'code'
-      };
-      const botBehaviourId = 'botBehaviour1';
-      await expect(controller.validateBotBehaviour(mockRequest, botBehaviourId, dto)).rejects.toThrow('Token is missing');
-    });
   });
   
   describe('updateBotBehaviour', () => {
-    it('should throw an error if the token is missing', async () => {
-      const mockRequest = { headers: {} } as any;
-      const dto: UpdateBotBehaviourDto = {
-        name: 'name',
-        code: 'code'
-      };
-      const botBehaviourId = 'botBehaviour1';
-      await expect(controller.updateBotBehaviour(mockRequest, botBehaviourId, dto)).rejects.toThrow('Token is missing');
-    });
   });
   
   describe('deleteBotBehaviour', () => {
-    it('should throw an error if the token is missing', async () => {
-      const mockRequest = { headers: {} } as any;
-      const botBehaviourId = 'botBehaviour1';
-      await expect(controller.deleteBotBehaviour(mockRequest, botBehaviourId)).rejects.toThrow('Token is missing');
-    });
   });
   
   describe('getUiNotifications', () => {
-    it('should throw an error if the token is missing', async () => {
-      const mockRequest = { headers: {} } as any;
-      await expect(controller.getUiNotifications(mockRequest)).rejects.toThrow('Token is missing');
-    });
   });
   
   describe('getAllUiNotifications', () => {
-    it('should throw an error if the token is missing', async () => {
-      const mockRequest = { headers: {} } as any;
-      await expect(controller.getAllUiNotifications(mockRequest)).rejects.toThrow('Token is missing');
-    });
   });
 
   describe('markAsRead', () => {
-    it('should throw an error if the token is missing', async () => {
-      const mockRequest = { headers: {} } as any;
-      const notificationId = 'notification1';
-      await expect(controller.markAsRead(mockRequest, notificationId)).rejects.toThrow('Token is missing');
-    });
   });
 
   describe('deleteNotification', () => {
-    it('should throw an error if the token is missing', async () => {
-      const mockRequest = { headers: {} } as any;
-      const notificationId = 'notification1';
-      await expect(controller.deleteNotification(mockRequest, notificationId)).rejects.toThrow('Token is missing');
-    });
   });
 
   describe('subscribeToEvent', () => {
-    it('should throw an error if the token is missing', async () => {
-      const mockRequest = { headers: {} } as any;
-      const dto: SubscribeToEventDto = {
-        eventId: 'event1',
-        botId: 'bot1',
-        botBehaviourId: 'botBehaviour1'
-      };
-      await expect(controller.subscribeToEvent(mockRequest, dto)).rejects.toThrow('Token is missing');
-    });
   });
 
   describe('unsubscribeFromEvent', () => {
-    it('should throw an error if the token is missing', async () => {
-      const mockRequest = { headers: {} } as any;
-      const dto: UnsubscribeFromEventDto = {
-        eventId: 'event1',
-      };
-      await expect(controller.unsubscribeFromEvent(mockRequest, dto)).rejects.toThrow('Token is missing');
-    });
   });
 
   describe('getSubscribedEventsByUserId', () => {
-    it('should throw an error if the token is missing', async () => {
-      const mockRequest = { headers: {} } as any;
-      await expect(controller.getSubscribedEventsByUserId(mockRequest)).rejects.toThrow('Token is missing');
-    });
   });
 
   describe('getSimulationStatus', () => {
-    it('should throw an error if the token is missing', async () => {
-      const mockRequest = { headers: {} } as any;
-      const eventId = 'event1';
-      await expect(controller.getSimulationStatus(mockRequest, eventId, 0)).rejects.toThrow('Token is missing');
-    });
   });
 
   describe('getLeaderboardByUserId', () => {
-    it('should throw an error if the token is missing', async () => {
-      const mockRequest = { headers: {} } as any;
-      await expect(controller.getLeaderboardByUserId(mockRequest)).rejects.toThrow('Token is missing');
-    });
   });
 
   describe('getLeaderboardTopN', () => {
-    it('should throw an error if the token is missing', async () => {
-      const mockRequest = { headers: {} } as any;
-      await expect(controller.getLeaderboardTopN(mockRequest, 3)).rejects.toThrow('Token is missing');
-    });
   });
 });
