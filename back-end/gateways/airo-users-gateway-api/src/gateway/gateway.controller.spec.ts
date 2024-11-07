@@ -10,12 +10,12 @@ import { UpdateProfileDto } from 'src/profile/models/update-profile-dto';
 import { BotsService } from 'src/bots/bots.service';
 import { PurchaseService } from 'src/purchase/purchase.service';
 import { EventsService } from 'src/events/events.service';
-import { BotBehaviourCompilerService } from 'src/bot-behaviour-compiler/bot-behaviour-compiler.service';
+import { BotBehaviourCompilerService, ValidateResult } from 'src/bot-behaviour-compiler/bot-behaviour-compiler.service';
 import { BotBehavioursService } from 'src/bot-behaviours/bot-behaviours.service';
 import { EventSimulationService } from 'src/event-simulation/event-simulation.service';
 import { EventSubscriptionService } from 'src/event-subscription/event-subscription.service';
 import { LeaderboardService } from 'src/leaderboard/leaderboard.service';
-import { UiNotificationsService } from 'src/ui-notifications/ui-notifications.service';
+import { GetAllUiNotificationsResponse, UiNotificationsService } from 'src/ui-notifications/ui-notifications.service';
 import { CreateBotBehaviourDto } from './models/create-bot-behaviour.dto';
 import { ValidateBotBehaviourDto } from './models/validate-bot-behaviour.dto';
 import { UpdateBotBehaviourDto } from './models/update-bot-behaviour.dto';
@@ -98,11 +98,16 @@ describe('GatewayController', () => {
           provide: BotBehavioursService,
           useValue: {
             getAllByUserId: jest.fn(),
+            create: jest.fn(),
+            update: jest.fn(),
+            delete: jest.fn(),
           },
         },
         {
           provide: BotBehaviourCompilerService,
           useValue: {
+            compile: jest.fn(),
+            validate: jest.fn(),
           },
         },
         {
@@ -118,6 +123,7 @@ describe('GatewayController', () => {
         {
           provide: UiNotificationsService,
           useValue: {
+            getAll: jest.fn(),
           },
         },
         {
@@ -463,21 +469,150 @@ describe('GatewayController', () => {
   });
 
   describe('createBotBehaviour', () => {
+    it('should create a bot behaviour and compile it', async () => {
+      // Arrange
+      const mockResponse = 'abc-123-456';
+      
+      jest.spyOn(botBehavioursService, 'create').mockResolvedValue(mockResponse);
+      jest.spyOn(botBehaviourCompilerService, 'compile').mockResolvedValue(undefined);
+  
+      // Act
+      const uid = 'user123';
+      const mockRequest = { userId: uid } as CustomRequest;
+      const createBotBehaviourDto: CreateBotBehaviourDto = { name: 'Test Bot', code: 'console.log("Hello World")' };
+
+      const response = await controller.createBotBehaviour(mockRequest, createBotBehaviourDto);
+  
+      // Assert
+      expect(botBehavioursService.create).toHaveBeenCalledWith(uid, createBotBehaviourDto.name, createBotBehaviourDto.code);
+      expect(botBehaviourCompilerService.compile).toHaveBeenCalledWith(mockResponse, createBotBehaviourDto.code);
+      expect(response).toEqual(mockResponse);
+    });
+
+    it('should throw an error if bot creation fails', async () => {
+      // Arrange
+      const uid = 'user123';
+      const createBotBehaviourDto: CreateBotBehaviourDto = { name: 'Test Bot', code: 'console.log("Hello World")' };
+      const mockRequest = { userId: uid } as CustomRequest;
+  
+      jest.spyOn(botBehavioursService, 'create').mockRejectedValue(new Error('Creation failed'));
+  
+      // Act & Assert
+      await expect(controller.createBotBehaviour(mockRequest, createBotBehaviourDto)).rejects.toThrow('Creation failed');
+      expect(botBehavioursService.create).toHaveBeenCalledWith(uid, createBotBehaviourDto.name, createBotBehaviourDto.code);
+      expect(botBehaviourCompilerService.compile).not.toHaveBeenCalled();
+    });
+
+    it('should throw an error if compilation fails', async () => {
+      // Arrange
+      const uid = 'user123';
+      const createBotBehaviourDto: CreateBotBehaviourDto = { name: 'Test Bot', code: 'console.log("Hello World")' };
+      const mockRequest = { userId: uid } as CustomRequest;
+      const mockResponse = 'abc-123-456';
+  
+      jest.spyOn(botBehavioursService, 'create').mockResolvedValue(mockResponse);
+      jest.spyOn(botBehaviourCompilerService, 'compile').mockRejectedValue(new Error('Compilation failed'));
+  
+      // Act & Assert
+      await expect(controller.createBotBehaviour(mockRequest, createBotBehaviourDto)).rejects.toThrow('Compilation failed');
+      expect(botBehavioursService.create).toHaveBeenCalledWith(uid, createBotBehaviourDto.name, createBotBehaviourDto.code);
+      expect(botBehaviourCompilerService.compile).toHaveBeenCalledWith(mockResponse, createBotBehaviourDto.code);
+    });
   });
   
   describe('validateBotBehaviour', () => {
+    it('should return validation result when validation is successful', async () => {
+      // Arrange
+      const botBehaviourId = '123';
+      const validateBotBehaviourDto: ValidateBotBehaviourDto = { code: 'some bot code' };
+      const expectedResponse: ValidateResult = { success: true, errors: [] };
+      jest.spyOn(botBehaviourCompilerService, 'validate').mockResolvedValue(expectedResponse);
+  
+      // Act
+      const result = await controller.validateBotBehaviour(botBehaviourId, validateBotBehaviourDto);
+  
+      // Assert
+      expect(botBehaviourCompilerService.validate).toHaveBeenCalledWith(botBehaviourId, validateBotBehaviourDto.code);
+      expect(result).toEqual(expectedResponse);
+    });
   });
   
   describe('updateBotBehaviour', () => {
+    it('should update bot behaviour and compile successfully', async () => {
+      // Arrange
+      const botBehaviourId = '123';
+      const uid = 'testUserId';
+      const updateBotBehaviourDto: UpdateBotBehaviourDto = { name: 'New Bot Name', code: 'updated code' };
+      
+      const request = { userId: uid } as CustomRequest;
+  
+      // Act
+      await controller.updateBotBehaviour(request, botBehaviourId, updateBotBehaviourDto);
+  
+      // Assert
+      expect(botBehavioursService.update).toHaveBeenCalledWith(uid, botBehaviourId, updateBotBehaviourDto.name, updateBotBehaviourDto.code);
+      expect(botBehaviourCompilerService.compile).toHaveBeenCalledWith(botBehaviourId, updateBotBehaviourDto.code);
+    });
   });
   
   describe('deleteBotBehaviour', () => {
+    it('should delete bot behaviour successfully', async () => {
+      // Arrange
+      const botBehaviourId = '123';
+      const uid = 'testUserId';
+  
+      const request = { userId: uid } as CustomRequest;
+  
+      // Act
+      await controller.deleteBotBehaviour(request, botBehaviourId);
+  
+      // Assert
+      expect(botBehavioursService.delete).toHaveBeenCalledWith(uid, botBehaviourId);
+    });
   });
   
   describe('getUiNotifications', () => {
   });
   
   describe('getAllUiNotifications', () => {
+    it('should retrieve all UI notifications successfully', async () => {
+      // Arrange
+      const uid = 'testUserId';
+      const mockNotifications = [
+        { 
+          notificationId: '1',
+          type: 'general',
+          message: 'Test notification',
+          createdAt: new Date(),
+          read: false,
+        } 
+      ] as GetAllUiNotificationsResponse;
+
+      // Mock the service's getAll method
+      jest.spyOn(uiNotificationsService, 'getAll').mockResolvedValue(mockNotifications);
+  
+      // Mock the request object with a userId property
+      const request = { userId: uid } as CustomRequest;
+  
+      // Act
+      const result = await controller.getAllUiNotifications(request);
+  
+      // Assert
+      expect(uiNotificationsService.getAll).toHaveBeenCalledWith(uid);
+      expect(result).toEqual(mockNotifications);
+    });
+
+    it('should throw an error if uiNotificationsService.getAll fails', async () => {
+      // Arrange
+      const uid = 'testUserId';
+      const request = { userId: uid } as CustomRequest;
+  
+      jest.spyOn(uiNotificationsService, 'getAll').mockRejectedValue(new Error('Service failed'));
+  
+      // Act & Assert
+      await expect(controller.getAllUiNotifications(request)).rejects.toThrow('Service failed');
+      expect(uiNotificationsService.getAll).toHaveBeenCalledWith(uid);
+    });
   });
 
   describe('markAsRead', () => {
