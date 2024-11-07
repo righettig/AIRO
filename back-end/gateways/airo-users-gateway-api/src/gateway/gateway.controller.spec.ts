@@ -10,9 +10,21 @@ import { UpdateProfileDto } from 'src/profile/models/update-profile-dto';
 import { BotsService } from 'src/bots/bots.service';
 import { PurchaseService } from 'src/purchase/purchase.service';
 import { EventsService } from 'src/events/events.service';
+import { BotBehaviourCompilerService } from 'src/bot-behaviour-compiler/bot-behaviour-compiler.service';
+import { BotBehavioursService } from 'src/bot-behaviours/bot-behaviours.service';
+import { EventSimulationService } from 'src/event-simulation/event-simulation.service';
+import { EventSubscriptionService } from 'src/event-subscription/event-subscription.service';
+import { LeaderboardService } from 'src/leaderboard/leaderboard.service';
+import { UiNotificationsService } from 'src/ui-notifications/ui-notifications.service';
+import { CreateBotBehaviourDto } from './models/create-bot-behaviour.dto';
+import { ValidateBotBehaviourDto } from './models/validate-bot-behaviour.dto';
+import { UpdateBotBehaviourDto } from './models/update-bot-behaviour.dto';
+import { SubscribeToEventDto } from './models/subscribe-to-event.dto';
+import { UnsubscribeFromEventDto } from './models/unsubscribe-from-event.dto';
 
 describe('GatewayController', () => {
   let controller: GatewayController;
+
   let authService: AuthService;
   let profileService: ProfileService;
   let billingService: BillingService;
@@ -20,6 +32,12 @@ describe('GatewayController', () => {
   let botsService: BotsService;
   let purchaseService: PurchaseService;
   let eventsService: EventsService;
+  let botBehavioursService: BotBehavioursService;
+  let botBehaviourCompilerService: BotBehaviourCompilerService;
+  let eventSubscriptionService: EventSubscriptionService;
+  let eventSimulationservice: EventSimulationService;
+  let uiNotificationsService: UiNotificationsService;
+  let leaderboardService: LeaderboardService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -76,6 +94,37 @@ describe('GatewayController', () => {
             getById: jest.fn()
           },
         },
+        {
+          provide: BotBehavioursService,
+          useValue: {
+            getAllByUserId: jest.fn(),
+          },
+        },
+        {
+          provide: BotBehaviourCompilerService,
+          useValue: {
+          },
+        },
+        {
+          provide: EventSubscriptionService,
+          useValue: {
+          },
+        },
+        {
+          provide: EventSimulationService,
+          useValue: {
+          },
+        },
+        {
+          provide: UiNotificationsService,
+          useValue: {
+          },
+        },
+        {
+          provide: LeaderboardService,
+          useValue: {
+          },
+        },
       ],
     }).compile();
 
@@ -87,6 +136,12 @@ describe('GatewayController', () => {
     botsService = module.get<BotsService>(BotsService);
     purchaseService = module.get<PurchaseService>(PurchaseService);
     eventsService = module.get<EventsService>(EventsService);
+    botBehavioursService = module.get<BotBehavioursService>(BotBehavioursService);
+    botBehaviourCompilerService = module.get<BotBehaviourCompilerService>(BotBehaviourCompilerService);
+    eventSubscriptionService = module.get<EventSubscriptionService>(EventSubscriptionService);
+    eventSimulationservice = module.get<EventSimulationService>(EventSimulationService);
+    uiNotificationsService = module.get<UiNotificationsService>(UiNotificationsService);
+    leaderboardService = module.get<LeaderboardService>(LeaderboardService);
   });
 
   it('should be defined', () => {
@@ -222,6 +277,11 @@ describe('GatewayController', () => {
       expect(authService.getUserRole).toHaveBeenCalledWith(expect.any(String));
       expect(result).toEqual({ ...userResponse, ...userRoleResponse });
     });
+
+    it('should throw an error if the token is missing', async () => {
+      const mockRequest = { headers: {} } as any; 
+      await expect(controller.getUser(mockRequest)).rejects.toThrow('Token is missing');
+    });
   });
 
   describe('updateProfile', () => {
@@ -270,6 +330,33 @@ describe('GatewayController', () => {
       expect(invoiceService.getAllInvoicesByUid).toHaveBeenCalledWith('123');
       expect(result).toEqual(invoicesResponse);
     });
+
+    it('should throw an error if the token is missing', async () => {
+      const mockRequest = { headers: {} } as any; 
+      await expect(controller.getAllInvoices(mockRequest)).rejects.toThrow('Token is missing');
+    });
+  });
+
+  describe('getAllEvents', () => {
+    it('should return all events', async () => {
+      const mockRequest = { headers: { authorization: 'Bearer jwt-token' } } as any;
+      jest.spyOn(controller as any, 'decodeFromToken').mockReturnValue('123');
+      const response = [
+        { id: 'event1', name: "event 1", description: "this is the first event" }, 
+      ];
+
+      jest.spyOn(eventsService, 'getAll').mockResolvedValue(response);
+
+      const result = await controller.getAllEvents(mockRequest);
+
+      expect(eventsService.getAll).toHaveBeenCalled();
+      expect(result).toEqual(response);
+    });
+
+    it('should throw an error if the token is missing', async () => {
+      const mockRequest = { headers: {} } as any; 
+      await expect(controller.getAllEvents(mockRequest)).rejects.toThrow('Token is missing');
+    });
   });
 
   describe('myBots', () => {
@@ -292,6 +379,11 @@ describe('GatewayController', () => {
       expect(botsService.getByIds).toHaveBeenCalledWith(botIds);
       expect(result).toEqual(bots);
     });
+
+    it('should throw an error if the token is missing', async () => {
+      const mockRequest = { headers: {} } as any; 
+      await expect(controller.myBots(mockRequest)).rejects.toThrow('Token is missing');
+    });
   });
 
   describe('getAllBots', () => {
@@ -309,6 +401,11 @@ describe('GatewayController', () => {
 
       expect(botsService.getAll).toHaveBeenCalled();
       expect(result).toEqual(bots);
+    });
+
+    it('should throw an error if the token is missing', async () => {
+      const mockRequest = { headers: {} } as any; 
+      await expect(controller.getAllBots(mockRequest)).rejects.toThrow('Token is missing');
     });
   });
 
@@ -342,6 +439,11 @@ describe('GatewayController', () => {
 
       expect(result).toEqual(1); // pro account type allows 1 bots, user owns 0
     });
+
+    it('should throw an error if the token is missing', async () => {
+      const mockRequest = { headers: {} } as any; 
+      await expect(controller.getFreeBotsAllowance(mockRequest)).rejects.toThrow('Token is missing');
+    });
   });
 
   describe('buyBot', () => {
@@ -366,22 +468,169 @@ describe('GatewayController', () => {
 
       expect(result).toEqual({ success: false });
     });
+
+    it('should throw an error if the token is missing', async () => {
+      const mockRequest = { headers: {} } as any; 
+      const botId = 'bot-123';
+      await expect(controller.buyBot(mockRequest, botId)).rejects.toThrow('Token is missing');
+    });
   });
 
-  describe('getAllEvents', () => {
-    it('should return all events', async () => {
+  describe('getAllBotBehaviours', () => {
+    it('should return all bot behaviors', async () => {
       const mockRequest = { headers: { authorization: 'Bearer jwt-token' } } as any;
       jest.spyOn(controller as any, 'decodeFromToken').mockReturnValue('123');
-      const response = [
-        { id: 'event1', name: "event 1", description: "this is the first event" }, 
+  
+      const botBehavioursResponse = [
+        { id: 'behaviour1', name: 'Aggressive', code: 'behaviourCode1' },
+        { id: 'behaviour2', name: 'Defensive', code: 'behaviourCode2' },
       ];
+  
+      jest.spyOn(botBehavioursService, 'getAllByUserId').mockResolvedValue(botBehavioursResponse);
+  
+      const result = await controller.getAllBotBehaviours(mockRequest);
+  
+      expect(botBehavioursService.getAllByUserId).toHaveBeenCalled();
+      expect(result).toEqual(botBehavioursResponse);
+    });
+  
+    it('should throw an error if there is an issue retrieving bot behaviors', async () => {
+      const mockRequest = { headers: { authorization: 'Bearer jwt-token' } } as any;
+      jest.spyOn(controller as any, 'decodeFromToken').mockReturnValue('123');
+  
+      jest.spyOn(botBehavioursService, 'getAllByUserId').mockRejectedValue(new Error('Unable to retrieve bot behaviors'));
+  
+      await expect(controller.getAllBotBehaviours(mockRequest)).rejects.toThrow('Unable to retrieve bot behaviors');
+      expect(botBehavioursService.getAllByUserId).toHaveBeenCalled();
+    });
 
-      jest.spyOn(eventsService, 'getAll').mockResolvedValue(response);
+    it('should throw an error if the token is missing', async () => {
+      const mockRequest = { headers: {} } as any; 
+      await expect(controller.getAllBotBehaviours(mockRequest)).rejects.toThrow('Token is missing');
+    });
+  });
 
-      const result = await controller.getAllEvents(mockRequest);
+  describe('createBotBehaviour', () => {
+    it('should throw an error if the token is missing', async () => {
+      const mockRequest = { headers: {} } as any;
+      const createBotBehaviourDto: CreateBotBehaviourDto = {
+        name: 'name',
+        code: 'code'
+      };
+  
+      await expect(controller.createBotBehaviour(mockRequest, createBotBehaviourDto)).rejects.toThrow('Token is missing');
+    });
+  });
+  
+  describe('validateBotBehaviour', () => {
+    it('should throw an error if the token is missing', async () => {
+      const mockRequest = { headers: {} } as any;
+      const dto: ValidateBotBehaviourDto = {
+        code: 'code'
+      };
+      const botBehaviourId = 'botBehaviour1';
+      await expect(controller.validateBotBehaviour(mockRequest, botBehaviourId, dto)).rejects.toThrow('Token is missing');
+    });
+  });
+  
+  describe('updateBotBehaviour', () => {
+    it('should throw an error if the token is missing', async () => {
+      const mockRequest = { headers: {} } as any;
+      const dto: UpdateBotBehaviourDto = {
+        name: 'name',
+        code: 'code'
+      };
+      const botBehaviourId = 'botBehaviour1';
+      await expect(controller.updateBotBehaviour(mockRequest, botBehaviourId, dto)).rejects.toThrow('Token is missing');
+    });
+  });
+  
+  describe('deleteBotBehaviour', () => {
+    it('should throw an error if the token is missing', async () => {
+      const mockRequest = { headers: {} } as any;
+      const botBehaviourId = 'botBehaviour1';
+      await expect(controller.deleteBotBehaviour(mockRequest, botBehaviourId)).rejects.toThrow('Token is missing');
+    });
+  });
+  
+  describe('getUiNotifications', () => {
+    it('should throw an error if the token is missing', async () => {
+      const mockRequest = { headers: {} } as any;
+      await expect(controller.getUiNotifications(mockRequest)).rejects.toThrow('Token is missing');
+    });
+  });
+  
+  describe('getAllUiNotifications', () => {
+    it('should throw an error if the token is missing', async () => {
+      const mockRequest = { headers: {} } as any;
+      await expect(controller.getAllUiNotifications(mockRequest)).rejects.toThrow('Token is missing');
+    });
+  });
 
-      expect(eventsService.getAll).toHaveBeenCalled();
-      expect(result).toEqual(response);
+  describe('markAsRead', () => {
+    it('should throw an error if the token is missing', async () => {
+      const mockRequest = { headers: {} } as any;
+      const notificationId = 'notification1';
+      await expect(controller.markAsRead(mockRequest, notificationId)).rejects.toThrow('Token is missing');
+    });
+  });
+
+  describe('deleteNotification', () => {
+    it('should throw an error if the token is missing', async () => {
+      const mockRequest = { headers: {} } as any;
+      const notificationId = 'notification1';
+      await expect(controller.deleteNotification(mockRequest, notificationId)).rejects.toThrow('Token is missing');
+    });
+  });
+
+  describe('subscribeToEvent', () => {
+    it('should throw an error if the token is missing', async () => {
+      const mockRequest = { headers: {} } as any;
+      const dto: SubscribeToEventDto = {
+        eventId: 'event1',
+        botId: 'bot1',
+        botBehaviourId: 'botBehaviour1'
+      };
+      await expect(controller.subscribeToEvent(mockRequest, dto)).rejects.toThrow('Token is missing');
+    });
+  });
+
+  describe('unsubscribeFromEvent', () => {
+    it('should throw an error if the token is missing', async () => {
+      const mockRequest = { headers: {} } as any;
+      const dto: UnsubscribeFromEventDto = {
+        eventId: 'event1',
+      };
+      await expect(controller.unsubscribeFromEvent(mockRequest, dto)).rejects.toThrow('Token is missing');
+    });
+  });
+
+  describe('getSubscribedEventsByUserId', () => {
+    it('should throw an error if the token is missing', async () => {
+      const mockRequest = { headers: {} } as any;
+      await expect(controller.getSubscribedEventsByUserId(mockRequest)).rejects.toThrow('Token is missing');
+    });
+  });
+
+  describe('getSimulationStatus', () => {
+    it('should throw an error if the token is missing', async () => {
+      const mockRequest = { headers: {} } as any;
+      const eventId = 'event1';
+      await expect(controller.getSimulationStatus(mockRequest, eventId, 0)).rejects.toThrow('Token is missing');
+    });
+  });
+
+  describe('getLeaderboardByUserId', () => {
+    it('should throw an error if the token is missing', async () => {
+      const mockRequest = { headers: {} } as any;
+      await expect(controller.getLeaderboardByUserId(mockRequest)).rejects.toThrow('Token is missing');
+    });
+  });
+
+  describe('getLeaderboardTopN', () => {
+    it('should throw an error if the token is missing', async () => {
+      const mockRequest = { headers: {} } as any;
+      await expect(controller.getLeaderboardTopN(mockRequest, 3)).rejects.toThrow('Token is missing');
     });
   });
 });
