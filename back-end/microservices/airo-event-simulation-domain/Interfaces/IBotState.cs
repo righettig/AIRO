@@ -6,6 +6,8 @@ public interface IBotState
 {
     Guid Id { get; }
     int Health { get; }
+    int Attack { get; }
+    int Defense { get; }
     Position Position { get; }
     Dictionary<Position, ITileInfo> VisibleTiles { get; }
 
@@ -14,4 +16,6 @@ public interface IBotState
 
     // Find the nearest food tile
     Position? GetNearestFoodTile();
+
+    bool CanAttack(ISimulationBot? enemy);
 }

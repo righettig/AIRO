@@ -8,4 +8,6 @@ public interface ISimulationBot
     public Guid BotId { get; }
     public Position Position { get; set; }
     public int Health { get; set; }
+    public int Attack { get; set; }
+    public int Defense { get; set; }
 }

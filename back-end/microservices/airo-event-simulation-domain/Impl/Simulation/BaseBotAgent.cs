@@ -13,4 +13,5 @@ public abstract class BaseBotAgent : IBotAgent
     protected static ISimulationAction Down() => new MoveAction(Direction.Down);
     protected static ISimulationAction Left() => new MoveAction(Direction.Left);
     protected static ISimulationAction Right() => new MoveAction(Direction.Right);
+    protected static ISimulationAction Attack(Guid enemyId) => new AttackAction(enemyId);
 }

@@ -6,6 +6,8 @@ public class Bot : ISimulationBot
 {
     public Guid BotId { get; }
     public int Health { get; set; }
+    public int Attack { get; set; }
+    public int Defense { get; set; }
     public Position Position { get; set; }
     public IBotAgent BotAgent { get; }
 
@@ -16,5 +18,7 @@ public class Bot : ISimulationBot
         BotId = botId;
         Health = botHpInitialAmount;
         BotAgent = botAgent;
+        Attack = 2;
+        Defense = 1;
     }
 }

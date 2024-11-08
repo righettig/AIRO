@@ -30,11 +30,11 @@ public class StateUpdater : ISimulationStateUpdater
         elapsedTime += timeStep;
 
         // Decrease HP
-        if (elapsedTime.TotalSeconds >= config.BotHpDecayInterval)
-        {
-            DecreaseBotsHP(simulation, config.BotHpDecayAmount);
-            elapsedTime = elapsedTime.Subtract(TimeSpan.FromSeconds(config.BotHpDecayInterval));
-        }
+        //if (elapsedTime.TotalSeconds >= config.BotHpDecayInterval)
+        //{
+        //    DecreaseBotsHP(simulation, config.BotHpDecayAmount);
+        //    elapsedTime = elapsedTime.Subtract(TimeSpan.FromSeconds(config.BotHpDecayInterval));
+        //}
 
         // Respawn food
         if (elapsedTime.TotalSeconds >= config.FoodRespawnInterval)
@@ -77,6 +77,20 @@ public class StateUpdater : ISimulationStateUpdater
 
                 // Move the bot on the map
                 MoveBot(bot, simulation.State, newPosition);
+            }
+        }
+        else 
+        {
+            if (action is AttackAction attackAction) 
+            {
+                var enemy = simulation.GetActiveParticipants().First(x => x.Bot.BotId == attackAction.EnemyId).Bot;
+
+                if (CanAttack(bot.Position, enemy)) 
+                {
+                    var damage = Math.Max(bot.Attack - enemy.Defense, 1); // At least 1 HP of damage
+
+                    enemy.Health -= damage;
+                }
             }
         }
 
@@ -163,5 +177,18 @@ public class StateUpdater : ISimulationStateUpdater
         state.GetTileAt(newPosition).SetBot(bot);
 
         bot.Position = newPosition;
+    }
+
+    private static bool CanAttack(Position ownPosition, ISimulationBot? bot)
+    {
+        if (bot is null) return false;
+
+        var distance = GetAbsoluteDistance(ownPosition, bot.Position);
+        return distance < 2;
+    }
+
+    private static double GetAbsoluteDistance(Position pos1, Position pos2)
+    {
+        return Math.Sqrt((pos1.X - pos2.X) * (pos1.X - pos2.X) + (pos1.Y - pos2.Y) * (pos1.Y - pos2.Y));
     }
 }
