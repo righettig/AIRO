@@ -14,13 +14,14 @@ import { BotBehaviourCompilerService, ValidateResult } from 'src/bot-behaviour-c
 import { BotBehavioursService } from 'src/bot-behaviours/bot-behaviours.service';
 import { EventSimulationService } from 'src/event-simulation/event-simulation.service';
 import { EventSubscriptionService } from 'src/event-subscription/event-subscription.service';
-import { LeaderboardService } from 'src/leaderboard/leaderboard.service';
+import { LeaderboardService, UserLeaderboardResponse } from 'src/leaderboard/leaderboard.service';
 import { GetAllUiNotificationsResponse, UiNotificationsService } from 'src/ui-notifications/ui-notifications.service';
 import { CreateBotBehaviourDto } from './models/create-bot-behaviour.dto';
 import { ValidateBotBehaviourDto } from './models/validate-bot-behaviour.dto';
 import { UpdateBotBehaviourDto } from './models/update-bot-behaviour.dto';
 import { SubscribeToEventDto } from './models/subscribe-to-event.dto';
 import { UnsubscribeFromEventDto } from './models/unsubscribe-from-event.dto';
+import { UserLeaderboardResponseDto } from './models/leaderboard.response.dto';
 
 describe('GatewayController', () => {
   let controller: GatewayController;
@@ -35,7 +36,7 @@ describe('GatewayController', () => {
   let botBehavioursService: BotBehavioursService;
   let botBehaviourCompilerService: BotBehaviourCompilerService;
   let eventSubscriptionService: EventSubscriptionService;
-  let eventSimulationservice: EventSimulationService;
+  let eventSimulationService: EventSimulationService;
   let uiNotificationsService: UiNotificationsService;
   let leaderboardService: LeaderboardService;
 
@@ -113,22 +114,30 @@ describe('GatewayController', () => {
         {
           provide: EventSubscriptionService,
           useValue: {
+            subscribeToEvent: jest.fn(),
+            unsubscribeFromEvent: jest.fn(),
+            getSubscribedEventsByUserId: jest.fn(),
           },
         },
         {
           provide: EventSimulationService,
           useValue: {
+            getSimulationStatusById: jest.fn(),
           },
         },
         {
           provide: UiNotificationsService,
           useValue: {
             getAll: jest.fn(),
+            markAsRead: jest.fn(),
+            delete: jest.fn(),
           },
         },
         {
           provide: LeaderboardService,
           useValue: {
+            getUserLeaderboardByUid: jest.fn(),
+            getUserLeaderboardTopN: jest.fn(),
           },
         },
       ],
@@ -145,7 +154,7 @@ describe('GatewayController', () => {
     botBehavioursService = module.get<BotBehavioursService>(BotBehavioursService);
     botBehaviourCompilerService = module.get<BotBehaviourCompilerService>(BotBehaviourCompilerService);
     eventSubscriptionService = module.get<EventSubscriptionService>(EventSubscriptionService);
-    eventSimulationservice = module.get<EventSimulationService>(EventSimulationService);
+    eventSimulationService = module.get<EventSimulationService>(EventSimulationService);
     uiNotificationsService = module.get<UiNotificationsService>(UiNotificationsService);
     leaderboardService = module.get<LeaderboardService>(LeaderboardService);
   });
@@ -616,26 +625,300 @@ describe('GatewayController', () => {
   });
 
   describe('markAsRead', () => {
+    it('should mark the notification as read successfully', async () => {
+      // Arrange
+      const uid = 'testUserId';
+      const notificationId = 'notification123';
+      const request = { userId: uid } as CustomRequest;
+  
+      // Act
+      await controller.markAsRead(request, notificationId);
+  
+      // Assert
+      expect(uiNotificationsService.markAsRead).toHaveBeenCalledWith(uid, notificationId);
+    });
+  
+    it('should throw an error if uiNotificationsService.markAsRead fails', async () => {
+      // Arrange
+      const uid = 'testUserId';
+      const notificationId = 'notification123';
+      const request = { userId: uid } as CustomRequest;
+  
+      // Mock markAsRead to throw an error
+      jest.spyOn(uiNotificationsService, 'markAsRead').mockRejectedValue(new Error('Service failed'));
+  
+      // Act & Assert
+      await expect(controller.markAsRead(request, notificationId)).rejects.toThrow('Service failed');
+      expect(uiNotificationsService.markAsRead).toHaveBeenCalledWith(uid, notificationId);
+    });
   });
 
   describe('deleteNotification', () => {
+    it('should delete the notification successfully', async () => {
+      // Arrange
+      const uid = 'testUserId';
+      const notificationId = 'notification123';
+      const request = { userId: uid } as CustomRequest;
+  
+      // Act
+      await controller.deleteNotification(request, notificationId);
+  
+      // Assert
+      expect(uiNotificationsService.delete).toHaveBeenCalledWith(uid, notificationId);
+    });
+  
+    it('should throw an error if uiNotificationsService.delete fails', async () => {
+      // Arrange
+      const uid = 'testUserId';
+      const notificationId = 'notification123';
+      const request = { userId: uid } as CustomRequest;
+  
+      // Mock delete to throw an error
+      jest.spyOn(uiNotificationsService, 'delete').mockRejectedValue(new Error('Service failed'));
+  
+      // Act & Assert
+      await expect(controller.deleteNotification(request, notificationId)).rejects.toThrow('Service failed');
+      expect(uiNotificationsService.delete).toHaveBeenCalledWith(uid, notificationId);
+    });
   });
 
   describe('subscribeToEvent', () => {
+    it('should subscribe to an event successfully', async () => {
+      // Arrange
+      const uid = 'testUserId';
+      const subscribeToEventDto: SubscribeToEventDto = {
+        eventId: 'event123',
+        botId: 'bot456',
+        botBehaviourId: 'behaviour789',
+      };
+      const request = { userId: uid } as CustomRequest;
+      const expectedResponse = { success: true };
+  
+      jest.spyOn(eventSubscriptionService, 'subscribeToEvent').mockResolvedValue(expectedResponse);
+  
+      // Act
+      const result = await controller.subscribeToEvent(request, subscribeToEventDto);
+  
+      // Assert
+      expect(eventSubscriptionService.subscribeToEvent).toHaveBeenCalledWith(
+        uid,
+        subscribeToEventDto.eventId,
+        subscribeToEventDto.botId,
+        subscribeToEventDto.botBehaviourId
+      );
+      expect(result).toBe(expectedResponse);
+    });
+  
+    it('should throw an error if eventSubscriptionService.subscribeToEvent fails', async () => {
+      // Arrange
+      const uid = 'testUserId';
+      const subscribeToEventDto: SubscribeToEventDto = {
+        eventId: 'event123',
+        botId: 'bot456',
+        botBehaviourId: 'behaviour789',
+      };
+      const request = { userId: uid } as CustomRequest;
+  
+      // Mock subscribeToEvent to throw an error
+      jest.spyOn(eventSubscriptionService, 'subscribeToEvent').mockRejectedValue(new Error('Service failed'));
+  
+      // Act & Assert
+      await expect(controller.subscribeToEvent(request, subscribeToEventDto)).rejects.toThrow('Service failed');
+      expect(eventSubscriptionService.subscribeToEvent).toHaveBeenCalledWith(
+        uid,
+        subscribeToEventDto.eventId,
+        subscribeToEventDto.botId,
+        subscribeToEventDto.botBehaviourId
+      );
+    });
   });
 
   describe('unsubscribeFromEvent', () => {
+    it('should unsubscribe from an event successfully', async () => {
+      // Arrange
+      const uid = 'testUserId';
+      const unsubscribeFromEventDto: UnsubscribeFromEventDto = {
+        eventId: 'event123',
+      };
+      const request = { userId: uid } as CustomRequest;
+      const expectedResponse = { success: true };
+  
+      jest.spyOn(eventSubscriptionService, 'unsubscribeFromEvent').mockResolvedValue(expectedResponse);
+  
+      // Act
+      const result = await controller.unsubscribeFromEvent(request, unsubscribeFromEventDto);
+  
+      // Assert
+      expect(eventSubscriptionService.unsubscribeFromEvent).toHaveBeenCalledWith(
+        uid,
+        unsubscribeFromEventDto.eventId
+      );
+      expect(result).toBe(expectedResponse);
+    });
+  
+    it('should throw an error if eventSubscriptionService.unsubscribeFromEvent fails', async () => {
+      // Arrange
+      const uid = 'testUserId';
+      const unsubscribeFromEventDto: UnsubscribeFromEventDto = {
+        eventId: 'event123',
+      };
+      const request = { userId: uid } as CustomRequest;
+  
+      jest.spyOn(eventSubscriptionService, 'unsubscribeFromEvent').mockRejectedValue(new Error('Service failed'));
+  
+      // Act & Assert
+      await expect(controller.unsubscribeFromEvent(request, unsubscribeFromEventDto)).rejects.toThrow('Service failed');
+      expect(eventSubscriptionService.unsubscribeFromEvent).toHaveBeenCalledWith(
+        uid,
+        unsubscribeFromEventDto.eventId
+      );
+    });
   });
 
   describe('getSubscribedEventsByUserId', () => {
+    it('should return subscribed events by user ID', async () => {
+      const uid = 'testUserId';
+      const request = { userId: uid } as CustomRequest;
+      const expectedResponse = [{ eventId: 'event123' }];
+  
+      jest.spyOn(eventSubscriptionService, 'getSubscribedEventsByUserId').mockResolvedValue(expectedResponse);
+  
+      const result = await controller.getSubscribedEventsByUserId(request);
+  
+      expect(eventSubscriptionService.getSubscribedEventsByUserId).toHaveBeenCalledWith(uid);
+      expect(result).toBe(expectedResponse);
+    });
+  
+    it('should throw an error if eventSubscriptionService.getSubscribedEventsByUserId fails', async () => {
+      const uid = 'testUserId';
+      const request = { userId: uid } as CustomRequest;
+  
+      jest.spyOn(eventSubscriptionService, 'getSubscribedEventsByUserId').mockRejectedValue(new Error('Service failed'));
+  
+      await expect(controller.getSubscribedEventsByUserId(request)).rejects.toThrow('Service failed');
+    });
   });
 
   describe('getSimulationStatus', () => {
+    it('should return simulation status by event ID and skip value', async () => {
+      const eventId = 'event123';
+      const skip = 5;
+      const expectedResponse = { status: 'running' };
+  
+      jest.spyOn(eventSimulationService, 'getSimulationStatusById').mockResolvedValue(expectedResponse);
+  
+      const result = await controller.getSimulationStatus(eventId, skip);
+  
+      expect(eventSimulationService.getSimulationStatusById).toHaveBeenCalledWith(eventId, skip);
+      expect(result).toBe(expectedResponse);
+    });
+  
+    it('should throw an error if eventSimulationService.getSimulationStatusById fails', async () => {
+      const eventId = 'event123';
+      const skip = 5;
+  
+      jest.spyOn(eventSimulationService, 'getSimulationStatusById').mockRejectedValue(new Error('Service failed'));
+  
+      await expect(controller.getSimulationStatus(eventId, skip)).rejects.toThrow('Service failed');
+    });
   });
 
   describe('getLeaderboardByUserId', () => {
+    it('should return leaderboard data by user ID', async () => {
+      const uid = 'testUserId';
+      const request = { userId: uid } as CustomRequest;
+      const expectedResponse = {
+        id: uid,
+        wins: 3,
+        losses: 1,
+        totalEvents: 4
+      };
+  
+      jest.spyOn(leaderboardService, 'getUserLeaderboardByUid').mockResolvedValue(expectedResponse);
+  
+      const result = await controller.getLeaderboardByUserId(request);
+  
+      expect(leaderboardService.getUserLeaderboardByUid).toHaveBeenCalledWith(uid);
+      expect(result).toBe(expectedResponse);
+    });
+  
+    it('should throw an error if leaderboardService.getUserLeaderboardByUid fails', async () => {
+      const uid = 'testUserId';
+      const request = { userId: uid } as CustomRequest;
+  
+      jest.spyOn(leaderboardService, 'getUserLeaderboardByUid').mockRejectedValue(new Error('Service failed'));
+  
+      await expect(controller.getLeaderboardByUserId(request)).rejects.toThrow('Service failed');
+    });
   });
 
   describe('getLeaderboardTopN', () => {
+    it('should return top N leaderboard data with full names', async () => {
+      const n = 3;
+      const leaderboardEntries = [
+        {
+          id: 'user1',
+          wins: 3,
+          losses: 1,
+          totalEvents: 4
+        },
+        { 
+          id: 'user2',
+          wins: 1,
+          losses: 3,
+          totalEvents: 4
+        },
+      ];
+      const expectedResponse: UserLeaderboardResponseDto[] = [
+        {
+          id: 'user1',
+          fullName: 'firstName1 lastName1',
+          wins: 3,
+          losses: 1,
+          totalEvents: 4
+        },
+        { 
+          id: 'user2',
+          fullName: 'firstName2 lastName2',
+          wins: 1,
+          losses: 3,
+          totalEvents: 4
+        },
+      ];
+  
+      jest.spyOn(leaderboardService, 'getUserLeaderboardTopN').mockResolvedValue(leaderboardEntries);
+      jest
+        .spyOn(profileService, 'getProfileByUid')
+        .mockImplementation((uid: string) =>
+          Promise.resolve(
+            uid === 'user1' ? { 
+              uid: 'user1',
+              firstName: 'firstName1', 
+              lastName: 'lastName1',
+              accountType: 'free',
+            } : 
+            { 
+              uid: 'user2',
+              firstName: 'firstName2', 
+              lastName: 'lastName2',
+              accountType: 'free',
+            }
+          )
+        );
+  
+      const result = await controller.getLeaderboardTopN(n);
+  
+      expect(leaderboardService.getUserLeaderboardTopN).toHaveBeenCalledWith(n);
+      expect(profileService.getProfileByUid).toHaveBeenCalledTimes(2);
+      expect(result).toEqual(expectedResponse);
+    });
+  
+    it('should throw an error if leaderboardService.getUserLeaderboardTopN fails', async () => {
+      const n = 3;
+  
+      jest.spyOn(leaderboardService, 'getUserLeaderboardTopN').mockRejectedValue(new Error('Service failed'));
+  
+      await expect(controller.getLeaderboardTopN(n)).rejects.toThrow('Service failed');
+    });
   });
 });
