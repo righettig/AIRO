@@ -21,24 +21,24 @@ services:
         - action: rebuild
           path: ./front-end/users/airo-users-frontend/package.json
 
-  # admin-app:
-  #   depends_on:
-  #     - admin-gateway-api
-  #   build:
-  #     context: ./front-end/admin/airo-admin-frontend
-  #   ports:
-  #     - "5001:3000"
-  #   environment:
-  #     - NEXT_PUBLIC_ADMIN_GATEWAY_API_URL=${ADMIN_GATEWAY_API_URL}
-  #   develop:
-  #     watch:
-  #       - action: sync
-  #         path: ./front-end/admin/airo-admin-frontend
-  #         target: /app
-  #         ignore:
-  #           - node_modules/
-  #       - action: rebuild
-  #         path: ./front-end/admin/airo-admin-frontend/package.json
+  admin-app:
+    depends_on:
+      - admin-gateway-api
+    build:
+      context: ./front-end/admin/airo-admin-frontend
+    ports:
+      - "5001:3000"
+    environment:
+      - NEXT_PUBLIC_ADMIN_GATEWAY_API_URL=${ADMIN_GATEWAY_API_URL}
+    develop:
+      watch:
+        - action: sync
+          path: ./front-end/admin/airo-admin-frontend
+          target: /app
+          ignore:
+            - node_modules/
+        - action: rebuild
+          path: ./front-end/admin/airo-admin-frontend/package.json
 
   # enterprise-app:
   #   depends_on:

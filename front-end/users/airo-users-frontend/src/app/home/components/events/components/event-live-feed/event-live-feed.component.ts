@@ -56,7 +56,7 @@ export class EventLiveFeedComponent {
     await this.fetchLiveFeed();
 
     // TODO: use signalR
-    setInterval(() => this.fetchLiveFeed(), 5000);
+    setInterval(() => this.fetchLiveFeed(), 1000);
   }
 
   onScroll(viewport: CdkVirtualScrollViewport) {

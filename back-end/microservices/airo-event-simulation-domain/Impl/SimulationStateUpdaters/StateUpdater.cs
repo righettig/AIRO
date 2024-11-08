@@ -30,11 +30,11 @@ public class StateUpdater : ISimulationStateUpdater
         elapsedTime += timeStep;
 
         // Decrease HP
-        //if (elapsedTime.TotalSeconds >= config.BotHpDecayInterval)
-        //{
-        //    DecreaseBotsHP(simulation, config.BotHpDecayAmount);
-        //    elapsedTime = elapsedTime.Subtract(TimeSpan.FromSeconds(config.BotHpDecayInterval));
-        //}
+        if (elapsedTime.TotalSeconds >= config.BotHpDecayInterval)
+        {
+            DecreaseBotsHP(simulation, config.BotHpDecayAmount);
+            elapsedTime = elapsedTime.Subtract(TimeSpan.FromSeconds(config.BotHpDecayInterval));
+        }
 
         // Respawn food
         if (elapsedTime.TotalSeconds >= config.FoodRespawnInterval)
