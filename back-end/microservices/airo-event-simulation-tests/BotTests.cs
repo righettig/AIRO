@@ -1,4 +1,6 @@
 using airo_event_simulation_domain.Impl.Simulation;
+using airo_event_simulation_domain.Interfaces;
+using Moq;
 
 namespace airo_event_simulation_tests;
 
@@ -9,43 +11,25 @@ public class BotTests
     {
         // Arrange
         var botId = Guid.NewGuid();
-        var behaviorScript = "attack();";
+        var botAgent = new Mock<IBotAgent>().Object;
 
         // Act
-        var bot = new Bot(botId, 100, behaviorScript);
+        var bot = new Bot(botId, 100, botAgent);
 
         // Assert
         Assert.Equal(botId, bot.BotId);
         Assert.Equal(100, bot.Health);
-        Assert.Equal(behaviorScript, bot.BehaviorScript);
+        Assert.Equal(botAgent, bot.BotAgent);
     }
 
     [Fact]
-    public void Constructor_ShouldThrowException_WhenBehaviorScriptIsNullOrEmpty()
+    public void Constructor_ShouldThrowException_WhenBotAgentIsNull()
     {
         // Arrange
         var botId = Guid.NewGuid();
 
         // Act & Assert
         var exceptionNull = Assert.Throws<ArgumentNullException>(() => new Bot(botId, 100, null));
-        Assert.Equal("Value cannot be null. (Parameter 'behaviorScript')", exceptionNull.Message);
-
-        var exceptionEmpty = Assert.Throws<ArgumentException>(() => new Bot(botId, 100, ""));
-        Assert.Equal("The value cannot be an empty string. (Parameter 'behaviorScript')", exceptionEmpty.Message);
-    }
-
-    [Fact]
-    public void Constructor_ShouldCreateBot_WhenValidBehaviorScriptIsProvided()
-    {
-        // Arrange
-        var botId = Guid.NewGuid();
-        var behaviorScript = "defend();";
-
-        // Act
-        var bot = new Bot(botId, 100, behaviorScript);
-
-        // Assert
-        Assert.Equal(botId, bot.BotId);
-        Assert.Equal(behaviorScript, bot.BehaviorScript);
+        Assert.Equal("Value cannot be null. (Parameter 'botAgent')", exceptionNull.Message);
     }
 }

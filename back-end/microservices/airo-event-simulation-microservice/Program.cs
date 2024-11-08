@@ -35,6 +35,7 @@ builder.Services.AddSingleton<ISimulationStateFactory, SimulationStateFactory>()
 builder.Services.AddSingleton<ISimulationService, SimulationService>();
 builder.Services.AddSingleton<ISimulationRepository, InMemorySimulationRepository>();
 builder.Services.AddSingleton<IBotAgentFactory, BotAgentFactory>();
+builder.Services.AddSingleton<IMapFactory, MapFactory>();
 
 builder.Services.AddScoped<IBehaviourExecutor, BehaviourExecutor>();
 builder.Services.AddScoped<ISimulationStateUpdater, StateUpdater>();

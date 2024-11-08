@@ -44,7 +44,7 @@ public class BotBehaviourCompilerController : ControllerBase
     {
         if (string.IsNullOrWhiteSpace(request.BotBehaviourScript))
         {
-            return BadRequest("Script code cannot be empty.");
+            return BadRequest(new CompileResponse("Script code cannot be empty."));
         }
 
         // Step 1: Compile
@@ -52,7 +52,7 @@ public class BotBehaviourCompilerController : ControllerBase
 
         if (!compileResult.Success)
         {
-            return BadRequest(new { message = "Compilation failed.", errors = compileResult.Errors });
+            return BadRequest(new CompileResponse("Compilation failed.", compileResult.Errors));
         }
 
         // Step 2: Save to Blob Storage
@@ -68,6 +68,6 @@ public class BotBehaviourCompilerController : ControllerBase
 
         _publisherService.PublishBotBehaviorUpdate(updateMessage);
 
-        return Ok(new { message = "Script compiled and saved successfully.", blobUri });
+        return Ok(new CompileResponse("Script compiled and saved successfully.", null, blobUri));
     }
 }
