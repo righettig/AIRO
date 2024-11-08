@@ -2921,6 +2921,73 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Bot Behaviour Compiler",
+			"item": [
+				{
+					"name": "validate",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"botBehaviourId\": \"123\",\r\n    \"botBehaviourScript\": \"foo\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4016/api/bot-behaviors/123/validate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4016",
+							"path": [
+								"api",
+								"bot-behaviors",
+								"123",
+								"validate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "compile",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"botBehaviourId\": \"123\",\r\n    \"botBehaviourScript\": \"foo\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4016/api/bot-behaviors/123/compile",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4016",
+							"path": [
+								"api",
+								"bot-behaviors",
+								"123",
+								"compile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }

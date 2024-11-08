@@ -2,7 +2,7 @@
 using airo_event_simulation_engine.Interfaces;
 using airo_event_simulation_infrastructure.Interfaces;
 using airo_event_simulation_microservice.DTOs;
-using airo_event_simulation_microservice.Services;
+using airo_event_simulation_microservice.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace airo_event_simulation_microservice.Controllers;

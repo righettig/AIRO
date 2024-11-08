@@ -1,6 +1,5 @@
 ﻿using airo_event_simulation_domain.Impl.Simulation;
 using Newtonsoft.Json;
-using System.Linq.Expressions;
 
 namespace airo_event_simulation_domain.Impl;
 
@@ -83,10 +82,10 @@ public class Map
     private class MapData
     {
         public required int Size { get; set; }
-        public required List<Tile2> Tiles { get; set; }
+        public required List<Tile> Tiles { get; set; }
     }
 
-    private class Tile2
+    private class Tile
     {
         public required int X { get; set; }
         public required int Y { get; set; }

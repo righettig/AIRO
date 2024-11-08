@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
+using airo_event_simulation_microservice.Services.Interfaces;
 
-namespace airo_event_simulation_microservice.Services;
+namespace airo_event_simulation_microservice.Services.Impl;
 
 public class SimulationTaskQueue : IBackgroundTaskQueue
 {

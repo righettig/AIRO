@@ -7,14 +7,14 @@ public class Bot : ISimulationBot
     public Guid BotId { get; }
     public int Health { get; set; }
     public Position Position { get; set; }
-    public string BehaviorScript { get; }
+    public IBotAgent BotAgent { get; }
 
-    public Bot(Guid botId, int botHpInitialAmount, string behaviorScript)
+    public Bot(Guid botId, int botHpInitialAmount, IBotAgent botAgent)
     {
-        ArgumentException.ThrowIfNullOrEmpty(behaviorScript);
+        ArgumentNullException.ThrowIfNull(botAgent);
 
         BotId = botId;
         Health = botHpInitialAmount;
-        BehaviorScript = behaviorScript;
+        BotAgent = botAgent;
     }
 }

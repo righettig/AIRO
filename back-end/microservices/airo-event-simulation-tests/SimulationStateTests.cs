@@ -1,6 +1,8 @@
 ﻿using airo_event_simulation_domain.Impl;
 using airo_event_simulation_domain.Impl.Simulation;
+using airo_event_simulation_domain.Interfaces;
 using airo_event_simulation_tests.Common;
+using Moq;
 
 namespace airo_event_simulation_tests;
 
@@ -63,7 +65,7 @@ public class SimulationStateTests
         var map = TestMap.Get();
         var participants = new List<Participant>
         {
-            new(UserId: "user1", new Bot(Guid.NewGuid(), 100, "dummyBehaviourScript"))
+            new(UserId: "user1", new Bot(Guid.NewGuid(), 100, new Mock<IBotAgent>().Object))
         };
         var simulationState = new SimulationState(1);
 

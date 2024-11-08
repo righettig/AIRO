@@ -3,25 +3,45 @@
 </app-card>
 
 <app-card title="Behaviours">
-    <div title-content>
-        <button (click)="addBehaviour()">Add</button>
-        <button (click)="saveBehaviours()">Save</button>
+    <div title-content class="title">
+        <div>
+            @if (isSaving) { <mat-spinner [diameter]="24"></mat-spinner> }
+            <button (click)="addBehaviour()">Add</button>
+            <!-- <button (click)="saveAllBehaviours()" [disabled]="!hasModifiedBehaviours()">Save All</button> -->
+            <button (click)="saveAllBehaviours()">Save All</button>
+        </div>
     </div>
 
-    @for (botBehaviour of botBehaviours; track botBehaviour.id) {
-        <div>
-            <app-behaviour-code 
-                [name]="botBehaviour.name" 
-                [code]="botBehaviour.code" 
-                [isReadOnly]="!botBehaviour.editing"
-                (codeChange)="codeModified(botBehaviour, $event)"
-                (modified)="markAsModified(botBehaviour, $event)">
-            </app-behaviour-code>
-
-            @if (botBehaviour.id) {
-                <button (click)="editBehaviour(botBehaviour)">Edit</button>
+    <div class="layout">
+        <div class="behaviours-list">
+            @for (botBehaviour of botBehaviours; track botBehaviour.id) {
+                <div class="behaviours-list-item" [ngClass]="{'selected': botBehaviour.id === selectedBehaviour?.id}" (click)="selectBehaviour(botBehaviour)">
+                    {{botBehaviour.name}} @if (botBehaviour.modified) { <span>*</span> }
+                </div>
             }
-            <button (click)="confirmDeleteBehaviour(botBehaviour)">Delete</button>
+            @empty {
+                <p class="no-behaviours-msg">
+                    You don't have any behaviours defined yet. <br>
+                    Click on the "Add" button to get started.
+                </p>
+            }
         </div>
-    }
+        <div class="behaviour-code-editor">
+            @if (selectedBehaviour) {
+                <app-behaviour-code 
+                    [name]="selectedBehaviour.name" 
+                    [code]="selectedBehaviour.code" 
+                    [isReadOnly]="!selectedBehaviour.editing"
+                    [isLoading]="isLoading"
+                    [validationResult]="validationResult!"
+                    (nameChange)="updateBehaviourName($event)"
+                    (codeChange)="codeModified(selectedBehaviour, $event)"
+                    (modified)="markAsModified(selectedBehaviour, $event)"
+                    (edit)="editBehaviour(selectedBehaviour)"
+                    (validate)="validateBehaviour(selectedBehaviour)"
+                    (delete)="confirmDeleteBehaviour(selectedBehaviour)">
+                </app-behaviour-code>
+            }
+        </div>
+    </div>
 </app-card>
