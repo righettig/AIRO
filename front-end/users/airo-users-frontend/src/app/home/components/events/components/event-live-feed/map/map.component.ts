@@ -73,32 +73,16 @@ export class MapRendererComponent implements AfterViewInit {
   // Load map data and render tiles as Babylon.js objects
   updateMap(mapData: LoadedMapData) {
     const mapSize = mapData.size;
-  
-    // Clear existing meshes
+
     this.meshes.forEach(mesh => mesh.dispose());
-    this.meshes = [];
-  
-    // Loop through tiles and render them
-    mapData.tiles.filter(tile => tile.type !== 'empty').forEach(tile => {
-      let tileMesh: Mesh;
-  
-      if (tile.type === 'bot') {
-        // Create a unique mesh for bot tiles, e.g., a sphere
-        tileMesh = MeshBuilder.CreateSphere(`bot_${tile.x}_${tile.y}`, { diameter: 0.8 }, this.scene);
-      } else {
-        // Default to a box mesh for other tile types
-        tileMesh = MeshBuilder.CreateBox(`tile_${tile.x}_${tile.y}`, { size: 1 }, this.scene);
-      }
-  
-      // Position the mesh on the map grid
+    mapData.tiles.filter(tile => tile.type !== 'empty').forEach(tile => { // Skip empty tile rendering
+      const tileMesh = MeshBuilder.CreateBox(`tile_${tile.x}_${tile.y}`, { size: 1 }, this.scene);
       tileMesh.position = new Vector3(
         tile.x - ((mapSize / 2) - 0.5),
         0.5 + this.yOffset,
         tile.y - ((mapSize / 2) - 0.5)
       );
-  
-      // Apply the appropriate material for each tile type
-      tileMesh.material = this.materials[tile.type];
+      tileMesh.material = this.materials[tile.type]; // Use preloaded material
       this.meshes.push(tileMesh);
     });
   }
