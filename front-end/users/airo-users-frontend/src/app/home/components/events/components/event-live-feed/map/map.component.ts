@@ -215,16 +215,34 @@ export class MapRendererComponent implements AfterViewInit {
 
   private createBotTile(x: number, y: number, mapSize: number) {
     const tileSize = 1;
-    const tileMesh = MeshBuilder.CreateBox(`bot_${x}_${y}`, { size: tileSize }, this.scene);
+    const tileMesh = new Mesh(`bot_${x}_${y}`, this.scene);
 
-    tileMesh.material = this.materials['bot'];
+    const headMesh = MeshBuilder.CreateSphere(`bot_${x}_${y}_head`, { diameter: 0.5 }, this.scene);
+    headMesh.material = this.materials['bot'];
 
-    tileMesh.position = new Vector3(
+    headMesh.position = new Vector3(
       x - ((mapSize / 2) - 0.5),
       tileSize / 2 + this.yOffset,
       y - ((mapSize / 2) - 0.5)
     );
     
+    const bodyMesh = MeshBuilder.CreateCylinder(`bot_${x}_${y}_body`, {
+      height: 0.5,
+      diameterTop: 0,
+      diameterBottom: 0.8,
+      tessellation: 4
+    });
+    bodyMesh.material = this.materials['bot'];
+
+    bodyMesh.position = new Vector3(
+      x - ((mapSize / 2) - 0.5),
+      this.yOffset + (0.5/2),
+      y - ((mapSize / 2) - 0.5)
+    );
+
+    tileMesh.addChild(headMesh);
+    tileMesh.addChild(bodyMesh);
+
     this.meshes.push(tileMesh);
   }
 
