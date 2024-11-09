@@ -6,8 +6,9 @@ import {
   Color3,
   StandardMaterial,
 } from '@babylonjs/core';
+import { IMesh } from './mesh.interface';
 
-export class WoodMaterial{
+export class WoodMaterial {
   private readonly _trunkMaterial: StandardMaterial;
   private readonly _foliageMaterial: StandardMaterial;
 
@@ -28,7 +29,7 @@ export class WoodMaterial{
   }
 }
 
-export class WoodMesh {
+export class WoodMesh implements IMesh {
   private _mesh: Mesh;
 
   constructor(
@@ -44,6 +45,10 @@ export class WoodMesh {
 
   public get mesh() {
     return this._mesh;
+  }
+
+  public dispose() {
+    this._mesh.dispose();
   }
 
   private createMesh(): Mesh {

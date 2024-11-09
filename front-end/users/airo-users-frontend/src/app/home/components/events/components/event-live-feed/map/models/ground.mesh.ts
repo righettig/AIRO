@@ -5,6 +5,7 @@ import {
     Color3,
 } from '@babylonjs/core';
 import { GridMaterial } from '@babylonjs/materials/grid/gridMaterial';
+import { IMesh } from './mesh.interface';
 
 export class GroundMaterial {
     private readonly _material: GridMaterial;
@@ -24,7 +25,7 @@ export class GroundMaterial {
     }
 }
 
-export class GroundMesh {
+export class GroundMesh implements IMesh {
     private _mesh: Mesh;
 
     constructor(
@@ -37,6 +38,10 @@ export class GroundMesh {
 
     public get mesh() {
         return this._mesh;
+    }
+
+    public dispose(): void {
+        this._mesh.dispose();
     }
 
     private createMesh(): Mesh {

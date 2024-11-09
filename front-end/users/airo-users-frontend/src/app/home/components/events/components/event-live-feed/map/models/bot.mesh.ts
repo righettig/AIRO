@@ -6,6 +6,7 @@ import {
   StandardMaterial,
   Color3,
 } from '@babylonjs/core';
+import { IMesh } from './mesh.interface';
 
 export class BotMaterial {
   private readonly _material: StandardMaterial;
@@ -20,7 +21,7 @@ export class BotMaterial {
   }
 }
 
-export class BotMesh {
+export class BotMesh implements IMesh {
   private _mesh: Mesh;
 
   constructor(
@@ -36,6 +37,10 @@ export class BotMesh {
 
   public get mesh() {
     return this._mesh;
+  }
+
+  public dispose() {
+    this._mesh.dispose();
   }
 
   private createMesh(): Mesh {

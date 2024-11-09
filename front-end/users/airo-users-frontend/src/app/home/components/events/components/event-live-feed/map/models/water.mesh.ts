@@ -6,8 +6,9 @@ import {
   Color3,
   StandardMaterial,
 } from '@babylonjs/core';
+import { IMesh } from './mesh.interface';
 
-export class WaterMaterial{
+export class WaterMaterial {
   private readonly _material: StandardMaterial;
 
   constructor(scene: Scene) {
@@ -21,7 +22,7 @@ export class WaterMaterial{
   }
 }
 
-export class WaterMesh {
+export class WaterMesh implements IMesh {
   private _mesh: Mesh;
 
   constructor(
@@ -37,6 +38,10 @@ export class WaterMesh {
 
   public get mesh() {
     return this._mesh;
+  }
+
+  public dispose(): void {
+    this._mesh.dispose();
   }
 
   private createMesh(): Mesh {

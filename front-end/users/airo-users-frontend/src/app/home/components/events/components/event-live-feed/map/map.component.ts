@@ -6,7 +6,6 @@ import {
   Vector3,
   HemisphericLight,
   Color3,
-  Mesh,
 } from '@babylonjs/core';
 import { LoadedMapData } from './models/map.models';
 import { AdvancedDynamicTexture, Control, Rectangle, TextBlock } from '@babylonjs/gui/2D';
@@ -17,6 +16,7 @@ import { IronMaterial, IronMesh } from './models/iron.mesh';
 import { BotMaterial, BotMesh } from './models/bot.mesh';
 import { WallMaterial, WallMesh } from './models/wall.mesh';
 import { GroundMaterial, GroundMesh } from './models/ground.mesh';
+import { IMesh } from './models/mesh.interface';
 
 @Component({
   selector: 'app-map-renderer',
@@ -32,7 +32,7 @@ export class MapRendererComponent implements AfterViewInit {
   private scene!: Scene;
   private camera!: ArcRotateCamera;
   private compassBackground!: Rectangle;
-  private meshes: Mesh[] = [];
+  private meshes: IMesh[] = [];
   private mapSize: number = 0;
 
   private readonly yOffset: number = 0.001; // Offset to avoid z-fighting between tiles and ground
@@ -204,32 +204,28 @@ export class MapRendererComponent implements AfterViewInit {
   // Load map data and render tiles as Babylon.js objects
   updateMap(mapData: LoadedMapData) {
     this.meshes.forEach(mesh => mesh.dispose());
-    this.meshes = [];
-
-    mapData.tiles.filter(tile => tile.type !== 'empty').forEach(tile => { // Skip empty tile rendering
+    
+    this.meshes = mapData.tiles.filter(tile => tile.type !== 'empty').map(tile => { // Skip empty tile rendering
       if (tile.type === 'food') {
-        const food = new FoodMesh(this.scene, tile.x, tile.y, this.mapSize, this.yOffset, this.foodMaterial);
-        this.meshes.push(food.mesh);
+        return new FoodMesh(this.scene, tile.x, tile.y, this.mapSize, this.yOffset, this.foodMaterial);
 
       } else if (tile.type === 'water') {
-        const water = new WaterMesh(this.scene, tile.x, tile.y, this.mapSize, this.yOffset, this.waterMaterial);
-        this.meshes.push(water.mesh);
+        return new WaterMesh(this.scene, tile.x, tile.y, this.mapSize, this.yOffset, this.waterMaterial);
 
       } else if (tile.type === 'wood') {
-        const wood = new WoodMesh(this.scene, tile.x, tile.y, this.mapSize, this.yOffset, this.woodMaterial);
-        this.meshes.push(wood.mesh);
+        return new WoodMesh(this.scene, tile.x, tile.y, this.mapSize, this.yOffset, this.woodMaterial);
 
       } else if (tile.type === "iron") {
-        const iron = new IronMesh(this.scene, tile.x, tile.y, this.mapSize, this.yOffset, this.ironMaterial);
-        this.meshes.push(iron.mesh);
+        return new IronMesh(this.scene, tile.x, tile.y, this.mapSize, this.yOffset, this.ironMaterial);
 
       } else if (tile.type === "wall") {
-        const wall = new WallMesh(this.scene, tile.x, tile.y, this.mapSize, this.yOffset, this.wallMaterial);
-        this.meshes.push(wall.mesh);
+        return new WallMesh(this.scene, tile.x, tile.y, this.mapSize, this.yOffset, this.wallMaterial);
 
       } else if (tile.type === "bot") {
-        const bot = new BotMesh(this.scene, tile.x, tile.y, this.mapSize, this.yOffset, this.botMaterial);
-        this.meshes.push(bot.mesh);
+        return new BotMesh(this.scene, tile.x, tile.y, this.mapSize, this.yOffset, this.botMaterial);
+
+      } else {
+        throw new Error('Unknown mesh');
       }
     });
   }
