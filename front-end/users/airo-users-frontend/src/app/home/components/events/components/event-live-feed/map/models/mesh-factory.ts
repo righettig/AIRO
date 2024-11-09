@@ -1,7 +1,7 @@
 import { BotMesh } from "./bot.mesh";
 import { FoodMesh } from "./food.mesh";
 import { IronMesh } from "./iron.mesh";
-import { TileType } from "./map.models";
+import { TileInfo } from "./map.models";
 import { MeshMaterials } from "./mesh-materials";
 import { MeshOptions } from "./mesh-options";
 import { WallMesh } from "./wall.mesh";
@@ -11,7 +11,7 @@ import { WoodMesh } from "./wood.mesh";
 export class MeshFactory {
     constructor(private materials: MeshMaterials) { }
 
-    create(options: MeshOptions, type: TileType) {
+    create(options: MeshOptions, { type, botId }: TileInfo) {
         switch (type) {
             case 'food':
                 return new FoodMesh(options, this.materials.food);
@@ -24,7 +24,7 @@ export class MeshFactory {
             case 'wall':
                 return new WallMesh(options, this.materials.wall);
             case 'bot':
-                return new BotMesh(options, this.materials.bot);
+                return new BotMesh(options, this.materials.bot(botId!));
             default:
                 throw new Error(`Unknown tile type: ${type}`);
         }

@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EventLiveFeedService, GetLiveFeedResponse, TileInfoDto } from '../../services/event-live-feed.service';
 import { MapRendererComponent } from './map/map.component';
-import { LoadedMapData, TileType } from './map/models/map.models';
+import { LoadedMapData, TileInfo, TileType } from './map/models/map.models';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 
 @Component({
@@ -113,13 +113,13 @@ export class EventLiveFeedComponent {
     }
   }
 
-  private flattenTiles(tiles: TileInfoDto[][]): { x: number; y: number; type: TileType }[] {
+  private flattenTiles(tiles: TileInfoDto[][]): TileInfo[] {
     return tiles.flatMap((row, y) => {
-      return row.map((cell, x) => this.mapTileType(cell.type, x, y));
+      return row.map((cell, x) => this.mapTileType(cell, x, y));
     });
   }
 
-  private mapTileType(typeId: number, x: number, y: number): { x: number; y: number; type: TileType } {
+  private mapTileType(cell: TileInfoDto, x: number, y: number): TileInfo {
     const typeMapping: { [key: number]: TileType } = {
       0: 'bot',
       2: 'empty',
@@ -130,8 +130,8 @@ export class EventLiveFeedComponent {
       7: 'wood',
     };
 
-    const type = typeMapping[typeId] || 'empty'; // Default to 'empty' if typeId is not found
+    const type = typeMapping[cell.type] || 'empty'; // Default to 'empty' if typeId is not found
 
-    return { x, y, type };
+    return { x, y, type, botId: cell.botId };
   }
 }

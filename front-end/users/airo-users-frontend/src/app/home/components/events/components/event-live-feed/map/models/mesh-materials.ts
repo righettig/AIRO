@@ -1,4 +1,4 @@
-import { Scene, Color3 } from "@babylonjs/core";
+import { Scene } from "@babylonjs/core";
 import { BotMaterial } from "./bot.mesh";
 import { FoodMaterial } from "./food.mesh";
 import { GroundMaterial } from "./ground.mesh";
@@ -6,9 +6,10 @@ import { IronMaterial } from "./iron.mesh";
 import { WallMaterial } from "./wall.mesh";
 import { WaterMaterial } from "./water.mesh";
 import { WoodMaterial } from "./wood.mesh";
+import { ColorDictionary } from "../map.component";
 
 export class MeshMaterials {
-    _bot?: BotMaterial;
+    _bots: { [key: string]: BotMaterial };
     _food?: FoodMaterial;
     _iron?: IronMaterial;
     _wall?: WallMaterial;
@@ -16,10 +17,8 @@ export class MeshMaterials {
     _wood?: WoodMaterial;
     _ground?: GroundMaterial;
 
-    constructor(private scene: Scene, private botColors: Color3[]) { }
-
-    get bot(): BotMaterial {
-        return (this._bot ??= new BotMaterial(this.scene, this.botColors[0]));
+    constructor(private scene: Scene, private botColors: ColorDictionary) {
+        this._bots = {};
     }
 
     get food(): FoodMaterial {
@@ -44,5 +43,9 @@ export class MeshMaterials {
 
     get ground(): GroundMaterial {
         return (this._ground ??= new GroundMaterial(this.scene));
+    }
+
+    bot(botId: string): BotMaterial {
+        return (this._bots[botId] ??= new BotMaterial(this.scene, this.botColors[botId]));
     }
 }
