@@ -175,6 +175,10 @@ export class MapRendererComponent implements AfterViewInit {
 
       if (type === "water") {
         material.alpha = 0.75; // Semi-transparent for water effect
+
+      } else if (type === "iron") {
+        material.diffuseColor = new Color3(0.8, 0.6, 0.4);
+        material.specularColor = new Color3(0.3, 0.3, 0.3);
       }
     }
   }
@@ -184,6 +188,58 @@ export class MapRendererComponent implements AfterViewInit {
     this.camera.radius = this.camera.upperRadiusLimit / 1.5;
     this.createGround(mapData.size);
   }
+
+  createRock = (x: number, y: number, mapSize: number) => {
+    // Create three pyramids of different heights
+    const pyramid1 = MeshBuilder.CreateCylinder("pyramid1", {
+      height: 0.4,
+      diameterTop: 0,
+      diameterBottom: 0.6,
+      tessellation: 4
+    });
+    
+    const pyramid2 = MeshBuilder.CreateCylinder("pyramid2", {
+      height: 0.3,
+      diameterTop: 0,
+      diameterBottom: 0.3,
+      tessellation: 4
+    });
+    
+    const pyramid3 = MeshBuilder.CreateCylinder("pyramid3", {
+      height: 0.5,
+      diameterTop: 0,
+      diameterBottom: 0.4,
+      tessellation: 4
+    });
+    
+    // Position the pyramids next to each other
+    pyramid1.position = new Vector3(
+      x - ((mapSize / 2) - 0.7),
+      (0.4/2) + this.yOffset,
+      y - ((mapSize / 2) - 0.6)
+    );
+
+    pyramid2.position = new Vector3(
+      x - ((mapSize / 2) - 0.5),
+      (0.3/2) + this.yOffset,
+      y - ((mapSize / 2) + -0.25)
+    );
+    
+    pyramid3.position = new Vector3(
+      x - ((mapSize / 2) - 0.3),
+      (0.5/2) + this.yOffset,
+      y - ((mapSize / 2) + -0.75)
+    );
+
+    // Apply the material to all pyramids
+    pyramid1.material = pyramid2.material = pyramid3.material = this.materials["iron"];
+    
+    return {
+      pyramid1,
+      pyramid2,
+      pyramid3,
+    };
+  };
 
   // Load map data and render tiles as Babylon.js objects
   updateMap(mapData: LoadedMapData) {
@@ -197,10 +253,86 @@ export class MapRendererComponent implements AfterViewInit {
       if (tile.type === 'food') {
         tileSize = 0.5; // Halve the size for food tiles
         tileMesh = MeshBuilder.CreateBox(`tile_${tile.x}_${tile.y}`, { size: tileSize }, this.scene);
+
       } else if (tile.type === 'water') {
         // Create a plane for water tiles, fill the ground without creating a box
         tileSize = this.yOffset;
         tileMesh = MeshBuilder.CreateGround(`tile_${tile.x}_${tile.y}`, { width: 1, height: 1 }, this.scene);
+
+      } else if (tile.type === 'wood') {
+        // Procedurally generate trunk height between a minimum and maximum range
+        //const trunkHeight = Math.random() * (2.2 - 1) + 0.7; // Random height between 1 and 2.5
+        const trunkHeight = 1.5;
+        const trunkDiameter = 0.2;
+        const foliageDiameter = 1;
+  
+        // Randomly choose between a cone or sphere for the foliage
+        //const isCone = Math.random() > 0.5; // 50% chance for either shape
+        const isCone = true;
+        
+        let foliage: Mesh;
+
+        if (isCone) {
+          // Create the foliage as a cone
+          foliage = MeshBuilder.CreateCylinder(`foliage_${tile.x}_${tile.y}`, {
+            diameterTop: 0, 
+            height: 1, 
+            tessellation: 96
+          }, this.scene);
+        } else {
+          // Create the foliage as a sphere
+          foliage = MeshBuilder.CreateSphere(`foliage_${tile.x}_${tile.y}`, {
+            diameter: foliageDiameter,
+            segments: 16
+          }, this.scene);
+        }
+
+        // Create the trunk using a cylinder
+        const trunk = MeshBuilder.CreateCylinder(`trunk_${tile.x}_${tile.y}`, {
+          height: trunkHeight,
+          diameterTop: trunkDiameter,
+          diameterBottom: trunkDiameter,
+          tessellation: 16
+        }, this.scene);
+  
+        // Position the trunk and foliage to resemble a tree
+        trunk.position = new Vector3(
+          tile.x - ((mapSize / 2) - 0.5),
+          trunkHeight / 2 + this.yOffset, // Center the trunk height
+          tile.y - ((mapSize / 2) - 0.5)
+        );
+  
+        foliage.position = new Vector3(
+          tile.x - ((mapSize / 2) - 0.5),
+          trunkHeight + foliageDiameter / 2 + this.yOffset, // Position foliage above the trunk
+          tile.y - ((mapSize / 2) - 0.5)
+        );
+  
+        // Combine both the trunk and foliage to form the tree mesh
+        const treeMesh = new Mesh(`tree_${tile.x}_${tile.y}`, this.scene);
+        trunk.parent = treeMesh;
+        foliage.parent = treeMesh;
+  
+        // Apply a wood-like material to the trunk and a green material to the foliage
+        const trunkMaterial = new StandardMaterial('woodMat', this.scene);
+        trunkMaterial.diffuseColor = new Color3(0.55, 0.27, 0.07); // Wood color
+        trunk.material = trunkMaterial;
+  
+        const foliageMaterial = new StandardMaterial('greenMat', this.scene);
+        foliageMaterial.diffuseColor = new Color3(0, 1, 0); // Green color for foliage
+        foliage.material = foliageMaterial;
+  
+        // Add the tree mesh to the list of meshes
+        this.meshes.push(treeMesh); // TODO: either use tileMesh or skip adding tileMesh
+        return; // Skip to next tile as the "wood" tile is handled
+
+      } else if (tile.type === "iron") {
+        const rock = this.createRock(tile.x, tile.y, mapSize);
+        this.meshes.push(rock.pyramid1);
+        this.meshes.push(rock.pyramid2);
+        this.meshes.push(rock.pyramid3);
+        return; // Skip to next tile as the "iron" tile is handled
+
       } else {
         tileMesh = MeshBuilder.CreateBox(`tile_${tile.x}_${tile.y}`, { size: tileSize }, this.scene);
       }
