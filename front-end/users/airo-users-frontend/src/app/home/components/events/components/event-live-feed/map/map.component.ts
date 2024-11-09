@@ -36,37 +36,36 @@ export class MapRendererComponent implements AfterViewInit {
 
   private readonly yOffset: number = 0.001; // Offset to avoid z-fighting between tiles and ground
 
-  private botMaterial!: BotMaterial;
-  private foodMaterial!: FoodMaterial;
-  private ironMaterial!: IronMaterial;
-  private wallMaterial!: WallMaterial;
-  private waterMaterial!: WaterMaterial;
-  private woodMaterial!: WoodMaterial;
+  private materials = {
+    bot: undefined as BotMaterial | undefined,
+    food: undefined as FoodMaterial | undefined,
+    iron: undefined as IronMaterial | undefined,
+    wall: undefined as WallMaterial | undefined,
+    water: undefined as WaterMaterial | undefined,
+    wood: undefined as WoodMaterial | undefined,
+    ground: undefined as GroundMaterial | undefined,
+  };
 
   ngAfterViewInit(): void {
-    const canvas = this.mapCanvas.nativeElement;
-
-    this.engine = new Engine(canvas, true);
-    this.scene = new Scene(this.engine);
-    this.camera = new Camera(this.scene, canvas);
-
+    this.initializeEngineAndScene();
     this.createLight();
     this.createCompass();
 
-    window.addEventListener('resize', () => {
-      this.engine.resize();
-    });
+    window.addEventListener('resize', () => this.engine.resize());
+    this.engine.runRenderLoop(() => this.scene.render());
+  }
 
-    this.engine.runRenderLoop(() => {
-      this.scene.render();
-    });
+  private initializeEngineAndScene(): void {
+    const canvas = this.mapCanvas.nativeElement;
+    this.engine = new Engine(canvas, true);
+    this.scene = new Scene(this.engine);
+    this.camera = new Camera(this.scene, canvas);
   }
 
   private createLight() {
     new HemisphericLight('light', new Vector3(50, 100, 50), this.scene);
   }
 
-  // Add the compass UI overlay
   private createCompass() {
     new Compass(this.camera);
   }
@@ -76,44 +75,60 @@ export class MapRendererComponent implements AfterViewInit {
 
     this.camera.upperRadiusLimit = mapData.size * 3; // Set upper radius limit based on the map size
 
-    new GroundMesh(this.scene, mapData.size, new GroundMaterial(this.scene));
+    this.materials = {
+      bot: new BotMaterial(this.scene, Color3.Green()), // TODO: customise for each bot
+      ground: new GroundMaterial(this.scene),
+      food: new FoodMaterial(this.scene),
+      iron: new IronMaterial(this.scene),
+      wall: new WallMaterial(this.scene),
+      water: new WaterMaterial(this.scene),
+      wood: new WoodMaterial(this.scene),
+    };
 
-    // TODO: customise for each bot
-    this.botMaterial = new BotMaterial(this.scene, Color3.Green());
-
-    this.foodMaterial = new FoodMaterial(this.scene);
-    this.ironMaterial = new IronMaterial(this.scene);
-    this.wallMaterial = new WallMaterial(this.scene);
-    this.waterMaterial = new WaterMaterial(this.scene);
-    this.woodMaterial = new WoodMaterial(this.scene);
+    new GroundMesh(this.scene, mapData.size, this.materials.ground!);
   }
 
   // Load map data and render tiles as Babylon.js objects
   updateMap(mapData: LoadedMapData) {
+    this.clearPreviousMeshes();
+    this.meshes = this.createMeshesFromMapData(mapData);
+  }
+
+  private clearPreviousMeshes(): void {
     this.meshes.forEach(mesh => mesh.dispose());
+    this.meshes = [];
+  }
 
-    this.meshes = mapData.tiles.filter(tile => tile.type !== 'empty').map(tile => { // Skip empty tile rendering
-      if (tile.type === 'food') {
-        return new FoodMesh(this.scene, tile.x, tile.y, this.mapSize, this.yOffset, this.foodMaterial);
+  private createMeshesFromMapData(mapData: LoadedMapData): IMesh[] {
+    return mapData.tiles
+      .filter(tile => tile.type !== 'empty')
+      .map(tile => this.createMeshForTile(tile));
+  }
 
-      } else if (tile.type === 'water') {
-        return new WaterMesh(this.scene, tile.x, tile.y, this.mapSize, this.yOffset, this.waterMaterial);
+  private createMeshForTile(tile: any): IMesh {
+    const meshOptions = {
+      scene: this.scene,
+      x: tile.x,
+      y: tile.y,
+      mapSize: this.mapSize,
+      yOffset: this.yOffset,
+    };
 
-      } else if (tile.type === 'wood') {
-        return new WoodMesh(this.scene, tile.x, tile.y, this.mapSize, this.yOffset, this.woodMaterial);
-
-      } else if (tile.type === "iron") {
-        return new IronMesh(this.scene, tile.x, tile.y, this.mapSize, this.yOffset, this.ironMaterial);
-
-      } else if (tile.type === "wall") {
-        return new WallMesh(this.scene, tile.x, tile.y, this.mapSize, this.yOffset, this.wallMaterial);
-
-      } else if (tile.type === "bot") {
-        return new BotMesh(this.scene, tile.x, tile.y, this.mapSize, this.yOffset, this.botMaterial);
-
-      } else {
-        throw new Error('Unknown mesh');
-      }
-    });
+    switch (tile.type) {
+      case 'food':
+        return new FoodMesh(meshOptions, this.materials.food!);
+      case 'water':
+        return new WaterMesh(meshOptions, this.materials.water!);
+      case 'wood':
+        return new WoodMesh(meshOptions, this.materials.wood!);
+      case 'iron':
+        return new IronMesh(meshOptions, this.materials.iron!);
+      case 'wall':
+        return new WallMesh(meshOptions, this.materials.wall!);
+      case 'bot':
+        return new BotMesh(meshOptions, this.materials.bot!);
+      default:
+        throw new Error(`Unknown tile type: ${tile.type}`);
+    }
   }
 }

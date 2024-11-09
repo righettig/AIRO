@@ -7,6 +7,7 @@ import {
   StandardMaterial,
 } from '@babylonjs/core';
 import { IMesh } from './mesh.interface';
+import { MeshOptions } from './mesh-options';
 
 export class WoodMaterial {
   private readonly _trunkMaterial: StandardMaterial;
@@ -32,15 +33,8 @@ export class WoodMaterial {
 export class WoodMesh implements IMesh {
   private _mesh: Mesh;
 
-  constructor(
-    private scene: Scene,       // Babylon.js scene reference
-    private x: number,
-    private y: number,
-    private mapSize: number,    // Size of the map to calculate correct position
-    private yOffset: number = 0.001,
-    private woodMaterial: WoodMaterial
-  ) {
-    this._mesh = this.createMesh();
+  constructor(options: MeshOptions, private woodMaterial: WoodMaterial) {
+    this._mesh = this.createMesh(options);
   }
 
   public get mesh() {
@@ -51,7 +45,7 @@ export class WoodMesh implements IMesh {
     this._mesh.dispose();
   }
 
-  private createMesh(): Mesh {
+  private createMesh({ scene, x, y, mapSize, yOffset }: MeshOptions): Mesh {
     // Procedurally generate trunk height between a minimum and maximum range
     //const trunkHeight = Math.random() * (2.2 - 1) + 0.7; // Random height between 1 and 2.5
     const trunkHeight = 1.5;
@@ -66,42 +60,42 @@ export class WoodMesh implements IMesh {
 
     if (isCone) {
       // Create the foliage as a cone
-      foliage = MeshBuilder.CreateCylinder(`foliage_${this.x}_${this.y}`, {
+      foliage = MeshBuilder.CreateCylinder(`foliage_${x}_${y}`, {
         diameterTop: 0,
         height: 1,
         tessellation: 96
-      }, this.scene);
+      }, scene);
     } else {
       // Create the foliage as a sphere
-      foliage = MeshBuilder.CreateSphere(`foliage_${this.x}_${this.y}`, {
+      foliage = MeshBuilder.CreateSphere(`foliage_${x}_${y}`, {
         diameter: foliageDiameter,
         segments: 16
-      }, this.scene);
+      }, scene);
     }
 
     // Create the trunk using a cylinder
-    const trunk = MeshBuilder.CreateCylinder(`trunk_${this.x}_${this.y}`, {
+    const trunk = MeshBuilder.CreateCylinder(`trunk_${x}_${y}`, {
       height: trunkHeight,
       diameterTop: trunkDiameter,
       diameterBottom: trunkDiameter,
       tessellation: 16
-    }, this.scene);
+    }, scene);
 
     // Position the trunk and foliage to resemble a tree
     trunk.position = new Vector3(
-      this.x - ((this.mapSize / 2) - 0.5),
-      trunkHeight / 2 + this.yOffset, // Center the trunk height
-      this.y - ((this.mapSize / 2) - 0.5)
+      x - ((mapSize / 2) - 0.5),
+      trunkHeight / 2 + yOffset, // Center the trunk height
+      y - ((mapSize / 2) - 0.5)
     );
 
     foliage.position = new Vector3(
-      this.x - ((this.mapSize / 2) - 0.5),
-      trunkHeight + foliageDiameter / 2 + this.yOffset, // Position foliage above the trunk
-      this.y - ((this.mapSize / 2) - 0.5)
+      x - ((mapSize / 2) - 0.5),
+      trunkHeight + foliageDiameter / 2 + yOffset, // Position foliage above the trunk
+      y - ((mapSize / 2) - 0.5)
     );
 
     // Combine both the trunk and foliage to form the tree mesh
-    const treeMesh = new Mesh(`wood_${this.x}_${this.y}`, this.scene);
+    const treeMesh = new Mesh(`wood_${x}_${y}`, scene);
     trunk.parent = treeMesh;
     foliage.parent = treeMesh;
 

@@ -7,6 +7,7 @@ import {
   StandardMaterial,
 } from '@babylonjs/core';
 import { IMesh } from './mesh.interface';
+import { MeshOptions } from './mesh-options';
 
 export class FoodMaterial {
   private readonly _material: StandardMaterial;
@@ -24,15 +25,8 @@ export class FoodMaterial {
 export class FoodMesh implements IMesh {
   private _mesh: Mesh;
 
-  constructor(
-    private scene: Scene,       // Babylon.js scene reference
-    private x: number,          
-    private y: number,          
-    private mapSize: number,    // Size of the map to calculate correct position
-    private yOffset: number = 0.001, // Offset to avoid z-fighting
-    private foodMaterial: FoodMaterial
-  ) {
-    this._mesh = this.createMesh();
+  constructor(options: MeshOptions, private foodMaterial: FoodMaterial) {
+    this._mesh = this.createMesh(options);
   }
 
   public get mesh() {
@@ -43,16 +37,17 @@ export class FoodMesh implements IMesh {
     this._mesh.dispose();
   }
 
-  private createMesh(): Mesh {
+  private createMesh({ scene, x, y, mapSize, yOffset }: MeshOptions): Mesh {
     const tileSize = 0.5; // Halve the size for food tiles
-    const mesh = MeshBuilder.CreateBox(`food_${this.x}_${this.y}`, { size: tileSize }, this.scene);
+
+    const mesh = MeshBuilder.CreateBox(`food_${x}_${y}`, { size: tileSize }, scene);
 
     mesh.material = this.foodMaterial.material;
 
     mesh.position = new Vector3(
-      this.x - ((this.mapSize / 2) - 0.5),
-      tileSize / 2 + this.yOffset,
-      this.y - ((this.mapSize / 2) - 0.5)
+      x - ((mapSize / 2) - 0.5),
+      tileSize / 2 + yOffset,
+      y - ((mapSize / 2) - 0.5)
     );
 
     return mesh;

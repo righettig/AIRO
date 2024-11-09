@@ -7,6 +7,7 @@ import {
   StandardMaterial,
 } from '@babylonjs/core';
 import { IMesh } from './mesh.interface';
+import { MeshOptions } from './mesh-options';
 
 export class WaterMaterial {
   private readonly _material: StandardMaterial;
@@ -25,15 +26,8 @@ export class WaterMaterial {
 export class WaterMesh implements IMesh {
   private _mesh: Mesh;
 
-  constructor(
-    private scene: Scene,       // Babylon.js scene reference
-    private x: number,          
-    private y: number,          
-    private mapSize: number,    // Size of the map to calculate correct position
-    private yOffset: number = 0.001, // Offset to avoid z-fighting
-    private waterMaterial: WaterMaterial
-  ) {
-    this._mesh = this.createMesh();
+  constructor(options: MeshOptions, private waterMaterial: WaterMaterial) {
+    this._mesh = this.createMesh(options);
   }
 
   public get mesh() {
@@ -44,17 +38,17 @@ export class WaterMesh implements IMesh {
     this._mesh.dispose();
   }
 
-  private createMesh(): Mesh {
+  private createMesh({ scene, x, y, mapSize, yOffset }: MeshOptions): Mesh {
     // Create a plane for water tiles, fill the ground without creating a box
-    const tileHeight = this.yOffset;
-    const mesh = MeshBuilder.CreateGround(`water_${this.x}_${this.y}`, { width: 1, height: 1 }, this.scene);
+    const tileHeight = yOffset;
+    const mesh = MeshBuilder.CreateGround(`water_${x}_${y}`, { width: 1, height: 1 }, scene);
 
     mesh.material = this.waterMaterial.material;
 
     mesh.position = new Vector3(
-      this.x - ((this.mapSize / 2) - 0.5),
-      tileHeight / 2 + this.yOffset,
-      this.y - ((this.mapSize / 2) - 0.5)
+      x - ((mapSize / 2) - 0.5),
+      tileHeight / 2 + yOffset,
+      y - ((mapSize / 2) - 0.5)
     );
 
     return mesh;

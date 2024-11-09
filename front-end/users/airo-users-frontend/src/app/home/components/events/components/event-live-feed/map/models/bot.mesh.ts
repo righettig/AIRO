@@ -7,6 +7,7 @@ import {
   Color3,
 } from '@babylonjs/core';
 import { IMesh } from './mesh.interface';
+import { MeshOptions } from './mesh-options';
 
 export class BotMaterial {
   private readonly _material: StandardMaterial;
@@ -24,15 +25,8 @@ export class BotMaterial {
 export class BotMesh implements IMesh {
   private _mesh: Mesh;
 
-  constructor(
-    private scene: Scene,       // Babylon.js scene reference
-    private x: number,          
-    private y: number,          
-    private mapSize: number,    // Size of the map to calculate correct position
-    private yOffset: number = 0.001, // Offset to avoid z-fighting
-    private botMaterial: BotMaterial, // Shared material instance
-  ) {
-    this._mesh = this.createMesh();
+  constructor(options: MeshOptions, private botMaterial: BotMaterial) {
+    this._mesh = this.createMesh(options);
   }
 
   public get mesh() {
@@ -43,20 +37,20 @@ export class BotMesh implements IMesh {
     this._mesh.dispose();
   }
 
-  private createMesh(): Mesh {
+  private createMesh({ scene, x, y, mapSize, yOffset }: MeshOptions): Mesh {
     const tileSize = 1;
-    const mesh = new Mesh(`bot_${this.x}_${this.y}`, this.scene);
+    const mesh = new Mesh(`bot_${x}_${y}`, scene);
 
-    const headMesh = MeshBuilder.CreateSphere(`bot_${this.x}_${this.y}_head`, { diameter: 0.5 }, this.scene);
+    const headMesh = MeshBuilder.CreateSphere(`bot_${x}_${y}_head`, { diameter: 0.5 }, scene);
     headMesh.material = this.botMaterial.material;
 
     headMesh.position = new Vector3(
-      this.x - ((this.mapSize / 2) - 0.5),
-      tileSize / 2 + this.yOffset,
-      this.y - ((this.mapSize / 2) - 0.5)
+      x - ((mapSize / 2) - 0.5),
+      tileSize / 2 + yOffset,
+      y - ((mapSize / 2) - 0.5)
     );
 
-    const bodyMesh = MeshBuilder.CreateCylinder(`bot_${this.x}_${this.y}_body`, {
+    const bodyMesh = MeshBuilder.CreateCylinder(`bot_${x}_${y}_body`, {
       height: 0.5,
       diameterTop: 0,
       diameterBottom: 0.8,
@@ -65,9 +59,9 @@ export class BotMesh implements IMesh {
     bodyMesh.material = this.botMaterial.material;
 
     bodyMesh.position = new Vector3(
-      this.x - ((this.mapSize / 2) - 0.5),
-      this.yOffset + (0.5 / 2),
-      this.y - ((this.mapSize / 2) - 0.5)
+      x - ((mapSize / 2) - 0.5),
+      yOffset + (0.5 / 2),
+      y - ((mapSize / 2) - 0.5)
     );
 
     mesh.addChild(headMesh);

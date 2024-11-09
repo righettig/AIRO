@@ -7,6 +7,7 @@ import {
   StandardMaterial,
 } from '@babylonjs/core';
 import { IMesh } from './mesh.interface';
+import { MeshOptions } from './mesh-options';
 
 export class WallMaterial {
   private readonly _material: StandardMaterial;
@@ -24,15 +25,8 @@ export class WallMaterial {
 export class WallMesh implements IMesh {
   private _mesh: Mesh;
 
-  constructor(
-    private scene: Scene,       // Babylon.js scene reference
-    private x: number,          
-    private y: number,          
-    private mapSize: number,    // Size of the map to calculate correct position
-    private yOffset: number = 0.001, // Offset to avoid z-fighting
-    private wallMaterial: WallMaterial
-  ) {
-    this._mesh = this.createMesh();
+  constructor(options: MeshOptions, private wallMaterial: WallMaterial) {
+    this._mesh = this.createMesh(options);
   }
 
   public get mesh() {
@@ -43,16 +37,17 @@ export class WallMesh implements IMesh {
     this._mesh.dispose();
   }
 
-  private createMesh(): Mesh {
+  private createMesh({ scene, x, y, mapSize, yOffset }: MeshOptions): Mesh {
     const tileSize = 1;
-    const mesh = MeshBuilder.CreateBox(`wall_${this.x}_${this.y}`, { size: tileSize }, this.scene);
+
+    const mesh = MeshBuilder.CreateBox(`wall_${x}_${y}`, { size: tileSize }, scene);
 
     mesh.material = this.wallMaterial.material;
 
     mesh.position = new Vector3(
-      this.x - ((this.mapSize / 2) - 0.5),
-      tileSize / 2 + this.yOffset,
-      this.y - ((this.mapSize / 2) - 0.5)
+      x - ((mapSize / 2) - 0.5),
+      tileSize / 2 + yOffset,
+      y - ((mapSize / 2) - 0.5)
     );
     
     return mesh;
