@@ -246,6 +246,8 @@ export class MapRendererComponent implements AfterViewInit {
     const mapSize = mapData.size;
 
     this.meshes.forEach(mesh => mesh.dispose());
+    this.meshes = [];
+    
     mapData.tiles.filter(tile => tile.type !== 'empty').forEach(tile => { // Skip empty tile rendering
       let tileSize = 1; // Default size for other tiles
       let tileMesh: Mesh;
