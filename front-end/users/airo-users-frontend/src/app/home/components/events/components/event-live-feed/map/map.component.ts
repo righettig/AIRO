@@ -63,11 +63,6 @@ export class MapRendererComponent implements AfterViewInit {
 
     // Add the compass UI overlay
     this.createCompass();
-
-    // Update compass orientation whenever the camera rotates
-    this.camera.onViewMatrixChangedObservable.add(() => {
-      this.updateCompass();
-    });
   }
 
   private createCamera(canvas: HTMLCanvasElement) {
@@ -155,6 +150,11 @@ export class MapRendererComponent implements AfterViewInit {
     // Add double-click event listener to reset camera position
     this.compassBackground.onPointerClickObservable.add(() => {
       this.resetCameraPosition();
+    });
+
+    // Update compass orientation whenever the camera rotates
+    this.camera.onViewMatrixChangedObservable.add(() => {
+      this.updateCompass();
     });
   }
 
