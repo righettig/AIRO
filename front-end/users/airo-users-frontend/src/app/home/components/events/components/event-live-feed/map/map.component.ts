@@ -207,22 +207,22 @@ export class MapRendererComponent implements AfterViewInit {
         this.createIronTile(tile.x, tile.y, mapSize);
       } else if (tile.type === "wall") {
         this.createWallTile(tile.x, tile.y, mapSize);
-      } else {
-        this.createGenericTile(tile, mapSize);
+      } else if (tile.type === "bot") {
+        this.createBotTile(tile.x, tile.y, mapSize);
       }
     });
   }
 
-  private createGenericTile(tile: { x: number; y: number; type: TileType }, mapSize: number) {
-    const tileSize = 1; // Default size for other tiles
-    const tileMesh =  MeshBuilder.CreateBox(`tile_${tile.x}_${tile.y}`, { size: tileSize }, this.scene);
+  private createBotTile(x: number, y: number, mapSize: number) {
+    const tileSize = 1;
+    const tileMesh = MeshBuilder.CreateBox(`bot_${x}_${y}`, { size: tileSize }, this.scene);
 
-    tileMesh.material = this.materials[tile.type];
+    tileMesh.material = this.materials['bot'];
 
     tileMesh.position = new Vector3(
-      tile.x - ((mapSize / 2) - 0.5),
+      x - ((mapSize / 2) - 0.5),
       tileSize / 2 + this.yOffset,
-      tile.y - ((mapSize / 2) - 0.5)
+      y - ((mapSize / 2) - 0.5)
     );
     
     this.meshes.push(tileMesh);
