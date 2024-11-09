@@ -2,7 +2,6 @@ import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import {
   Engine,
   Scene,
-  ArcRotateCamera,
   Vector3,
   HemisphericLight,
   Color3,
@@ -17,29 +16,25 @@ import { BotMaterial, BotMesh } from './models/bot.mesh';
 import { WallMaterial, WallMesh } from './models/wall.mesh';
 import { GroundMaterial, GroundMesh } from './models/ground.mesh';
 import { IMesh } from './models/mesh.interface';
+import { Camera } from './models/camera';
 
 @Component({
   selector: 'app-map-renderer',
   template: '<canvas #mapCanvas></canvas>',
   styles: ['canvas { width: 100%; height: 100%; display: block }'],
-  standalone: true,
-  imports: []
+  standalone: true
 })
 export class MapRendererComponent implements AfterViewInit {
   @ViewChild('mapCanvas', { static: true }) mapCanvas!: ElementRef<HTMLCanvasElement>;
   private engine!: Engine;
   
   private scene!: Scene;
-  private camera!: ArcRotateCamera;
+  private camera!: Camera;
   private compassBackground!: Rectangle;
   private meshes: IMesh[] = [];
   private mapSize: number = 0;
 
   private readonly yOffset: number = 0.001; // Offset to avoid z-fighting between tiles and ground
-
-  private initialCameraAlpha!: number;
-  private initialCameraBeta!: number;
-  private initialCameraPosition!: Vector3;
 
   private botMaterial!: BotMaterial;
   private foodMaterial!: FoodMaterial;
@@ -53,8 +48,7 @@ export class MapRendererComponent implements AfterViewInit {
     
     this.engine = new Engine(canvas, true);
     this.scene = new Scene(this.engine);
-
-    this.createCamera(canvas);
+    this.camera = new Camera(this.scene, canvas);
 
     this.createLight();
 
@@ -68,32 +62,6 @@ export class MapRendererComponent implements AfterViewInit {
     this.engine.runRenderLoop(() => {
       this.scene.render();
     });
-  }
-
-  private createCamera(canvas: HTMLCanvasElement) {
-    const minBeta = 0;  // Minimum angle (45 degrees)
-    const maxBeta = Math.PI / 2.25; // Maximum angle (120 degrees)
-    const minZoomDistance = 15; // Minimum zoom-in distance
-
-    // Store initial camera orientation and position
-    this.initialCameraAlpha = 0;
-    this.initialCameraBeta = (maxBeta + minBeta) / 2;
-    this.initialCameraPosition = new Vector3(0, -2.5, 0);
-
-    // Create a camera and light for the scene
-    this.camera = new ArcRotateCamera(
-      'Camera',
-      this.initialCameraAlpha,
-      this.initialCameraBeta,
-      0,
-      this.createCenterVector(),
-      this.scene
-    );
-    this.camera.attachControl(canvas, true);
-
-    this.camera.lowerBetaLimit = minBeta;
-    this.camera.upperBetaLimit = maxBeta;
-    this.camera.lowerRadiusLimit = minZoomDistance; // Set zoom limits
   }
 
   private createLight() {
@@ -152,7 +120,7 @@ export class MapRendererComponent implements AfterViewInit {
 
     // Add double-click event listener to reset camera position
     this.compassBackground.onPointerClickObservable.add(() => {
-      this.resetCameraPosition();
+      this.camera.resetCameraPosition();
     });
 
     // Update compass orientation whenever the camera rotates
@@ -167,27 +135,10 @@ export class MapRendererComponent implements AfterViewInit {
     this.compassBackground.rotation = rotationAngle;
   }
 
-  private createCenterVector() : Vector3 {
-    return new Vector3(
-      this.initialCameraPosition.x, 
-      this.initialCameraPosition.y, 
-      this.initialCameraPosition.z);
-  }
-
-  private resetCameraPosition() {
-    // Reset the camera's target (the center of the scene)
-    this.camera.setTarget(this.createCenterVector());
-
-    // Reset the camera's alpha and beta to the initial settings
-    this.camera.alpha = this.initialCameraAlpha;
-    this.camera.beta = this.initialCameraBeta;
-  }
-
   initMap(mapData: LoadedMapData) {
     this.mapSize = mapData.size;
     
     this.camera.upperRadiusLimit = mapData.size * 3; // Set upper radius limit based on the map size
-    this.camera.radius = this.camera.upperRadiusLimit / 1.5;
     
     new GroundMesh(this.scene, mapData.size, new GroundMaterial(this.scene));
 
