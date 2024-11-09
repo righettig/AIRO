@@ -205,6 +205,8 @@ export class MapRendererComponent implements AfterViewInit {
         this.createWoodTile(tile.x, tile.y, mapSize);
       } else if (tile.type === "iron") {
         this.createIronTile(tile.x, tile.y, mapSize);
+      } else if (tile.type === "wall") {
+        this.createWallTile(tile.x, tile.y, mapSize);
       } else {
         this.createGenericTile(tile, mapSize);
       }
@@ -221,6 +223,21 @@ export class MapRendererComponent implements AfterViewInit {
       tile.x - ((mapSize / 2) - 0.5),
       tileSize / 2 + this.yOffset,
       tile.y - ((mapSize / 2) - 0.5)
+    );
+    
+    this.meshes.push(tileMesh);
+  }
+
+  private createWallTile(x: number, y: number, mapSize: number) {
+    const tileSize = 1;
+    const tileMesh = MeshBuilder.CreateBox(`wall_${x}_${y}`, { size: tileSize }, this.scene);
+
+    tileMesh.material = this.materials['wall'];
+
+    tileMesh.position = new Vector3(
+      x - ((mapSize / 2) - 0.5),
+      tileSize / 2 + this.yOffset,
+      y - ((mapSize / 2) - 0.5)
     );
     
     this.meshes.push(tileMesh);
