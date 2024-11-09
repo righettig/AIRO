@@ -38,31 +38,28 @@ export class MapRendererComponent implements AfterViewInit {
   private initialCameraPosition!: Vector3;
 
   ngAfterViewInit(): void {
-    this.initializeBabylon();
-  }
-
-  initializeBabylon() {
     const canvas = this.mapCanvas.nativeElement;
+    
     this.engine = new Engine(canvas, true);
     this.scene = new Scene(this.engine);
 
     this.createCamera(canvas);
 
-    const light = new HemisphericLight('light1', new Vector3(50, 100, 50), this.scene);
+    this.createLight();
 
     // Preload materials based on tile colors
     this.initializeMaterials();
 
-    this.engine.runRenderLoop(() => {
-      this.scene.render();
-    });
+    // Add the compass UI overlay
+    this.createCompass();
 
     window.addEventListener('resize', () => {
       this.engine.resize();
     });
 
-    // Add the compass UI overlay
-    this.createCompass();
+    this.engine.runRenderLoop(() => {
+      this.scene.render();
+    });
   }
 
   private createCamera(canvas: HTMLCanvasElement) {
@@ -91,10 +88,8 @@ export class MapRendererComponent implements AfterViewInit {
     this.camera.lowerRadiusLimit = minZoomDistance; // Set zoom limits
   }
 
-  private updateCompass() {
-    // Rotate the compass according to the camera's Y-axis rotation (alpha)
-    const rotationAngle = this.camera.alpha;
-    this.compassBackground.rotation = rotationAngle;
+  private createLight() {
+    new HemisphericLight('light', new Vector3(50, 100, 50), this.scene);
   }
 
   private createCompass() {
@@ -158,8 +153,17 @@ export class MapRendererComponent implements AfterViewInit {
     });
   }
 
+  private updateCompass() {
+    // Rotate the compass according to the camera's Y-axis rotation (alpha)
+    const rotationAngle = this.camera.alpha;
+    this.compassBackground.rotation = rotationAngle;
+  }
+
   private createCenterVector() : Vector3 {
-    return new Vector3(this.initialCameraPosition.x, this.initialCameraPosition.y, this.initialCameraPosition.z);
+    return new Vector3(
+      this.initialCameraPosition.x, 
+      this.initialCameraPosition.y, 
+      this.initialCameraPosition.z);
   }
 
   private resetCameraPosition() {
