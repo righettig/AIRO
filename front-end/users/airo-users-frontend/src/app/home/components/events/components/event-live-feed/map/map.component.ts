@@ -7,7 +7,6 @@ import {
   Color3,
 } from '@babylonjs/core';
 import { LoadedMapData } from './models/map.models';
-import { AdvancedDynamicTexture, Control, Rectangle, TextBlock } from '@babylonjs/gui/2D';
 import { FoodMaterial, FoodMesh } from './models/food.mesh';
 import { WaterMaterial, WaterMesh } from './models/water.mesh';
 import { WoodMaterial, WoodMesh } from './models/wood.mesh';
@@ -17,6 +16,7 @@ import { WallMaterial, WallMesh } from './models/wall.mesh';
 import { GroundMaterial, GroundMesh } from './models/ground.mesh';
 import { IMesh } from './models/mesh.interface';
 import { Camera } from './models/camera';
+import { Compass } from './models/compass.ui';
 
 @Component({
   selector: 'app-map-renderer',
@@ -27,10 +27,10 @@ import { Camera } from './models/camera';
 export class MapRendererComponent implements AfterViewInit {
   @ViewChild('mapCanvas', { static: true }) mapCanvas!: ElementRef<HTMLCanvasElement>;
   private engine!: Engine;
-  
+
   private scene!: Scene;
   private camera!: Camera;
-  private compassBackground!: Rectangle;
+
   private meshes: IMesh[] = [];
   private mapSize: number = 0;
 
@@ -45,14 +45,12 @@ export class MapRendererComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     const canvas = this.mapCanvas.nativeElement;
-    
+
     this.engine = new Engine(canvas, true);
     this.scene = new Scene(this.engine);
     this.camera = new Camera(this.scene, canvas);
 
     this.createLight();
-
-    // Add the compass UI overlay
     this.createCompass();
 
     window.addEventListener('resize', () => {
@@ -68,78 +66,16 @@ export class MapRendererComponent implements AfterViewInit {
     new HemisphericLight('light', new Vector3(50, 100, 50), this.scene);
   }
 
+  // Add the compass UI overlay
   private createCompass() {
-    // Create a full-screen 2D UI for compass overlay
-    const ui = AdvancedDynamicTexture.CreateFullscreenUI("UI");
-
-    // Create a small rectangle for the compass background
-    this.compassBackground = new Rectangle();
-    this.compassBackground.width = "80px";
-    this.compassBackground.height = "80px";
-    this.compassBackground.cornerRadius = 10;
-    this.compassBackground.color = "white";
-    this.compassBackground.thickness = 2;
-    this.compassBackground.background = "black";
-    this.compassBackground.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_RIGHT;
-    this.compassBackground.verticalAlignment = Control.VERTICAL_ALIGNMENT_TOP;
-    this.compassBackground.top = "10px";
-    this.compassBackground.left = "-10px";
-    ui.addControl(this.compassBackground);
-
-    // Add "N" for North
-    const northText = new TextBlock();
-    northText.text = "N";
-    northText.color = "red";
-    northText.fontSize = 24;
-    northText.top = "-25px";
-    this.compassBackground.addControl(northText);
-
-    // Add "E" for East
-    const eastText = new TextBlock();
-    eastText.text = "E";
-    eastText.color = "white";
-    eastText.fontSize = 24;
-    eastText.left = "25px";
-    this.compassBackground.addControl(eastText);
-
-    // Add "S" for South
-    const southText = new TextBlock();
-    southText.text = "S";
-    southText.color = "white";
-    southText.fontSize = 24;
-    southText.top = "25px";
-    this.compassBackground.addControl(southText);
-
-    // Add "W" for West
-    const westText = new TextBlock();
-    westText.text = "W";
-    westText.color = "white";
-    westText.fontSize = 24;
-    westText.left = "-25px";
-    this.compassBackground.addControl(westText);
-
-    // Add double-click event listener to reset camera position
-    this.compassBackground.onPointerClickObservable.add(() => {
-      this.camera.resetCameraPosition();
-    });
-
-    // Update compass orientation whenever the camera rotates
-    this.camera.onViewMatrixChangedObservable.add(() => {
-      this.updateCompass();
-    });
-  }
-
-  private updateCompass() {
-    // Rotate the compass according to the camera's Y-axis rotation (alpha)
-    const rotationAngle = this.camera.alpha;
-    this.compassBackground.rotation = rotationAngle;
+    new Compass(this.camera);
   }
 
   initMap(mapData: LoadedMapData) {
     this.mapSize = mapData.size;
-    
+
     this.camera.upperRadiusLimit = mapData.size * 3; // Set upper radius limit based on the map size
-    
+
     new GroundMesh(this.scene, mapData.size, new GroundMaterial(this.scene));
 
     // TODO: customise for each bot
@@ -155,7 +91,7 @@ export class MapRendererComponent implements AfterViewInit {
   // Load map data and render tiles as Babylon.js objects
   updateMap(mapData: LoadedMapData) {
     this.meshes.forEach(mesh => mesh.dispose());
-    
+
     this.meshes = mapData.tiles.filter(tile => tile.type !== 'empty').map(tile => { // Skip empty tile rendering
       if (tile.type === 'food') {
         return new FoodMesh(this.scene, tile.x, tile.y, this.mapSize, this.yOffset, this.foodMaterial);
