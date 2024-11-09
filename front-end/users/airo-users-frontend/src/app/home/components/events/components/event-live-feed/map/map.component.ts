@@ -29,6 +29,7 @@ export class MapRendererComponent implements AfterViewInit {
   private compassBackground!: Rectangle;
   private materials: Record<TileType, StandardMaterial> = {} as Record<TileType, StandardMaterial>;
   private meshes: Mesh[] = [];
+  private mapSize: number = 0;
 
   private readonly yOffset: number = 0.001; // Offset to avoid z-fighting between tiles and ground
 
@@ -184,6 +185,7 @@ export class MapRendererComponent implements AfterViewInit {
   }
 
   initMap(mapData: LoadedMapData) {
+    this.mapSize = mapData.size;
     this.camera.upperRadiusLimit = mapData.size * 3; // Set upper radius limit based on the map size
     this.camera.radius = this.camera.upperRadiusLimit / 1.5;
     this.createGround(mapData.size);
@@ -191,29 +193,27 @@ export class MapRendererComponent implements AfterViewInit {
 
   // Load map data and render tiles as Babylon.js objects
   updateMap(mapData: LoadedMapData) {
-    const mapSize = mapData.size;
-
     this.meshes.forEach(mesh => mesh.dispose());
     this.meshes = [];
 
     mapData.tiles.filter(tile => tile.type !== 'empty').forEach(tile => { // Skip empty tile rendering
       if (tile.type === 'food') {
-        this.createFoodTile(tile.x, tile.y, mapSize);
+        this.createFoodTile(tile.x, tile.y);
       } else if (tile.type === 'water') {
-        this.createWaterTile(tile.x, tile.y, mapSize);
+        this.createWaterTile(tile.x, tile.y);
       } else if (tile.type === 'wood') {
-        this.createWoodTile(tile.x, tile.y, mapSize);
+        this.createWoodTile(tile.x, tile.y);
       } else if (tile.type === "iron") {
-        this.createIronTile(tile.x, tile.y, mapSize);
+        this.createIronTile(tile.x, tile.y);
       } else if (tile.type === "wall") {
-        this.createWallTile(tile.x, tile.y, mapSize);
+        this.createWallTile(tile.x, tile.y);
       } else if (tile.type === "bot") {
-        this.createBotTile(tile.x, tile.y, mapSize);
+        this.createBotTile(tile.x, tile.y);
       }
     });
   }
 
-  private createBotTile(x: number, y: number, mapSize: number) {
+  private createBotTile(x: number, y: number) {
     const tileSize = 1;
     const tileMesh = new Mesh(`bot_${x}_${y}`, this.scene);
 
@@ -221,9 +221,9 @@ export class MapRendererComponent implements AfterViewInit {
     headMesh.material = this.materials['bot'];
 
     headMesh.position = new Vector3(
-      x - ((mapSize / 2) - 0.5),
+      x - ((this.mapSize / 2) - 0.5),
       tileSize / 2 + this.yOffset,
-      y - ((mapSize / 2) - 0.5)
+      y - ((this.mapSize / 2) - 0.5)
     );
     
     const bodyMesh = MeshBuilder.CreateCylinder(`bot_${x}_${y}_body`, {
@@ -235,9 +235,9 @@ export class MapRendererComponent implements AfterViewInit {
     bodyMesh.material = this.materials['bot'];
 
     bodyMesh.position = new Vector3(
-      x - ((mapSize / 2) - 0.5),
+      x - ((this.mapSize / 2) - 0.5),
       this.yOffset + (0.5/2),
-      y - ((mapSize / 2) - 0.5)
+      y - ((this.mapSize / 2) - 0.5)
     );
 
     tileMesh.addChild(headMesh);
@@ -246,22 +246,22 @@ export class MapRendererComponent implements AfterViewInit {
     this.meshes.push(tileMesh);
   }
 
-  private createWallTile(x: number, y: number, mapSize: number) {
+  private createWallTile(x: number, y: number) {
     const tileSize = 1;
     const tileMesh = MeshBuilder.CreateBox(`wall_${x}_${y}`, { size: tileSize }, this.scene);
 
     tileMesh.material = this.materials['wall'];
 
     tileMesh.position = new Vector3(
-      x - ((mapSize / 2) - 0.5),
+      x - ((this.mapSize / 2) - 0.5),
       tileSize / 2 + this.yOffset,
-      y - ((mapSize / 2) - 0.5)
+      y - ((this.mapSize / 2) - 0.5)
     );
     
     this.meshes.push(tileMesh);
   }
 
-  private createWoodTile(x: number, y: number, mapSize: number) {
+  private createWoodTile(x: number, y: number) {
     // Procedurally generate trunk height between a minimum and maximum range
     //const trunkHeight = Math.random() * (2.2 - 1) + 0.7; // Random height between 1 and 2.5
     const trunkHeight = 1.5;
@@ -299,15 +299,15 @@ export class MapRendererComponent implements AfterViewInit {
 
     // Position the trunk and foliage to resemble a tree
     trunk.position = new Vector3(
-      x - ((mapSize / 2) - 0.5),
+      x - ((this.mapSize / 2) - 0.5),
       trunkHeight / 2 + this.yOffset, // Center the trunk height
-      y - ((mapSize / 2) - 0.5)
+      y - ((this.mapSize / 2) - 0.5)
     );
 
     foliage.position = new Vector3(
-      x - ((mapSize / 2) - 0.5),
+      x - ((this.mapSize / 2) - 0.5),
       trunkHeight + foliageDiameter / 2 + this.yOffset, // Position foliage above the trunk
-      y - ((mapSize / 2) - 0.5)
+      y - ((this.mapSize / 2) - 0.5)
     );
 
     // Combine both the trunk and foliage to form the tree mesh
@@ -328,7 +328,7 @@ export class MapRendererComponent implements AfterViewInit {
     this.meshes.push(treeMesh); // TODO: either use tileMesh or skip adding tileMesh
   }
 
-  private createIronTile(x: number, y: number, mapSize: number) {
+  private createIronTile(x: number, y: number) {
     const ironMesh = new Mesh(`iron_${x}_${y}`, this.scene);
 
     // Create three pyramids of different heights
@@ -355,21 +355,21 @@ export class MapRendererComponent implements AfterViewInit {
     
     // Position the pyramids next to each other
     pyramid1.position = new Vector3(
-      x - ((mapSize / 2) - 0.7),
+      x - ((this.mapSize / 2) - 0.7),
       (0.4/2) + this.yOffset,
-      y - ((mapSize / 2) - 0.6)
+      y - ((this.mapSize / 2) - 0.6)
     );
 
     pyramid2.position = new Vector3(
-      x - ((mapSize / 2) - 0.5),
+      x - ((this.mapSize / 2) - 0.5),
       (0.3/2) + this.yOffset,
-      y - ((mapSize / 2) + -0.25)
+      y - ((this.mapSize / 2) + -0.25)
     );
     
     pyramid3.position = new Vector3(
-      x - ((mapSize / 2) - 0.3),
+      x - ((this.mapSize / 2) - 0.3),
       (0.5/2) + this.yOffset,
-      y - ((mapSize / 2) + -0.75)
+      y - ((this.mapSize / 2) + -0.75)
     );
 
     // Apply the material to all pyramids
@@ -382,22 +382,22 @@ export class MapRendererComponent implements AfterViewInit {
     this.meshes.push(ironMesh);
   };
 
-  private createFoodTile(x: number, y: number, mapSize: number) {
+  private createFoodTile(x: number, y: number) {
     const tileSize = 0.5; // Halve the size for food tiles
     const tileMesh = MeshBuilder.CreateBox(`food_${x}_${y}`, { size: tileSize }, this.scene);
 
     tileMesh.material = this.materials['food'];
 
     tileMesh.position = new Vector3(
-      x - ((mapSize / 2) - 0.5),
+      x - ((this.mapSize / 2) - 0.5),
       tileSize / 2 + this.yOffset,
-      y - ((mapSize / 2) - 0.5)
+      y - ((this.mapSize / 2) - 0.5)
     );
     
     this.meshes.push(tileMesh);
   }
 
-  private createWaterTile(x: number, y: number, mapSize: number) {
+  private createWaterTile(x: number, y: number) {
     // Create a plane for water tiles, fill the ground without creating a box
     const tileHeight = this.yOffset;
     const tileMesh = MeshBuilder.CreateGround(`water_${x}_${y}`, { width: 1, height: 1 }, this.scene);
@@ -405,9 +405,9 @@ export class MapRendererComponent implements AfterViewInit {
     tileMesh.material = this.materials['water'];
 
     tileMesh.position = new Vector3(
-      x - ((mapSize / 2) - 0.5),
+      x - ((this.mapSize / 2) - 0.5),
       tileHeight / 2 + this.yOffset,
-      y - ((mapSize / 2) - 0.5)
+      y - ((this.mapSize / 2) - 0.5)
     );
     
     this.meshes.push(tileMesh);
