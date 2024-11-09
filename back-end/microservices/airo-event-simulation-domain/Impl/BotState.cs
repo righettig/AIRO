@@ -65,7 +65,7 @@ public class BotState(Guid botId,
         if (bot is null) return false;
 
         var distance = GetAbsoluteDistance(Position, bot.Position); // Use Position directly from state
-        return distance < 2;
+        return distance < 2; // It's only possible to attack enemies that are either directly (1) or diagonally (1.41~) adjacent
     }
 
     public bool CanMove(Direction direction)
