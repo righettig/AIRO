@@ -7,16 +7,12 @@ import {
   Color3,
 } from '@babylonjs/core';
 import { LoadedMapData } from './models/map.models';
-import { FoodMaterial, FoodMesh } from './models/food.mesh';
-import { WaterMaterial, WaterMesh } from './models/water.mesh';
-import { WoodMaterial, WoodMesh } from './models/wood.mesh';
-import { IronMaterial, IronMesh } from './models/iron.mesh';
-import { BotMaterial, BotMesh } from './models/bot.mesh';
-import { WallMaterial, WallMesh } from './models/wall.mesh';
-import { GroundMaterial, GroundMesh } from './models/ground.mesh';
+import { GroundMesh } from './models/ground.mesh';
 import { IMesh } from './models/mesh.interface';
 import { Camera } from './models/camera';
 import { Compass } from './models/compass.ui';
+import { MeshMaterials } from './models/mesh-materials';
+import { MeshFactory } from './models/mesh-factory';
 
 @Component({
   selector: 'app-map-renderer',
@@ -36,15 +32,8 @@ export class MapRendererComponent implements AfterViewInit {
 
   private readonly yOffset: number = 0.001; // Offset to avoid z-fighting between tiles and ground
 
-  private materials = {
-    bot: undefined as BotMaterial | undefined,
-    food: undefined as FoodMaterial | undefined,
-    iron: undefined as IronMaterial | undefined,
-    wall: undefined as WallMaterial | undefined,
-    water: undefined as WaterMaterial | undefined,
-    wood: undefined as WoodMaterial | undefined,
-    ground: undefined as GroundMaterial | undefined,
-  };
+  private materials!: MeshMaterials;
+  private meshFactory!:  MeshFactory;
 
   ngAfterViewInit(): void {
     this.initializeEngineAndScene();
@@ -55,11 +44,25 @@ export class MapRendererComponent implements AfterViewInit {
     this.engine.runRenderLoop(() => this.scene.render());
   }
 
+  initMap(mapData: LoadedMapData) {
+    this.mapSize = mapData.size;
+    this.camera.upperRadiusLimit = mapData.size * 3; // Set upper radius limit based on the map size
+    this.createGround();
+  }
+
+  // Load map data and render tiles as Babylon.js objects
+  updateMap(mapData: LoadedMapData) {
+    this.clearPreviousMeshes();
+    this.meshes = this.createMeshesFromMapData(mapData);
+  }
+
   private initializeEngineAndScene(): void {
     const canvas = this.mapCanvas.nativeElement;
     this.engine = new Engine(canvas, true);
     this.scene = new Scene(this.engine);
     this.camera = new Camera(this.scene, canvas);
+    this.materials = new MeshMaterials(this.scene, [Color3.Green()]); // TODO: try moving elsewhere
+    this.meshFactory = new MeshFactory(this.materials);
   }
 
   private createLight() {
@@ -70,28 +73,8 @@ export class MapRendererComponent implements AfterViewInit {
     new Compass(this.camera);
   }
 
-  initMap(mapData: LoadedMapData) {
-    this.mapSize = mapData.size;
-
-    this.camera.upperRadiusLimit = mapData.size * 3; // Set upper radius limit based on the map size
-
-    this.materials = {
-      bot: new BotMaterial(this.scene, Color3.Green()), // TODO: customise for each bot
-      ground: new GroundMaterial(this.scene),
-      food: new FoodMaterial(this.scene),
-      iron: new IronMaterial(this.scene),
-      wall: new WallMaterial(this.scene),
-      water: new WaterMaterial(this.scene),
-      wood: new WoodMaterial(this.scene),
-    };
-
-    new GroundMesh(this.scene, mapData.size, this.materials.ground!);
-  }
-
-  // Load map data and render tiles as Babylon.js objects
-  updateMap(mapData: LoadedMapData) {
-    this.clearPreviousMeshes();
-    this.meshes = this.createMeshesFromMapData(mapData);
+  private createGround() {
+    new GroundMesh(this.scene, this.mapSize, this.materials.ground);
   }
 
   private clearPreviousMeshes(): void {
@@ -114,21 +97,6 @@ export class MapRendererComponent implements AfterViewInit {
       yOffset: this.yOffset,
     };
 
-    switch (tile.type) {
-      case 'food':
-        return new FoodMesh(meshOptions, this.materials.food!);
-      case 'water':
-        return new WaterMesh(meshOptions, this.materials.water!);
-      case 'wood':
-        return new WoodMesh(meshOptions, this.materials.wood!);
-      case 'iron':
-        return new IronMesh(meshOptions, this.materials.iron!);
-      case 'wall':
-        return new WallMesh(meshOptions, this.materials.wall!);
-      case 'bot':
-        return new BotMesh(meshOptions, this.materials.bot!);
-      default:
-        throw new Error(`Unknown tile type: ${tile.type}`);
-    }
+    return this.meshFactory.create(meshOptions, tile.type);
   }
 }
