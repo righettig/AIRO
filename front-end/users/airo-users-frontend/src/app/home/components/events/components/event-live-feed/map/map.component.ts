@@ -13,6 +13,12 @@ import {
 import { GridMaterial } from '@babylonjs/materials/grid/gridMaterial';
 import { LoadedMapData, TILE_TYPES, TileType } from './models/map.models';
 import { AdvancedDynamicTexture, Control, Rectangle, TextBlock } from '@babylonjs/gui/2D';
+import { FoodMesh } from './models/food.mesh';
+import { WaterMesh } from './models/water.mesh';
+import { WoodMesh } from './models/wood.mesh';
+import { IronMesh } from './models/iron.mesh';
+import { BotMesh } from './models/bot.mesh';
+import { WallMesh } from './models/wall.mesh';
 
 @Component({
   selector: 'app-map-renderer',
@@ -24,6 +30,7 @@ import { AdvancedDynamicTexture, Control, Rectangle, TextBlock } from '@babylonj
 export class MapRendererComponent implements AfterViewInit {
   @ViewChild('mapCanvas', { static: true }) mapCanvas!: ElementRef<HTMLCanvasElement>;
   private engine!: Engine;
+  
   private scene!: Scene;
   private camera!: ArcRotateCamera;
   private compassBackground!: Rectangle;
@@ -206,219 +213,30 @@ export class MapRendererComponent implements AfterViewInit {
 
     mapData.tiles.filter(tile => tile.type !== 'empty').forEach(tile => { // Skip empty tile rendering
       if (tile.type === 'food') {
-        this.createFoodTile(tile.x, tile.y);
+        const food = new FoodMesh(this.scene, tile.x, tile.y, this.mapSize, this.yOffset, this.materials['food']);
+        this.meshes.push(food.mesh);
+
       } else if (tile.type === 'water') {
-        this.createWaterTile(tile.x, tile.y);
+        const water = new WaterMesh(this.scene, tile.x, tile.y, this.mapSize, this.yOffset, this.materials['water']);
+        this.meshes.push(water.mesh);
+
       } else if (tile.type === 'wood') {
-        this.createWoodTile(tile.x, tile.y);
+        const wood = new WoodMesh(this.scene, tile.x, tile.y, this.mapSize, this.yOffset);
+        this.meshes.push(wood.mesh);
+
       } else if (tile.type === "iron") {
-        this.createIronTile(tile.x, tile.y);
+        const iron = new IronMesh(this.scene, tile.x, tile.y, this.mapSize, this.yOffset, this.materials['iron']);
+        this.meshes.push(iron.mesh);
+
       } else if (tile.type === "wall") {
-        this.createWallTile(tile.x, tile.y);
+        const wall = new WallMesh(this.scene, tile.x, tile.y, this.mapSize, this.yOffset, this.materials['wall']);
+        this.meshes.push(wall.mesh);
+
       } else if (tile.type === "bot") {
-        this.createBotTile(tile.x, tile.y);
+        const bot = new BotMesh(this.scene, tile.x, tile.y, this.mapSize, this.yOffset, this.materials['bot']);
+        this.meshes.push(bot.mesh);
       }
     });
-  }
-
-  private createBotTile(x: number, y: number) {
-    const tileSize = 1;
-    const tileMesh = new Mesh(`bot_${x}_${y}`, this.scene);
-
-    const headMesh = MeshBuilder.CreateSphere(`bot_${x}_${y}_head`, { diameter: 0.5 }, this.scene);
-    headMesh.material = this.materials['bot'];
-
-    headMesh.position = new Vector3(
-      x - ((this.mapSize / 2) - 0.5),
-      tileSize / 2 + this.yOffset,
-      y - ((this.mapSize / 2) - 0.5)
-    );
-    
-    const bodyMesh = MeshBuilder.CreateCylinder(`bot_${x}_${y}_body`, {
-      height: 0.5,
-      diameterTop: 0,
-      diameterBottom: 0.8,
-      tessellation: 4
-    });
-    bodyMesh.material = this.materials['bot'];
-
-    bodyMesh.position = new Vector3(
-      x - ((this.mapSize / 2) - 0.5),
-      this.yOffset + (0.5/2),
-      y - ((this.mapSize / 2) - 0.5)
-    );
-
-    tileMesh.addChild(headMesh);
-    tileMesh.addChild(bodyMesh);
-
-    this.meshes.push(tileMesh);
-  }
-
-  private createWallTile(x: number, y: number) {
-    const tileSize = 1;
-    const tileMesh = MeshBuilder.CreateBox(`wall_${x}_${y}`, { size: tileSize }, this.scene);
-
-    tileMesh.material = this.materials['wall'];
-
-    tileMesh.position = new Vector3(
-      x - ((this.mapSize / 2) - 0.5),
-      tileSize / 2 + this.yOffset,
-      y - ((this.mapSize / 2) - 0.5)
-    );
-    
-    this.meshes.push(tileMesh);
-  }
-
-  private createWoodTile(x: number, y: number) {
-    // Procedurally generate trunk height between a minimum and maximum range
-    //const trunkHeight = Math.random() * (2.2 - 1) + 0.7; // Random height between 1 and 2.5
-    const trunkHeight = 1.5;
-    const trunkDiameter = 0.2;
-    const foliageDiameter = 1;
-
-    // Randomly choose between a cone or sphere for the foliage
-    //const isCone = Math.random() > 0.5; // 50% chance for either shape
-    const isCone = true;
-    
-    let foliage: Mesh;
-
-    if (isCone) {
-      // Create the foliage as a cone
-      foliage = MeshBuilder.CreateCylinder(`foliage_${x}_${y}`, {
-        diameterTop: 0, 
-        height: 1, 
-        tessellation: 96
-      }, this.scene);
-    } else {
-      // Create the foliage as a sphere
-      foliage = MeshBuilder.CreateSphere(`foliage_${x}_${y}`, {
-        diameter: foliageDiameter,
-        segments: 16
-      }, this.scene);
-    }
-
-    // Create the trunk using a cylinder
-    const trunk = MeshBuilder.CreateCylinder(`trunk_${x}_${y}`, {
-      height: trunkHeight,
-      diameterTop: trunkDiameter,
-      diameterBottom: trunkDiameter,
-      tessellation: 16
-    }, this.scene);
-
-    // Position the trunk and foliage to resemble a tree
-    trunk.position = new Vector3(
-      x - ((this.mapSize / 2) - 0.5),
-      trunkHeight / 2 + this.yOffset, // Center the trunk height
-      y - ((this.mapSize / 2) - 0.5)
-    );
-
-    foliage.position = new Vector3(
-      x - ((this.mapSize / 2) - 0.5),
-      trunkHeight + foliageDiameter / 2 + this.yOffset, // Position foliage above the trunk
-      y - ((this.mapSize / 2) - 0.5)
-    );
-
-    // Combine both the trunk and foliage to form the tree mesh
-    const treeMesh = new Mesh(`wood_${x}_${y}`, this.scene);
-    trunk.parent = treeMesh;
-    foliage.parent = treeMesh;
-
-    // Apply a wood-like material to the trunk and a green material to the foliage
-    const trunkMaterial = new StandardMaterial('woodMat', this.scene);
-    trunkMaterial.diffuseColor = new Color3(0.55, 0.27, 0.07); // Wood color
-    trunk.material = trunkMaterial;
-
-    const foliageMaterial = new StandardMaterial('greenMat', this.scene);
-    foliageMaterial.diffuseColor = new Color3(0, 1, 0); // Green color for foliage
-    foliage.material = foliageMaterial;
-
-    // Add the tree mesh to the list of meshes
-    this.meshes.push(treeMesh); // TODO: either use tileMesh or skip adding tileMesh
-  }
-
-  private createIronTile(x: number, y: number) {
-    const ironMesh = new Mesh(`iron_${x}_${y}`, this.scene);
-
-    // Create three pyramids of different heights
-    const pyramid1 = MeshBuilder.CreateCylinder("pyramid1", {
-      height: 0.4,
-      diameterTop: 0,
-      diameterBottom: 0.6,
-      tessellation: 4
-    });
-    
-    const pyramid2 = MeshBuilder.CreateCylinder("pyramid2", {
-      height: 0.3,
-      diameterTop: 0,
-      diameterBottom: 0.3,
-      tessellation: 4
-    });
-    
-    const pyramid3 = MeshBuilder.CreateCylinder("pyramid3", {
-      height: 0.5,
-      diameterTop: 0,
-      diameterBottom: 0.4,
-      tessellation: 4
-    });
-    
-    // Position the pyramids next to each other
-    pyramid1.position = new Vector3(
-      x - ((this.mapSize / 2) - 0.7),
-      (0.4/2) + this.yOffset,
-      y - ((this.mapSize / 2) - 0.6)
-    );
-
-    pyramid2.position = new Vector3(
-      x - ((this.mapSize / 2) - 0.5),
-      (0.3/2) + this.yOffset,
-      y - ((this.mapSize / 2) + -0.25)
-    );
-    
-    pyramid3.position = new Vector3(
-      x - ((this.mapSize / 2) - 0.3),
-      (0.5/2) + this.yOffset,
-      y - ((this.mapSize / 2) + -0.75)
-    );
-
-    // Apply the material to all pyramids
-    pyramid1.material = pyramid2.material = pyramid3.material = this.materials["iron"];
-    
-    ironMesh.addChild(pyramid1);
-    ironMesh.addChild(pyramid2);
-    ironMesh.addChild(pyramid3);
-
-    this.meshes.push(ironMesh);
-  };
-
-  private createFoodTile(x: number, y: number) {
-    const tileSize = 0.5; // Halve the size for food tiles
-    const tileMesh = MeshBuilder.CreateBox(`food_${x}_${y}`, { size: tileSize }, this.scene);
-
-    tileMesh.material = this.materials['food'];
-
-    tileMesh.position = new Vector3(
-      x - ((this.mapSize / 2) - 0.5),
-      tileSize / 2 + this.yOffset,
-      y - ((this.mapSize / 2) - 0.5)
-    );
-    
-    this.meshes.push(tileMesh);
-  }
-
-  private createWaterTile(x: number, y: number) {
-    // Create a plane for water tiles, fill the ground without creating a box
-    const tileHeight = this.yOffset;
-    const tileMesh = MeshBuilder.CreateGround(`water_${x}_${y}`, { width: 1, height: 1 }, this.scene);
-
-    tileMesh.material = this.materials['water'];
-
-    tileMesh.position = new Vector3(
-      x - ((this.mapSize / 2) - 0.5),
-      tileHeight / 2 + this.yOffset,
-      y - ((this.mapSize / 2) - 0.5)
-    );
-    
-    this.meshes.push(tileMesh);
   }
 
   // Map TileType to Babylon.js Colors
