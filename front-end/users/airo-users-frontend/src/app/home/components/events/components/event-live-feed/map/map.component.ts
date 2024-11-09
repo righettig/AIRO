@@ -5,11 +5,9 @@ import {
   ArcRotateCamera,
   Vector3,
   HemisphericLight,
-  MeshBuilder,
   Color3,
   Mesh,
 } from '@babylonjs/core';
-import { GridMaterial } from '@babylonjs/materials/grid/gridMaterial';
 import { LoadedMapData } from './models/map.models';
 import { AdvancedDynamicTexture, Control, Rectangle, TextBlock } from '@babylonjs/gui/2D';
 import { FoodMaterial, FoodMesh } from './models/food.mesh';
@@ -18,6 +16,7 @@ import { WoodMaterial, WoodMesh } from './models/wood.mesh';
 import { IronMaterial, IronMesh } from './models/iron.mesh';
 import { BotMaterial, BotMesh } from './models/bot.mesh';
 import { WallMaterial, WallMesh } from './models/wall.mesh';
+import { GroundMaterial, GroundMesh } from './models/ground.mesh';
 
 @Component({
   selector: 'app-map-renderer',
@@ -190,7 +189,7 @@ export class MapRendererComponent implements AfterViewInit {
     this.camera.upperRadiusLimit = mapData.size * 3; // Set upper radius limit based on the map size
     this.camera.radius = this.camera.upperRadiusLimit / 1.5;
     
-    this.createGround(mapData.size);
+    new GroundMesh(this.scene, mapData.size, new GroundMaterial(this.scene));
 
     // TODO: customise for each bot
     this.botMaterial = new BotMaterial(this.scene, Color3.Green());
@@ -233,22 +232,5 @@ export class MapRendererComponent implements AfterViewInit {
         this.meshes.push(bot.mesh);
       }
     });
-  }
-
-  private createGround(size: number): void {
-    const gridMaterial = new GridMaterial('grid', this.scene);
-    gridMaterial.gridRatio = 1;
-    gridMaterial.majorUnitFrequency = 1;
-    gridMaterial.minorUnitVisibility = 0.45;
-    gridMaterial.backFaceCulling = false;
-    gridMaterial.mainColor = new Color3(1, 1, 1);
-    gridMaterial.lineColor = new Color3(0.5, 0.5, 0.5);
-
-    const ground = MeshBuilder.CreateGround(
-      'ground',
-      { width: size, height: size, subdivisions: size },
-      this.scene
-    );
-    ground.material = gridMaterial;
   }
 }
