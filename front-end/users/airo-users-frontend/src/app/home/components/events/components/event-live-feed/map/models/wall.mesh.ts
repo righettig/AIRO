@@ -3,8 +3,22 @@ import {
   Vector3,
   MeshBuilder,
   Mesh,
-  Material,
+  Color3,
+  StandardMaterial,
 } from '@babylonjs/core';
+
+export class WallMaterial{
+  private readonly _material: StandardMaterial;
+
+  constructor(scene: Scene) {
+    this._material = new StandardMaterial(`mat_wall`, scene);
+    this._material.diffuseColor = Color3.Gray();
+  }
+
+  public get material() {
+    return this._material;
+  }
+}
 
 export class WallMesh {
   private _mesh: Mesh;
@@ -15,7 +29,7 @@ export class WallMesh {
     private y: number,          
     private mapSize: number,    // Size of the map to calculate correct position
     private yOffset: number = 0.001, // Offset to avoid z-fighting
-    private material: Material
+    private wallMaterial: WallMaterial
   ) {
     this._mesh = this.createMesh();
   }
@@ -28,7 +42,7 @@ export class WallMesh {
     const tileSize = 1;
     const mesh = MeshBuilder.CreateBox(`wall_${this.x}_${this.y}`, { size: tileSize }, this.scene);
 
-    mesh.material = this.material;
+    mesh.material = this.wallMaterial.material;
 
     mesh.position = new Vector3(
       this.x - ((this.mapSize / 2) - 0.5),

@@ -3,8 +3,24 @@ import {
   Vector3,
   MeshBuilder,
   Mesh,
-  Material,
+  Color3,
+  StandardMaterial,
 } from '@babylonjs/core';
+
+export class IronMaterial{
+  private readonly _material: StandardMaterial;
+
+  constructor(scene: Scene) {
+    this._material = new StandardMaterial(`mat_iron`, scene);
+    this._material.diffuseColor = Color3.Red();
+    this._material.diffuseColor = new Color3(0.8, 0.6, 0.4);
+    this._material.specularColor = new Color3(0.3, 0.3, 0.3);
+  }
+
+  public get material() {
+    return this._material;
+  }
+}
 
 export class IronMesh {
   private _mesh: Mesh;
@@ -15,7 +31,7 @@ export class IronMesh {
     private y: number,          
     private mapSize: number,    // Size of the map to calculate correct position
     private yOffset: number = 0.001, // Offset to avoid z-fighting
-    private material: Material
+    private ironMaterial: IronMaterial
   ) {
     this._mesh = this.createMesh();
   }
@@ -69,7 +85,7 @@ export class IronMesh {
     );
 
     // Apply the material to all pyramids
-    pyramid1.material = pyramid2.material = pyramid3.material = this.material;
+    pyramid1.material = pyramid2.material = pyramid3.material = this.ironMaterial.material;
     
     mesh.addChild(pyramid1);
     mesh.addChild(pyramid2);

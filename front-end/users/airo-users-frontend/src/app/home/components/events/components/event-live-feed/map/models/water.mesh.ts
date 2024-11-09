@@ -3,8 +3,23 @@ import {
   Vector3,
   MeshBuilder,
   Mesh,
-  Material,
+  Color3,
+  StandardMaterial,
 } from '@babylonjs/core';
+
+export class WaterMaterial{
+  private readonly _material: StandardMaterial;
+
+  constructor(scene: Scene) {
+    this._material = new StandardMaterial(`mat_water`, scene);
+    this._material.diffuseColor = Color3.Blue();
+    this._material.alpha = 0.75; // Semi-transparent for water effect
+  }
+
+  public get material() {
+    return this._material;
+  }
+}
 
 export class WaterMesh {
   private _mesh: Mesh;
@@ -15,7 +30,7 @@ export class WaterMesh {
     private y: number,          
     private mapSize: number,    // Size of the map to calculate correct position
     private yOffset: number = 0.001, // Offset to avoid z-fighting
-    private material: Material
+    private waterMaterial: WaterMaterial
   ) {
     this._mesh = this.createMesh();
   }
@@ -29,7 +44,7 @@ export class WaterMesh {
     const tileHeight = this.yOffset;
     const mesh = MeshBuilder.CreateGround(`water_${this.x}_${this.y}`, { width: 1, height: 1 }, this.scene);
 
-    mesh.material = this.material;
+    mesh.material = this.waterMaterial.material;
 
     mesh.position = new Vector3(
       this.x - ((this.mapSize / 2) - 0.5),

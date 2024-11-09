@@ -6,19 +6,18 @@ import {
   Vector3,
   HemisphericLight,
   MeshBuilder,
-  StandardMaterial,
   Color3,
   Mesh,
 } from '@babylonjs/core';
 import { GridMaterial } from '@babylonjs/materials/grid/gridMaterial';
-import { LoadedMapData, TILE_TYPES, TileType } from './models/map.models';
+import { LoadedMapData } from './models/map.models';
 import { AdvancedDynamicTexture, Control, Rectangle, TextBlock } from '@babylonjs/gui/2D';
-import { FoodMesh } from './models/food.mesh';
-import { WaterMesh } from './models/water.mesh';
-import { WoodMesh } from './models/wood.mesh';
-import { IronMesh } from './models/iron.mesh';
-import { BotMesh } from './models/bot.mesh';
-import { WallMesh } from './models/wall.mesh';
+import { FoodMaterial, FoodMesh } from './models/food.mesh';
+import { WaterMaterial, WaterMesh } from './models/water.mesh';
+import { WoodMaterial, WoodMesh } from './models/wood.mesh';
+import { IronMaterial, IronMesh } from './models/iron.mesh';
+import { BotMaterial, BotMesh } from './models/bot.mesh';
+import { WallMaterial, WallMesh } from './models/wall.mesh';
 
 @Component({
   selector: 'app-map-renderer',
@@ -34,7 +33,6 @@ export class MapRendererComponent implements AfterViewInit {
   private scene!: Scene;
   private camera!: ArcRotateCamera;
   private compassBackground!: Rectangle;
-  private materials: Record<TileType, StandardMaterial> = {} as Record<TileType, StandardMaterial>;
   private meshes: Mesh[] = [];
   private mapSize: number = 0;
 
@@ -43,6 +41,13 @@ export class MapRendererComponent implements AfterViewInit {
   private initialCameraAlpha!: number;
   private initialCameraBeta!: number;
   private initialCameraPosition!: Vector3;
+
+  private botMaterial!: BotMaterial;
+  private foodMaterial!: FoodMaterial;
+  private ironMaterial!: IronMaterial;
+  private wallMaterial!: WallMaterial;
+  private waterMaterial!: WaterMaterial;
+  private woodMaterial!: WoodMaterial;
 
   ngAfterViewInit(): void {
     const canvas = this.mapCanvas.nativeElement;
@@ -53,9 +58,6 @@ export class MapRendererComponent implements AfterViewInit {
     this.createCamera(canvas);
 
     this.createLight();
-
-    // Preload materials based on tile colors
-    this.initializeMaterials();
 
     // Add the compass UI overlay
     this.createCompass();
@@ -182,28 +184,22 @@ export class MapRendererComponent implements AfterViewInit {
     this.camera.beta = this.initialCameraBeta;
   }
 
-  // Initialize materials for each tile type based on tileColors
-  private initializeMaterials() {
-    for (const type of TILE_TYPES) {
-      const material = new StandardMaterial(`mat_${type}`, this.scene);
-      material.diffuseColor = this.getTileColor(type);
-      this.materials[type] = material;
-
-      if (type === "water") {
-        material.alpha = 0.75; // Semi-transparent for water effect
-
-      } else if (type === "iron") {
-        material.diffuseColor = new Color3(0.8, 0.6, 0.4);
-        material.specularColor = new Color3(0.3, 0.3, 0.3);
-      }
-    }
-  }
-
   initMap(mapData: LoadedMapData) {
     this.mapSize = mapData.size;
+    
     this.camera.upperRadiusLimit = mapData.size * 3; // Set upper radius limit based on the map size
     this.camera.radius = this.camera.upperRadiusLimit / 1.5;
+    
     this.createGround(mapData.size);
+
+    // TODO: customise for each bot
+    this.botMaterial = new BotMaterial(this.scene, Color3.Green());
+
+    this.foodMaterial = new FoodMaterial(this.scene);
+    this.ironMaterial = new IronMaterial(this.scene);
+    this.wallMaterial = new WallMaterial(this.scene);
+    this.waterMaterial = new WaterMaterial(this.scene);
+    this.woodMaterial = new WoodMaterial(this.scene);
   }
 
   // Load map data and render tiles as Babylon.js objects
@@ -213,43 +209,30 @@ export class MapRendererComponent implements AfterViewInit {
 
     mapData.tiles.filter(tile => tile.type !== 'empty').forEach(tile => { // Skip empty tile rendering
       if (tile.type === 'food') {
-        const food = new FoodMesh(this.scene, tile.x, tile.y, this.mapSize, this.yOffset, this.materials['food']);
+        const food = new FoodMesh(this.scene, tile.x, tile.y, this.mapSize, this.yOffset, this.foodMaterial);
         this.meshes.push(food.mesh);
 
       } else if (tile.type === 'water') {
-        const water = new WaterMesh(this.scene, tile.x, tile.y, this.mapSize, this.yOffset, this.materials['water']);
+        const water = new WaterMesh(this.scene, tile.x, tile.y, this.mapSize, this.yOffset, this.waterMaterial);
         this.meshes.push(water.mesh);
 
       } else if (tile.type === 'wood') {
-        const wood = new WoodMesh(this.scene, tile.x, tile.y, this.mapSize, this.yOffset);
+        const wood = new WoodMesh(this.scene, tile.x, tile.y, this.mapSize, this.yOffset, this.woodMaterial);
         this.meshes.push(wood.mesh);
 
       } else if (tile.type === "iron") {
-        const iron = new IronMesh(this.scene, tile.x, tile.y, this.mapSize, this.yOffset, this.materials['iron']);
+        const iron = new IronMesh(this.scene, tile.x, tile.y, this.mapSize, this.yOffset, this.ironMaterial);
         this.meshes.push(iron.mesh);
 
       } else if (tile.type === "wall") {
-        const wall = new WallMesh(this.scene, tile.x, tile.y, this.mapSize, this.yOffset, this.materials['wall']);
+        const wall = new WallMesh(this.scene, tile.x, tile.y, this.mapSize, this.yOffset, this.wallMaterial);
         this.meshes.push(wall.mesh);
 
       } else if (tile.type === "bot") {
-        const bot = new BotMesh(this.scene, tile.x, tile.y, this.mapSize, this.yOffset, this.materials['bot']);
+        const bot = new BotMesh(this.scene, tile.x, tile.y, this.mapSize, this.yOffset, this.botMaterial);
         this.meshes.push(bot.mesh);
       }
     });
-  }
-
-  // Map TileType to Babylon.js Colors
-  private getTileColor(type: TileType): Color3 {
-    switch (type) {
-      case 'bot': return Color3.Green();
-      case 'food': return Color3.FromHexString('#FFA500');
-      case 'water': return Color3.Blue();
-      case 'wood': return Color3.FromHexString('#A52A2A');
-      case 'iron': return Color3.Red();
-      case 'wall': return Color3.Gray();
-      default: return Color3.White();
-    }
   }
 
   private createGround(size: number): void {

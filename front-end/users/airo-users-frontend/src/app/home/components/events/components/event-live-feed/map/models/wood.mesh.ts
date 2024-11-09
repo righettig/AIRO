@@ -3,10 +3,30 @@ import {
   Vector3,
   MeshBuilder,
   Mesh,
-  Material,
   Color3,
   StandardMaterial,
 } from '@babylonjs/core';
+
+export class WoodMaterial{
+  private readonly _trunkMaterial: StandardMaterial;
+  private readonly _foliageMaterial: StandardMaterial;
+
+  constructor(scene: Scene) {
+    this._trunkMaterial = new StandardMaterial('woodMat', scene);
+    this._trunkMaterial.diffuseColor = new Color3(0.55, 0.27, 0.07); // Wood color
+
+    this._foliageMaterial = new StandardMaterial('greenMat', scene);
+    this._foliageMaterial.diffuseColor = new Color3(0, 1, 0); // Green color for foliage
+  }
+
+  public get trunkMaterial() {
+    return this._trunkMaterial;
+  }
+
+  public get foliageMaterial() {
+    return this._foliageMaterial;
+  }
+}
 
 export class WoodMesh {
   private _mesh: Mesh;
@@ -16,7 +36,9 @@ export class WoodMesh {
     private x: number,
     private y: number,
     private mapSize: number,    // Size of the map to calculate correct position
-    private yOffset: number = 0.001  ) {
+    private yOffset: number = 0.001,
+    private woodMaterial: WoodMaterial
+  ) {
     this._mesh = this.createMesh();
   }
 
@@ -79,13 +101,8 @@ export class WoodMesh {
     foliage.parent = treeMesh;
 
     // Apply a wood-like material to the trunk and a green material to the foliage
-    const trunkMaterial = new StandardMaterial('woodMat', this.scene);
-    trunkMaterial.diffuseColor = new Color3(0.55, 0.27, 0.07); // Wood color
-    trunk.material = trunkMaterial;
-
-    const foliageMaterial = new StandardMaterial('greenMat', this.scene);
-    foliageMaterial.diffuseColor = new Color3(0, 1, 0); // Green color for foliage
-    foliage.material = foliageMaterial;
+    trunk.material = this.woodMaterial.trunkMaterial;
+    foliage.material = this.woodMaterial.foliageMaterial;
 
     return treeMesh;
   }

@@ -3,8 +3,22 @@ import {
   Vector3,
   MeshBuilder,
   Mesh,
-  Material,
+  StandardMaterial,
+  Color3,
 } from '@babylonjs/core';
+
+export class BotMaterial {
+  private readonly _material: StandardMaterial;
+
+  constructor(scene: Scene, color: Color3) {
+    this._material = new StandardMaterial(`mat_bot`, scene);
+    this._material.diffuseColor = color;
+  }
+
+  public get material() {
+    return this._material;
+  }
+}
 
 export class BotMesh {
   private _mesh: Mesh;
@@ -15,7 +29,7 @@ export class BotMesh {
     private y: number,          
     private mapSize: number,    // Size of the map to calculate correct position
     private yOffset: number = 0.001, // Offset to avoid z-fighting
-    private material: Material
+    private botMaterial: BotMaterial, // Shared material instance
   ) {
     this._mesh = this.createMesh();
   }
@@ -29,7 +43,7 @@ export class BotMesh {
     const mesh = new Mesh(`bot_${this.x}_${this.y}`, this.scene);
 
     const headMesh = MeshBuilder.CreateSphere(`bot_${this.x}_${this.y}_head`, { diameter: 0.5 }, this.scene);
-    headMesh.material = this.material;
+    headMesh.material = this.botMaterial.material;
 
     headMesh.position = new Vector3(
       this.x - ((this.mapSize / 2) - 0.5),
@@ -43,7 +57,7 @@ export class BotMesh {
       diameterBottom: 0.8,
       tessellation: 4
     });
-    bodyMesh.material = this.material;
+    bodyMesh.material = this.botMaterial.material;
 
     bodyMesh.position = new Vector3(
       this.x - ((this.mapSize / 2) - 0.5),
