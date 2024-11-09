@@ -46,6 +46,31 @@ export class MapRendererComponent implements AfterViewInit {
     this.engine = new Engine(canvas, true);
     this.scene = new Scene(this.engine);
 
+    this.createCamera(canvas);
+
+    const light = new HemisphericLight('light1', new Vector3(50, 100, 50), this.scene);
+
+    // Preload materials based on tile colors
+    this.initializeMaterials();
+
+    this.engine.runRenderLoop(() => {
+      this.scene.render();
+    });
+
+    window.addEventListener('resize', () => {
+      this.engine.resize();
+    });
+
+    // Add the compass UI overlay
+    this.createCompass();
+
+    // Update compass orientation whenever the camera rotates
+    this.camera.onViewMatrixChangedObservable.add(() => {
+      this.updateCompass();
+    });
+  }
+
+  private createCamera(canvas: HTMLCanvasElement) {
     const minBeta = 0;  // Minimum angle (45 degrees)
     const maxBeta = Math.PI / 2.25; // Maximum angle (120 degrees)
     const minZoomDistance = 15; // Minimum zoom-in distance
@@ -69,27 +94,6 @@ export class MapRendererComponent implements AfterViewInit {
     this.camera.lowerBetaLimit = minBeta;
     this.camera.upperBetaLimit = maxBeta;
     this.camera.lowerRadiusLimit = minZoomDistance; // Set zoom limits
-
-    const light = new HemisphericLight('light1', new Vector3(50, 100, 50), this.scene);
-
-    // Preload materials based on tile colors
-    this.initializeMaterials();
-
-    this.engine.runRenderLoop(() => {
-      this.scene.render();
-    });
-
-    window.addEventListener('resize', () => {
-      this.engine.resize();
-    });
-
-    // Add the compass UI overlay
-    this.createCompass();
-
-    // Update compass orientation whenever the camera rotates
-    this.camera.onViewMatrixChangedObservable.add(() => {
-      this.updateCompass();
-    });
   }
 
   private updateCompass() {
