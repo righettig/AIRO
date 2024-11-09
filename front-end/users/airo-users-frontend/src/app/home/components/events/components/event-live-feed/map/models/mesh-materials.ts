@@ -6,7 +6,7 @@ import { IronMaterial } from "./iron.mesh";
 import { WallMaterial } from "./wall.mesh";
 import { WaterMaterial } from "./water.mesh";
 import { WoodMaterial } from "./wood.mesh";
-import { ColorDictionary } from "../map.component";
+import { ColorDictionary } from "./color-dictionary";
 
 export class MeshMaterials {
     _bots: { [key: string]: BotMaterial };

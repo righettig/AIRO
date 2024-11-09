@@ -4,7 +4,6 @@ import {
   Scene,
   Vector3,
   HemisphericLight,
-  Color3,
 } from '@babylonjs/core';
 import { LoadedMapData } from './models/map.models';
 import { GroundMesh } from './models/ground.mesh';
@@ -13,10 +12,7 @@ import { Camera } from './models/camera';
 import { Compass } from './models/compass.ui';
 import { MeshMaterials } from './models/mesh-materials';
 import { MeshFactory } from './models/mesh-factory';
-
-export interface ColorDictionary {
-  [key: string]: Color3;
-}
+import { ColorDictionary } from './models/color-dictionary';
 
 @Component({
   selector: 'app-map-renderer',
@@ -39,15 +35,6 @@ export class MapRendererComponent implements AfterViewInit {
   private materials!: MeshMaterials;
   private meshFactory!:  MeshFactory;
 
-  private colors: Color3[] = [
-    Color3.Green(),
-    Color3.Red(),
-    Color3.Purple(),
-    Color3.Yellow(),
-  ];
-
-  private botColors: ColorDictionary = {};
-
   ngAfterViewInit(): void {
     this.initializeEngineAndScene();
     this.createLight();
@@ -57,14 +44,12 @@ export class MapRendererComponent implements AfterViewInit {
     this.engine.runRenderLoop(() => this.scene.render());
   }
 
-  initMap(mapData: LoadedMapData) {
+  initMap(mapData: LoadedMapData, botColors: ColorDictionary) {
     this.mapSize = mapData.size;
     this.camera.upperRadiusLimit = mapData.size * 3; // Set upper radius limit based on the map size
+    this.materials = new MeshMaterials(this.scene, botColors);
+    this.meshFactory = new MeshFactory(this.materials);
     this.createGround();
-
-    mapData.tiles.filter(x => x.botId).forEach((tileInfo, i) => {
-      this.botColors[tileInfo.botId!] = this.colors[i];
-    });
   }
 
   // Load map data and render tiles as Babylon.js objects
@@ -78,8 +63,6 @@ export class MapRendererComponent implements AfterViewInit {
     this.engine = new Engine(canvas, true);
     this.scene = new Scene(this.engine);
     this.camera = new Camera(this.scene, canvas);
-    this.materials = new MeshMaterials(this.scene, this.botColors);
-    this.meshFactory = new MeshFactory(this.materials);
   }
 
   private createLight() {
