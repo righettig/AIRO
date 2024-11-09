@@ -5,5 +5,5 @@ export const TILE_TYPES: TileType[] = ['empty', 'food', 'water', 'wood', 'iron',
 
 export interface LoadedMapData {
     size: number;
-    tiles: Array<{ x: number; y: number; type: TileType }>;
+    tiles: Array<{ x: number; y: number; type: TileType }>; // TODO: create type for { x: number; y: number; type: TileType }
 }
