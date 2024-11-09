@@ -1,4 +1,5 @@
 ﻿using airo_event_simulation_domain.Impl.Simulation;
+using airo_event_simulation_domain.Impl.Simulation.Actions;
 using airo_event_simulation_domain.Interfaces;
 
 namespace airo_event_simulation_domain.Impl;
@@ -65,6 +66,35 @@ public class BotState(Guid botId,
 
         var distance = GetAbsoluteDistance(Position, bot.Position); // Use Position directly from state
         return distance < 2;
+    }
+
+    public bool CanMove(Direction direction)
+    {
+        var newPosition = GetNewPosition(Position, direction);
+        return IsValidPosition(newPosition, VisibleTiles);
+    }
+
+    private static Position GetNewPosition(Position oldPosition, Direction direction)
+    {
+        return direction switch
+        {
+            Direction.Up => new Position(oldPosition.X, oldPosition.Y - 1),
+            Direction.Down => new Position(oldPosition.X, oldPosition.Y + 1),
+            Direction.Left => new Position(oldPosition.X - 1, oldPosition.Y),
+            Direction.Right => new Position(oldPosition.X + 1, oldPosition.Y),
+            _ => oldPosition // No movement
+        };
+    }
+
+    private static bool IsValidPosition(Position position, Dictionary<Position, ITileInfo> visibleTiles)
+    {
+        // Check that the bot can move on a tile and bot is not trying to move outside of map boundaries
+        if (visibleTiles.TryGetValue(position, out ITileInfo? value))
+        {
+            return value.Type.CanMoveOn();
+        }
+
+        return false;        
     }
 
     private static int GetDistance(Position pos1, Position pos2)

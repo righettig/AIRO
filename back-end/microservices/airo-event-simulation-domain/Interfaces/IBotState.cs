@@ -1,4 +1,5 @@
 ﻿using airo_event_simulation_domain.Impl.Simulation;
+using airo_event_simulation_domain.Impl.Simulation.Actions;
 
 namespace airo_event_simulation_domain.Interfaces;
 
@@ -18,4 +19,5 @@ public interface IBotState
     Position? GetNearestFoodTile();
 
     bool CanAttack(ISimulationBot? enemy);
+    bool CanMove(Direction direction);
 }

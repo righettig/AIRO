@@ -165,7 +165,7 @@ public class StateUpdater : ISimulationStateUpdater
         // Check if the position is within bounds and not blocked by walls, etc.
         return position.X >= 0 && position.X < state.Tiles.GetLength(0) &&
                position.Y >= 0 && position.Y < state.Tiles.GetLength(1) &&
-               state.GetTileAt(position).Type != TileType.Wall;
+               state.GetTileAt(position).Type.CanMoveOn();
     }
 
     public static void MoveBot(ISimulationBot bot, ISimulationState state, Position newPosition)
