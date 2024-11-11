@@ -72,8 +72,8 @@ public class SimulationEngineTests
         // Arrange
         var mockParticipants = new Participant[2] 
         {
-            new("user1", new Bot(Guid.Parse("d6c70321-f0f7-40f5-8760-bd76d3aa2b12"), 100, new Mock<IBotAgent>().Object)),
-            new("user2", new Bot(Guid.Parse("ab268f23-140b-4c55-8f40-0b499e2468e1"), 100, new Mock<IBotAgent>().Object)),
+            new("user1", new Bot(Guid.Parse("d6c70321-f0f7-40f5-8760-bd76d3aa2b12"), 100, 10, 1, new Mock<IBotAgent>().Object)),
+            new("user2", new Bot(Guid.Parse("ab268f23-140b-4c55-8f40-0b499e2468e1"), 100, 10, 1, new Mock<IBotAgent>().Object)),
         };
 
         _mockSimulation.Setup(s => s.GetActiveParticipants()).Returns(mockParticipants);
@@ -111,7 +111,7 @@ public class SimulationEngineTests
         // Arrange
         var mockParticipants = new Participant[1]
         {
-            new("user1", new Bot(Guid.Parse("d6c70321-f0f7-40f5-8760-bd76d3aa2b12"), 100, new Mock<IBotAgent>().Object)),
+            new("user1", new Bot(Guid.Parse("d6c70321-f0f7-40f5-8760-bd76d3aa2b12"), 100, 10, 1, new Mock<IBotAgent>().Object)),
         };
 
         _mockSimulation.Setup(s => s.GetActiveParticipants()).Returns(mockParticipants);
@@ -172,7 +172,7 @@ public class SimulationEngineTests
     private ISimulation SetupMockSimulation(int participantCount, bool simulationComplete)
     {
         var mockParticipants = Enumerable.Range(0, participantCount)
-            .Select(i => new Participant($"user{i}", new Bot(Guid.NewGuid(), 100, new Mock<IBotAgent>().Object)))
+            .Select(i => new Participant($"user{i}", new Bot(Guid.NewGuid(), 100, 10, 1, new Mock<IBotAgent>().Object)))
             .ToArray();
 
         _mockSimulationGoal.Setup(g => g.IsSimulationComplete(It.IsAny<ISimulation>())).Returns(simulationComplete);
@@ -185,7 +185,7 @@ public class SimulationEngineTests
     private ISimulation SetupMockSimulation(int participantCount, int turns)
     {
         var mockParticipants = Enumerable.Range(0, participantCount)
-            .Select(i => new Participant($"user{i}", new Bot(Guid.NewGuid(), 100, new Mock<IBotAgent>().Object)))
+            .Select(i => new Participant($"user{i}", new Bot(Guid.NewGuid(), 100, 10, 1, new Mock<IBotAgent>().Object)))
             .ToArray();
 
         var IsSimulationComplete = _mockSimulationGoal.SetupSequence(g => g.IsSimulationComplete(It.IsAny<ISimulation>()));
