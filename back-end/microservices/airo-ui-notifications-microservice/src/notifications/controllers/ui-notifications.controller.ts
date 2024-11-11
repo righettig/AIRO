@@ -1,13 +1,13 @@
-import { Controller, Get, Param, Patch, Delete, Body } from '@nestjs/common';
-import { UiNotificationRepository } from '../services/notifications-repository.service';
-import { UiNotificationStatusRepository } from '../services/notifications-status.repository.service';
+import { Controller, Get, Param, Patch, Delete, Body, Inject } from '@nestjs/common';
+import { IUiNotificationRepository, UI_NOTIFICATION_REPOSITORY } from '../services/notifications-repository.service';
+import { IUiNotificationStatusRepository, UI_NOTIFICATION_STATUS_REPOSITORY } from '../services/notifications-status.repository.service';
 import { UINotificationDto } from '../models/ui-notification.dto';
 
 @Controller('api/ui-notifications')
 export class UiNotificationController {
     constructor(
-        private readonly uiNotificationRepo: UiNotificationRepository,
-        private readonly uiNotificationStatusRepo: UiNotificationStatusRepository,
+        @Inject(UI_NOTIFICATION_REPOSITORY) private readonly uiNotificationRepo: IUiNotificationRepository,
+        @Inject(UI_NOTIFICATION_STATUS_REPOSITORY) private readonly uiNotificationStatusRepo: IUiNotificationStatusRepository,
     ) { }
 
     // Get all notifications for a user and ensure "new" notifications have a status

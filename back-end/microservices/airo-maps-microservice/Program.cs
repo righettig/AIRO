@@ -5,42 +5,53 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var cosmosDbConnectionString = builder.Configuration.GetConnectionString("CosmosDb");
-var databaseName = builder.Configuration["DatabaseName"];
+var useInMemoryDb = builder.Configuration["USE_IN_MEMORY_DB"];
 
-// avoid SSL certificate issue on connect
-var httpClientFactory = () =>
+if (useInMemoryDb != null && useInMemoryDb == "true")
 {
-    HttpMessageHandler httpMessageHandler = new HttpClientHandler()
+    builder.Services.AddSingleton<IMapService, InMemoryMapService>();
+
+    Console.WriteLine("Using in-memeory impl for IMapService.");
+}
+else 
+{
+    var cosmosDbConnectionString = builder.Configuration.GetConnectionString("CosmosDb");
+    var databaseName = builder.Configuration["DatabaseName"];
+
+    // avoid SSL certificate issue on connect
+    var httpClientFactory = () =>
     {
-        ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+        HttpMessageHandler httpMessageHandler = new HttpClientHandler()
+        {
+            ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+        };
+
+        return new HttpClient(httpMessageHandler);
     };
 
-    return new HttpClient(httpMessageHandler);
-};
+    var cosmosClientOptions = new CosmosClientOptions()
+    {
+        HttpClientFactory = httpClientFactory,
+        ConnectionMode = ConnectionMode.Gateway
+    };
 
-var cosmosClientOptions = new CosmosClientOptions()
-{
-    HttpClientFactory = httpClientFactory,
-    ConnectionMode = ConnectionMode.Gateway
-};
+    var cosmosClient = new CosmosClient(cosmosDbConnectionString, cosmosClientOptions);
+    builder.Services.AddSingleton(cosmosClient);
 
-var cosmosClient = new CosmosClient(cosmosDbConnectionString, cosmosClientOptions);
-builder.Services.AddSingleton(cosmosClient);
+    builder.Services.AddDbContext<MapContext>(options => options.UseCosmos(cosmosDbConnectionString, databaseName, cosmosOptions =>
+    {
+        cosmosOptions.ConnectionMode(ConnectionMode.Gateway);
+        cosmosOptions.HttpClientFactory(httpClientFactory);
+    }));
 
-builder.Services.AddDbContext<MapContext>(options => options.UseCosmos(cosmosDbConnectionString, databaseName, cosmosOptions =>
-{
-    cosmosOptions.ConnectionMode(ConnectionMode.Gateway);
-    cosmosOptions.HttpClientFactory(httpClientFactory);
-}));
+    builder.Services.AddHostedService(sp =>
+    {
+        var logger = sp.GetRequiredService<ILogger<CosmosDbInitializationService>>();
+        return new CosmosDbInitializationService(cosmosClient, logger, databaseName);
+    });
 
-builder.Services.AddScoped<IMapService, MapService>();
-
-builder.Services.AddHostedService(sp =>
-{
-    var logger = sp.GetRequiredService<ILogger<CosmosDbInitializationService>>();
-    return new CosmosDbInitializationService(cosmosClient, logger, databaseName);
-});
+    builder.Services.AddScoped<IMapService, MapService>();
+}
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

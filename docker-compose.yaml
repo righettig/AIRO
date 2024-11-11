@@ -648,7 +648,7 @@ volumes:
   airo-enterprise-config-volume:
     external: true 
   
-  # data-volume:
+  data-volume:
   
   # mongo_data:
   

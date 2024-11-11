@@ -1,9 +1,9 @@
 import { RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
-import { Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ConsumeMessage } from 'amqplib';
-import { UiNotificationRepository } from './notifications-repository.service';
 import { UINotification } from '../models/ui-notification.interface';
 import { EventHandlerFactory } from '../handlers/event-handler-factory';
+import { IUiNotificationRepository, UI_NOTIFICATION_REPOSITORY } from './notifications-repository.service';
 
 type UiNotificationCreatedMessage = {
     eventType: string,
@@ -15,7 +15,7 @@ export class NotificationsService {
     private readonly logger = new Logger(NotificationsService.name);
 
     constructor(
-        private readonly repository: UiNotificationRepository,
+        @Inject(UI_NOTIFICATION_REPOSITORY) private readonly repository: IUiNotificationRepository,
         private readonly eventHandlerFactory: EventHandlerFactory,
     ) { }
 

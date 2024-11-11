@@ -2,12 +2,63 @@ using airo_leaderboard_microservice.Behaviours;
 using airo_leaderboard_microservice.Common.Data.Impl;
 using airo_leaderboard_microservice.Common.Data.Interfaces;
 using airo_leaderboard_microservice.Common.Services.Impl;
+using airo_leaderboard_microservice.Common.Services.Impl.InMemory;
 using airo_leaderboard_microservice.Common.Services.Interfaces;
 using airo_leaderboard_microservice.Users;
 using Microsoft.Azure.Cosmos;
 using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var useInMemoryDb = builder.Configuration["USE_IN_MEMORY_DB"];
+
+if (useInMemoryDb != null && useInMemoryDb == "true")
+{
+    // Register leaderboard services for users and behaviours
+    RegisterInMemoryLeaderboardServices<UserLeaderboardEntry>(builder.Services);
+    RegisterInMemoryLeaderboardServices<BehaviourLeaderboardEntry>(builder.Services);
+
+    Console.WriteLine("Using in-memory impl for IMapService.");
+}
+else
+{
+    // Configure CosmosDB
+    var cosmosDbEndpoint = builder.Configuration["COSMOSDB_ENDPOINT"];
+    var cosmosDbKey = builder.Configuration["COSMOSDB_KEY"];
+    var leaderboardsDb = builder.Configuration["LEADERBOARD_DB"] ?? "airo-leaderboards";
+
+    // avoid SSL certificate issue on connect
+    var cosmosClientOptions = new CosmosClientOptions()
+    {
+        HttpClientFactory = () =>
+        {
+            HttpMessageHandler httpMessageHandler = new HttpClientHandler()
+            {
+                ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+            };
+
+            return new HttpClient(httpMessageHandler);
+        },
+        ConnectionMode = ConnectionMode.Gateway
+    };
+
+    var cosmosClient = new CosmosClient(cosmosDbEndpoint, cosmosDbKey, cosmosClientOptions);
+    builder.Services.AddSingleton(cosmosClient);
+
+    builder.Services.AddHostedService(sp =>
+    {
+        var logger = sp.GetRequiredService<ILogger<CosmosDbInitializationService>>();
+        return new CosmosDbInitializationService(
+            cosmosClient,
+            logger,
+            leaderboardsDb
+        );
+    });
+
+    // Register leaderboard services for users and behaviours
+    RegisterLeaderboardServices<UserLeaderboardEntry>(builder.Services, cosmosClient, leaderboardsDb, "users");
+    RegisterLeaderboardServices<BehaviourLeaderboardEntry>(builder.Services, cosmosClient, leaderboardsDb, "behaviours");
+}
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -29,48 +80,11 @@ var redisUrl = builder.Configuration["REDIS_URL"];
 var redis = ConnectionMultiplexer.Connect(redisUrl);
 builder.Services.AddSingleton<IConnectionMultiplexer>(redis);
 
-// Configure CosmosDB
-var cosmosDbEndpoint = builder.Configuration["COSMOSDB_ENDPOINT"];
-var cosmosDbKey = builder.Configuration["COSMOSDB_KEY"];
-var leaderboardsDb = builder.Configuration["LEADERBOARD_DB"] ?? "airo-leaderboards";
-
-// avoid SSL certificate issue on connect
-var cosmosClientOptions = new CosmosClientOptions()
-{
-    HttpClientFactory = () =>
-    {
-        HttpMessageHandler httpMessageHandler = new HttpClientHandler()
-        {
-            ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-        };
-
-        return new HttpClient(httpMessageHandler);
-    },
-    ConnectionMode = ConnectionMode.Gateway
-};
-
-var cosmosClient = new CosmosClient(cosmosDbEndpoint, cosmosDbKey, cosmosClientOptions);
-builder.Services.AddSingleton(cosmosClient);
-
 // Register hosted services
 var rabbitMqUrl = builder.Configuration["RABBITMQ_URL"];
 
 builder.Services.AddHostedService(
     sp => new RabbitMqListener(sp.GetRequiredService<IEventCompletedProcessor>(), rabbitMqUrl));
-
-builder.Services.AddHostedService(sp =>
-{
-    var logger = sp.GetRequiredService<ILogger<CosmosDbInitializationService>>();
-    return new CosmosDbInitializationService(
-        cosmosClient,
-        logger,
-        leaderboardsDb
-    );
-});
-
-// Register leaderboard services for users and behaviours
-RegisterLeaderboardServices<UserLeaderboardEntry>(builder.Services, cosmosClient, leaderboardsDb, "users");
-RegisterLeaderboardServices<BehaviourLeaderboardEntry>(builder.Services, cosmosClient, leaderboardsDb, "behaviours");
 
 var app = builder.Build();
 
@@ -104,4 +118,10 @@ void RegisterLeaderboardServices<T>(IServiceCollection services, CosmosClient cl
         var redis = sp.GetRequiredService<IRedisCache<T>>();
         return new CacheSyncService<T>(container, redis);
     });
+}
+
+void RegisterInMemoryLeaderboardServices<T>(IServiceCollection services) where T : class, ILeaderboardEntry, new()
+{
+    services.AddSingleton<ILeaderboardReadService<T>, InMemoryLeaderboardReadService<T>>();
+    services.AddSingleton<ILeaderboardWriteService<T>, InMemoryLeaderboardWriteService<T>>();
 }
