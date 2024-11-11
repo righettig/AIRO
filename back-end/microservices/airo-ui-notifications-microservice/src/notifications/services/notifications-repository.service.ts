@@ -8,8 +8,30 @@ import * as https from 'https';
 // Create an HTTPS agent that accepts self-signed certificates, avoiding 'ERROR [ExceptionsHandler] self-signed certificate'
 const agent = new https.Agent({ rejectUnauthorized: false });
 
+export const UI_NOTIFICATION_REPOSITORY = 'UI_NOTIFICATION_REPOSITORY';
+
+export interface IUiNotificationRepository {
+  createUiNotification(notification: UINotification): Promise<UINotification>;
+  findAll(): Promise<UINotification[]>
+}
+
 @Injectable()
-export class UiNotificationRepository implements OnModuleInit, OnModuleDestroy {
+export class InMemoryUiNotificationRepository implements IUiNotificationRepository
+{
+  private notifications: UINotification[] = [];
+
+  async createUiNotification(notification: UINotification): Promise<UINotification> {
+    this.notifications.push(notification);
+    return notification;
+  }
+
+  async findAll(): Promise<UINotification[]> {
+    return this.notifications;
+  }
+}
+
+@Injectable()
+export class UiNotificationRepository implements IUiNotificationRepository, OnModuleInit, OnModuleDestroy {
   private client: CosmosClient;
   private database: Database;
   private container: Container;

@@ -17,4 +17,8 @@ export class ConfigService {
     get containerId(): string {
         return process.env.COSMOSDB_UI_NOTIFICATIONS_CONTAINER_ID;
     }
+
+    get useInMemoryDb(): boolean {
+        return process.env.USE_IN_MEMORY_DB === "true";
+    }
 }

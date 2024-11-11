@@ -2,8 +2,8 @@ import { Module } from '@nestjs/common';
 import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
 import { ConfigService } from './services/config.service';
 import { NotificationsService } from './services/notifications.service';
-import { UiNotificationRepository } from './services/notifications-repository.service';
-import { UiNotificationStatusRepository } from './services/notifications-status.repository.service';
+import { InMemoryUiNotificationRepository, UI_NOTIFICATION_REPOSITORY, UiNotificationRepository } from './services/notifications-repository.service';
+import { InMemoryUiNotificationStatusRepository, UI_NOTIFICATION_STATUS_REPOSITORY, UiNotificationStatusRepository } from './services/notifications-status.repository.service';
 import { UiNotificationController } from './controllers/ui-notifications.controller';
 import { BotCreatedEventHandler } from './handlers/bot-created-event.handler';
 import { EventCreatedEventHandler } from './handlers/event-created-event.handler';
@@ -33,14 +33,36 @@ import { EventsService } from './services/events.service';
   providers: [
     NotificationsService, 
     ConfigService,
-    UiNotificationRepository,
-    UiNotificationStatusRepository,
     EventHandlerFactory,
     BotCreatedEventHandler,
     EventCreatedEventHandler,
     EventSubscribedEventHandler,
     EventUnsubscribedEventHandler,
-    EventsService
+    EventsService,
+    {
+      provide: UI_NOTIFICATION_REPOSITORY,
+      useFactory: (configService: ConfigService) => {
+        if (configService.useInMemoryDb) {
+          console.log("Using in-memory impl for IUiNotificationRepository.")
+        }
+        return configService.useInMemoryDb 
+          ? new InMemoryUiNotificationRepository() 
+          : new UiNotificationRepository(configService);
+      },
+      inject: [ConfigService],
+    },
+    {
+      provide: UI_NOTIFICATION_STATUS_REPOSITORY,
+      useFactory: (configService: ConfigService) => {
+        if (configService.useInMemoryDb) {
+          console.log("Using in-memory impl for IUiNotificationStatusRepository.")
+        }
+        return configService.useInMemoryDb 
+          ? new InMemoryUiNotificationStatusRepository()
+          : new UiNotificationStatusRepository(configService);
+      },
+      inject: [ConfigService],
+    },
   ]
 })
 export class NotificationsModule {}
