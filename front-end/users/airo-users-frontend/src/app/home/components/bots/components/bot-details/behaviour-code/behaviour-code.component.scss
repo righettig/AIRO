@@ -20,14 +20,11 @@
     }
 
     .content {
-        padding-left: 12px;
-        padding-right: 12px;
+        // padding-left: 12px;
+        // padding-right: 12px;
 
-        textarea {
-            margin-top: 10px;
-            margin-bottom: 10px;
-            width: 100%;
-            height: calc(100vh - 50vh);
+        .editor {
+            height: calc(100vh - 332px)
         }
     }
 

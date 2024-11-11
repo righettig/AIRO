@@ -5,6 +5,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { AuthService } from './auth/services/auth.service';
 import { provideHttpClient } from '@angular/common/http';
 import { ConfigService } from './common/services/config.service';
+import { provideMonacoEditor } from 'ngx-monaco-editor-v2';
 
 function initializeApp(configService: ConfigService, authService: AuthService) {
   return async () => {
@@ -25,6 +26,7 @@ export const appConfig: ApplicationConfig = {
       deps: [ConfigService, AuthService],
       multi: true
     },
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
+    provideMonacoEditor()
   ],
 };
