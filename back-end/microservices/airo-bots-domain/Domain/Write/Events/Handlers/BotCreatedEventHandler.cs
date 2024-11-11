@@ -9,7 +9,7 @@ public class BotCreatedEventHandler(IReadRepository<BotReadModel> readRepository
 {
     public override void Handle(BotCreatedEvent @event)
     {
-        readRepository.Add(new BotReadModel { Id = @event.Id, Name = @event.Name, Price = @event.Price });
+        readRepository.Add(new BotReadModel { Id = @event.Id, Name = @event.Name, Price = @event.Price, Health = @event.Health, Attack = @event.Attack, Defense = @event.Defense });
         readRepository.SaveChanges();
     }
 }

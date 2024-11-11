@@ -6,9 +6,9 @@ namespace airo_bots_microservice.Domain.Aggregates;
 
 public class BotAggregate : AggregateRoot, IAggregateRoot
 {
-    public void CreateBot(Guid id, string name, decimal price)
+    public void CreateBot(Guid id, string name, decimal price, int health, int attack, int defense)
     {
-        RaiseEvent(new BotCreatedEvent(id, name, price));
+        RaiseEvent(new BotCreatedEvent(id, name, price, health, attack, defense));
     }
 
     public void DeleteBot(Guid id)
@@ -16,9 +16,9 @@ public class BotAggregate : AggregateRoot, IAggregateRoot
         RaiseEvent(new BotDeletedEvent(id));
     }
 
-    public void UpdateBot(Guid id, string name, decimal price)
+    public void UpdateBot(Guid id, string name, decimal price, int health, int attack, int defense)
     {
-        RaiseEvent(new BotUpdatedEvent(id, name, price));
+        RaiseEvent(new BotUpdatedEvent(id, name, price, health, attack, defense));
     }
 
     private void Apply(BotCreatedEvent @event)

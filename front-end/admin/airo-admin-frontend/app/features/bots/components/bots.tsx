@@ -27,10 +27,10 @@ const Bots = () => {
         getBots();
     }, []);
 
-    const handleAddBot = async ({ name, price }: Bot) => {
+    const handleAddBot = async ({ name, price, health, attack, defense }: Bot) => {
         try {
-            const id = await addBot({ name, price });
-            setBotList([...botList, { id, name, price } ]);
+            const id = await addBot({ name, price, health, attack, defense });
+            setBotList([...botList, { id, name, price, health, attack, defense } ]);
         } catch (err) {
             setError('Failed to add bot.');
         }

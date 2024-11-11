@@ -1,7 +1,4 @@
-﻿using airo_event_simulation_engine.Impl;
-using Microsoft.CodeAnalysis.Scripting;
-
-namespace airo_event_simulation_tests;
+﻿namespace airo_event_simulation_tests;
 
 public class CSharpBehaviourCompilerTests
 {

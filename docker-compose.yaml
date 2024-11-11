@@ -322,6 +322,7 @@ services:
       - events-service
       - event-subscription-service
       - maps-service
+      - bots-service
       - azurite
       - redis
     build:
@@ -331,6 +332,7 @@ services:
       - ConnectionStrings__AzureBlobStorage=${AZURITE_CONNECTION_STRING}
       - REDIS_URL=${REDIS_URL}
       - RABBITMQ_URL=${RABBITMQ_URL}
+      - BOTS_API_URL=${BOTS_API_URL}
       - EVENTS_API_URL=${EVENTS_API_URL}
       - EVENT_SUBSCRIPTION_API_URL=${EVENT_SUBSCRIPTION_API_URL}
       - BOT_BEHAVIOURS_API_URL=${BOT_BEHAVIOURS_API_URL}

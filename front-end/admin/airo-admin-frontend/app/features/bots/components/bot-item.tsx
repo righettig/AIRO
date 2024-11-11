@@ -15,7 +15,10 @@ const BotItem: FC<BotItemProps> = ({ bot, onDelete, onEdit }) => {
         <li className={styles.botItem}>
             <div className={styles.botDetails}>
                 <strong>{bot.name}</strong>
-                <p>{bot.price}</p>
+                <p>Price {bot.price}</p>
+                <p>Health {bot.health}</p>
+                <p>Attack {bot.attack}</p>
+                <p>Defense {bot.defense}</p>
             </div>
             <div className={styles.botActions}>
                 <button onClick={() => onEdit(bot)}>Edit</button>

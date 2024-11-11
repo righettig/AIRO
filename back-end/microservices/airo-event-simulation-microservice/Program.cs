@@ -26,6 +26,7 @@ builder.Services.AddSingleton<ISimulationConfig>(config);
 
 builder.Services.AddHostedService<SimulationHostedService>();
 
+builder.Services.AddSingleton<IBotsService, BotsService>();
 builder.Services.AddSingleton<IMapsService, MapsService>();
 builder.Services.AddSingleton<IEventSubscriptionService, EventSubscriptionService>();
 builder.Services.AddSingleton<IBackgroundTaskQueue, SimulationTaskQueue>();
@@ -61,6 +62,12 @@ builder.Services.AddHostedService(provider =>
 });
 
 builder.Services.AddDefaultTimeProvider();
+
+builder.Services.AddHttpClient<IBotsService, BotsService>(client =>
+{
+    var baseApiUrl = builder.Configuration["BOTS_API_URL"];
+    client.BaseAddress = new Uri(baseApiUrl + "/api/");
+});
 
 builder.Services.AddHttpClient<IEventsService, EventsService>(client =>
 {
