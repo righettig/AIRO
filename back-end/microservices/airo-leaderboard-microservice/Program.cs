@@ -14,9 +14,9 @@ var useInMemoryDb = builder.Configuration["USE_IN_MEMORY_DB"];
 
 if (useInMemoryDb != null && useInMemoryDb == "true")
 {
-    // Register leaderboard services for users and behaviours
-    RegisterInMemoryLeaderboardServices<UserLeaderboardEntry>(builder.Services);
-    RegisterInMemoryLeaderboardServices<BehaviourLeaderboardEntry>(builder.Services);
+    builder.Services.AddSingleton(typeof(InMemoryLeaderboardRepository<>));
+    builder.Services.AddSingleton(typeof(ILeaderboardWriteService<>), typeof(InMemoryLeaderboardWriteService<>));
+    builder.Services.AddSingleton(typeof(ILeaderboardReadService<>), typeof(InMemoryLeaderboardReadService<>));
 
     Console.WriteLine("Using in-memory impl for IMapService.");
 }
@@ -118,10 +118,4 @@ void RegisterLeaderboardServices<T>(IServiceCollection services, CosmosClient cl
         var redis = sp.GetRequiredService<IRedisCache<T>>();
         return new CacheSyncService<T>(container, redis);
     });
-}
-
-void RegisterInMemoryLeaderboardServices<T>(IServiceCollection services) where T : class, ILeaderboardEntry, new()
-{
-    services.AddSingleton<ILeaderboardReadService<T>, InMemoryLeaderboardReadService<T>>();
-    services.AddSingleton<ILeaderboardWriteService<T>, InMemoryLeaderboardWriteService<T>>();
 }
