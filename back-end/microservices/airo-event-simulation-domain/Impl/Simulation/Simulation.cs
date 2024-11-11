@@ -16,7 +16,7 @@ public class Simulation(Guid eventId,
         // Create a personalized bot state with visible tiles and other relevant information
         var visibleTiles = State.GetVisibleTiles(bot.Position, 2); // Assuming bot can see up to 2 tiles
 
-        return new BotState(bot.BotId, bot.Health, bot.Position, visibleTiles);
+        return new BotState(bot.BotId, bot.Health, bot.Attack, bot.Defense, bot.Position, visibleTiles);
     }
 
     // TODO: think about different simulation type. 

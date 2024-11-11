@@ -45,6 +45,13 @@ Console.WriteLine(result.ToString());
 
 Participant CreateParticipant(string userId)
 {
-    var result = new Participant(userId, new Bot(botId: Guid.NewGuid(), config.BotHpInitialAmount, new DummyBotAgent()));
+    var bot = new Bot(botId: Guid.NewGuid(),
+                      health: 100,
+                      attack: 10,
+                      defense: 20,
+                      new DummyBotAgent());
+
+    var result = new Participant(userId, bot);
+
     return result;
 }

@@ -79,6 +79,20 @@ public class StateUpdater : ISimulationStateUpdater
                 MoveBot(bot, simulation.State, newPosition);
             }
         }
+        else 
+        {
+            if (action is AttackAction attackAction) 
+            {
+                var enemy = simulation.GetActiveParticipants().First(x => x.Bot.BotId == attackAction.EnemyId).Bot;
+
+                if (CanAttack(bot.Position, enemy)) 
+                {
+                    var damage = Math.Max(bot.Attack - enemy.Defense, 1); // At least 1 HP of damage
+
+                    enemy.Health -= damage;
+                }
+            }
+        }
 
         logMessage($"Bot {bot.BotId}, Health {bot.Health}, Position {bot.Position}");
 
@@ -151,7 +165,7 @@ public class StateUpdater : ISimulationStateUpdater
         // Check if the position is within bounds and not blocked by walls, etc.
         return position.X >= 0 && position.X < state.Tiles.GetLength(0) &&
                position.Y >= 0 && position.Y < state.Tiles.GetLength(1) &&
-               state.GetTileAt(position).Type != TileType.Wall;
+               state.GetTileAt(position).Type.CanMoveOn();
     }
 
     public static void MoveBot(ISimulationBot bot, ISimulationState state, Position newPosition)
@@ -163,5 +177,18 @@ public class StateUpdater : ISimulationStateUpdater
         state.GetTileAt(newPosition).SetBot(bot);
 
         bot.Position = newPosition;
+    }
+
+    private static bool CanAttack(Position ownPosition, ISimulationBot? bot)
+    {
+        if (bot is null) return false;
+
+        var distance = GetAbsoluteDistance(ownPosition, bot.Position);
+        return distance < 2;
+    }
+
+    private static double GetAbsoluteDistance(Position pos1, Position pos2)
+    {
+        return Math.Sqrt((pos1.X - pos2.X) * (pos1.X - pos2.X) + (pos1.Y - pos2.Y) * (pos1.Y - pos2.Y));
     }
 }

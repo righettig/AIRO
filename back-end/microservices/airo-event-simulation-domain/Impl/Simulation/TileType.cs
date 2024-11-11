@@ -11,3 +11,17 @@ public enum TileType
     Iron,
     Wood
 }
+
+public static class TileTypeExtensions
+{
+    public static bool CanMoveOn(this TileType tile)
+    {
+        return tile switch
+        {
+            TileType.Bot => false,
+            TileType.Wall => false,
+            TileType.Water => false,
+            _ => true,
+        };
+    }
+}

@@ -19,6 +19,7 @@ public class SimulationServiceTests
     private readonly Mock<IMapsService> _mapsServiceMock;
     private readonly Mock<IRedisCache> _redisCacheServiceMock;
     private readonly Mock<IBotAgentFactory> _botAgentFactoryMock;
+    private readonly Mock<IBotsService> _botsServiceMock;
     private readonly Mock<IMapFactory> _mapFactoryMock;
 
     private readonly string mapString = @"
@@ -75,6 +76,8 @@ public class SimulationServiceTests
         _redisCacheServiceMock = new Mock<IRedisCache>();
         _botAgentFactoryMock = new Mock<IBotAgentFactory>();
         _mapFactoryMock = new Mock<IMapFactory>();
+        _mapFactoryMock = new Mock<IMapFactory>();
+        _botsServiceMock = new Mock<IBotsService>();
 
         _simulationService = new SimulationService(_simulationConfigMock.Object,
                                                    _simulationStateFactoryMock.Object,
@@ -83,7 +86,8 @@ public class SimulationServiceTests
                                                    _mapFactoryMock.Object,
                                                    _eventSubscriptionServiceMock.Object,
                                                    _eventsServiceMock.Object,
-                                                   _mapsServiceMock.Object);
+                                                   _mapsServiceMock.Object,
+                                                   _botsServiceMock.Object);
     }
 
     [Fact]
@@ -108,6 +112,7 @@ public class SimulationServiceTests
         _redisCacheServiceMock.Setup(s => s.GetDllAsync(botBehaviourId.ToString())).ReturnsAsync(
             File.ReadAllBytes(Assembly.GetExecutingAssembly().Location));
 
+        _botsServiceMock.Setup(s => s.GetBotById(It.IsAny<Guid>())).Returns(Task.FromResult(new BotDto { Id = botId }));
         _botAgentFactoryMock.Setup(f => f.Create(It.IsAny<Assembly>())).Returns(new Mock<IBotAgent>().Object);
         _simulationConfigMock.SetupGet(c => c.BotHpInitialAmount).Returns(100);
         _simulationStateFactoryMock.Setup(

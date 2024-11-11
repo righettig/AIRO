@@ -24,7 +24,7 @@ public class BotControllerTests
     public async Task CreateBot_ShouldReturnOkWithBotId()
     {
         // Arrange
-        var request = new CreateBotRequest(Name: "TestBot", Price: 100);
+        var request = new CreateBotRequest(Name: "TestBot", Price: 100, Health: 100, Attack: 10, Defense: 20);
         _mediatorMock
             .Setup(m => m.Send(It.IsAny<CreateBotCommand>(), default))
             .Returns(Task.CompletedTask);
@@ -44,7 +44,7 @@ public class BotControllerTests
     public async Task UpdateBot_ShouldReturnOk()
     {
         // Arrange
-        var request = new UpdateBotRequest(Id: Guid.NewGuid(), Name: "UpdatedBot", Price: 150);
+        var request = new UpdateBotRequest(Id: Guid.NewGuid(), Name: "UpdatedBot", Price: 150, Health: 100, Attack: 10, Defense: 20);
         _mediatorMock
             .Setup(m => m.Send(It.IsAny<UpdateBotCommand>(), default))
             .Returns(Task.CompletedTask);

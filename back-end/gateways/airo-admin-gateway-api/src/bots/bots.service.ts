@@ -9,22 +9,28 @@ export class BotsService {
 
     constructor(private readonly httpService: HttpService) { }
 
-    async create(name: string, price: number): Promise<string> {
+    async create(name: string, price: number, health: number, attack: number, defense: number): Promise<string> {
         const response = await firstValueFrom(
             this.httpService.post(`${this.serviceUrl}/api/bot`, {
                 name,
-                price
+                price,
+                health,
+                attack,
+                defense
             }),
         );
         return response.data;
     }
 
-    async update(id: string, name: string, price: number): Promise<void> {
+    async update(id: string, name: string, price: number, health: number, attack: number, defense: number): Promise<void> {
         const response = await firstValueFrom(
             this.httpService.put(`${this.serviceUrl}/api/bot`, {
                 id,
                 name,
-                price
+                price,
+                health,
+                attack,
+                defense
             }),
         );
         return response.data;

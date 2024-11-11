@@ -16,16 +16,17 @@ var builder = WebApplication.CreateBuilder(args);
 
 // TODO: create event mode based on params "easy", "med", "hard"
 var config = new SimulationConfig(botHpInitialAmount: 100,
-                                  botHpDecayInterval: 2,
+                                  botHpDecayInterval: 10,
                                   foodRespawnInterval: 10,
-                                  botHpDecayAmount: 15,
+                                  botHpDecayAmount: 5,
                                   botHpRestoreAmount: 20,
-                                  turnDelaySeconds: 3); // DEBUG
+                                  turnDelaySeconds: 1); // DEBUG
 
 builder.Services.AddSingleton<ISimulationConfig>(config);
 
 builder.Services.AddHostedService<SimulationHostedService>();
 
+builder.Services.AddSingleton<IBotsService, BotsService>();
 builder.Services.AddSingleton<IMapsService, MapsService>();
 builder.Services.AddSingleton<IEventSubscriptionService, EventSubscriptionService>();
 builder.Services.AddSingleton<IBackgroundTaskQueue, SimulationTaskQueue>();
@@ -62,6 +63,12 @@ builder.Services.AddHostedService(provider =>
 });
 
 builder.Services.AddDefaultTimeProvider();
+
+builder.Services.AddHttpClient<IBotsService, BotsService>(client =>
+{
+    var baseApiUrl = builder.Configuration["BOTS_API_URL"];
+    client.BaseAddress = new Uri(baseApiUrl + "/api/");
+});
 
 builder.Services.AddHttpClient<IEventsService, EventsService>(client =>
 {

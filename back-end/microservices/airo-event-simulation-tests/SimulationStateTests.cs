@@ -65,7 +65,7 @@ public class SimulationStateTests
         var map = TestMap.Get();
         var participants = new List<Participant>
         {
-            new(UserId: "user1", new Bot(Guid.NewGuid(), 100, new Mock<IBotAgent>().Object))
+            new(UserId: "user1", new Bot(Guid.NewGuid(), 100, 10, 1, new Mock<IBotAgent>().Object))
         };
         var simulationState = new SimulationState(1);
 

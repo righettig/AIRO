@@ -14,7 +14,7 @@ public class BotTests
         var botAgent = new Mock<IBotAgent>().Object;
 
         // Act
-        var bot = new Bot(botId, 100, botAgent);
+        var bot = new Bot(botId, 100, 10, 1, botAgent);
 
         // Assert
         Assert.Equal(botId, bot.BotId);
@@ -29,7 +29,7 @@ public class BotTests
         var botId = Guid.NewGuid();
 
         // Act & Assert
-        var exceptionNull = Assert.Throws<ArgumentNullException>(() => new Bot(botId, 100, null));
+        var exceptionNull = Assert.Throws<ArgumentNullException>(() => new Bot(botId, 100, 10, 1, null));
         Assert.Equal("Value cannot be null. (Parameter 'botAgent')", exceptionNull.Message);
     }
 }

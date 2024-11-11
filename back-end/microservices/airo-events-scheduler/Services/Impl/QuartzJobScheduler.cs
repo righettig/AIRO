@@ -18,12 +18,12 @@ public class QuartzJobScheduler(ISchedulerFactory schedulerFactory) : IJobSchedu
             .UsingJobData("eventId", eventId.ToString())
             .Build();
 
-        var runTime = ToUtcDateTimeOffset(scheduledAt);
+        //var runTime = ToUtcDateTimeOffset(scheduledAt);
 
         // Create a trigger that fires at the specific time
         var trigger = TriggerBuilder.Create()
             .WithIdentity(eventId.ToString(), "StartEventJobs")
-            .StartAt(runTime)
+            .StartAt(scheduledAt)
             .Build();
 
         // Schedule the job with the trigger
@@ -43,11 +43,11 @@ public class QuartzJobScheduler(ISchedulerFactory schedulerFactory) : IJobSchedu
 
         if (oldTrigger != null)
         {
-            var runTime = ToUtcDateTimeOffset(scheduledAt);
+            //var runTime = ToUtcDateTimeOffset(scheduledAt);
 
             var newTrigger = TriggerBuilder.Create()
                 .WithIdentity(eventId.ToString(), "StartEventJobs")
-                .StartAt(runTime)
+                .StartAt(scheduledAt)
                 .Build();
 
             // Reschedule the job with the new trigger
@@ -77,24 +77,23 @@ public class QuartzJobScheduler(ISchedulerFactory schedulerFactory) : IJobSchedu
         }
     }
 
-    private static DateTimeOffset ToUtcDateTimeOffset(DateTime scheduledAt)
-    {
-        // Specify the DateTimeKind explicitly to ensure proper conversion
-        var specifiedScheduledAt = DateTime.SpecifyKind(scheduledAt, DateTimeKind.Unspecified);
+    //private static DateTimeOffset ToUtcDateTimeOffset(DateTime scheduledAt)
+    //{
+    //    // Specify the DateTimeKind explicitly to ensure proper conversion
+    //    var specifiedScheduledAt = DateTime.SpecifyKind(scheduledAt, DateTimeKind.Unspecified);
 
-        var romeTimeZone = TimeZoneInfo.FindSystemTimeZoneById(TZConvert.IanaToWindows("Europe/Rome"));
+    //    var romeTimeZone = TimeZoneInfo.FindSystemTimeZoneById(TZConvert.IanaToWindows("Europe/Rome"));
 
-        // Convert Rome time to UTC
-        var utcDateTime = TimeZoneInfo.ConvertTimeToUtc(specifiedScheduledAt, romeTimeZone);
+    //    // Convert Rome time to UTC
+    //    var utcDateTime = TimeZoneInfo.ConvertTimeToUtc(specifiedScheduledAt, romeTimeZone);
 
-        // Specify a specific point in time for the trigger
-        var runTime = DateBuilder.DateOf(utcDateTime.Hour,
-                                         utcDateTime.Minute,
-                                         utcDateTime.Second,
-                                         utcDateTime.Day,
-                                         utcDateTime.Month);
+    //    // Specify a specific point in time for the trigger
+    //    var runTime = DateBuilder.DateOf(utcDateTime.Hour,
+    //                                     utcDateTime.Minute,
+    //                                     utcDateTime.Second,
+    //                                     utcDateTime.Day,
+    //                                     utcDateTime.Month);
 
-        return runTime;
-    }
-
+    //    return runTime;
+    //}
 }

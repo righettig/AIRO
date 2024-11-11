@@ -50,13 +50,15 @@ export class GatewayController {
 
   // Bots
   @Post('bot')
-  async createBot(@Body() createBotDto: CreateBotDto): Promise<string> {
-    return await this.botsService.create(createBotDto.name, createBotDto.price);
+  async createBot(@Body() dto: CreateBotDto): Promise<string> {
+    return await this.botsService.create(
+      dto.name, dto.price, dto.health, dto.attack, dto.defense);
   }
 
   @Put('bot')
-  async updateBot(@Body() updateBotDto: UpdateBotDto): Promise<void> {
-    return await this.botsService.update(updateBotDto.id, updateBotDto.name, updateBotDto.price);
+  async updateBot(@Body() dto: UpdateBotDto): Promise<void> {
+    return await this.botsService.update(
+      dto.id, dto.name, dto.price, dto.health, dto.attack, dto.defense);
   }
 
   @Delete('bot/:botId')

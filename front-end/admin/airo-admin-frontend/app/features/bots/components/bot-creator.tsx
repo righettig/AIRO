@@ -13,11 +13,17 @@ interface BotCreatorProps {
 const BotCreator: FC<BotCreatorProps> = ({ onAdd, onUpdate, botToEdit }) => {
     const [botName, setBotName] = useState('');
     const [botPrice, setBotPrice] = useState(0);
+    const [botHealth, setBotHealth] = useState(0);
+    const [botAttack, setBotAttack] = useState(0);
+    const [botDefense, setBotDefense] = useState(0);
 
     useEffect(() => {
         if (botToEdit) {
             setBotName(botToEdit.name);
             setBotPrice(botToEdit.price);
+            setBotHealth(botToEdit.health);
+            setBotAttack(botToEdit.attack);
+            setBotDefense(botToEdit.defense);
         }
     }, [botToEdit]);
 
@@ -30,6 +36,9 @@ const BotCreator: FC<BotCreatorProps> = ({ onAdd, onUpdate, botToEdit }) => {
             id: botToEdit ? botToEdit.id : (Math.random() * 1000).toString(),
             name: botName,
             price: botPrice,
+            health: botHealth,
+            attack: botAttack,
+            defense: botDefense,
         };
 
         if (botToEdit) {
@@ -40,6 +49,9 @@ const BotCreator: FC<BotCreatorProps> = ({ onAdd, onUpdate, botToEdit }) => {
 
         setBotName('');
         setBotPrice(0);
+        setBotHealth(0);
+        setBotAttack(0);
+        setBotDefense(0);
     };
 
     return (
@@ -57,7 +69,25 @@ const BotCreator: FC<BotCreatorProps> = ({ onAdd, onUpdate, botToEdit }) => {
                 value={botPrice}
                 onChange={(e) => setBotPrice(parseInt(e.target.value))}
             />
-            <button onClick={handleSaveBot} disabled={!botName || !botPrice}>
+            <input
+                type="number"
+                placeholder="Bot Health"
+                value={botHealth}
+                onChange={(e) => setBotHealth(parseInt(e.target.value))}
+            />
+            <input
+                type="number"
+                placeholder="Bot Attack"
+                value={botAttack}
+                onChange={(e) => setBotAttack(parseInt(e.target.value))}
+            />
+            <input
+                type="number"
+                placeholder="Bot Defense"
+                value={botDefense}
+                onChange={(e) => setBotDefense(parseInt(e.target.value))}
+            />
+            <button onClick={handleSaveBot} disabled={!botName || !botPrice || !botHealth || !botAttack || !botDefense}>
                 {botToEdit ? 'Update Bot' : 'Add Bot'}
             </button>
         </div>

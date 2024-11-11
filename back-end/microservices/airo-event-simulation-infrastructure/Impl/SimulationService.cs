@@ -16,7 +16,8 @@ public class SimulationService(ISimulationConfig config,
                                IMapFactory mapFactory,
                                IEventSubscriptionService eventSubscriptionService,
                                IEventsService eventsService,
-                               IMapsService mapsService) : ISimulationService
+                               IMapsService mapsService,
+                               IBotsService botsService) : ISimulationService
 {
     public async Task<ISimulation> LoadSimulation(Guid eventId)
     {
@@ -26,11 +27,12 @@ public class SimulationService(ISimulationConfig config,
         var participants = await Task.WhenAll(
             (await eventSubscriptionService.GetParticipants(eventId))
                 .Select(async (x) => {
+                    var botDto = await botsService.GetBotById(x.BotId);
                     var assembly = await GetBotBehaviourAssembly(x.BotBehaviourId);
 
                     var botAgent = botAgentFactory.Create(assembly);
 
-                    var bot = new Bot(x.BotId, config.BotHpInitialAmount, botAgent);
+                    var bot = new Bot(botDto.Id, botDto.Health, botDto.Attack, botDto.Defense, botAgent);
 
                     return new Participant(x.UserId, bot);
                 })
