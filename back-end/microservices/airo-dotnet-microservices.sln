@@ -91,7 +91,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "airo-event-simulation-tests
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bot Behaviour Compiler", "Bot Behaviour Compiler", "{5CCA7FFB-18F8-429F-BDE2-5070F968286B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "airo-bot-behaviour-compiler-microservice", "airo-bot-behaviour-compiler-microservice\airo-bot-behaviour-compiler-microservice.csproj", "{605169AA-FF55-4218-86BC-AFD8860CD4A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "airo-bot-behaviour-compiler-microservice", "airo-bot-behaviour-compiler-microservice\airo-bot-behaviour-compiler-microservice.csproj", "{605169AA-FF55-4218-86BC-AFD8860CD4A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "airo-bot-behaviour-compiler-tests", "airo-bot-behaviour-compiler-tests\airo-bot-behaviour-compiler-tests.csproj", "{7D295C66-8093-4676-A4BD-B827266CBA5E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -223,6 +225,10 @@ Global
 		{605169AA-FF55-4218-86BC-AFD8860CD4A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{605169AA-FF55-4218-86BC-AFD8860CD4A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{605169AA-FF55-4218-86BC-AFD8860CD4A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D295C66-8093-4676-A4BD-B827266CBA5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D295C66-8093-4676-A4BD-B827266CBA5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D295C66-8093-4676-A4BD-B827266CBA5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D295C66-8093-4676-A4BD-B827266CBA5E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -259,6 +265,7 @@ Global
 		{E1D1B99B-6C49-43BD-8BF8-AB2375571E45} = {52EEE915-6D02-4616-BB9B-C6AFB716DE53}
 		{ADEBCAC9-9B5F-4D51-971B-88B98E628937} = {790B34F4-4501-43C0-A679-BBC8209C1A9E}
 		{605169AA-FF55-4218-86BC-AFD8860CD4A5} = {5CCA7FFB-18F8-429F-BDE2-5070F968286B}
+		{7D295C66-8093-4676-A4BD-B827266CBA5E} = {5CCA7FFB-18F8-429F-BDE2-5070F968286B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {919F5805-3223-46B9-8C08-BDC0559A7492}

@@ -13,6 +13,7 @@ public class SimulationService(ISimulationConfig config,
                                ISimulationStateFactory simulationStateFactory,
                                IRedisCache redisCacheService,
                                IBotAgentFactory botAgentFactory,
+                               IMapFactory mapFactory,
                                IEventSubscriptionService eventSubscriptionService,
                                IEventsService eventsService,
                                IMapsService mapsService,
@@ -37,8 +38,7 @@ public class SimulationService(ISimulationConfig config,
                 })
             );
 
-        // TODO: use factory to avoid passing real map in unit tests
-        var map = new Map(mapString);
+        var map = mapFactory.FromString(mapString);
 
         var simulationState = simulationStateFactory.Create(participants, map);
 
