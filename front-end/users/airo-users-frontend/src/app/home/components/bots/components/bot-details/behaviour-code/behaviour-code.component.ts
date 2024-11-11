@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MonacoEditorModule } from 'ngx-monaco-editor-v2';
 
 @Component({
   selector: 'app-behaviour-code',
@@ -24,11 +25,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
           </div>
         </div>
         <div class="content">
-          @if (isReadOnly) {
-            <pre>{{ code }}</pre>
-          } @else {
-            <textarea [(ngModel)]="code" (ngModelChange)="checkModified()"></textarea>
-          }
+          <ngx-monaco-editor class="editor"
+            [options]="editorOptions" 
+            [(ngModel)]="code"
+            (ngModelChange)="checkModified()"
+          >
+          </ngx-monaco-editor>
         </div>
       </div>
       @if (validationResult?.errors!.length) {
@@ -52,7 +54,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   `,
   styleUrl: './behaviour-code.component.scss',
   standalone: true,
-  imports: [FormsModule, MatProgressSpinnerModule]
+  imports: [FormsModule, MatProgressSpinnerModule, MonacoEditorModule]
 })
 export class BehaviourCodeComponent implements OnInit {
   @Input() name: string = '';
@@ -63,6 +65,16 @@ export class BehaviourCodeComponent implements OnInit {
   private _initialCode: string = '';
   private _code: string = '';
   
+  editorOptions = { 
+    language: 'csharp',
+    minimap: { enabled: false },
+    scrollBeyondLastLine: false,
+    lineHeight: 20,
+    fontSize: 14,
+    wordWrap: 'on',
+    wrappingIndent: 'indent',
+  };
+
   @Input()
   set code(value: string) {
     this._code = value;
