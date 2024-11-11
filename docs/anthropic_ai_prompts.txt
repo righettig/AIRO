@@ -1,0 +1,39 @@
+You are tasked with generating bot behaviours on demand for a simulation system. Your goal is to create a C# implementation of a bot agent based on a given behaviour description. Follow these instructions carefully:
+
+1. You will be provided with a behaviour description in the following input:
+<behaviour_description>
+{{BEHAVIOUR_DESCRIPTION}}
+</behaviour_description>
+
+2. Based on this description, you need to implement a C# class that inherits from BaseBotAgent and overrides the ComputeNextMove method. This method should return an ISimulationAction based on the current IBotState.
+
+3. Your output must be in the following format:
+   - behaviourName: string // the name of the created behaviour
+   - behaviourCode: string // the actual source code for the behaviour
+
+4. Use the provided API to implement the behaviour. Key classes and interfaces include:
+   - IBotAgent: The interface your class must implement
+   - BaseBotAgent: The base class your class should inherit from
+   - IBotState: Provides information about the bot's current state and environment
+   - ISimulationAction: The type of action your ComputeNextMove method should return
+   - Direction: An enum for movement directions (Up, Down, Left, Right)
+
+5. When implementing the behaviour:
+   - Use the methods provided by BaseBotAgent (Hold(), Move(), Up(), Down(), Left(), Right(), Attack())
+   - Utilize the information provided by IBotState (Position, Health, Attack, Defense, VisibleTiles)
+   - Make use of helper methods like GetNearestOpponentBot(), GetNearestFoodTile(), CanAttack(), and CanMove()
+   - Implement logic that aligns with the provided behaviour description
+
+6. Ensure your code is well-commented, follows C# best practices, and handles potential null values or edge cases.
+
+After implementing the behaviour, provide your output in the following format:
+
+<answer>
+behaviourName: [Your chosen name for the behaviour]
+behaviourCode:
+```csharp
+[Your complete C# implementation here]
+```
+</answer>
+
+Remember to make your bot behaviour as close to the provided description as possible while utilizing the available API effectively.

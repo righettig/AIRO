@@ -1,0 +1,239 @@
+I need a prompt to generate bot behaviours on demand.
+
+I need the prompt to ask for a specific format to be returned:
+- behaviourName: string // the name of the created behaviour 
+- behaviourCode: string // the actual source code for the behaviour
+
+The behaviour must be implemented using C# and it should follow the API provided below.
+
+This is the most up-to-date API to define behaviours:
+
+namespace airo_event_simulation_domain.Interfaces;
+
+public interface IBotAgent
+{
+    ISimulationAction ComputeNextMove(IBotState botState);
+}
+
+namespace airo_event_simulation_domain.Interfaces;
+
+public interface ISimulationAction
+{
+}
+
+using airo_event_simulation_domain.Impl.Simulation;
+using airo_event_simulation_domain.Impl.Simulation.Actions;
+
+namespace airo_event_simulation_domain.Interfaces;
+
+public interface IBotState
+{
+    Guid Id { get; }
+    int Health { get; }
+    int Attack { get; }
+    int Defense { get; }
+    Position Position { get; }
+    Dictionary<Position, ITileInfo> VisibleTiles { get; }
+
+    // Find the nearest opponent Bot
+    ISimulationBot? GetNearestOpponentBot();
+
+    // Find the nearest food tile
+    Position? GetNearestFoodTile();
+
+    bool CanAttack(ISimulationBot? enemy);
+    bool CanMove(Direction direction);
+}
+
+using airo_event_simulation_domain.Impl.Simulation.Actions;
+using airo_event_simulation_domain.Interfaces;
+
+namespace airo_event_simulation_domain.Impl.Simulation;
+
+public abstract class BaseBotAgent : IBotAgent
+{
+    public abstract ISimulationAction ComputeNextMove(IBotState botState);
+
+    protected static ISimulationAction Hold() => new HoldAction();
+    protected static ISimulationAction Move(Direction direction) => new MoveAction(direction);
+    protected static ISimulationAction Up() => new MoveAction(Direction.Up);
+    protected static ISimulationAction Down() => new MoveAction(Direction.Down);
+    protected static ISimulationAction Left() => new MoveAction(Direction.Left);
+    protected static ISimulationAction Right() => new MoveAction(Direction.Right);
+    protected static ISimulationAction Attack(Guid enemyId) => new AttackAction(enemyId);
+}
+
+public enum Direction
+{
+    Up,
+    Down,
+    Left,
+    Right
+}
+
+using airo_event_simulation_domain.Impl.Simulation;
+using airo_event_simulation_domain.Impl.Simulation.Actions;
+using airo_event_simulation_domain.Interfaces;
+
+namespace airo_event_simulation_domain.Impl;
+
+public class BotState(Guid botId,
+                      int health,
+                      int attack,
+                      int defense,
+                      Position position, 
+                      Dictionary<Position, ITileInfo> visibleTiles) : IBotState
+{
+    public Guid Id => botId;
+    public int Health => health;
+    public int Attack => attack;
+    public int Defense => defense;
+
+    public Position Position => position;
+
+    public Dictionary<Position, ITileInfo> VisibleTiles => visibleTiles;
+
+    public ISimulationBot? GetNearestOpponentBot()
+    {
+        ISimulationBot? nearestBot = null;
+        int minDistance = int.MaxValue;
+
+        foreach (var kvp in VisibleTiles)
+        {
+            if (kvp.Value.Type == TileType.Bot && kvp.Key != Position) // Use the current bot's position
+            {
+                int distance = GetDistance(Position, kvp.Key); // Use Position directly from state
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    nearestBot = kvp.Value.Bot;
+                }
+            }
+        }
+        return nearestBot;
+    }
+
+    public Position? GetNearestFoodTile()
+    {
+        Position? nearestFood = null;
+        int minDistance = int.MaxValue;
+
+        foreach (var kvp in VisibleTiles)
+        {
+            if (kvp.Value.Type == TileType.Food)
+            {
+                int distance = GetDistance(Position, kvp.Key); // Use Position directly from state
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    nearestFood = kvp.Key;
+                }
+            }
+        }
+        return nearestFood;
+    }
+
+    public bool CanAttack(ISimulationBot? bot)
+    {
+        if (bot is null) return false;
+
+        var distance = GetAbsoluteDistance(Position, bot.Position); // Use Position directly from state
+        return distance < 2; // It's only possible to attack enemies that are either directly (1) or diagonally (1.41~) adjacent
+    }
+
+    public bool CanMove(Direction direction)
+    {
+        var newPosition = GetNewPosition(Position, direction);
+        return IsValidPosition(newPosition, VisibleTiles);
+    }
+
+    private static Position GetNewPosition(Position oldPosition, Direction direction)
+    {
+        return direction switch
+        {
+            Direction.Up => new Position(oldPosition.X, oldPosition.Y - 1),
+            Direction.Down => new Position(oldPosition.X, oldPosition.Y + 1),
+            Direction.Left => new Position(oldPosition.X - 1, oldPosition.Y),
+            Direction.Right => new Position(oldPosition.X + 1, oldPosition.Y),
+            _ => oldPosition // No movement
+        };
+    }
+
+    private static bool IsValidPosition(Position position, Dictionary<Position, ITileInfo> visibleTiles)
+    {
+        // Check that the bot can move on a tile and bot is not trying to move outside of map boundaries
+        if (visibleTiles.TryGetValue(position, out ITileInfo? value))
+        {
+            return value.Type.CanMoveOn();
+        }
+
+        return false;        
+    }
+
+    private static int GetDistance(Position pos1, Position pos2)
+    {
+        return Math.Abs(pos1.X - pos2.X) + Math.Abs(pos1.Y - pos2.Y); // Manhattan distance
+    }
+
+    private static double GetAbsoluteDistance(Position pos1, Position pos2)
+    {
+        return Math.Sqrt((pos1.X - pos2.X) * (pos1.X - pos2.X) + (pos1.Y - pos2.Y) * (pos1.Y - pos2.Y));
+    }
+}
+
+using airo_event_simulation_domain.Impl.Simulation;
+
+namespace airo_event_simulation_domain.Interfaces;
+
+public interface ISimulationBot
+{
+    // this is the internal database botId and it is going to be visible to other players. Should we pass a "name" or a random uuid instead?
+    public Guid BotId { get; }
+    public Position Position { get; set; }
+    public int Health { get; set; }
+    public int Attack { get; set; }
+    public int Defense { get; set; }
+}
+
+namespace airo_event_simulation_domain.Impl.Simulation;
+
+public record Position(int X, int Y)
+{
+    public override string? ToString() => $"({X},{Y})";
+}
+
+using airo_event_simulation_domain.Impl.Simulation;
+
+namespace airo_event_simulation_domain.Interfaces;
+
+public interface ITileInfo
+{
+    public TileType Type { get; }
+    public ISimulationBot? Bot { get; }
+}
+
+This is an example as a reference:
+
+using airo_event_simulation_domain.Impl.Simulation;
+using airo_event_simulation_domain.Interfaces;
+
+public class DummyBotAgent : BaseBotAgent
+{
+    public override ISimulationAction ComputeNextMove(IBotState botState)
+    {
+        // For now, we'll use a simple random strategy to either hold or move in a direction.
+        var random = new Random();
+        var actions = new List<ISimulationAction>
+        {
+            Hold(),
+            Up(),
+            Down(),
+            Left(),
+            Right()
+        };
+
+        // Choose a random action
+        int actionIndex = random.Next(actions.Count);
+        return actions[actionIndex];
+    }
+}

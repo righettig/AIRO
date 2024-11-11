@@ -66,8 +66,8 @@ services:
     depends_on:
       - auth-service
       - profile-service
-      - notifications-service
-      - billing-service
+      # - notifications-service
+      # - billing-service
       - bots-service
       - bot-behaviours-service
       - bot-behaviour-compiler-service
@@ -75,8 +75,8 @@ services:
       - events-service
       - event-subscription-service
       - event-simulation-service
-      - leaderboard-service
-      - ui-notifications-service
+      # - leaderboard-service
+      # - ui-notifications-service
     build:
       context: ./back-end/gateways/airo-users-gateway-api
     ports:
@@ -271,6 +271,16 @@ services:
     ports:
       - "4016:8080" # https not working so far!
 
+  bot-behaviour-trainer-service:
+    build:
+      context: .
+      dockerfile: ./back-end/microservices/airo-bot-behaviour-trainer-microservice/Dockerfile
+    environment:
+      - OPEN_AI_API_KEY=${OPEN_AI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+    ports:
+      - "4017:8080" # https not working so far!
+
   events-service:
     depends_on:
       rabbitmq:
@@ -366,144 +376,144 @@ services:
     ports:
       - "4007:8080" # https not working so far!
 
-  billing-service:
-    depends_on:
-      - mongodb
-      - rabbitmq
-    build:
-      context: ./back-end/microservices/airo-billing-microservice
-    environment:
-      - MONGO_URL=${BILLING_MONGO_DB_URL}
-      - RABBITMQ_URL=${RABBITMQ_URL}
-    ports:
-      - "4002:3000"
-    develop:
-      watch:
-        - action: rebuild
-          path: ./back-end/microservices/airo-billing-microservice
-          target: /app
-          ignore:
-            - node_modules/
-        - action: rebuild
-          path: ./back-end/microservices/airo-billing-microservice/package.json
+  # billing-service:
+  #   depends_on:
+  #     - mongodb
+  #     - rabbitmq
+  #   build:
+  #     context: ./back-end/microservices/airo-billing-microservice
+  #   environment:
+  #     - MONGO_URL=${BILLING_MONGO_DB_URL}
+  #     - RABBITMQ_URL=${RABBITMQ_URL}
+  #   ports:
+  #     - "4002:3000"
+  #   develop:
+  #     watch:
+  #       - action: rebuild
+  #         path: ./back-end/microservices/airo-billing-microservice
+  #         target: /app
+  #         ignore:
+  #           - node_modules/
+  #       - action: rebuild
+  #         path: ./back-end/microservices/airo-billing-microservice/package.json
 
-  invoicing-service:
-    depends_on:
-      - profile-service
-      - mongodb
-      - rabbitmq
-    build:
-      context: ./back-end/microservices/airo-invoicing-microservice
-    environment:
-      - PROFILE_API_URL=${PROFILE_API_URL}
-      - MONGO_URL=${INVOICE_MONGO_DB_URL}
-      - RABBITMQ_URL=${RABBITMQ_URL}
-    ports:
-      - "4003:3000"
-    develop:
-      watch:
-        - action: rebuild
-          path: ./back-end/microservices/airo-invoicing-microservice
-          target: /app
-          ignore:
-            - node_modules/
-        - action: rebuild
-          path: ./back-end/microservices/airo-invoicing-microservice/package.json
+  # invoicing-service:
+  #   depends_on:
+  #     - profile-service
+  #     - mongodb
+  #     - rabbitmq
+  #   build:
+  #     context: ./back-end/microservices/airo-invoicing-microservice
+  #   environment:
+  #     - PROFILE_API_URL=${PROFILE_API_URL}
+  #     - MONGO_URL=${INVOICE_MONGO_DB_URL}
+  #     - RABBITMQ_URL=${RABBITMQ_URL}
+  #   ports:
+  #     - "4003:3000"
+  #   develop:
+  #     watch:
+  #       - action: rebuild
+  #         path: ./back-end/microservices/airo-invoicing-microservice
+  #         target: /app
+  #         ignore:
+  #           - node_modules/
+  #       - action: rebuild
+  #         path: ./back-end/microservices/airo-invoicing-microservice/package.json
 
-  notifications-service:
-    depends_on:
-      profile-service:
-        condition: service_started
-      events-service:
-        condition: service_started
-      rabbitmq:
-        condition: service_healthy
-    build:
-      context: ./back-end/microservices/airo-notifications-microservice
-    environment:
-      - RABBITMQ_URL=${RABBITMQ_URL}
-      - SENDGRID_API_KEY=${SENDGRID_API_KEY}
-      - SENDGRID_FROM_EMAIL=${SENDGRID_FROM_EMAIL}
-      - PROFILE_API_URL=${PROFILE_API_URL}
-      - EVENTS_API_URL=${EVENTS_API_URL}
-    ports:
-      - "4004:3000"
-    develop:
-      watch:
-        - action: rebuild
-          path: ./back-end/microservices/airo-notifications-microservice
-          target: /app
-          ignore:
-            - node_modules/
-        - action: rebuild
-          path: ./back-end/microservices/airo-notifications-microservice/package.json
+  # notifications-service:
+  #   depends_on:
+  #     profile-service:
+  #       condition: service_started
+  #     events-service:
+  #       condition: service_started
+  #     rabbitmq:
+  #       condition: service_healthy
+  #   build:
+  #     context: ./back-end/microservices/airo-notifications-microservice
+  #   environment:
+  #     - RABBITMQ_URL=${RABBITMQ_URL}
+  #     - SENDGRID_API_KEY=${SENDGRID_API_KEY}
+  #     - SENDGRID_FROM_EMAIL=${SENDGRID_FROM_EMAIL}
+  #     - PROFILE_API_URL=${PROFILE_API_URL}
+  #     - EVENTS_API_URL=${EVENTS_API_URL}
+  #   ports:
+  #     - "4004:3000"
+  #   develop:
+  #     watch:
+  #       - action: rebuild
+  #         path: ./back-end/microservices/airo-notifications-microservice
+  #         target: /app
+  #         ignore:
+  #           - node_modules/
+  #       - action: rebuild
+  #         path: ./back-end/microservices/airo-notifications-microservice/package.json
 
-  ui-notifications-service:
-    depends_on:
-      events-service:
-        condition: service_started
-      rabbitmq:
-        condition: service_healthy
-      # cosmosdb:
-      #   condition: service_healthy
-    build:
-      context: ./back-end/microservices/airo-ui-notifications-microservice
-    environment:
-      - USE_IN_MEMORY_DB=${UI_NOTIFICATIONS_USE_IN_MEMORY_DB}
-      - RABBITMQ_URL=${RABBITMQ_URL}
-      - COSMOSDB_ENDPOINT=${COSMOSDB_ENDPOINT}
-      - COSMOSDB_KEY=${COSMOSDB_KEY}
-      - EVENTS_API_URL=${EVENTS_API_URL}
-    ports:
-      - "4010:3000"
-    develop:
-      watch:
-        - action: rebuild
-          path: ./back-end/microservices/airo-ui-notifications-microservice
-          target: /app
-          ignore:
-            - node_modules/
-        - action: rebuild
-          path: ./back-end/microservices/airo-ui-notifications-microservice/package.json
+  # ui-notifications-service:
+  #   depends_on:
+  #     events-service:
+  #       condition: service_started
+  #     rabbitmq:
+  #       condition: service_healthy
+  #     # cosmosdb:
+  #     #   condition: service_healthy
+  #   build:
+  #     context: ./back-end/microservices/airo-ui-notifications-microservice
+  #   environment:
+  #     - USE_IN_MEMORY_DB=${UI_NOTIFICATIONS_USE_IN_MEMORY_DB}
+  #     - RABBITMQ_URL=${RABBITMQ_URL}
+  #     - COSMOSDB_ENDPOINT=${COSMOSDB_ENDPOINT}
+  #     - COSMOSDB_KEY=${COSMOSDB_KEY}
+  #     - EVENTS_API_URL=${EVENTS_API_URL}
+  #   ports:
+  #     - "4010:3000"
+  #   develop:
+  #     watch:
+  #       - action: rebuild
+  #         path: ./back-end/microservices/airo-ui-notifications-microservice
+  #         target: /app
+  #         ignore:
+  #           - node_modules/
+  #       - action: rebuild
+  #         path: ./back-end/microservices/airo-ui-notifications-microservice/package.json
 
-  notification-processor-service:
-    depends_on:
-      eventstore.db:
-        condition: service_healthy
-      rabbitmq:
-        condition: service_healthy
-    build:
-      context: .
-      dockerfile: ./back-end/microservices/airo-notification-processor-microservice/Dockerfile
-    environment:
-      - EVENT_STORE_DB_URL=${EVENT_STORE_DB_URL}
-      - RABBITMQ_URL=${RABBITMQ_URL}
-    volumes:
-      - data-volume:/data
+  # notification-processor-service:
+  #   depends_on:
+  #     eventstore.db:
+  #       condition: service_healthy
+  #     rabbitmq:
+  #       condition: service_healthy
+  #   build:
+  #     context: .
+  #     dockerfile: ./back-end/microservices/airo-notification-processor-microservice/Dockerfile
+  #   environment:
+  #     - EVENT_STORE_DB_URL=${EVENT_STORE_DB_URL}
+  #     - RABBITMQ_URL=${RABBITMQ_URL}
+  #   volumes:
+  #     - data-volume:/data
 
-  leaderboard-service:
-    depends_on:
-      redis:
-        condition: service_started
-      rabbitmq:
-        condition: service_healthy
-      # cosmosdb:
-      #   condition: service_healthy
-      event-subscription-service:
-        condition: service_started
-    build:
-      context: .
-      dockerfile: ./back-end/microservices/airo-leaderboard-microservice/Dockerfile
-    ports:
-      - "4014:8080" # https not working so far!
-    environment:
-      - USE_IN_MEMORY_DB=${LEADERBOARD_USE_IN_MEMORY_DB}
-      - EVENT_SUBSCRIPTION_API_URL=${EVENT_SUBSCRIPTION_API_URL}
-      - REDIS_URL=${REDIS_URL}
-      - RABBITMQ_URL=${RABBITMQ_URL}
-      - COSMOSDB_ENDPOINT=${COSMOSDB_ENDPOINT}
-      - COSMOSDB_KEY=${COSMOSDB_KEY}
-      - LEADERBOARD_DB=${LEADERBOARD_DB}
+  # leaderboard-service:
+  #   depends_on:
+  #     redis:
+  #       condition: service_started
+  #     rabbitmq:
+  #       condition: service_healthy
+  #     # cosmosdb:
+  #     #   condition: service_healthy
+  #     event-subscription-service:
+  #       condition: service_started
+  #   build:
+  #     context: .
+  #     dockerfile: ./back-end/microservices/airo-leaderboard-microservice/Dockerfile
+  #   ports:
+  #     - "4014:8080" # https not working so far!
+  #   environment:
+  #     - USE_IN_MEMORY_DB=${LEADERBOARD_USE_IN_MEMORY_DB}
+  #     - EVENT_SUBSCRIPTION_API_URL=${EVENT_SUBSCRIPTION_API_URL}
+  #     - REDIS_URL=${REDIS_URL}
+  #     - RABBITMQ_URL=${RABBITMQ_URL}
+  #     - COSMOSDB_ENDPOINT=${COSMOSDB_ENDPOINT}
+  #     - COSMOSDB_KEY=${COSMOSDB_KEY}
+  #     - LEADERBOARD_DB=${LEADERBOARD_DB}
 
   #---------------#
   # External APIs #
@@ -620,11 +630,11 @@ services:
     #   - redis_data:/data
     command: ["redis-server", "--appendonly", "yes"]
 
-  redis-insight:
-    image: redis/redisinsight:latest
-    restart: always
-    ports:
-      - "5540:5540"
+  # redis-insight:
+  #   image: redis/redisinsight:latest
+  #   restart: always
+  #   ports:
+  #     - "5540:5540"
 
   # When uncommenting to run e2e tests please update .env file with correct USERS_GATEWAY_API_URL for e2e
   # cypress:

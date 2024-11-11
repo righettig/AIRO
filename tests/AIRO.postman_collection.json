@@ -2108,7 +2108,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"userId\": \"T7E6tWp3uPToEoZqpaOUd2gR3bv1\",\r\n    \"name\": \"behaviour1\",\r\n    \"code\": \"foo\"\r\n}",
+							"raw": "{\r\n    \"userId\": \"9X7l8xFnxTPwslzbfySCinrm46c2\",\r\n    \"name\": \"test_behaviour2\",\r\n    \"code\": \"using airo_event_simulation_domain.Impl.Simulation; using airo_event_simulation_domain.Interfaces; public class DummyBotAgent : BaseBotAgent { public override ISimulationAction ComputeNextMove(IBotState botState) { var random = new Random(); var actions = new List<ISimulationAction> { Hold(), Up(), Down(), Left(), Right() }; int actionIndex = random.Next(actions.Count); return actions[actionIndex]; } }\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2982,6 +2982,40 @@
 								"bot-behaviors",
 								"123",
 								"compile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Bot Behaviour Trainer",
+			"item": [
+				{
+					"name": "train",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"botBehaviourId\": \"123\",\r\n    \"botBehaviourScript\": \"foo\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4017/api/trainer",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4017",
+							"path": [
+								"api",
+								"trainer"
 							]
 						}
 					},
