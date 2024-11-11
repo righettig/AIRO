@@ -30,12 +30,15 @@ describe('BotsService', () => {
       const mockResponse = createMockResponse(botId);
       jest.spyOn(httpService, 'post').mockReturnValue(of(mockResponse));
 
-      const result = await service.create('TestBot', 100);
+      const result = await service.create('TestBot', 100, 111, 11, 1);
       
       expect(result).toBe(botId);
       expect(httpService.post).toHaveBeenCalledWith(`${service['serviceUrl']}/api/bot`, {
         name: 'TestBot',
         price: 100,
+        health: 111, 
+        attack: 11, 
+        defense: 1
       });
     });
   });
@@ -45,12 +48,15 @@ describe('BotsService', () => {
       const mockResponse = createMockResponse(undefined);
       jest.spyOn(httpService, 'put').mockReturnValue(of(mockResponse));
 
-      await service.update('bot-123', 'UpdatedBot', 150);
+      await service.update('bot-123', 'UpdatedBot', 150, 111, 11, 1);
       
       expect(httpService.put).toHaveBeenCalledWith(`${service['serviceUrl']}/api/bot`, {
         id: 'bot-123',
         name: 'UpdatedBot',
         price: 150,
+        health: 111, 
+        attack: 11, 
+        defense: 1
       });
     });
   });

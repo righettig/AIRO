@@ -129,27 +129,27 @@ describe('GatewayController', () => {
   describe('bots', () => {
     describe('createBot', () => {
       it('should call botsService.create and return the created bot ID', async () => {
-        const createBotDto = { name: 'TestBot', price: 100 };
+        const createBotDto = { name: 'TestBot', price: 100, health: 111, attack: 11, defense: 1 };
         const createdBotId = 'bot-123';
 
         jest.spyOn(botsService, 'create').mockResolvedValue(createdBotId);
 
         const result = await controller.createBot(createBotDto);
 
-        expect(botsService.create).toHaveBeenCalledWith(createBotDto.name, createBotDto.price);
+        expect(botsService.create).toHaveBeenCalledWith(createBotDto.name, createBotDto.price, createBotDto.health, createBotDto.attack, createBotDto.defense);
         expect(result).toEqual(createdBotId);
       });
     });
 
     describe('updateBot', () => {
       it('should call botsService.update with correct data', async () => {
-        const updateBotDto = { id: 'bot-123', name: 'UpdatedBot', price: 150 };
+        const updateBotDto = { id: 'bot-123', name: 'UpdatedBot', price: 150, health: 111, attack: 11, defense: 1 };
 
         jest.spyOn(botsService, 'update').mockResolvedValue(undefined);
 
         const result = await controller.updateBot(updateBotDto);
 
-        expect(botsService.update).toHaveBeenCalledWith(updateBotDto.id, updateBotDto.name, updateBotDto.price);
+        expect(botsService.update).toHaveBeenCalledWith(updateBotDto.id, updateBotDto.name, updateBotDto.price, updateBotDto.health, updateBotDto.attack, updateBotDto.defense);
         expect(result).toBeUndefined();
       });
     });

@@ -2,7 +2,7 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
 
-type BotDto = { id: string, name: string, price: string, health: number, attack: number, defense: number };
+type BotDto = { id: string, name: string, price: number, health: number, attack: number, defense: number };
 type GetBotsResponse = BotDto[];
 
 @Injectable()

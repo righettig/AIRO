@@ -370,8 +370,8 @@ describe('GatewayController', () => {
 
       const botIds = ['1', '2'];
       const bots = [
-        { id: '1', name: 'Bot1', price: '100' }, 
-        { id: '2', name: 'Bot2', price: '200' }
+        { id: '1', name: 'Bot1', price: 100, health: 111, attack: 11, defense: 1 }, 
+        { id: '2', name: 'Bot2', price: 200, health: 111, attack: 11, defense: 1 },
       ];
       
       jest.spyOn(purchaseService, 'getAll').mockResolvedValue(botIds);
@@ -390,8 +390,8 @@ describe('GatewayController', () => {
       const mockRequest = { } as CustomRequest;
       
       const bots = [
-        { id: '1', name: 'Bot1', price: '100' }, 
-        { id: '2', name: 'Bot2', price: '200' }
+        { id: '1', name: 'Bot1', price: 100, health: 111, attack: 11, defense: 1 },
+        { id: '2', name: 'Bot2', price: 200, health: 111, attack: 11, defense: 1 },
       ];
       
       jest.spyOn(botsService, 'getAll').mockResolvedValue(bots);
