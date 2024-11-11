@@ -3,9 +3,10 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { AuthService } from './auth/services/auth.service';
-import { provideHttpClient } from '@angular/common/http';
+import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { ConfigService } from './common/services/config.service';
 import { provideMonacoEditor } from 'ngx-monaco-editor-v2';
+import { provideMarkdown } from 'ngx-markdown';
 
 function initializeApp(configService: ConfigService, authService: AuthService) {
   return async () => {
@@ -27,6 +28,7 @@ export const appConfig: ApplicationConfig = {
       multi: true
     },
     provideAnimationsAsync(),
-    provideMonacoEditor()
+    provideMonacoEditor(),
+    provideMarkdown({ loader: HttpClient })
   ],
 };

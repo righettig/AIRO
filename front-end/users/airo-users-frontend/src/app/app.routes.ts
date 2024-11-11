@@ -12,6 +12,7 @@ import { BotDetailsComponent } from './home/components/bots/components/bot-detai
 import { BotBehavioursResolver } from './home/components/bots/resolvers/bot-behaviours.resolver';
 import { BotResolver } from './home/components/bots/resolvers/bot.resolver';
 import { LeaderboardComponent } from './home/components/leaderboard/leaderboard.component';
+import { TutorialsComponent } from './tutorials/tutorials.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -32,4 +33,5 @@ export const routes: Routes = [
     },
   },
   { path: 'all-notifications', component: AllNotificationsComponent, canActivate: [AuthGuard] },
+  { path: 'tutorials', component: TutorialsComponent, canActivate: [AuthGuard] },
 ];
