@@ -1,4 +1,4 @@
-<div class="welcome-message">
+<!-- <div class="welcome-message">
     <span>
         @if (isProUser$ | async) {
             @if (freeBotsCount > 0) 
@@ -20,7 +20,7 @@
             <span style="font-size: 20px;">Consider <a routerLink="/upgrade" class="upgrade-link">upgrading</a> to a Pro account to get up to 3 bots.</span>
         }
     </span>
-</div>
+</div> -->
 
 <div class="container">
     <app-bot-list [bots]="bots" [canGetBotsForFree]="freeBotsCount > 0" (onBuy)="onBuy($event)"></app-bot-list>
