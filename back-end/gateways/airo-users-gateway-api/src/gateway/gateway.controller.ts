@@ -61,14 +61,15 @@ export class GatewayController {
       }
     }
 
-    this.logger.log(`createProfile: ${signupResponse.uid}, ${signupDto.email}, ${signupDto.accountType}`);
-    await this.profileService.createProfile(signupResponse.uid, signupDto.accountType, signupDto.email);
+    this.logger.log(`createProfile: ${signupResponse.uid}, ${signupDto.email}, ${signupDto.nickname}, ${signupDto.accountType}`);
+    await this.profileService.createProfile(signupResponse.uid, signupDto.accountType, signupDto.email, signupDto.nickname);
 
     const response: SignupResponseDto = {
       uid: signupResponse.uid,
       token: signupResponse.token,
       firstName: '',
       lastName: '',
+      nickname: signupDto.nickname,
       accountType: signupDto.accountType
     }
 
@@ -88,6 +89,7 @@ export class GatewayController {
       token: loginResponse.token,
       firstName: profileResponse.firstName,
       lastName: profileResponse.firstName,
+      nickname: profileResponse.nickname,
       accountType: profileResponse.accountType
     }
 
@@ -306,10 +308,11 @@ export class GatewayController {
     const result: UserLeaderboardResponseDto[] = await Promise.all(
       response.map(async x => {
         const profile = await this.profileService.getProfileByUid(x.id);
-        const fullName = `${profile.firstName} ${profile.lastName}`;
+        // const fullName = `${profile.firstName} ${profile.lastName}`;
         return {
           ...x,
-          fullName
+          nickname: profile.nickname,
+          // fullName
         };
       })
     );

@@ -20,5 +20,8 @@ public class Profile
     [FirestoreProperty("email")]
     public string Email { get; set; }
 
+    [FirestoreProperty("nickname")]
+    public string Nickname { get; set; }
+
     public Profile() { }
 }

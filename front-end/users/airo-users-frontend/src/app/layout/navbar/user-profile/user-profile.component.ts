@@ -23,6 +23,7 @@ import { NotificationsComponent } from './notifications/notifications.component'
   styleUrl: './user-profile.component.scss',
 })
 export class UserProfileComponent {
+  @Input() nickname!: string;
   @Input() accountType!: string;
 
   private router = inject(Router);

@@ -3,10 +3,17 @@
         <!-- <app-account-type-selection [(accountType)]="accountType"></app-account-type-selection> -->
         <app-email-input [email]="email"></app-email-input>
         <app-password-input [password]="password"></app-password-input>
-
+        <app-nickname-input [nickname]="nickname"></app-nickname-input>
+        
         <!-- @if (accountType === 'pro') {
             <app-credit-card-input [creditCard]="creditCard"></app-credit-card-input>
         } -->
+
+        <div style="text-align: center; font-size: 14px; color: #555; margin-bottom: 14px; line-height: 1.3em;">
+            <p><strong>Important Information - Pre-Alpha Version</strong></p>
+            <p>Welcome to <strong>AIRO</strong>! Please note that occasional <strong>data wipes</strong> may occur as we make updates and improvements. <br>Your data may be erased during this phase, so please avoid relying on it for important purposes.</p>
+            <p>By continuing, you acknowledge that you're participating in the pre-alpha stage with potential bugs and data resets.</p>
+        </div>
 
         <button mat-fab extended type="submit" class="signup-btn" [disabled]="form.invalid || signingUp">
             Sign Up

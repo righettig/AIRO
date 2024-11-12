@@ -44,6 +44,8 @@ export class EventLiveFeedComponent {
 
   autoScroll: boolean = true;
 
+  fullscreen: boolean = false;
+
   botColors: ColorDictionary = {};
 
   private colors: Color3[] = [
@@ -71,9 +73,12 @@ export class EventLiveFeedComponent {
     setInterval(() => this.fetchLiveFeed(), 1000);
   }
 
+  toggleFullscreen() {
+    this.fullscreen = !this.fullscreen;
+  }
+
   onScroll(viewport: CdkVirtualScrollViewport) {
     // Check if the user is at the bottom
-    //const offset = viewport.getOffsetToIndex(viewport.getDataLength() - 1);
     const offset = viewport.getOffsetToRenderedContentStart();
     this.autoScroll = offset === 0; // Set autoScroll to false if not at the bottom
   }

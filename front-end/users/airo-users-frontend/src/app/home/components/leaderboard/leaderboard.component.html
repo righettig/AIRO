@@ -2,11 +2,11 @@
 
 <div class="container">
     <ul style="list-style: none;">
-        @for (entry of leaderboard; track entry.id; let idx = $index) {
+        @for (entry of leaderboard; track idx; let idx = $index) {
         <li style="margin-bottom: 28px;">
             <div style="font-size: 40px;">
                 #{{ idx }}
-                <span><strong>{{entry.id}}</strong></span>
+                <span><strong>{{entry.nickname}}</strong></span>
             </div>
             <div style="font-size: 26px; text-align: center; padding-top: 8px;">
                 <!-- <span>Fullname {{entry.fullName}}</span> -->

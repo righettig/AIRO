@@ -12,6 +12,7 @@
 .content-wrapper {
     display: flex;
     height: 100vh;
+    gap: 8px;
 }
 
 .map-renderer,
@@ -22,7 +23,11 @@
 
 .participants {
     padding: 10px;
-    background-color: lightgreen;
+    padding-left: 16px;
+    
+    background-color: #223A59;
+    border: 5px solid #B3D6F9;
+    color: #D1DDED;
 }
 
 .participants h3 {
@@ -36,7 +41,9 @@
 }
 
 .log-container {
-    height: 100%;
+    // height: calc(100vh - 358px); // when Event live feed name is visible
+    height: calc(100vh - 236px);
+
     width: 100%;
     border: 1px solid #ccc;
     overflow: auto;

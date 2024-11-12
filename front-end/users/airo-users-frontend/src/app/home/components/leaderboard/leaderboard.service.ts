@@ -5,8 +5,9 @@ import { AuthService } from '../../../auth/services/auth.service';
 import { ConfigService } from '../../../common/services/config.service';
 
 export type UserLeaderboardEntry = { 
-    id: string, 
-    fullName: string,
+    // id: string, 
+    // fullName: string,
+    nickname: string;
     wins: number, 
     losses: number; 
     totalEvents: number 

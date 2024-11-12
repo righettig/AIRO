@@ -3,7 +3,7 @@ using airo_event_simulation_domain.Interfaces;
 
 namespace airo_event_simulation_microservice.DTOs;
 
-public record ParticipantDto(string UserId, Guid BotId, int Health);
+public record ParticipantDto(string UserId, string Nickname, Guid BotId, int Health);
 
 public record TileInfoDto(TileType Type, Guid? BotId);
 
@@ -15,7 +15,7 @@ public class SimulationStateDto
     public SimulationStateDto(ISimulation simulation)
     {
         Participants = simulation.Participants
-            .Select(x => new ParticipantDto(x.UserId, x.Bot.BotId, x.Bot.Health))
+            .Select(x => new ParticipantDto(x.UserId, x.Nickname, x.Bot.BotId, x.Bot.Health))
             .ToArray();
 
         Tiles = MapTilesToDto(simulation.State.Tiles);

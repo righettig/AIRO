@@ -3,5 +3,6 @@ export class LoginResponseDto {
     token: string;
     firstName: string;
     lastName: string;
+    nickname: string;
     accountType: string;
 }

@@ -8,30 +8,70 @@ admin.initializeApp({
 const db = admin.firestore();
 
 const users = {
-  'giacomo_free@airo.com': {
+  'test1@airo.com': {
     password: 'q1w2e3',
     role: 'standard',
     profile: {
       uid: '', // To be set after creating the user
       accountType: 'free',
       creditCardDetails: null,
-      email: 'giacomo_free@airo.com',
+      email: 'test1@airo.com',
       firstName: '',
       lastName: '',
+      nickname: 'test1'
     },
   },
-  'giacomo_pro@airo.com': {
+  'test2@airo.com': {
     password: 'q1w2e3',
     role: 'standard',
     profile: {
       uid: '', // To be set after creating the user
-      accountType: 'pro',
-      creditCardDetails: '4012 8888 8888 1881',
-      email: 'giacomo_pro@airo.com',
+      accountType: 'free',
+      creditCardDetails: null,
+      email: 'test2@airo.com',
       firstName: '',
       lastName: '',
+      nickname: 'test2'
     },
   },
+  'test3@airo.com': {
+    password: 'q1w2e3',
+    role: 'standard',
+    profile: {
+      uid: '', // To be set after creating the user
+      accountType: 'free',
+      creditCardDetails: null,
+      email: 'test3@airo.com',
+      firstName: '',
+      lastName: '',
+      nickname: 'test3'
+    },
+  },
+  'test4@airo.com': {
+    password: 'q1w2e3',
+    role: 'standard',
+    profile: {
+      uid: '', // To be set after creating the user
+      accountType: 'free',
+      creditCardDetails: null,
+      email: 'test4@airo.com',
+      firstName: '',
+      lastName: '',
+      nickname: 'test4'
+    },
+  },
+  // 'giacomo_pro@airo.com': {
+  //   password: 'q1w2e3',
+  //   role: 'standard',
+  //   profile: {
+  //     uid: '', // To be set after creating the user
+  //     accountType: 'pro',
+  //     creditCardDetails: '4012 8888 8888 1881',
+  //     email: 'giacomo_pro@airo.com',
+  //     firstName: '',
+  //     lastName: '',
+  //   },
+  // },
 };
 
 async function resetFirestore() {

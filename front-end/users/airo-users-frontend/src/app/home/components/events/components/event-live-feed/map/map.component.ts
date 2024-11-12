@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import {
   Engine,
   Scene,
@@ -13,6 +13,7 @@ import { Compass } from './models/compass.ui';
 import { MeshMaterials } from './models/mesh-materials';
 import { MeshFactory } from './models/mesh-factory';
 import { ColorDictionary } from './models/color-dictionary';
+import { FullscreenButton } from './models/fullscreen.ui';
 
 @Component({
   selector: 'app-map-renderer',
@@ -23,6 +24,8 @@ import { ColorDictionary } from './models/color-dictionary';
 export class MapRendererComponent implements AfterViewInit {
   @ViewChild('mapCanvas', { static: true }) mapCanvas!: ElementRef<HTMLCanvasElement>;
   private engine!: Engine;
+
+  @Output() onToggleFullscreen = new EventEmitter();
 
   private scene!: Scene;
   private camera!: Camera;
@@ -49,7 +52,7 @@ export class MapRendererComponent implements AfterViewInit {
     this.camera.upperRadiusLimit = mapData.size * 3; // Set upper radius limit based on the map size
     this.materials = new MeshMaterials(this.scene, botColors);
     this.meshFactory = new MeshFactory(this.materials);
-    this.createGround();
+    this.createUI();
   }
 
   // Load map data and render tiles as Babylon.js objects
@@ -71,9 +74,15 @@ export class MapRendererComponent implements AfterViewInit {
 
   private createCompass() {
     new Compass(this.camera);
+    new FullscreenButton(() => {
+      this.onToggleFullscreen.emit();
+      setTimeout(() => {
+        this.engine.resize();
+      }, 1);
+    });
   }
 
-  private createGround() {
+  private createUI() {
     new GroundMesh(this.scene, this.mapSize, this.materials.ground);
   }
 

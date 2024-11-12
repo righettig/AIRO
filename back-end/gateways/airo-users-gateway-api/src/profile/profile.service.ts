@@ -6,6 +6,7 @@ export type ProfileGetProfileByUidResponse = {
     uid: string,
     firstName: string,
     lastName: string,
+    nickname: string,
     accountType: 'free' | 'pro',
 };
 
@@ -15,12 +16,13 @@ export class ProfileService {
 
     constructor(private readonly httpService: HttpService) { }
 
-    async createProfile(uid: string, accountType: string, email: string, creditCardDetails?: string): Promise<void> {
+    async createProfile(uid: string, accountType: string, email: string, nickname: string, creditCardDetails?: string): Promise<void> {
         await firstValueFrom(
             this.httpService.post(`${this.profileServiceUrl}/api/profile`, {
                 uid,
                 accountType,
                 email,
+                nickname,
                 creditCardDetails,
             }),
         );

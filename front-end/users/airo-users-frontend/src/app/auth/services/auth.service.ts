@@ -46,11 +46,11 @@ export class AuthService {
     return this.authToken;
   }
 
-  async signup(email: string, password: string, accountType: AccountType, creditCardDetails?: string): Promise<void> {
+  async signup(email: string, password: string, nickname: string, accountType: AccountType, creditCardDetails?: string): Promise<void> {
     try {
       const response = await firstValueFrom(
         this.http.post<SignUpResponse>(`${this.apiUrl}/signup`, { 
-          email, password, accountType, creditCardDetails })
+          email, password, nickname, accountType, creditCardDetails })
       );
 
       this._user$.next(response);

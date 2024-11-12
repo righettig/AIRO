@@ -320,12 +320,22 @@ services:
 
   event-simulation-service:
     depends_on:
-      - events-service
-      - event-subscription-service
-      - maps-service
-      - bots-service
-      - azurite
-      - redis
+      rabbitmq:
+        condition: service_healthy
+      azurite:
+        condition: service_started
+      redis:
+        condition: service_started
+      events-service:
+        condition: service_started
+      event-subscription-service:
+        condition: service_started
+      maps-service:
+        condition: service_started
+      bots-service:
+        condition: service_started
+      profile-service:
+        condition: service_started
     build:
       context: .
       dockerfile: ./back-end/microservices/airo-event-simulation-microservice/Dockerfile
@@ -334,6 +344,7 @@ services:
       - REDIS_URL=${REDIS_URL}
       - RABBITMQ_URL=${RABBITMQ_URL}
       - BOTS_API_URL=${BOTS_API_URL}
+      - PROFILE_API_URL=${PROFILE_API_URL}
       - EVENTS_API_URL=${EVENTS_API_URL}
       - EVENT_SUBSCRIPTION_API_URL=${EVENT_SUBSCRIPTION_API_URL}
       - BOT_BEHAVIOURS_API_URL=${BOT_BEHAVIOURS_API_URL}

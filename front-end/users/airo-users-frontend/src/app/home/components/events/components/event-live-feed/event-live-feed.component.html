@@ -1,30 +1,35 @@
 <div class="container">
-    <div>
+    <!-- <div>
         <h1>{{ eventName }} - Live Feed</h1>
         <h3>{{ eventDescription }}</h3>
-    </div>
+    </div> -->
     <div class="full-height-div">
         <div class="content-wrapper">
             <div class="map-renderer">
-                <app-map-renderer #renderer></app-map-renderer>
+                <app-map-renderer #renderer (onToggleFullscreen)="toggleFullscreen()"></app-map-renderer>
             </div>
-            <div class="feed">
-                @if (eventLiveFeed) {
-                <div class="participants">
-                    <h3>Participants</h3>
-                    @for (p of eventLiveFeed.simulationState.participants; track p.userId) {
-                    <p [ngStyle]="{ 'backgroundColor': botColors[p.botId].toHexString() }">{{p.userId}} - Health: {{p.health}}</p>
+            @if (!fullscreen) {
+                <div class="feed">
+                    @if (eventLiveFeed) {
+                        <div style="font-family: Arial, sans-serif;" class="participants">
+                            <h2 style="margin-bottom: 14px; margin-top: 8px;">Participants</h2>
+                            @for (p of eventLiveFeed.simulationState.participants; track p.nickname) {
+                                <div style="display: flex; align-items: center; margin-bottom: 10px; padding-left: 6px;">
+                                    <span [ngStyle]="{ 'backgroundColor': botColors[p.botId].toHexString() }" style="display: inline-block; width: 20px; height: 20px; border-radius: 50%; margin-right: 10px;"></span>
+                                    <span>{{p.nickname || 'Anonymous'}} - <strong>health: {{p.health}}</strong></span>
+                                </div>
+                            }
+                        </div>
+                        <div class="log-container">
+                            <cdk-virtual-scroll-viewport itemSize="20" class="viewport" #viewport (scroll)="onScroll(viewport)">
+                                <div *cdkVirtualFor="let log of logs" class="log-entry">
+                                    {{ log }}
+                                </div>
+                            </cdk-virtual-scroll-viewport>
+                        </div>
                     }
                 </div>
-                <div class="log-container">
-                    <cdk-virtual-scroll-viewport itemSize="20" class="viewport" #viewport (scroll)="onScroll(viewport)">
-                        <div *cdkVirtualFor="let log of logs" class="log-entry">
-                            {{ log }}
-                        </div>
-                    </cdk-virtual-scroll-viewport>
-                </div>
-                }
-            </div>
+            }
         </div>
     </div>
 </div>

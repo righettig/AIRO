@@ -3,5 +3,6 @@ export interface SignUpResponse {
     token: string;
     firstName: string;
     lastName: string;
+    nickname: string;
     accountType: string;
 }

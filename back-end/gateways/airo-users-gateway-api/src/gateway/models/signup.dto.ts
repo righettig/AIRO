@@ -8,6 +8,9 @@ export class SignupDto {
     @IsNotEmpty({ message: 'Password is required' })
     password: string;
 
+    @IsNotEmpty({ message: 'Nickname is required' })
+    nickname: string;
+
     @IsNotEmpty({ message: 'AccountType is required' })
     accountType: 'free' | 'pro';
 

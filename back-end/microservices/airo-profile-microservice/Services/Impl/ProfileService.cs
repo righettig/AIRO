@@ -5,7 +5,11 @@ namespace airo_profile_microservice.Services.Impl;
 
 public class ProfileService(IProfileRepository profileRepository) : IProfileService
 {
-    public async Task CreateProfile(string uid, string accountType, string email, string? creditCardDetails)
+    public async Task CreateProfile(string uid,
+                                    string accountType,
+                                    string email,
+                                    string nickname,
+                                    string? creditCardDetails)
     {
         await profileRepository.SetProfile(uid, new Dictionary<string, object>
         {
@@ -14,6 +18,7 @@ public class ProfileService(IProfileRepository profileRepository) : IProfileServ
             { "lastName", "" },
             { "accountType", accountType },
             { "email", email },
+            { "nickname", nickname },
             { "creditCardDetails", creditCardDetails ?? ""},
         });
     }

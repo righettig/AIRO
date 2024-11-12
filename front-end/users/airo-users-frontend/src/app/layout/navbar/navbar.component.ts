@@ -17,6 +17,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 })
 export class NavbarComponent implements OnInit {
   isLoggedIn = false;
+  nickname: string = '';
   accountType: string = '';
 
   constructor(private authService: AuthService) { }
@@ -29,9 +30,11 @@ export class NavbarComponent implements OnInit {
     this.authService.user$.subscribe(
       (user) => {
         if (user) {
-          this.accountType = user?.accountType;
+          this.nickname = user.nickname;
+          this.accountType = user.accountType;
 
         } else {
+          this.nickname = '';
           this.accountType = '';
         }
       }

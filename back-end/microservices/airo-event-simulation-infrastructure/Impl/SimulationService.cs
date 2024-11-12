@@ -1,5 +1,4 @@
-﻿using airo_event_simulation_domain.Impl;
-using airo_event_simulation_domain.Impl.Simulation;
+﻿using airo_event_simulation_domain.Impl.Simulation;
 using airo_event_simulation_domain.Impl.SimulationGoals;
 using airo_event_simulation_domain.Impl.WinnerTrackers;
 using airo_event_simulation_domain.Interfaces;
@@ -17,7 +16,8 @@ public class SimulationService(ISimulationConfig config,
                                IEventSubscriptionService eventSubscriptionService,
                                IEventsService eventsService,
                                IMapsService mapsService,
-                               IBotsService botsService) : ISimulationService
+                               IBotsService botsService,
+                               IProfileService profileService) : ISimulationService
 {
     public async Task<ISimulation> LoadSimulation(Guid eventId)
     {
@@ -27,6 +27,7 @@ public class SimulationService(ISimulationConfig config,
         var participants = await Task.WhenAll(
             (await eventSubscriptionService.GetParticipants(eventId))
                 .Select(async (x) => {
+                    var userNickname = await profileService.GetNicknameByUid(x.UserId);
                     var botDto = await botsService.GetBotById(x.BotId);
                     var assembly = await GetBotBehaviourAssembly(x.BotBehaviourId);
 
@@ -34,7 +35,7 @@ public class SimulationService(ISimulationConfig config,
 
                     var bot = new Bot(botDto.Id, botDto.Health, botDto.Attack, botDto.Defense, botAgent);
 
-                    return new Participant(x.UserId, bot);
+                    return new Participant(x.UserId, userNickname, bot);
                 })
             );
 

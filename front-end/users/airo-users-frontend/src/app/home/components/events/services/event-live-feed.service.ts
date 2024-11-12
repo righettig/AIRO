@@ -6,6 +6,7 @@ import { ConfigService } from '../../../../common/services/config.service';
 
 export type Participant = {
     userId: string;
+    nickname: string;
     botId: string;
     health: number;
 }

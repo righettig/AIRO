@@ -4,7 +4,6 @@
     {
         int BotHpDecayAmount { get; }
         int BotHpDecayInterval { get; }
-        int BotHpInitialAmount { get; }
         int BotHpRestoreAmount { get; }
         int FoodRespawnInterval { get; }
 

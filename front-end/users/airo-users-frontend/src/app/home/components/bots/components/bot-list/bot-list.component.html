@@ -15,16 +15,16 @@
                 <div class="bot-content">
                     <div class="bot-item-details">
                         <strong>{{bot.name}}</strong>
-                        <p>Price {{bot.price}}</p>
+                        <!-- <p>Price {{bot.price}}</p> -->
                         <p>Health {{bot.health}}</p>
                         <p>Attack {{bot.attack}}</p>
                         <p>Defense {{bot.defense}}</p>
                     </div>
                     <div class="bot-item-actions">
                         <button (click)="buy(bot.id)" [disabled]="!canGetBotsForFree">Get</button>
-                        @if (!canGetBotsForFree) {
+                        <!-- @if (!canGetBotsForFree) {
                         <button (click)="upgrade()">Upgrade</button>
-                        }
+                        } -->
                     </div>
                 </div>
             </div>

@@ -15,8 +15,7 @@ using StackExchange.Redis;
 var builder = WebApplication.CreateBuilder(args);
 
 // TODO: create event mode based on params "easy", "med", "hard"
-var config = new SimulationConfig(botHpInitialAmount: 100,
-                                  botHpDecayInterval: 10,
+var config = new SimulationConfig(botHpDecayInterval: 10,
                                   foodRespawnInterval: 10,
                                   botHpDecayAmount: 5,
                                   botHpRestoreAmount: 20,
@@ -26,6 +25,7 @@ builder.Services.AddSingleton<ISimulationConfig>(config);
 
 builder.Services.AddHostedService<SimulationHostedService>();
 
+builder.Services.AddSingleton<IProfileService, ProfileService>();
 builder.Services.AddSingleton<IBotsService, BotsService>();
 builder.Services.AddSingleton<IMapsService, MapsService>();
 builder.Services.AddSingleton<IEventSubscriptionService, EventSubscriptionService>();
@@ -63,6 +63,12 @@ builder.Services.AddHostedService(provider =>
 });
 
 builder.Services.AddDefaultTimeProvider();
+
+builder.Services.AddHttpClient<IProfileService, ProfileService>(client =>
+{
+    var baseApiUrl = builder.Configuration["PROFILE_API_URL"];
+    client.BaseAddress = new Uri(baseApiUrl + "/api/");
+});
 
 builder.Services.AddHttpClient<IBotsService, BotsService>(client =>
 {

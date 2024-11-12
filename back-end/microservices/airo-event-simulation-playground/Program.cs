@@ -8,8 +8,7 @@ using airo_event_simulation_playground;
 
 var map = new Map(FileReader.ReadMap("small.json"));
 
-var config = new SimulationConfig(botHpInitialAmount: 100,
-                                  botHpDecayInterval: 2,
+var config = new SimulationConfig(botHpDecayInterval: 2,
                                   foodRespawnInterval: 10,
                                   botHpDecayAmount: 15,
                                   botHpRestoreAmount: 20,
@@ -51,7 +50,7 @@ Participant CreateParticipant(string userId)
                       defense: 20,
                       new DummyBotAgent());
 
-    var result = new Participant(userId, bot);
+    var result = new Participant(userId, Nickname: userId, bot);
 
     return result;
 }

@@ -11,10 +11,14 @@ public class ProfileController(IProfileService profileService, ILogger<ProfileCo
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateProfileRequest request)
     {
-        logger.LogInformation("Creating profile for UID: {Uid}, AccountType: {AccountType}, Email: {Email}",
-            request.Uid, request.AccountType, request.Email);
+        logger.LogInformation("Creating profile for UID: {Uid}, AccountType: {AccountType}, Email: {Email}, Nickname: {Nickname}",
+            request.Uid, request.AccountType, request.Email, request.Nickname);
 
-        await profileService.CreateProfile(request.Uid, request.AccountType, request.Email, request.CreditCardDetails);
+        await profileService.CreateProfile(request.Uid,
+                                           request.AccountType,
+                                           request.Email,
+                                           request.Nickname,
+                                           request.CreditCardDetails);
 
         logger.LogInformation("Profile created for UID: {Uid}", request.Uid);
         return Ok();
