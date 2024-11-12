@@ -10,7 +10,8 @@ public class TileInfoTests
     public void SetEmpty_ShouldSetTypeToEmptyAndBotToNull()
     {
         // Arrange
-        var tileInfo = new TileInfo { Type = TileType.Wood, Bot = new Mock<ISimulationBot>().Object };
+        var tileInfo = new TileInfo(TileType.Wood);
+        tileInfo.SetBot(new Mock<ISimulationBot>().Object);
 
         // Act
         tileInfo.SetEmpty();
@@ -25,7 +26,7 @@ public class TileInfoTests
     {
         // Arrange
         var bot = new Mock<ISimulationBot>().Object;
-        var tileInfo = new TileInfo { Type = TileType.Wood };
+        var tileInfo = new TileInfo(TileType.Wood);
 
         // Act
         tileInfo.SetBot(bot);
@@ -41,7 +42,7 @@ public class TileInfoTests
     {
         // Arrange
         var bot = new Mock<ISimulationBot>().Object;
-        var tileInfo = new TileInfo { Type = TileType.SpawnPoint };
+        var tileInfo = new TileInfo(TileType.SpawnPoint);
 
         // Act
         tileInfo.SetBot(bot);
@@ -56,7 +57,7 @@ public class TileInfoTests
     public void RestorePrevTile_ShouldRestorePreviousType()
     {
         // Arrange
-        var tileInfo = new TileInfo { Type = TileType.Wood };
+        var tileInfo = new TileInfo(TileType.Wood);
 
         var bot = new Mock<ISimulationBot>().Object;
         tileInfo.SetBot(bot);

@@ -13,3 +13,5 @@ config/*.json
 
 # Ignore specific project user files
 **/*.csproj.user
+
+azurite/**

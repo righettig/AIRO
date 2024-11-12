@@ -12,6 +12,7 @@ public class SimulationEngineTests
 {
     private readonly Mock<IBehaviourExecutor> _mockBehaviourExecutor;
     private readonly Mock<ISimulationStateUpdater> _mockStateUpdater;
+    private readonly Mock<ISimulationRepository> _mockSimulationRepository;
     private readonly Mock<ISimulation> _mockSimulation;
     private readonly Mock<ISimulationGoal> _mockSimulationGoal;
     private readonly Mock<IWinnerTracker> _mockWinnerTracker;
@@ -22,6 +23,7 @@ public class SimulationEngineTests
     {
         _mockBehaviourExecutor = new Mock<IBehaviourExecutor>();
         _mockStateUpdater = new Mock<ISimulationStateUpdater>();
+        _mockSimulationRepository = new Mock<ISimulationRepository>();
         _mockSimulation = new Mock<ISimulation>();
         _mockSimulationGoal = new Mock<ISimulationGoal>();
         _mockWinnerTracker = new Mock<IWinnerTracker>();
@@ -29,7 +31,7 @@ public class SimulationEngineTests
         _mockSimulation.Setup(s => s.Goal).Returns(_mockSimulationGoal.Object);
         _mockSimulation.Setup(s => s.WinnerTracker).Returns(_mockWinnerTracker.Object);
 
-        _simulationEngine = new SimulationEngine(_mockBehaviourExecutor.Object);
+        _simulationEngine = new SimulationEngine(_mockSimulationRepository.Object, _mockBehaviourExecutor.Object);
     }
 
     [Fact]
@@ -70,8 +72,8 @@ public class SimulationEngineTests
         // Arrange
         var mockParticipants = new Participant[2] 
         {
-            new("user1", new Bot(Guid.Parse("d6c70321-f0f7-40f5-8760-bd76d3aa2b12"), 100, "return new HoldAction();")),
-            new("user2", new Bot(Guid.Parse("ab268f23-140b-4c55-8f40-0b499e2468e1"), 100, "return new MoveAction(Direction.Up);")),
+            new("user1", new Bot(Guid.Parse("d6c70321-f0f7-40f5-8760-bd76d3aa2b12"), 100, 10, 1, new Mock<IBotAgent>().Object)),
+            new("user2", new Bot(Guid.Parse("ab268f23-140b-4c55-8f40-0b499e2468e1"), 100, 10, 1, new Mock<IBotAgent>().Object)),
         };
 
         _mockSimulation.Setup(s => s.GetActiveParticipants()).Returns(mockParticipants);
@@ -81,7 +83,7 @@ public class SimulationEngineTests
             .Returns(false)
             .Returns(true);
 
-        _mockBehaviourExecutor.SetupSequence(e => e.Execute(It.IsAny<string>(), It.IsAny<IBotState>(), It.IsAny<CancellationToken>()))
+        _mockBehaviourExecutor.SetupSequence(e => e.Execute(It.IsAny<IBotAgent>(), It.IsAny<IBotState>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new HoldAction())
             .ReturnsAsync(new MoveAction(Direction.Up));
 
@@ -109,7 +111,7 @@ public class SimulationEngineTests
         // Arrange
         var mockParticipants = new Participant[1]
         {
-            new("user1", new Bot(Guid.Parse("d6c70321-f0f7-40f5-8760-bd76d3aa2b12"), 100, "dummyBehaviourScript1")),
+            new("user1", new Bot(Guid.Parse("d6c70321-f0f7-40f5-8760-bd76d3aa2b12"), 100, 10, 1, new Mock<IBotAgent>().Object)),
         };
 
         _mockSimulation.Setup(s => s.GetActiveParticipants()).Returns(mockParticipants);
@@ -143,7 +145,7 @@ public class SimulationEngineTests
         var cts = new CancellationTokenSource();
         var simulation = SetupMockSimulation(participantCount: 2, simulationComplete: false);
 
-        _mockBehaviourExecutor.Setup(e => e.Execute(It.IsAny<string>(), It.IsAny<IBotState>(), It.IsAny<CancellationToken>()))
+        _mockBehaviourExecutor.Setup(e => e.Execute(It.IsAny<IBotAgent>(), It.IsAny<IBotState>(), It.IsAny<CancellationToken>()))
             .Callback(() => cts.Cancel());
 
         // Act
@@ -164,13 +166,13 @@ public class SimulationEngineTests
 
         // Assert
         _mockBehaviourExecutor.Verify(e => 
-            e.Execute(It.IsAny<string>(), It.IsAny<IBotState>(), It.IsAny<CancellationToken>()), Times.Exactly(2));
+            e.Execute(It.IsAny<IBotAgent>(), It.IsAny<IBotState>(), It.IsAny<CancellationToken>()), Times.Exactly(2));
     }
 
     private ISimulation SetupMockSimulation(int participantCount, bool simulationComplete)
     {
         var mockParticipants = Enumerable.Range(0, participantCount)
-            .Select(i => new Participant($"user{i}", new Bot(Guid.NewGuid(), 100, "dummyBehaviourScript")))
+            .Select(i => new Participant($"user{i}", new Bot(Guid.NewGuid(), 100, 10, 1, new Mock<IBotAgent>().Object)))
             .ToArray();
 
         _mockSimulationGoal.Setup(g => g.IsSimulationComplete(It.IsAny<ISimulation>())).Returns(simulationComplete);
@@ -183,7 +185,7 @@ public class SimulationEngineTests
     private ISimulation SetupMockSimulation(int participantCount, int turns)
     {
         var mockParticipants = Enumerable.Range(0, participantCount)
-            .Select(i => new Participant($"user{i}", new Bot(Guid.NewGuid(), 100, "dummyBehaviourScript")))
+            .Select(i => new Participant($"user{i}", new Bot(Guid.NewGuid(), 100, 10, 1, new Mock<IBotAgent>().Object)))
             .ToArray();
 
         var IsSimulationComplete = _mockSimulationGoal.SetupSequence(g => g.IsSimulationComplete(It.IsAny<ISimulation>()));

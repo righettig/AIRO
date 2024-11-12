@@ -1,9 +1,8 @@
 # Define the different sets of data
 $bots = @(
-    '{"name": "bot1", "price": 100}',
-    '{"name": "bot2", "price": 150}',
-    '{"name": "bot3", "price": 200}',
-    '{"name": "bot4", "price": 250}'
+    '{"name": "Titan", "price": 500, "health": 150, "attack": 40, "defense": 30}',
+    '{"name": "Shadow", "price": 300, "health": 120, "attack": 60, "defense": 20}',
+    '{"name": "Guardian", "price": 600, "health": 200, "attack": 20, "defense": 50}'
 )
 
 # Loop through the bot data and make the HTTP POST request

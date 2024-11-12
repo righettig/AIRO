@@ -16,8 +16,14 @@ public class DummyStateUpdater : ISimulationStateUpdater
         logMessage("DummyStateUpdater: Updating global simulation state");
     }
 
-    public void UpdateStateForAction(ISimulation simulation, ISimulationBot bot, ISimulationAction action, Action<string> logMessage)
+    public Task UpdateStateForAction(ISimulation simulation,
+                                     ISimulationBot bot,
+                                     ISimulationAction action,
+                                     Action<string> logMessage)
     {
         logMessage($"DummyStateUpdater: Updating simulation state for bot {bot.BotId} after action {action}");
+
+
+        return Task.CompletedTask;
     }
 }

@@ -8,6 +8,7 @@ import { CreateMissionDto } from './models/create-mission.dto';
 import { ExecuteMissionDto } from './models/execute-mission.dto';
 import { LoginDto } from './models/login.dto';
 import { LoginResponseDto } from './models/login.response.dto';
+import { LeaderboardService } from 'src/leaderboard/leaderboard.service';
 
 describe('GatewayController', () => {
   let controller: GatewayController;
@@ -15,6 +16,7 @@ describe('GatewayController', () => {
   let missionsService: MissionsService;
   let commandsService: CommandsService;
   let agentsService: AgentsService;
+  let leaderboardService: LeaderboardService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -52,6 +54,11 @@ describe('GatewayController', () => {
             executeCommand: jest.fn(),
           },
         },
+        {
+          provide: LeaderboardService,
+          useValue: {
+          },
+        },
       ],
     }).compile();
 
@@ -60,6 +67,7 @@ describe('GatewayController', () => {
     missionsService = module.get<MissionsService>(MissionsService);
     commandsService = module.get<CommandsService>(CommandsService);
     agentsService = module.get<AgentsService>(AgentsService);
+    leaderboardService = module.get<LeaderboardService>(LeaderboardService);
   });
 
   describe('login', () => {

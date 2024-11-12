@@ -1,0 +1,2 @@
+When you want to run a particular microservice in isolation please update the .env file:
+	<<NAME_OF_MICROSERVICE_TO_RUN_IN_ISOLATION>>=http://host.docker.internal:5179 // make sure the port matches the value declared in VS launch settings or in the NestJS main.ts file

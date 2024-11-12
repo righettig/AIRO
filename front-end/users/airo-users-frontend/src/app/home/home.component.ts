@@ -10,5 +10,4 @@ import { BotsComponent } from './components/bots/components/bots.component';
   imports: [BotsComponent, RouterModule]
 })
 export class HomeComponent {
-
 }

@@ -9,8 +9,14 @@ public class SimulationConfig : ISimulationConfig
     public int FoodRespawnInterval { get; }
     public int BotHpDecayAmount { get; }
     public int BotHpRestoreAmount { get; }
+    public int? TurnDelaySeconds { get; }
 
-    public SimulationConfig(int botHpInitialAmount, int botHpDecayInterval, int foodRespawnInterval, int botHpDecayAmount, int botHpRestoreAmount)
+    public SimulationConfig(int botHpInitialAmount,
+                            int botHpDecayInterval,
+                            int foodRespawnInterval,
+                            int botHpDecayAmount,
+                            int botHpRestoreAmount,
+                            int? turnDelaySeconds = 0)
     {
         if (botHpInitialAmount <= 0
             || botHpDecayInterval <= 0
@@ -21,10 +27,16 @@ public class SimulationConfig : ISimulationConfig
             throw new ArgumentException("Intervals and amounts must be greater than zero.");
         }
 
+        if (turnDelaySeconds < 0)
+        {
+            throw new ArgumentException($"{nameof(turnDelaySeconds)} cannot be negative.");
+        }
+
         BotHpInitialAmount = botHpInitialAmount;
         BotHpDecayInterval = botHpDecayInterval;
         FoodRespawnInterval = foodRespawnInterval;
         BotHpDecayAmount = botHpDecayAmount;
         BotHpRestoreAmount = botHpRestoreAmount;
+        TurnDelaySeconds = turnDelaySeconds ?? 0;
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace airo_event_simulation_microservice.Services;
+﻿using airo_event_simulation_microservice.Services.Interfaces;
+
+namespace airo_event_simulation_microservice.Services.Impl;
 
 public class SimulationHostedService(IBackgroundTaskQueue taskQueue,
                                      ILogger<SimulationHostedService> logger) : BackgroundService

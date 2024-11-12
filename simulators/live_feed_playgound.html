@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Babylon.js Playground</title>
+    <!-- Load Babylon.js from CDN -->
+    <script src="https://cdn.babylonjs.com/babylon.js"></script>
+    <script src="https://cdn.babylonjs.com/materialsLibrary/babylonjs.materials.js"></script>
+    <script src="https://cdn.babylonjs.com/gui/babylon.gui.js"></script>
+    <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.js"></script>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        canvas {
+            width: 50%;
+            height: 50vh;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="renderCanvas"></canvas>
+
+    <script>
+        // Define TILE_TYPES and tile data structure
+        const TILE_TYPES = ['empty', 'bot', 'food', 'water', 'wood', 'iron', 'wall'];
+
+        // Sample map data
+        const mapData = {
+            size: 10,
+            tiles: [
+                { x: 0, y: 0, type: 'empty' },
+                { x: 1, y: 0, type: 'bot' },
+                { x: 2, y: 0, type: 'food' },
+                { x: 3, y: 0, type: 'water' },
+                { x: 4, y: 0, type: 'wood' },
+                { x: 5, y: 0, type: 'iron' },
+                { x: 6, y: 0, type: 'wall' },
+                { x: 7, y: 0, type: 'empty' },
+                // ... Add more tiles as needed
+            ]
+        };
+
+        // Get the canvas element
+        const canvas = document.getElementById('renderCanvas');
+
+        // Create a Babylon.js engine
+        const engine = new BABYLON.Engine(canvas, true);
+
+        let botMesh; // Store reference to the bot mesh
+
+        // Create a scene
+        const createScene = () => {
+            const scene = new BABYLON.Scene(engine);
+
+            // Create a camera
+            const camera = new BABYLON.ArcRotateCamera('camera', Math.PI, Math.PI / 5, 15, new BABYLON.Vector3(0, -2.5, 0), scene);
+            camera.attachControl(canvas, true);
+
+            // Create a light
+            const light = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(0, 1, 0), scene);
+
+            // Create ground
+            createGround(scene, mapData.size);
+
+            // Render tiles
+            updateMap(scene, mapData);
+
+            // Create GUI
+            var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+
+            // Rectangle indicator for the bot
+            var rect1 = new BABYLON.GUI.Rectangle();
+            rect1.width = 0.2;
+            rect1.height = "40px";
+            rect1.cornerRadius = 20;
+            rect1.color = "Orange";
+            rect1.thickness = 4;
+            rect1.background = "green";
+            advancedTexture.addControl(rect1);
+            rect1.linkWithMesh(botMesh);
+            rect1.linkOffsetY = -150;
+
+            // Label on the rectangle
+            var label = new BABYLON.GUI.TextBlock();
+            label.text = "Bot 1";
+            rect1.addControl(label);
+
+            // Target circle indicator
+            var target = new BABYLON.GUI.Ellipse();
+            target.width = "40px";
+            target.height = "40px";
+            target.color = "Orange";
+            target.thickness = 4;
+            target.background = "green";
+            advancedTexture.addControl(target);
+            target.linkWithMesh(botMesh);
+
+            // Connecting line between the rectangle and the target
+            var line = new BABYLON.GUI.Line();
+            line.lineWidth = 4;
+            line.color = "Orange";
+            line.y2 = 20;
+            line.linkOffsetY = -20;
+            advancedTexture.addControl(line);
+            line.linkWithMesh(botMesh);
+            line.connectedControl = rect1;
+
+            // Return the scene
+            return scene;
+        };
+
+        // Function to create the ground with grid material
+        const createGround = (scene, size) => {
+            const gridMaterial = new BABYLON.GridMaterial('grid', scene);
+            gridMaterial.gridRatio = 1;
+            gridMaterial.majorUnitFrequency = 1;
+            gridMaterial.minorUnitVisibility = 0.45;
+            gridMaterial.backFaceCulling = false;
+            gridMaterial.mainColor = new BABYLON.Color3(1, 1, 1);
+            gridMaterial.lineColor = new BABYLON.Color3(0.5, 0.5, 0.5);
+
+            const ground = BABYLON.MeshBuilder.CreateGround(
+                'ground',
+                { width: size, height: size, subdivisions: size },
+                scene
+            );
+            ground.material = gridMaterial;
+        };
+
+        createBotMesh = (name, scene) => {
+            // Create the body of the bot
+            const body = BABYLON.MeshBuilder.CreateCylinder(`${name}_body`, { height: 1, diameter: 0.5 }, scene);
+            body.position.y = 0.5; // Move it up to sit on the ground
+
+            // Create the head of the bot
+            const head = BABYLON.MeshBuilder.CreateSphere(`${name}_head`, { diameter: 0.6 }, scene);
+            head.position.y = 1.2; // Position the head above the body
+
+            // Create arms
+            const leftArm = BABYLON.MeshBuilder.CreateCylinder(`${name}_leftArm`, { height: 0.6, diameter: 0.15 }, scene);
+            leftArm.position = new BABYLON.Vector3(-0.4, 0.8, 0); // Position the left arm
+            leftArm.rotation.z = Math.PI / 4; // Rotate the arm for better positioning
+
+            const rightArm = BABYLON.MeshBuilder.CreateCylinder(`${name}_rightArm`, { height: 0.6, diameter: 0.15 }, scene);
+            rightArm.position = new BABYLON.Vector3(0.4, 0.8, 0); // Position the right arm
+            rightArm.rotation.z = -Math.PI / 4; // Rotate the arm for better positioning
+
+            // Create legs
+            const leftLeg = BABYLON.MeshBuilder.CreateCylinder(`${name}_leftLeg`, { height: 0.6, diameter: 0.2 }, scene);
+            leftLeg.position = new BABYLON.Vector3(-0.2, -0.3, 0); // Position the left leg
+
+            const rightLeg = BABYLON.MeshBuilder.CreateCylinder(`${name}_rightLeg`, { height: 0.6, diameter: 0.2 }, scene);
+            rightLeg.position = new BABYLON.Vector3(0.2, -0.3, 0); // Position the right leg
+
+            // Combine all parts into a single mesh
+            const botMesh = BABYLON.Mesh.MergeMeshes([body, head, leftArm, rightArm, leftLeg, rightLeg], true);
+
+            // Optionally, apply a material
+            const material = new BABYLON.StandardMaterial(`${name}_material`, scene);
+            material.diffuseColor = BABYLON.Color3.Green(); // You can change the color as needed
+            botMesh.material = material;
+
+            return botMesh;
+        }
+
+        // Function to create a thinking animation above the bot
+        const createThinkingIndicator = (position, scene) => {
+            const thinkingIndicator = BABYLON.MeshBuilder.CreateBox("thinkingIndicator", { size: 0.2 }, scene);
+
+            thinkingIndicator.position = new BABYLON.Vector3(position.x, position.y + 1, position.z);
+
+            const material = new BABYLON.StandardMaterial("indicatorMaterial", scene);
+            material.diffuseColor = BABYLON.Color3.Yellow();
+            thinkingIndicator.material = material;
+
+            // Animate the thinking indicator (e.g., make it spin)
+            const animation = new BABYLON.Animation("spinAnimation", "rotation.y", 30,
+                BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+
+            const keys = [];
+            keys.push({ frame: 0, value: 0 });
+            keys.push({ frame: 30, value: Math.PI * 2 });
+
+            animation.setKeys(keys);
+            thinkingIndicator.animations.push(animation);
+            scene.beginAnimation(thinkingIndicator, 0, 30, true);
+
+            return thinkingIndicator;
+        };
+
+        const createThinkingIndicator2 = (position, scene) => {
+            const arrowHeight = 0.5;
+            const arrowBaseDiameter = 0.1;
+            const arrowTipDiameter = 0.2;
+
+            // Create the cone for the arrow
+            const arrow = BABYLON.MeshBuilder.CreateCylinder('thinkingArrow', { height: arrowHeight, diameter: arrowBaseDiameter, tessellation: 6 }, scene);
+            arrow.position = new BABYLON.Vector3(position.x, position.y + arrowHeight + 0.5, position.z); // Position above the bot
+            arrow.rotation.x = Math.PI; // Point it upward
+
+            // Create a material for the arrow
+            const arrowMaterial = new BABYLON.StandardMaterial('arrowMaterial', scene);
+            arrowMaterial.diffuseColor = BABYLON.Color3.Yellow();
+            arrow.material = arrowMaterial;
+
+            // Animation to make the arrow "pulse" to indicate thinking
+            const pulseAnimation = new BABYLON.Animation("pulseAnimation", "scaling.y", 30, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+            const keys = [];
+            keys.push({ frame: 0, value: new BABYLON.Vector3(1, 1, 1) });
+            keys.push({ frame: 15, value: new BABYLON.Vector3(1, 1.5, 1) }); // Scale up
+            keys.push({ frame: 30, value: new BABYLON.Vector3(1, 1, 1) }); // Scale back to original
+
+            pulseAnimation.setKeys(keys);
+            arrow.animations.push(pulseAnimation);
+            //scene.beginAnimation(arrow, 0, 1, true); // Start the animation
+        };
+
+        // Function to update the map and render tiles
+        const updateMap = (scene, mapData) => {
+            const yOffset = 0.001; // Offset to avoid z-fighting between tiles and ground
+            const meshes = [];
+
+            // Loop through tiles and render them
+            mapData.tiles.filter(tile => tile.type !== 'empty').forEach(tile => {
+                let tileMesh;
+
+                if (tile.type === 'bot') {
+                    // Create a unique mesh for bot tiles, e.g., a sphere
+                    tileMesh = BABYLON.MeshBuilder.CreateSphere(`bot_${tile.x}_${tile.y}`, { diameter: 0.8 }, scene);
+                    botMesh = tileMesh;
+
+                    //pulsateBot(tileMesh); // Call the pulsate function here
+
+                    // Alternative mesh for bot
+                    // const mapSize = 6;
+                    // tileMesh = this.createBotMesh(`bot_${tile.x}_${tile.y}`, this.scene);
+                    // tileMesh.position = new BABYLON.Vector3(
+                    //     tile.x - ((mapSize / 2) - 0.5),
+                    //     0.5 + this.yOffset,
+                    //     tile.y - ((mapSize / 2) - 0.5)
+                    // );
+                    // meshes.push(tileMesh);
+
+                    // Add highlight effect #1
+                    // var hl = new BABYLON.HighlightLayer("hl1", scene);
+                    // hl.addMesh(tileMesh, BABYLON.Color3.Yellow());
+
+                    // Add highlight effect #2
+                    // tileMesh.renderOutline = true;
+                    // tileMesh.outlineColor = new BABYLON.Color3.Yellow();
+                    // tileMesh.outlineWidth = 0.1;
+
+                } else {
+                    // Default to a box mesh for other tile types
+                    tileMesh = BABYLON.MeshBuilder.CreateBox(`tile_${tile.x}_${tile.y}`, { size: 1 }, scene);
+                }
+
+                // Position the mesh on the map grid
+                tileMesh.position = new BABYLON.Vector3(
+                    tile.x - ((mapData.size / 2) - 0.5),
+                    0.5 + yOffset,
+                    tile.y - ((mapData.size / 2) - 0.5)
+                );
+
+                if (tile.type === 'bot') {
+                    createThinkingIndicator(tileMesh.position, scene); // Call the thinking indicator here
+                    //createThinkingIndicator2(tileMesh.position, scene); // Call the thinking indicator here
+                }
+
+                // Apply material based on tile type
+                tileMesh.material = getTileMaterial(tile.type, scene);
+                meshes.push(tileMesh);
+            });
+
+            // Move the bot after 2 seconds
+            setTimeout(() => {
+                moveBot2(0, 1); // Move right (to x + 1, y)
+            }, 1000);
+        };
+
+        const moveBot = (dx, dy) => {
+            if (botMesh) {
+                // Calculate new position
+                const newX = botMesh.position.x + dx;
+                const newY = botMesh.position.z + dy;
+
+                // Update bot position
+                botMesh.position.x = newX;
+                botMesh.position.z = newY;
+
+                // Update thinking indicator position
+                // const arrow = botMesh.getChildren().find(child => child.name === 'thinkingArrow');
+                // if (arrow) {
+                //     arrow.position.x = newX;
+                //     arrow.position.z = newY;
+                // }
+            }
+        }
+
+        const moveBot2 = (dx, dy) => {
+            if (botMesh) {
+                // Calculate new position
+                const newX = botMesh.position.x + dx;
+                const newY = botMesh.position.z + dy;
+
+                // Create an animation to smoothly transition the bot's position
+                const moveAnimation = new BABYLON.Animation("moveAnimation", "position", 100, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+                const keys = [];
+                keys.push({ frame: 0, value: botMesh.position });
+                keys.push({ frame: 30, value: new BABYLON.Vector3(newX, botMesh.position.y, newY) }); // Move to new position
+
+                moveAnimation.setKeys(keys);
+                botMesh.animations.push(moveAnimation);
+
+                // Start the animation
+                botMesh.getScene().beginAnimation(botMesh, 0, 30, false);
+            }
+        };
+
+        // Function to get material color based on tile type
+        const getTileMaterial = (type, scene) => {
+            const material = new BABYLON.StandardMaterial(`mat_${type}`, scene);
+            switch (type) {
+                case 'bot': material.diffuseColor = BABYLON.Color3.Green(); break;
+                case 'food': material.diffuseColor = BABYLON.Color3.FromHexString('#FFA500'); break;
+                case 'water': material.diffuseColor = BABYLON.Color3.Blue(); break;
+                case 'wood': material.diffuseColor = BABYLON.Color3.FromHexString('#A52A2A'); break;
+                case 'iron': material.diffuseColor = BABYLON.Color3.Red(); break;
+                case 'wall': material.diffuseColor = BABYLON.Color3.Gray(); break;
+                default: material.diffuseColor = BABYLON.Color3.White(); break;
+            }
+            return material;
+        };
+
+        // Function to make the bot pulsate
+        const pulsateBot = (botMesh) => {
+            const originalScale = botMesh.scaling.x; // Assuming uniform scaling
+            const scaleUp = 1.2; // Scale up factor
+            const scaleDown = 0.8; // Scale down factor
+
+            // Create an animation for pulsating
+            const animation = new BABYLON.Animation("pulsateAnimation", "scaling.x", 30,
+                BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+
+            const keys = [];
+            keys.push({ frame: 0, value: new BABYLON.Vector3(originalScale, originalScale, originalScale) });
+            keys.push({ frame: 30, value: new BABYLON.Vector3(scaleUp, scaleUp, scaleUp) });
+            keys.push({ frame: 60, value: new BABYLON.Vector3(scaleDown, scaleDown, scaleDown) });
+            keys.push({ frame: 90, value: new BABYLON.Vector3(originalScale, originalScale, originalScale) });
+
+            animation.setKeys(keys);
+            botMesh.animations.push(animation);
+            scene.beginAnimation(botMesh, 0, 90, true);
+        };
+
+        // Create the scene
+        const scene = createScene();
+
+        //const outlineRenderer = new BABYLON.OutlineRenderer(this.scene);
+
+        // Render loop
+        engine.runRenderLoop(() => {
+            scene.render();
+        });
+
+        // Resize the engine on window resize
+        window.addEventListener('resize', () => {
+            engine.resize();
+        });
+    </script>
+</body>
+
+</html>

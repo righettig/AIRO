@@ -12,11 +12,11 @@ var config = new SimulationConfig(botHpInitialAmount: 100,
                                   botHpDecayInterval: 2,
                                   foodRespawnInterval: 10,
                                   botHpDecayAmount: 15,
-                                  botHpRestoreAmount: 20);
+                                  botHpRestoreAmount: 20,
+                                  turnDelaySeconds: 3);
 
-var compiler = new CSharpBehaviourCompiler();
-
-var engine = new SimulationEngine(new BehaviourExecutor(compiler));
+var engine = new SimulationEngine(new InMemorySimulationRepository(),
+                                  new BehaviourExecutor());
 
 engine.OnLogMessage += (sender, message) => Console.WriteLine($"Log: {message}");
 
@@ -45,13 +45,13 @@ Console.WriteLine(result.ToString());
 
 Participant CreateParticipant(string userId)
 {
-    var botId = Guid.NewGuid();
+    var bot = new Bot(botId: Guid.NewGuid(),
+                      health: 100,
+                      attack: 10,
+                      defense: 20,
+                      new DummyBotAgent());
 
-    //var script = "^%$^% this will throw a CompilationErrorException!";
-    //var script = "while (true) {}";
-    //var script = "return new MoveAction(Direction.Up);";
-    var script = FileReader.ReadBehaviour("DummyBotAgent.cs");
+    var result = new Participant(userId, bot);
 
-    var result = new Participant(userId, new Bot(botId, config.BotHpInitialAmount, script));
     return result;
 }

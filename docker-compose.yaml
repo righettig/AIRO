@@ -70,6 +70,7 @@ services:
       - billing-service
       - bots-service
       - bot-behaviours-service
+      - bot-behaviour-compiler-service
       - purchase-service
       - events-service
       - event-subscription-service
@@ -83,6 +84,7 @@ services:
     environment:
       - AUTH_API_URL=${AUTH_API_URL}
       - BOT_BEHAVIOURS_API_URL=${BOT_BEHAVIOURS_API_URL}
+      - BOT_BEHAVIOUR_COMPILER_API_URL=${BOT_BEHAVIOUR_COMPILER_API_URL}
       - PROFILE_API_URL=${PROFILE_API_URL}
       - BILLING_API_URL=${BILLING_API_URL}
       - INVOICE_API_URL=${INVOICE_API_URL}
@@ -254,6 +256,21 @@ services:
         - action: rebuild
           path: ./back-end/microservices/airo-bot-behaviours-microservice/package.json
 
+  bot-behaviour-compiler-service:
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      azurite:
+        condition: service_started
+    build:
+      context: .
+      dockerfile: ./back-end/microservices/airo-bot-behaviour-compiler-microservice/Dockerfile
+    environment:
+      - RABBITMQ_URL=${RABBITMQ_URL}
+      - ConnectionStrings__AzureBlobStorage=${AZURITE_CONNECTION_STRING}
+    ports:
+      - "4016:8080" # https not working so far!
+
   events-service:
     depends_on:
       rabbitmq:
@@ -270,13 +287,14 @@ services:
       - "4006:8080" # https not working so far!
 
   maps-service:
-    depends_on:
-      cosmosdb:
-        condition: service_healthy
+    # depends_on:
+    #   cosmosdb:
+    #     condition: service_healthy
     build:
       context: .
       dockerfile: ./back-end/microservices/airo-maps-microservice/Dockerfile
     environment:
+      - USE_IN_MEMORY_DB=${MAPS_USE_IN_MEMORY_DB}
       - ConnectionStrings__CosmosDb=${COSMOSDB_CONNECTION_STRING}
       - DatabaseName=${MAPS_DATABASE_NAME}
     ports:
@@ -304,16 +322,24 @@ services:
     depends_on:
       - events-service
       - event-subscription-service
-      - bot-behaviours-service
+      - maps-service
+      - bots-service
+      - azurite
+      - redis
     build:
       context: .
       dockerfile: ./back-end/microservices/airo-event-simulation-microservice/Dockerfile
     environment:
+      - ConnectionStrings__AzureBlobStorage=${AZURITE_CONNECTION_STRING}
+      - REDIS_URL=${REDIS_URL}
+      - RABBITMQ_URL=${RABBITMQ_URL}
+      - BOTS_API_URL=${BOTS_API_URL}
       - EVENTS_API_URL=${EVENTS_API_URL}
       - EVENT_SUBSCRIPTION_API_URL=${EVENT_SUBSCRIPTION_API_URL}
       - BOT_BEHAVIOURS_API_URL=${BOT_BEHAVIOURS_API_URL}
+      - MAPS_API_URL=${MAPS_API_URL}
     ports:
-      - "4011:8080" # https not working so far!  
+      - "4011:8080" # https not working so far! 
 
   events-scheduler:
     depends_on:
@@ -418,11 +444,12 @@ services:
         condition: service_started
       rabbitmq:
         condition: service_healthy
-      cosmosdb:
-        condition: service_healthy
+      # cosmosdb:
+      #   condition: service_healthy
     build:
       context: ./back-end/microservices/airo-ui-notifications-microservice
     environment:
+      - USE_IN_MEMORY_DB=${UI_NOTIFICATIONS_USE_IN_MEMORY_DB}
       - RABBITMQ_URL=${RABBITMQ_URL}
       - COSMOSDB_ENDPOINT=${COSMOSDB_ENDPOINT}
       - COSMOSDB_KEY=${COSMOSDB_KEY}
@@ -460,8 +487,8 @@ services:
         condition: service_started
       rabbitmq:
         condition: service_healthy
-      cosmosdb:
-        condition: service_healthy
+      # cosmosdb:
+      #   condition: service_healthy
       event-subscription-service:
         condition: service_started
     build:
@@ -470,6 +497,7 @@ services:
     ports:
       - "4014:8080" # https not working so far!
     environment:
+      - USE_IN_MEMORY_DB=${LEADERBOARD_USE_IN_MEMORY_DB}
       - EVENT_SUBSCRIPTION_API_URL=${EVENT_SUBSCRIPTION_API_URL}
       - REDIS_URL=${REDIS_URL}
       - RABBITMQ_URL=${RABBITMQ_URL}
@@ -518,32 +546,43 @@ services:
     # volumes:
     #   - mongo_data:/data/db
 
-  cosmosdb:
-    # fix for: https://github.com/Azure/azure-cosmos-db-emulator-docker/issues/103
-    image: cosmos-emulator-wrapper
-    build:
-      dockerfile_inline: |
-        FROM mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:latest
-        RUN apt-get update && \
-            DEBIAN_FRONTEND=noninteractive apt-get install -y \
-            curl
-    environment:
-      - AZURE_COSMOS_EMULATOR_PARTITION_COUNT=3
-      - AZURE_COSMOS_EMULATOR_ENABLE_DATA_PERSISTENCE=true
-      # This allows applications from the host to connect to the docker instance.
-      # Use https://127.0.0.1:8081 as the endpoint.
-      # However this seems to breaks other services running in Docker.
-      # - AZURE_COSMOS_EMULATOR_IP_ADDRESS_OVERRIDE=127.0.0.1
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite
+    hostname: azurite
+    restart: always
+    command: 'azurite --loose --blobHost 0.0.0.0 --blobPort 10000 --queueHost 0.0.0.0 --queuePort 10001 --location /workspace --debug /workspace/debug.log'
     ports:
-      - "8081:8081"
-    # volumes:
-    #   - cosmos_data:/CosmosDB/data
-    healthcheck:
-      test: ["CMD", "curl", "-f", "-k", "https://localhost:8081/_explorer/emulator.pem"]
-      start_period: 1m
-      interval: 30s
-      timeout: 10s
-      retries: 10
+      - 10000:10000
+      - 10001:10001
+    volumes:
+      - ./azurite:/workspace
+
+  # cosmosdb:
+  #   # fix for: https://github.com/Azure/azure-cosmos-db-emulator-docker/issues/103
+  #   image: cosmos-emulator-wrapper
+  #   build:
+  #     dockerfile_inline: |
+  #       FROM mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:latest
+  #       RUN apt-get update && \
+  #           DEBIAN_FRONTEND=noninteractive apt-get install -y \
+  #           curl
+  #   environment:
+  #     - AZURE_COSMOS_EMULATOR_PARTITION_COUNT=3
+  #     - AZURE_COSMOS_EMULATOR_ENABLE_DATA_PERSISTENCE=true
+  #     # This allows applications from the host to connect to the docker instance.
+  #     # Use https://127.0.0.1:8081 as the endpoint.
+  #     # However this seems to breaks other services running in Docker.
+  #     # - AZURE_COSMOS_EMULATOR_IP_ADDRESS_OVERRIDE=127.0.0.1
+  #   ports:
+  #     - "8081:8081"
+  #   # volumes:
+  #   #   - cosmos_data:/CosmosDB/data
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-f", "-k", "https://localhost:8081/_explorer/emulator.pem"]
+  #     start_period: 1m
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 10
 
   eventstore.db:
     image: eventstore/eventstore:lts

@@ -8,9 +8,9 @@ export class EventSimulationService {
 
     constructor(private readonly httpService: HttpService) { }
 
-    async getSimulationStatusById(id: string) {
+    async getSimulationStatusById(id: string, skip: number) {
         const response = await firstValueFrom(
-            this.httpService.get(`${this.serviceUrl}/simulate/${id}/status`),
+            this.httpService.get(`${this.serviceUrl}/simulate/${id}/status?skip=${skip}`),
         );
         return response.data;
     }

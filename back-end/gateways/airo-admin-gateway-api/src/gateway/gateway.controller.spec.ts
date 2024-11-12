@@ -4,12 +4,18 @@ import { BotsService } from 'src/bots/bots.service';
 import { EventsService } from 'src/events/events.service';
 import { LoginDto } from '../auth/models/login.dto';
 import { GatewayController } from './gateway.controller';
+import { MapsService } from '@maps/maps.service';
+import { EventSimulationService } from 'src/event-simulation/event-simulation.service';
+import { EventSubscriptionService } from 'src/event-subscription/event-subscription.service';
 
 describe('GatewayController', () => {
   let controller: GatewayController;
   let authService: AuthService;
   let botsService: BotsService;
   let eventsService: EventsService;
+  let eventSubscriptionService: EventSubscriptionService;
+  let eventSimulationService: EventSimulationService;
+  let mapService: MapsService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -45,6 +51,21 @@ describe('GatewayController', () => {
             getUserRole: jest.fn(),
           },
         },
+        {
+          provide: EventSubscriptionService,
+          useValue: {
+          },
+        },
+        {
+          provide: EventSimulationService,
+          useValue: {
+          },
+        },
+        {
+          provide: MapsService,
+          useValue: {
+          },
+        },
       ],
     }).compile();
 
@@ -52,6 +73,9 @@ describe('GatewayController', () => {
     authService = module.get<AuthService>(AuthService);
     botsService = module.get<BotsService>(BotsService);
     eventsService = module.get<EventsService>(EventsService);
+    eventSubscriptionService = module.get<EventSubscriptionService>(EventSubscriptionService);
+    eventSimulationService = module.get<EventSimulationService>(EventSimulationService);
+    mapService = module.get<MapsService>(MapsService);
   });
 
   it('should be defined', () => {
@@ -105,27 +129,27 @@ describe('GatewayController', () => {
   describe('bots', () => {
     describe('createBot', () => {
       it('should call botsService.create and return the created bot ID', async () => {
-        const createBotDto = { name: 'TestBot', price: 100 };
+        const createBotDto = { name: 'TestBot', price: 100, health: 111, attack: 11, defense: 1 };
         const createdBotId = 'bot-123';
 
         jest.spyOn(botsService, 'create').mockResolvedValue(createdBotId);
 
         const result = await controller.createBot(createBotDto);
 
-        expect(botsService.create).toHaveBeenCalledWith(createBotDto.name, createBotDto.price);
+        expect(botsService.create).toHaveBeenCalledWith(createBotDto.name, createBotDto.price, createBotDto.health, createBotDto.attack, createBotDto.defense);
         expect(result).toEqual(createdBotId);
       });
     });
 
     describe('updateBot', () => {
       it('should call botsService.update with correct data', async () => {
-        const updateBotDto = { id: 'bot-123', name: 'UpdatedBot', price: 150 };
+        const updateBotDto = { id: 'bot-123', name: 'UpdatedBot', price: 150, health: 111, attack: 11, defense: 1 };
 
         jest.spyOn(botsService, 'update').mockResolvedValue(undefined);
 
         const result = await controller.updateBot(updateBotDto);
 
-        expect(botsService.update).toHaveBeenCalledWith(updateBotDto.id, updateBotDto.name, updateBotDto.price);
+        expect(botsService.update).toHaveBeenCalledWith(updateBotDto.id, updateBotDto.name, updateBotDto.price, updateBotDto.health, updateBotDto.attack, updateBotDto.defense);
         expect(result).toBeUndefined();
       });
     });
@@ -174,27 +198,51 @@ describe('GatewayController', () => {
   describe('events', () => {
     describe('createEvent', () => {
       it('should call eventsService.create and return the created event ID', async () => {
-        const createEventDto = { name: 'TestEvent', description: "description" };
+        const createEventDto = { 
+          name: 'TestEvent', 
+          description: "description", 
+          mapId: 'map123', 
+          scheduledAt: new Date() 
+        };
         const createdEventId = 'event-123';
 
         jest.spyOn(eventsService, 'create').mockResolvedValue(createdEventId);
 
         const result = await controller.createEvent(createEventDto);
 
-        expect(eventsService.create).toHaveBeenCalledWith(createEventDto.name, createEventDto.description);
+        expect(eventsService.create).toHaveBeenCalledWith(
+          createEventDto.name, 
+          createEventDto.description, 
+          createEventDto.scheduledAt, 
+          createEventDto.mapId
+        );
+        
         expect(result).toEqual(createdEventId);
       });
     });
 
     describe('updateEvent', () => {
       it('should call eventsService.update with correct data', async () => {
-        const updateEventDto = { id: 'event-123', name: 'UpdatedEvent', description: "blabla" };
+        const updateEventDto = { 
+          id: 'event-123', 
+          name: 'UpdatedEvent', 
+          description: "blabla",          
+          mapId: 'map123', 
+          scheduledAt: new Date()
+        };
 
         jest.spyOn(eventsService, 'update').mockResolvedValue(undefined);
 
         const result = await controller.updateEvent(updateEventDto);
 
-        expect(eventsService.update).toHaveBeenCalledWith(updateEventDto.id, updateEventDto.name, updateEventDto.description);
+        expect(eventsService.update).toHaveBeenCalledWith(
+          updateEventDto.id, 
+          updateEventDto.name, 
+          updateEventDto.description, 
+          updateEventDto.scheduledAt, 
+          updateEventDto.mapId
+        );
+        
         expect(result).toBeUndefined();
       });
     });
@@ -215,7 +263,7 @@ describe('GatewayController', () => {
     describe('getEvent', () => {
       it('should call eventsService.getById and return the bot data', async () => {
         const eventId = 'event-123';
-        const event = { id: eventId, name: 'TestBot', description: 'foo bar' };
+        const event = { id: eventId, name: 'TestBot', description: 'foo bar', scheduledAt: new Date() };
 
         jest.spyOn(eventsService, 'getById').mockResolvedValue(event);
 
@@ -228,7 +276,7 @@ describe('GatewayController', () => {
 
     describe('getAllEvents', () => {
       it('should call eventsService.getAll and return the list of events', async () => {
-        const events = [{ id: 'event-123', name: 'Event1', description: 'foobar' }];
+        const events = [{ id: 'event-123', name: 'Event1', description: 'foobar', scheduledAt: new Date() }];
 
         jest.spyOn(eventsService, 'getAll').mockResolvedValue(events);
 

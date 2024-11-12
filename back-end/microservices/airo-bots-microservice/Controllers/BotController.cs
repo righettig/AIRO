@@ -22,7 +22,7 @@ public class BotController : ControllerBase
     {
         var botId = Guid.NewGuid();
 
-        await _mediator.Send(new CreateBotCommand(botId, request.Name, request.Price));
+        await _mediator.Send(new CreateBotCommand(botId, request.Name, request.Price, request.Health, request.Attack, request.Defense));
 
         return Ok(botId);
     }
@@ -30,7 +30,7 @@ public class BotController : ControllerBase
     [HttpPut]
     public async Task<IActionResult> UpdateBot([FromBody] UpdateBotRequest request)
     {
-        await _mediator.Send(new UpdateBotCommand(request.Id, request.Name, request.Price));
+        await _mediator.Send(new UpdateBotCommand(request.Id, request.Name, request.Price, request.Health, request.Attack, request.Defense));
         return Ok();
     }
 

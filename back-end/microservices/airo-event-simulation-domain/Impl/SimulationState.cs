@@ -57,10 +57,7 @@ public class SimulationState(int currentTurn) : ISimulationState
             for (int y = 0; y < map.Height; y++)
             {
                 // Clone each TileInfo instance into the new map
-                Tiles[x, y] = new TileInfo
-                {
-                    Type = map.Tiles[x, y]
-                };
+                Tiles[x, y] = new TileInfo(map.Tiles[x, y]);
             }
         }
 

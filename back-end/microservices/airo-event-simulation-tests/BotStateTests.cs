@@ -13,15 +13,19 @@ public class BotStateTests
         // Arrange
         var botId = Guid.NewGuid();
         var health = 100;
+        var attack = 10;
+        var defense = 1;
         var position = new Position(0, 0);
         var visibleTiles = new Dictionary<Position, ITileInfo>();
 
         // Act
-        var botState = new BotState(botId, health, position, visibleTiles);
+        var botState = new BotState(botId, health, attack, defense, position, visibleTiles);
 
         // Assert
         Assert.Equal(botId, botState.Id);
         Assert.Equal(health, botState.Health);
+        Assert.Equal(attack, botState.Attack);
+        Assert.Equal(defense, botState.Defense);
         Assert.Equal(position, botState.Position);
         Assert.Equal(visibleTiles, botState.VisibleTiles);
     }
@@ -33,7 +37,7 @@ public class BotStateTests
         var botId = Guid.NewGuid();
         var position = new Position(0, 0);
         var visibleTiles = new Dictionary<Position, ITileInfo>();
-        var botState = new BotState(botId, 100, position, visibleTiles);
+        var botState = new BotState(botId, 100, 10, 1, position, visibleTiles);
 
         // Act
         var nearestBot = botState.GetNearestOpponentBot();
@@ -49,7 +53,7 @@ public class BotStateTests
         var botId = Guid.NewGuid();
         var position = new Position(0, 0);
         var visibleTiles = new Dictionary<Position, ITileInfo>();
-        var botState = new BotState(botId, 100, position, visibleTiles);
+        var botState = new BotState(botId, 100, 10, 1, position, visibleTiles);
 
         // Act
         var nearestFood = botState.GetNearestFoodTile();
@@ -84,7 +88,7 @@ public class BotStateTests
             { bot1Position, tile1Info.Object },
             { bot2Position, tile2Info.Object }
         };
-        var botState = new BotState(botId, 100, position, visibleTiles);
+        var botState = new BotState(botId, 100, 10, 1, position, visibleTiles);
 
         // Act
         var nearestBot = botState.GetNearestOpponentBot();
@@ -114,7 +118,7 @@ public class BotStateTests
             { food1Position, tile1Info.Object },
             { food2Position, tile2Info.Object }
         };
-        var botState = new BotState(botId, 100, position, visibleTiles);
+        var botState = new BotState(botId, 100, 10, 1, position, visibleTiles);
 
         // Act
         var nearestFood = botState.GetNearestFoodTile();

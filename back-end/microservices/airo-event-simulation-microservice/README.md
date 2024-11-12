@@ -41,12 +41,12 @@ Each behaviour has a maximum time to completion. If it takes longer than that a 
 - Uses both ILogger<> for internal logs and `ISimulationStatusTracker` to track simulation updates to users.
 
 ## Performance Considerations
-- C# bot behaviours scripts are executed using `CSharpScript.EvaluateAsync`. Worth considering alternatives.
 - It is important that different event simulation do not interfere with each other.
 
 ## Security Considerations
 - A timeout is in place to avoid any behaviours blocking the simulation engine. 
-- A limited subset of resources are exposes to the behaviours scripts.
+- A limited subset of resources are exposed to the behaviours scripts.
+- It is important that different event simulation do not interfere with each other.
 
 ## Testing
 - **Unit Tests:** Plan to add unit tests for critical authentication logic using xUnit.
@@ -54,9 +54,6 @@ Each behaviour has a maximum time to completion. If it takes longer than that a 
 - **Other:** None.
 
 ## Future Improvements
-- Expose an interface for bot behaviours to use to return moves.
-- Simulation state should be updated according to each bot behaviour's move at the end of the simulation turn.
-- Introduce simulation logic (rules, etc.).
 
 ## Maintainers
 - **Primary Contact:** Giacomo Righetti, righettig@outlook.com

@@ -620,7 +620,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:3000/gateway/simulation/eventId",
+							"raw": "http://localhost:3000/gateway/simulation/eventId?skip=123",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -630,6 +630,12 @@
 								"gateway",
 								"simulation",
 								"eventId"
+							],
+							"query": [
+								{
+									"key": "skip",
+									"value": "123"
+								}
 							]
 						}
 					},
@@ -2555,7 +2561,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:4011/simulate/eventId/status",
+							"raw": "http://localhost:4011/simulate/eventId/status?skip=123",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -2565,6 +2571,12 @@
 								"simulate",
 								"eventId",
 								"status"
+							],
+							"query": [
+								{
+									"key": "skip",
+									"value": "123"
+								}
 							]
 						}
 					},
@@ -2903,6 +2915,73 @@
 								"api",
 								"Maps",
 								"190c52a6-74a0-4690-856f-8a5f0ef7e953"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Bot Behaviour Compiler",
+			"item": [
+				{
+					"name": "validate",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"botBehaviourId\": \"123\",\r\n    \"botBehaviourScript\": \"foo\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4016/api/bot-behaviors/123/validate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4016",
+							"path": [
+								"api",
+								"bot-behaviors",
+								"123",
+								"validate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "compile",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"botBehaviourId\": \"123\",\r\n    \"botBehaviourScript\": \"foo\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4016/api/bot-behaviors/123/compile",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4016",
+							"path": [
+								"api",
+								"bot-behaviors",
+								"123",
+								"compile"
 							]
 						}
 					},

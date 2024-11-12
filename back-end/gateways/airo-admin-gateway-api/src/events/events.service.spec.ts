@@ -30,12 +30,16 @@ describe('EventsService', () => {
       const mockResponse = createMockResponse(eventId);
       jest.spyOn(httpService, 'post').mockReturnValue(of(mockResponse));
 
-      const result = await service.create('Event Name', 'Event Description');
+      const scheduledAt = new Date();
+      const mapId = 'map123';
+      const result = await service.create('Event Name', 'Event Description', scheduledAt, mapId);
       
       expect(result).toEqual('event-id');
       expect(httpService.post).toHaveBeenCalledWith(`${service['serviceUrl']}/api/events`, { 
         name: 'Event Name', 
-        description: 'Event Description' 
+        description: 'Event Description',
+        scheduledAt,
+        mapId
       });
     });
   });
@@ -44,13 +48,18 @@ describe('EventsService', () => {
     it('should send a PUT request to update an event', async () => {
       const mockResponse = createMockResponse(undefined);
       jest.spyOn(httpService, 'put').mockReturnValue(of(mockResponse));
+      
+      const scheduledAt = new Date();
+      const mapId = 'map123';
 
-      await service.update('event-id', 'Updated Name', 'Updated Description');
+      await service.update('event-id', 'Updated Name', 'Updated Description', scheduledAt, mapId);
 
       expect(httpService.put).toHaveBeenCalledWith(`${service['serviceUrl']}/api/events`, {
         id: 'event-id', 
         name: 'Updated Name', 
-        description: 'Updated Description'
+        description: 'Updated Description',
+        scheduledAt,
+        mapId
       });
     });
   });
