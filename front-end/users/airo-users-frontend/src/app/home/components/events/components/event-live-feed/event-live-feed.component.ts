@@ -124,7 +124,7 @@ export class EventLiveFeedComponent {
     if (this.renderer) {
       if (!this.mapInitialized) {
         participants.forEach((participant, i) => {
-          this.botColors[participant.botId!] = this.colors[i];
+          this.botColors[participant.userId] = this.colors[i];
         });
 
         this.renderer.initMap(mapData, this.botColors);
@@ -153,6 +153,6 @@ export class EventLiveFeedComponent {
 
     const type = typeMapping[cell.type] || 'empty'; // Default to 'empty' if typeId is not found
 
-    return { x, y, type, botId: cell.botId };
+    return { x, y, type, botId: cell.botId }; // TODO: this MUST be fixedç botId is not unique!
   }
 }
