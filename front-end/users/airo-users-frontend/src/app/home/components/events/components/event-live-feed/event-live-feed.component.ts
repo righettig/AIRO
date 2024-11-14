@@ -57,6 +57,8 @@ export class EventLiveFeedComponent {
 
   private lastReceived = 0;
   
+  private intervalId: any = null;
+
   constructor(
     private route: ActivatedRoute,
     private readonly eventLiveFeedService: EventLiveFeedService) { }
@@ -70,7 +72,13 @@ export class EventLiveFeedComponent {
     await this.fetchLiveFeed();
 
     // TODO: use signalR
-    setInterval(() => this.fetchLiveFeed(), 1000);
+    this.intervalId = setInterval(() => this.fetchLiveFeed(), 1000);
+  }
+
+  ngOnDestroy() {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
   }
 
   toggleFullscreen() {
