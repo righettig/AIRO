@@ -33,7 +33,9 @@ public class SimulationService(ISimulationConfig config,
 
                     var botAgent = botAgentFactory.Create(assembly);
 
-                    var bot = new Bot(botDto.Id, botDto.Health, botDto.Attack, botDto.Defense, botAgent);
+                    // assigning a unique random guid. 
+                    // we could use the behaviourId. Decided NOT to expose internal ids.
+                    var bot = new Bot(Guid.NewGuid(), botDto.Health, botDto.Attack, botDto.Defense, botAgent);
 
                     return new Participant(x.UserId, userNickname, bot);
                 })

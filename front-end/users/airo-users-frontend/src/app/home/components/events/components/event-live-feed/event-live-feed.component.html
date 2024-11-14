@@ -15,7 +15,7 @@
                             <h2 style="margin-bottom: 14px; margin-top: 8px;">Participants</h2>
                             @for (p of eventLiveFeed.simulationState.participants; track p.nickname) {
                                 <div style="display: flex; align-items: center; margin-bottom: 10px; padding-left: 6px;">
-                                    <span [ngStyle]="{ 'backgroundColor': botColors[p.userId].toHexString() }" style="display: inline-block; width: 20px; height: 20px; border-radius: 50%; margin-right: 10px;"></span>
+                                    <span [ngStyle]="{ 'backgroundColor': botColors[p.botId].toHexString() }" style="display: inline-block; width: 20px; height: 20px; border-radius: 50%; margin-right: 10px;"></span>
                                     <span>{{p.nickname || 'Anonymous'}} - <strong>health: {{p.health}}</strong></span>
                                 </div>
                             }

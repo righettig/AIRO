@@ -6,6 +6,8 @@ export interface TileInfo {
     x: number; 
     y: number; 
     type: TileType;
+    
+    // Uniquely identifies the bot.
     botId?: string; 
 }
 

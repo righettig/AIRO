@@ -7,12 +7,15 @@ import { ConfigService } from '../../../../common/services/config.service';
 export type Participant = {
     userId: string;
     nickname: string;
+    // Uniquely identifies the bot.
     botId: string;
     health: number;
 }
 
 export type TileInfoDto = {
     type: number;
+
+    // Uniquely identifies the bot.
     botId?: string;
 }
 
